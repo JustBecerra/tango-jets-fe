@@ -1,47 +1,47 @@
-import React, { useState } from "react";
-import "/lib/style.css"
-
-import { Toast } from "flowbite-react";
-import { HiCheck } from "react-icons/hi";
-import { addFlight } from "../../../lib/actions/flights/actions";
+import React, { useState } from "react"
+import { Toast } from "flowbite-react"
+import { HiCheck } from "react-icons/hi"
+import { addFlight } from "../../../lib/actions/flights/actions"
 
 const ModalFlightAdd: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [showToast, setShowToast] = useState(false)
 
-  const handleToggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
+	const handleToggleModal = () => {
+		setIsModalOpen((prev) => !prev)
+	}
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const formElement = event.target as HTMLFormElement;
-    const formData = new FormData(formElement);
-    const flightData = Object.fromEntries(formData.entries());
+	const handleSubmit = async (event: React.FormEvent) => {
+		event.preventDefault()
+		const formElement = event.target as HTMLFormElement
+		const formData = new FormData(formElement)
+		const flightData = Object.fromEntries(formData.entries())
 
-    const transformedFlightData = {
-      launchtime: new Date(flightData.launchtime as string).toISOString(),
-      arrivaltime: new Date(flightData.arrivaltime as string).toISOString(),
-      to: flightData.to as string,
-      from: flightData.from as string,
-      airship_id: Number(flightData.airship_id),
-      createdby: Number(flightData.createdby),
-    };
+		const transformedFlightData = {
+			launchtime: new Date(flightData.launchtime as string).toISOString(),
+			arrivaltime: new Date(
+				flightData.arrivaltime as string
+			).toISOString(),
+			to: flightData.to as string,
+			from: flightData.from as string,
+			airship_id: Number(flightData.airship_id),
+			createdby: Number(flightData.createdby),
+		}
 
-    try {
-      const response = await addFlight(transformedFlightData);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        window.location.reload();
-      }, 2000);
-      setIsModalOpen(false);
-    } catch (err) {
-      console.error("Error adding flight:", err);
-    }
-  };
+		try {
+			const response = await addFlight(transformedFlightData)
+			setShowToast(true)
+			setTimeout(() => {
+				setShowToast(false)
+				window.location.reload()
+			}, 2000)
+			setIsModalOpen(false)
+		} catch (err) {
+			console.error("Error adding flight:", err)
+		}
+	}
 
-  return (
+	return (
 		<>
 			<button
 				id="addFlightButton"
@@ -226,7 +226,7 @@ const ModalFlightAdd: React.FC = () => {
 				</div>
 			)}
 		</>
-  )
-};
+	)
+}
 
-export default ModalFlightAdd;
+export default ModalFlightAdd
