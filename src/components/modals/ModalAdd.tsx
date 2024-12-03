@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import "react-phone-input-2/lib/style.css";
+import React, { useState } from "react"
 
-import { Toast } from "flowbite-react";
-import { HiCheck } from "react-icons/hi";
-import { addClient } from "../../../lib/actions/clients/actions";
+import { Toast } from "flowbite-react"
+import { HiCheck } from "react-icons/hi"
+import { addClient } from "../../../lib/actions/clients/actions"
 
 const ModalAdd: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [showToast, setShowToast] = useState(false)
 
-  const handleToggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
+	const handleToggleModal = () => {
+		setIsModalOpen((prev) => !prev)
+	}
 
-  const handleSubmit = async (event: React.FormEvent) => {
+	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		const formElement = event.target as HTMLFormElement
 		const formData = new FormData(formElement)
@@ -42,9 +41,9 @@ const ModalAdd: React.FC = () => {
 		} catch (err) {
 			console.error("Error adding client:", err)
 		}
-  }
+	}
 
-  return (
+	return (
 		<>
 			<button
 				id="addClientButton"
@@ -272,7 +271,7 @@ const ModalAdd: React.FC = () => {
 				</div>
 			)}
 		</>
-  )
-};
+	)
+}
 
-export default ModalAdd;
+export default ModalAdd
