@@ -1,0 +1,160 @@
+---
+import LayoutCalculator from "../layouts/LayoutCalculator.astro"
+import { Options } from "../components/Api Related/OptionsCBairport"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+---
+
+<LayoutCalculator title="Calculator">
+	<ToastContainer client:load />
+	<div style="margin-bottom: 10px; display: flex; align-items: center;">
+		<label for="from" style="margin-right: 10px; width: 50px; color: black;"
+			>Salida</label
+		>
+		<select id="from" name="from" style="width: 100px; color: black;">
+			{
+				Options.map((option) => (
+					<option value={option.label}>{option.label}</option>
+				))
+			}
+		</select>
+	</div>
+	<div style="margin-bottom: 10px; display: flex; align-items: center;">
+		<label for="to" style="margin-right: 10px; width: 50px; color: black;"
+			>Llegada</label
+		>
+		<select id="to" name="to" style="width: 100px; color: black;">
+			{
+				Options.map((option) => (
+					<option value={option.label}>{option.label}</option>
+				))
+			}
+		</select>
+	</div>
+	<div>
+		<button id="caldis" style="color: black;">Calcular</button>
+	</div>
+	<div>
+		<p id="Respuesta" style="color: black;"></p>
+	</div>
+</LayoutCalculator>
+
+<script>
+	import { Bounce, toast } from "react-toastify"
+	import "react-toastify/dist/ReactToastify.css"
+	import { getAirportDistanceFromAirportCode } from "../components/Api Related/utils"
+
+	// Function to handle button click
+	async function calculateDistance() {
+		const fromSelect = document.querySelector("#from") as HTMLSelectElement
+		const toSelect = document.querySelector("#to") as HTMLSelectElement
+
+		if (!fromSelect || !toSelect) {
+			toast.error(
+				"Por favor, selecciona los aeropuertos de salida y llegada.",
+				{
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					transition: Bounce,
+				}
+			)
+			return
+		}
+
+		const fromValue = fromSelect.value
+		const toValue = toSelect.value
+		if (fromValue === toValue) {
+			toast.error(
+				"Los aeropuertos de salida y llegada no pueden ser el mismo.",
+				{
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					transition: Bounce,
+				}
+			)
+			return
+		}
+		try {
+			const distance = await getAirportDistanceFromAirportCode(
+				fromValue,
+				toValue
+			)
+
+			const distanceNumber = Number(distance) // Convertir a número
+
+			if (distanceNumber > 100) {
+				const AvionCaro = {
+					precioPorKm: 10,
+					cantidadDePasajeros: 150,
+					nombre: "Avión de Lujo",
+				}
+
+				const AvionMedio = {
+					precioPorKm: 7,
+					cantidadDePasajeros: 100,
+					nombre: "Avión Medio",
+				}
+
+				const AvionBarato = {
+					precioPorKm: 5,
+					cantidadDePasajeros: 50,
+					nombre: "Avión Económico",
+				}
+
+				const preciocaro = distanceNumber * AvionCaro.precioPorKm
+				const preciomedio = distanceNumber * AvionMedio.precioPorKm
+				const preciobarato = distanceNumber * AvionBarato.precioPorKm
+
+				toast.success(
+					`La distancia entre ${fromValue} y ${toValue} es de ${distanceNumber} km`,
+					{
+						position: "top-center",
+						autoClose: 50000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						transition: Bounce,
+					}
+				)
+				let respuesta = document.querySelector("#Respuesta")
+				if (respuesta) {
+					respuesta.innerHTML = `El precio de un viaje en ${AvionCaro.nombre} sería de ${preciocaro} dólares, en ${AvionMedio.nombre} sería de ${preciomedio} dólares <br> y en ${AvionBarato.nombre} sería de ${preciobarato} dólares.`
+				}
+			}
+		} catch (error) {
+			console.error("Error calculating distance:", error)
+		}
+	}
+	function alerta() {
+		toast.info("Calculando distancia", {
+			position: "top-center",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			transition: Bounce,
+		})
+	}
+	// Add event listener to the button
+	document.addEventListener("DOMContentLoaded", () => {
+		const caldisButton = document.querySelector("#caldis")
+		if (caldisButton) {
+			caldisButton.addEventListener("click", alerta)
+			caldisButton.addEventListener("click", calculateDistance)
+		}
+	})
+</script>
