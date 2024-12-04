@@ -10,16 +10,16 @@ function parseCookies(cookieHeader: string) {
 }
 
 export const onRequest = defineMiddleware((context: APIContext, next) => {
-	if (context.url.pathname !== "/") {
-		const cookieHeader = context.request.headers.get("cookie")
-		const cookies = parseCookies(cookieHeader || "")
+	const cookieHeader = context.request.headers.get("cookie")
+	console.log("Cookies:", cookieHeader) // Log cookies to see if "authToken" is included
 
-		const authToken = cookies.authToken
+	const cookies = parseCookies(cookieHeader || "")
+	const authToken = cookies.authToken
 
-		if (!authToken || authToken.length === 0) {
-			return Response.redirect(new URL("/", context.url), 302)
-		}
+	if (!authToken || authToken.length === 0) {
+		return Response.redirect(new URL("/", context.url.origin), 302)
 	}
 
 	return next()
 })
+  
