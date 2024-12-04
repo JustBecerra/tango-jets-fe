@@ -18,7 +18,8 @@ export const LoginCard = () => {
 				})
 
 				if (login?.success) {
-					window.location.href = `${window.location.origin}/Home`
+					// window.location.href = `${window.location.origin}/Home`
+					console.log({ login })
 				} else {
 					toast.error("Credentials are not valid.", {
 						position: "top-center",

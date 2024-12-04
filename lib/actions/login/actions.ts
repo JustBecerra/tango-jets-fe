@@ -7,7 +7,8 @@ interface Login {
 
 export async function loginScheduler({ username, password }: Login) {
 	try {
-		const responseToken = await fetch(
+		// Fetch the login token
+		const response = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler/login`,
 			{
 				method: "POST",
@@ -15,8 +16,18 @@ export async function loginScheduler({ username, password }: Login) {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ username, password }),
+				credentials: "include", // Include credentials (cookies)
 			}
-		).then((response) => response.json())
+		)
+
+		if (!response.ok) {
+			return {
+				success: false,
+				message: "Invalid credentials or error during login",
+			}
+		}
+
+		const { token } = await response.json()
 
 		const responseUserInfo = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler`,
@@ -24,20 +35,28 @@ export async function loginScheduler({ username, password }: Login) {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${responseToken.token}`,
+					Authorization: `Bearer ${token}`,
 				},
 			}
-		).then((response) => response.json())
+		)
 
-		const token = responseToken.token
-		const responsiveusername = responseUserInfo.username
-		const role = responseUserInfo.role
+		if (!responseUserInfo.ok) {
+			return {
+				success: false,
+				message: "Failed to fetch user information",
+			}
+		}
+
+		const { username: userInfoUsername, role } =
+			await responseUserInfo.json()
+
 		setCookie("authToken", token, 1)
-		setCookie("username", responsiveusername, 1)
+		setCookie("username", userInfoUsername, 1)
 		setCookie("role", role, 1)
 
-		return responseToken
+		return { success: true }
 	} catch (err) {
-		console.error(err)
+		console.error("Login failed:", err)
+		return { success: false, message: "Login failed. Please try again." }
 	}
 }
