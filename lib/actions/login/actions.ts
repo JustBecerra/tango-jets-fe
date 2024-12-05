@@ -1,5 +1,5 @@
 import { setCookie } from "../../../src/utils/setCookie"
-
+import type { APIContext } from "astro"
 interface Login {
 	username: string
 	password: string
@@ -25,6 +25,13 @@ export async function loginScheduler({ username, password }: Login) {
 				success: false,
 				message: "Invalid credentials or error during login",
 			}
+		}
+
+		const setCookieHeader = response.headers.get("set-cookie")
+		if (setCookieHeader) {
+			// Optionally log or handle set-cookie headers
+			// const cookieHeader = context.request.headers.set("cookie")
+			// console.log("Set-Cookie header:", setCookieHeader)
 		}
 
 		const { token } = await response.json()
