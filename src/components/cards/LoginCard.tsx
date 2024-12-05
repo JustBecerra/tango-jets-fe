@@ -9,7 +9,6 @@ export const LoginCard = () => {
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-
 		if (email && password) {
 			try {
 				const login = await loginScheduler({
@@ -17,9 +16,8 @@ export const LoginCard = () => {
 					password,
 				})
 
-				if (login?.success) {
-					 window.location.href = `/Home`
-		
+				if (login) {
+					window.location.href = `/Home`
 				} else {
 					toast.error("Credentials are not valid.", {
 						position: "top-center",

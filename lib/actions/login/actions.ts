@@ -1,69 +1,42 @@
 import { setCookie } from "../../../src/utils/setCookie"
-import type { APIContext } from "astro"
 interface Login {
 	username: string
 	password: string
 }
 
 export async function loginScheduler({ username, password }: Login) {
+	const responseToken = await fetch(
+		`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler/login`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ username, password }),
+		}
+	).then((response) => response.json())
+
+	const responseUserInfo = await fetch(
+		`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${responseToken.token}`,
+			},
+		}
+	).then((response) => response.json())
+
 	try {
-		// Fetch the login token
-		const response = await fetch(
-			`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler/login`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ username, password }),
-				credentials: "include", // Include credentials (cookies)
-			}
-		)
-
-		if (!response.ok) {
-			return {
-				success: false,
-				message: "Invalid credentials or error during login",
-			}
-		}
-
-		const setCookieHeader = response.headers.get("set-cookie")
-		if (setCookieHeader) {
-			// Optionally log or handle set-cookie headers
-			// const cookieHeader = context.request.headers.set("cookie")
-			// console.log("Set-Cookie header:", setCookieHeader)
-		}
-
-		const { token } = await response.json()
-
-		const responseUserInfo = await fetch(
-			`${import.meta.env.PUBLIC_BACKEND_URL}/scheduler`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		)
-
-		if (!responseUserInfo.ok) {
-			return {
-				success: false,
-				message: "Failed to fetch user information",
-			}
-		}
-
-		const { username: userInfoUsername, role } =
-			await responseUserInfo.json()
-
+		const token = responseToken.token
+		const username = responseUserInfo.username
+		const role = responseUserInfo.role
 		setCookie("authToken", token, 1)
-		setCookie("username", userInfoUsername, 1)
+		setCookie("username", username, 1)
 		setCookie("role", role, 1)
 
-		return { success: true }
+		return responseToken
 	} catch (err) {
-		console.error("Login failed:", err)
-		return { success: false, message: "Login failed. Please try again." }
+		console.error(err)
 	}
 }
