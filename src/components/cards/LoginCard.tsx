@@ -82,21 +82,22 @@ export const LoginCard = () => {
           username: email,
           password,
         });
-        if (login) {
-          window.location.href = `/Home`;
-        } else {
-          toast.error("Credentials are not valid.", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-          });
-        }
+
+		if (login.message === "Logged in successfully!") {
+			window.location.href = `/Home`
+		} else {
+			toast.error("Credentials are not valid.", {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+				transition: Bounce,
+			})
+		}
       } catch (error) {
         console.error("Login error:", error);
         toast.error("An error occurred during login.", {
