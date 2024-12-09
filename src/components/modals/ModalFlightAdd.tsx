@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Toast } from "flowbite-react"
 import { HiCheck } from "react-icons/hi"
 import { addFlight } from "../../../lib/actions/flights/actions"
+import { getCookie } from "../../utils/getCookie"
 
 const ModalFlightAdd: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -16,7 +17,7 @@ const ModalFlightAdd: React.FC = () => {
 		const formElement = event.target as HTMLFormElement
 		const formData = new FormData(formElement)
 		const flightData = Object.fromEntries(formData.entries())
-
+		const name = getCookie("username")
 		const transformedFlightData = {
 			launchtime: new Date(flightData.launchtime as string).toISOString(),
 			arrivaltime: new Date(
@@ -24,8 +25,8 @@ const ModalFlightAdd: React.FC = () => {
 			).toISOString(),
 			to: flightData.to as string,
 			from: flightData.from as string,
-			airship_id: Number(flightData.airship_id),
-			createdby: Number(flightData.createdby),
+			airship_title: flightData.airship_title,
+			createdby: name,
 		}
 
 		try {
@@ -160,20 +161,20 @@ const ModalFlightAdd: React.FC = () => {
 										</div>
 										<div>
 											<label
-												htmlFor="airship_id"
+												htmlFor="airship_title"
 												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 											>
-												Airship ID
+												Airship title
 											</label>
 											<input
-												type="number"
-												id="airship_id"
-												name="airship_id"
+												type="text"
+												id="airship_title"
+												name="airship_title"
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												required
 											/>
 										</div>
-										<div>
+										{/* <div>
 											<label
 												htmlFor="createdby"
 												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
@@ -181,13 +182,13 @@ const ModalFlightAdd: React.FC = () => {
 												Created By
 											</label>
 											<input
-												type="number"
+												type="text"
 												id="createdby"
 												name="createdby"
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												required
 											/>
-										</div>
+										</div> */}
 									</div>
 									<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 										<button
