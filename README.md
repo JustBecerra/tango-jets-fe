@@ -1,7 +1,7 @@
 Como levantar el proyecto:
 1 - npm install
 2 - npm start
-
+3 - Test
 Crear una branch antes de comenzar una tarea:
 
     1 - git checkout -b nombredelarama
