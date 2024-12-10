@@ -32,7 +32,7 @@ export interface Flight {
 	arrivaltime: string
 	to: string
 	from: string
-	airship_title: string
+	airship_id: string
 	createdby: string
 }
 

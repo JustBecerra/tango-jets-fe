@@ -123,16 +123,16 @@ const ModalFlightEdit = ({
 								</div>
 								<div>
 									<label
-										htmlFor="airship_title"
+										htmlFor="airship_id"
 										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 									>
 										Airship Name
 									</label>
 									<input
 										type="text"
-										id="airship_title"
-										name="airship_title"
-										value={formData.airship_title}
+										id="airship_id"
+										name="airship_id"
+										value={formData.airship_id}
 										onChange={handleChange}
 										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 										required
