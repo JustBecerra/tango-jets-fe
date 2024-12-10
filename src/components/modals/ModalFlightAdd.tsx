@@ -164,7 +164,7 @@ const ModalFlightAdd: React.FC = () => {
 												htmlFor="airship_title"
 												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 											>
-												Airship title
+												Airship Name
 											</label>
 											<input
 												type="text"
@@ -174,21 +174,6 @@ const ModalFlightAdd: React.FC = () => {
 												required
 											/>
 										</div>
-										{/* <div>
-											<label
-												htmlFor="createdby"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Created By
-											</label>
-											<input
-												type="text"
-												id="createdby"
-												name="createdby"
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-												required
-											/>
-										</div> */}
 									</div>
 									<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 										<button
