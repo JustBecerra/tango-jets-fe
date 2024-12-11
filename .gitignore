@@ -3,7 +3,7 @@ dist/
 
 # generated types
 .astro/
-
+.vercel/output/_functions/entry.mjs
 # dependencies
 node_modules/
 

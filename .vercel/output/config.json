@@ -16,10 +16,6 @@
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/Airships\\/?$",
-			"dest": "_render"
-		},
-		{
 			"src": "^\\/Client\\/?$",
 			"dest": "_render"
 		},
