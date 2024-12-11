@@ -3,7 +3,7 @@ import { getFlights } from "../../lib/actions/flights/actions"
 import ModalFlightAdd from "../components/modals/ModalFlightAdd"
 import TableModal, { type Flight } from "../components/table/TableModal"
 import Layout from "../layouts/Layout.astro"
-
+export const prerender = false
 const data = await getFlights()
 const filteredData = data
 	.map((flight: any) => {

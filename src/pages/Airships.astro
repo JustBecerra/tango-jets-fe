@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro"
 import ModalJetAdd from "../components/modals/ModalJetAdd"
 import TableModal from "../components/table/TableModal"
 import { getAirships } from "../../lib/actions/airships/actions"
-
+export const prerender = false
 const data = await getAirships()
 ---
 
