@@ -1,5 +1,5 @@
 {
-	"version": 3,
+	"version": 2,
 	"functions": {
 		"_render": {
 			"runtime": "nodejs@18.x"
