@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro"
+
+import TableModal from "../components/table/TableModal"
+import { getClients } from "../../lib/actions/clients/actions"
+import ModalAdd from "../components/modals/ModalAdd"
+
+const data = await getClients()
+---
+
+<Layout title="Clients">
+	<div class="flex flex-col space-y-4">
+		<div>
+			<ModalAdd client:load />
+		</div>
+		<div>
+			<TableModal info={data} caseType="client" client:load />
+		</div>
+	</div>
+</Layout>
