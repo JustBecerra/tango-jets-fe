@@ -1,0 +1,1 @@
+import{j as s}from"./jsx-runtime.CDeAccHH.js";import{r as t}from"./index.PNmVJ4X_.js";import{g as r}from"./getCookie.CtV4NB4x.js";import"./index.D2MAbzvX.js";const i=()=>{const[o,m]=t.useState("");return t.useEffect(()=>{const e=r("username");e&&m(e)},[]),s.jsxs("h1",{className:"text-4xl font-bold",children:["Welcome, ",o]})};export{i as WelcomeText};
