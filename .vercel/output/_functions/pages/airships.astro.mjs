@@ -287,7 +287,6 @@ const AddJetModal = () => {
   ] });
 };
 
-const prerender = false;
 const $$Airships = createComponent(async ($$result, $$props, $$slots) => {
   const data = await getAirships();
   return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Airships" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="flex flex-col space-y-4"> <div> ${renderComponent($$result2, "ModalJetAdd", AddJetModal, { "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Justo/Desktop/tango-jets-fe/src/components/modals/ModalJetAdd", "client:component-export": "default" })} </div> <div> ${renderComponent($$result2, "TableModal", TableModal, { "info": data, "caseType": "airship", "client:load": true, "client:component-hydration": "load", "client:component-path": "C:/Users/Justo/Desktop/tango-jets-fe/src/components/table/TableModal", "client:component-export": "default" })} </div> </div> ` })}`;
@@ -300,7 +299,6 @@ const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 	__proto__: null,
 	default: $$Airships,
 	file: $$file,
-	prerender,
 	url: $$url
 }, Symbol.toStringTag, { value: 'Module' }));
 

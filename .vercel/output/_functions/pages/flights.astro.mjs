@@ -239,7 +239,6 @@ const ModalFlightAdd = () => {
   ] });
 };
 
-const prerender = false;
 const $$Flights = createComponent(async ($$result, $$props, $$slots) => {
   const data = await getFlights();
   const filteredData = data.map((flight) => {
@@ -260,7 +259,6 @@ const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 	__proto__: null,
 	default: $$Flights,
 	file: $$file,
-	prerender,
 	url: $$url
 }, Symbol.toStringTag, { value: 'Module' }));
 

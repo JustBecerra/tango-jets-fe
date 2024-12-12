@@ -6,7 +6,6 @@ import { T as TableModal } from '../chunks/TableModal_D7zpW6gL.mjs';
 import { $ as $$Layout } from '../chunks/Layout_o6iQYi5C.mjs';
 export { renderers } from '../renderers.mjs';
 
-const prerender = false;
 const $$History = createComponent(async ($$result, $$props, $$slots) => {
   const data = await getFlights();
   const filteredData = data.filter((flight) => {
@@ -24,7 +23,6 @@ const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 	__proto__: null,
 	default: $$History,
 	file: $$file,
-	prerender,
 	url: $$url
 }, Symbol.toStringTag, { value: 'Module' }));
 
