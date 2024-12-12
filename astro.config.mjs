@@ -9,7 +9,11 @@ import tailwind from "@astrojs/tailwind"
 
 // https://astro.build/config
 export default defineConfig({
-	adapter: vercel({}),
+	adapter: vercel({
+		webAnalytics: {
+			enabled: true,
+		},
+	}),
 	output: "server",
 	integrations: [react(), tailwind()],
 })
