@@ -1,5 +1,5 @@
 import { i as isRemotePath, j as joinPaths } from './path_CVKLlyuj.mjs';
-import { A as AstroError, a0 as ExpectedImage, a1 as LocalImageUsedWrongly, a2 as MissingImageDimension, a3 as UnsupportedImageFormat, a4 as IncompatibleDescriptorOptions, a5 as UnsupportedImageConversion, a6 as NoImageMetadata, a7 as FailedToFetchRemoteImageDimensions, a8 as ExpectedImageOptions, a9 as ExpectedNotESMImage, aa as InvalidImageService, ab as toStyleString, c as createComponent, ac as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, h as addAttribute, ad as spreadAttributes, b as createAstro } from './astro/server_BhDw4P4A.mjs';
+import { A as AstroError, $ as ExpectedImage, a0 as LocalImageUsedWrongly, a1 as MissingImageDimension, a2 as UnsupportedImageFormat, a3 as IncompatibleDescriptorOptions, a4 as UnsupportedImageConversion, a5 as NoImageMetadata, a6 as FailedToFetchRemoteImageDimensions, a7 as ExpectedImageOptions, a8 as ExpectedNotESMImage, a9 as InvalidImageService, aa as toStyleString, c as createComponent, ab as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, h as addAttribute, ac as spreadAttributes, b as createAstro } from './astro/server_CTmRdsx1.mjs';
 /* empty css                           */
 import 'clsx';
 import * as mime from 'mrmime';
@@ -1242,7 +1242,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp_BgCQ4rph.mjs'
+      './sharp_DuMeK0KG.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1431,13 +1431,13 @@ const $$Image = createComponent(async ($$result, $$props, $$slots) => {
   if (image.srcSet.values.length > 0) {
     additionalAttributes.srcset = image.srcSet.attribute;
   }
-  const attributes = useResponsive ? applyResponsiveAttributes({
+  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
     layout,
     image,
     props,
     additionalAttributes
   }) : { ...additionalAttributes, ...image.attributes };
-  return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}>`;
+  return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}>`;
 }, "C:/Users/Justo/Desktop/tango-jets-fe/node_modules/astro/components/Image.astro", void 0);
 
 const $$Astro = createAstro();
@@ -1501,7 +1501,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   if (fallbackImage.srcSet.values.length > 0) {
     imgAdditionalAttributes.srcset = fallbackImage.srcSet.attribute;
   }
-  const attributes = useResponsive ? applyResponsiveAttributes({
+  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
     layout,
     image: fallbackImage,
     props,
@@ -1510,7 +1510,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<picture${spreadAttributes(pictureAttributes)}> ${Object.entries(optimizedImages).map(([_, image]) => {
     const srcsetAttribute = props.densities || !props.densities && !props.widths && !useResponsive ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
     return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(mime.lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
-  })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}> </picture>`;
+  })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}> </picture>`;
 }, "C:/Users/Justo/Desktop/tango-jets-fe/node_modules/astro/components/Picture.astro", void 0);
 
 const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"astro/assets/services/sharp","config":{}},"domains":[],"remotePatterns":[],"experimentalResponsiveImages":false};

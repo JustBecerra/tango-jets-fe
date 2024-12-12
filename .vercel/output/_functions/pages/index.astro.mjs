@@ -1,5 +1,5 @@
 /* empty css                                    */
-import { c as createComponent, r as renderTemplate, f as renderSlot, g as renderHead, h as addAttribute, b as createAstro, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_BhDw4P4A.mjs';
+import { c as createComponent, r as renderTemplate, f as renderSlot, g as renderHead, h as addAttribute, b as createAstro, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_CTmRdsx1.mjs';
 import 'kleur/colors';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState } from 'react';

@@ -1,13 +1,13 @@
 import { parse } from 'devalue';
 import { escape } from 'html-escaper';
-import { D as DEFAULT_404_COMPONENT } from './astro/server_BhDw4P4A.mjs';
+import { D as DEFAULT_404_COMPONENT } from './astro/server_CTmRdsx1.mjs';
 
 const ACTION_QUERY_PARAMS = {
   actionName: "_action",
   actionPayload: "_astroActionPayload"
 };
 
-const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_BACKEND_URL": "https://vuelos-be.onrender.com", "PUBLIC_VERCEL_ENV": "production", "SITE": undefined, "SSR": true};
+const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_BACKEND_URL": "https://vuelos-be.onrender.com", "PUBLIC_MIDDLEWARE_SECRET": "fd1b51ec-6b06-40a9-ae02-2dba916bd1aa", "PUBLIC_VERCEL_ENV": "production", "SITE": undefined, "SSR": true};
 const codeToStatusMap = {
   // Implemented from tRPC error code table
   // https://trpc.io/docs/server/error-handling#error-codes

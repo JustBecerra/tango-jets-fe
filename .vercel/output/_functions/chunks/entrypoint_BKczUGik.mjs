@@ -1,14 +1,14 @@
-import { R as ROUTE_TYPE_HEADER, i as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, A as AstroError, L as LocalsNotAnObject, j as clientLocalsSymbol, k as clientAddressSymbol, l as REROUTABLE_STATUS_CODES, n as responseSentSymbol } from './astro/server_BhDw4P4A.mjs';
+import { R as ROUTE_TYPE_HEADER, i as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, j as clientAddressSymbol, A as AstroError, L as LocalsNotAnObject, k as REROUTABLE_STATUS_CODES, l as responseSentSymbol } from './astro/server_CTmRdsx1.mjs';
 import 'cookie';
 import { bold, red, yellow, dim, blue } from 'kleur/colors';
-import { e as ensure404Route, d as default404Instance, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_7E0Kugtj.mjs';
+import { e as ensure404Route, d as default404Instance, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_B9OuPfiQ.mjs';
 import 'es-module-lexer';
 import 'clsx';
 import buffer from 'node:buffer';
 import crypto$1 from 'node:crypto';
 import { Http2ServerResponse } from 'node:http2';
-import { r as requestHasLocale, a as requestIs404Or500, n as notFound, b as redirectToFallback, c as normalizeTheLocale, e as redirectToDefaultLocale, d as defineMiddleware, f as ensureServerIslandRoute, g as createEndpoint, S as SERVER_ISLAND_COMPONENT, h as SERVER_ISLAND_ROUTE, R as RouteCache, s as sequence, i as findRouteToRewrite, m as matchRoute, j as RenderContext, k as getSetCookiesFromResponse } from './index_gJuHhE1g.mjs';
-import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_CRS034iV.mjs';
+import { r as requestHasLocale, a as requestIs404Or500, n as notFound, b as redirectToFallback, c as normalizeTheLocale, e as redirectToDefaultLocale, d as defineMiddleware, f as ensureServerIslandRoute, g as createEndpoint, S as SERVER_ISLAND_COMPONENT, h as SERVER_ISLAND_ROUTE, R as RouteCache, s as sequence, i as findRouteToRewrite, m as matchRoute, j as RenderContext, k as getSetCookiesFromResponse } from './index_IOfvYuq4.mjs';
+import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_DAfL1eNC.mjs';
 import { f as fileExtension, j as joinPaths, s as slash, p as prependForwardSlash, r as removeTrailingForwardSlash, a as appendForwardSlash } from './path_CVKLlyuj.mjs';
 import 'fast-glob';
 import nodePath from 'node:path';
@@ -687,7 +687,7 @@ class App {
     let clientAddress;
     let addCookieHeader;
     addCookieHeader = renderOptions?.addCookieHeader;
-    clientAddress = renderOptions?.clientAddress;
+    clientAddress = renderOptions?.clientAddress ?? Reflect.get(request, clientAddressSymbol);
     routeData = renderOptions?.routeData;
     locals = renderOptions?.locals;
     if (routeData) {
@@ -702,12 +702,8 @@ class App {
       if (typeof locals !== "object") {
         const error = new AstroError(LocalsNotAnObject);
         this.#logger.error(null, error.stack);
-        return this.#renderError(request, { status: 500, error });
+        return this.#renderError(request, { status: 500, error, clientAddress });
       }
-      Reflect.set(request, clientLocalsSymbol, locals);
-    }
-    if (clientAddress) {
-      Reflect.set(request, clientAddressSymbol, clientAddress);
     }
     if (!routeData) {
       routeData = this.match(request);
@@ -717,7 +713,7 @@ class App {
     if (!routeData) {
       this.#logger.debug("router", "Astro hasn't found routes that match " + request.url);
       this.#logger.debug("router", "Here's the available routes:\n", this.#manifestData);
-      return this.#renderError(request, { locals, status: 404 });
+      return this.#renderError(request, { locals, status: 404, clientAddress });
     }
     const pathname = this.#getPathnameFromRequest(request);
     const defaultStatus = this.#getDefaultStatusCode(routeData, pathname);
@@ -730,12 +726,13 @@ class App {
         pathname,
         request,
         routeData,
-        status: defaultStatus
+        status: defaultStatus,
+        clientAddress
       });
       response = await renderContext.render(await mod.page());
     } catch (err) {
       this.#logger.error(null, err.stack || err.message || String(err));
-      return this.#renderError(request, { locals, status: 500, error: err });
+      return this.#renderError(request, { locals, status: 500, error: err, clientAddress });
     }
     if (REROUTABLE_STATUS_CODES.includes(response.status) && response.headers.get(REROUTE_DIRECTIVE_HEADER) !== "no") {
       return this.#renderError(request, {
@@ -744,7 +741,8 @@ class App {
         status: response.status,
         // We don't have an error to report here. Passing null means we pass nothing intentionally
         // while undefined means there's no error
-        error: response.status === 500 ? null : void 0
+        error: response.status === 500 ? null : void 0,
+        clientAddress
       });
     }
     if (response.headers.has(REROUTE_DIRECTIVE_HEADER)) {
@@ -782,7 +780,8 @@ class App {
     status,
     response: originalResponse,
     skipMiddleware = false,
-    error
+    error,
+    clientAddress
   }) {
     const errorRoutePath = `/${status}${this.#manifest.trailingSlash === "always" ? "/" : ""}`;
     const errorRouteData = matchRoute(errorRoutePath, this.#manifestData);
@@ -810,7 +809,8 @@ class App {
           request,
           routeData: errorRouteData,
           status,
-          props: { error }
+          props: { error },
+          clientAddress
         });
         const response2 = await renderContext.render(await mod.page());
         return this.#mergeResponses(response2, originalResponse);
@@ -820,7 +820,8 @@ class App {
             locals,
             status,
             response: originalResponse,
-            skipMiddleware: true
+            skipMiddleware: true,
+            clientAddress
           });
         }
       }
@@ -845,6 +846,14 @@ class App {
       originalResponse.headers.delete("Content-type");
     } catch {
     }
+    const mergedHeaders = new Map([
+      ...Array.from(newResponse.headers),
+      ...Array.from(originalResponse.headers)
+    ]);
+    const newHeaders = new Headers();
+    for (const [name, value] of mergedHeaders) {
+      newHeaders.set(name, value);
+    }
     return new Response(newResponse.body, {
       status,
       statusText: status === 200 ? newResponse.statusText : originalResponse.statusText,
@@ -853,10 +862,7 @@ class App {
       // If users see something weird, it's because they are setting some headers they should not.
       //
       // Although, we don't want it to replace the content-type, because the error page must return `text/html`
-      headers: new Headers([
-        ...Array.from(newResponse.headers),
-        ...Array.from(originalResponse.headers)
-      ])
+      headers: newHeaders
     });
   }
   #getDefaultStatusCode(routeData, pathname) {

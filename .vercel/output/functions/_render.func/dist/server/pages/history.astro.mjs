@@ -1,9 +1,9 @@
 /* empty css                                    */
-import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_BhDw4P4A.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_CTmRdsx1.mjs';
 import 'kleur/colors';
 import { g as getFlights } from '../chunks/actions_Cc8p6MjE.mjs';
 import { T as TableModal } from '../chunks/TableModal_D7zpW6gL.mjs';
-import { $ as $$Layout } from '../chunks/Layout_o6iQYi5C.mjs';
+import { $ as $$Layout } from '../chunks/Layout_WHO-CHq2.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$History = createComponent(async ($$result, $$props, $$slots) => {

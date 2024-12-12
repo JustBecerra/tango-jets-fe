@@ -1,5 +1,5 @@
 /* empty css                                    */
-import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_BhDw4P4A.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_CTmRdsx1.mjs';
 import 'kleur/colors';
 import { a as addFlight, g as getFlights } from '../chunks/actions_Cc8p6MjE.mjs';
 import { jsxs, Fragment, jsx } from 'react/jsx-runtime';
@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Toast } from 'flowbite-react';
 import { HiCheck } from 'react-icons/hi';
 import { g as getCookie } from '../chunks/getCookie_2p--uMcu.mjs';
-import { $ as $$Layout } from '../chunks/Layout_o6iQYi5C.mjs';
+import { $ as $$Layout } from '../chunks/Layout_WHO-CHq2.mjs';
 export { renderers } from '../renderers.mjs';
 
 const ModalFlightAdd = () => {

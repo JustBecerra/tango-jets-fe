@@ -1,6 +1,6 @@
 import { serialize, parse } from 'cookie';
-import { i as REROUTE_DIRECTIVE_HEADER, A as AstroError, o as i18nNoLocaleFoundInPath, p as ResponseSentError, q as RewriteWithBodyUsed, s as originPathnameSymbol, t as MiddlewareNoDataOrNextCalled, u as MiddlewareNotAResponse, G as GetStaticPathsRequired, I as InvalidGetStaticPathsReturn, v as InvalidGetStaticPathsEntry, w as GetStaticPathsExpectedParams, x as GetStaticPathsInvalidRouteParam, P as PageNumberParamNotFound, y as decryptString, z as createSlotValueFromString, B as isAstroComponentFactory, r as renderTemplate, a as renderComponent, D as DEFAULT_404_COMPONENT, C as NoMatchingStaticPathFound, E as PrerenderDynamicEndpointPathCollide, F as ReservedSlotName, H as renderSlotToString, J as renderJSX, K as chunkToString, O as isRenderInstruction, R as ROUTE_TYPE_HEADER, Q as ForbiddenRewrite, S as LocalsReassigned, T as AstroResponseHeadersReassigned, k as clientAddressSymbol, U as PrerenderClientAddressNotAvailable, V as ClientAddressNotAvailable, W as StaticClientAddressNotAvailable, X as ASTRO_VERSION, n as responseSentSymbol$1, Y as renderPage, Z as REWRITE_DIRECTIVE_HEADER_KEY, _ as REWRITE_DIRECTIVE_HEADER_VALUE, $ as renderEndpoint } from './astro/server_BhDw4P4A.mjs';
-import { g as getActionQueryString, a as deserializeActionResult, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_7E0Kugtj.mjs';
+import { i as REROUTE_DIRECTIVE_HEADER, A as AstroError, n as i18nNoLocaleFoundInPath, o as ResponseSentError, p as RewriteWithBodyUsed, q as originPathnameSymbol, s as MiddlewareNoDataOrNextCalled, t as MiddlewareNotAResponse, G as GetStaticPathsRequired, I as InvalidGetStaticPathsReturn, u as InvalidGetStaticPathsEntry, v as GetStaticPathsExpectedParams, w as GetStaticPathsInvalidRouteParam, P as PageNumberParamNotFound, x as decryptString, y as createSlotValueFromString, z as isAstroComponentFactory, r as renderTemplate, a as renderComponent, D as DEFAULT_404_COMPONENT, B as NoMatchingStaticPathFound, C as PrerenderDynamicEndpointPathCollide, E as ReservedSlotName, F as renderSlotToString, H as renderJSX, J as chunkToString, K as isRenderInstruction, R as ROUTE_TYPE_HEADER, O as ForbiddenRewrite, Q as LocalsReassigned, S as AstroResponseHeadersReassigned, T as PrerenderClientAddressNotAvailable, j as clientAddressSymbol, U as ClientAddressNotAvailable, V as StaticClientAddressNotAvailable, W as ASTRO_VERSION, l as responseSentSymbol$1, X as renderPage, Y as REWRITE_DIRECTIVE_HEADER_KEY, Z as REWRITE_DIRECTIVE_HEADER_VALUE, _ as renderEndpoint } from './astro/server_CTmRdsx1.mjs';
+import { g as getActionQueryString, a as deserializeActionResult, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_B9OuPfiQ.mjs';
 import 'es-module-lexer';
 import { a as appendForwardSlash, j as joinPaths, r as removeTrailingForwardSlash, t as trimSlashes } from './path_CVKLlyuj.mjs';
 import 'clsx';
@@ -173,9 +173,9 @@ function redirectToFallback({
           newPathname = context.url.pathname.replace(`/${urlLocale}`, `/${pathFallbackLocale}`);
         }
         if (fallbackType === "rewrite") {
-          return await context.rewrite(newPathname);
+          return await context.rewrite(newPathname + context.url.search);
         } else {
-          return context.redirect(newPathname);
+          return context.redirect(newPathname + context.url.search);
         }
       }
     }
@@ -1199,7 +1199,7 @@ function isRoute404or500(route) {
 
 const apiContextRoutesSymbol = Symbol.for("context.routes");
 class RenderContext {
-  constructor(pipeline, locals, middleware, pathname, request, routeData, status, cookies = new AstroCookies(request), params = getParams(routeData, pathname), url = new URL(request.url), props = {}, partial = void 0) {
+  constructor(pipeline, locals, middleware, pathname, request, routeData, status, clientAddress, cookies = new AstroCookies(request), params = getParams(routeData, pathname), url = new URL(request.url), props = {}, partial = void 0) {
     this.pipeline = pipeline;
     this.locals = locals;
     this.middleware = middleware;
@@ -1207,6 +1207,7 @@ class RenderContext {
     this.request = request;
     this.routeData = routeData;
     this.status = status;
+    this.clientAddress = clientAddress;
     this.cookies = cookies;
     this.params = params;
     this.url = url;
@@ -1228,6 +1229,7 @@ class RenderContext {
     pipeline,
     request,
     routeData,
+    clientAddress,
     status = 200,
     props,
     partial = void 0
@@ -1242,6 +1244,7 @@ class RenderContext {
       request,
       routeData,
       status,
+      clientAddress,
       void 0,
       void 0,
       void 0,
@@ -1415,7 +1418,7 @@ class RenderContext {
       routePattern: this.routeData.route,
       isPrerendered: this.routeData.prerender,
       get clientAddress() {
-        return renderContext.clientAddress();
+        return renderContext.getClientAddress();
       },
       get currentLocale() {
         return renderContext.computeCurrentLocale();
@@ -1563,7 +1566,7 @@ class RenderContext {
       isPrerendered: this.routeData.prerender,
       cookies,
       get clientAddress() {
-        return renderContext.clientAddress();
+        return renderContext.getClientAddress();
       },
       get currentLocale() {
         return renderContext.computeCurrentLocale();
@@ -1591,13 +1594,16 @@ class RenderContext {
       }
     };
   }
-  clientAddress() {
-    const { pipeline, request } = this;
+  getClientAddress() {
+    const { pipeline, request, routeData, clientAddress } = this;
+    if (routeData.prerender) {
+      throw new AstroError(PrerenderClientAddressNotAvailable);
+    }
+    if (clientAddress) {
+      return clientAddress;
+    }
     if (clientAddressSymbol in request) {
       return Reflect.get(request, clientAddressSymbol);
-    }
-    if (request.body === null) {
-      throw new AstroError(PrerenderClientAddressNotAvailable);
     }
     if (pipeline.adapterName) {
       throw new AstroError({
