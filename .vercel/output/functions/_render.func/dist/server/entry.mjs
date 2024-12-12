@@ -29,9 +29,9 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_astro-internal_middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "fd1b51ec-6b06-40a9-ae02-2dba916bd1aa",
-    "skewProtection": false
-};
+	middlewareSecret: import.meta.env.PUBLIC_MIDDLEWARE_SECRET,
+	skewProtection: false,
+}
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;
 
