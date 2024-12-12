@@ -5,7 +5,7 @@ dist/
 .astro/
 
 # vercel
-
+.vercel
 
 # dependencies
 node_modules/
