@@ -1,6 +1,7 @@
 ---
 import { getFlights } from "../../lib/actions/flights/actions"
 import ModalFlightAdd from "../components/modals/ModalFlightAdd"
+import { RouteGuard } from "../components/routeguard"
 import TableModal, { type Flight } from "../components/table/TableModal"
 import Layout from "../layouts/Layout.astro"
 
@@ -18,16 +19,18 @@ const filteredData = data
 ---
 
 <Layout title="Flights">
-	<div class="flex flex-col space-y-4">
-		<div>
-			<ModalFlightAdd client:load />
+	<RouteGuard client:load="react">
+		<div class="flex flex-col space-y-4">
+			<div>
+				<ModalFlightAdd client:load />
+			</div>
+			<div>
+				<TableModal
+					info={filteredData}
+					caseType={"flight"}
+					client:only="react"
+				/>
+			</div>
 		</div>
-		<div>
-			<TableModal
-				info={filteredData}
-				caseType={"flight"}
-				client:only="react"
-			/>
-		</div>
-	</div>
+	</RouteGuard>
 </Layout>
