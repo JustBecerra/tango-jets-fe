@@ -1,14 +1,17 @@
 ---
+import { RouteGuard } from "../components/routeguard"
 import { WelcomeText } from "../components/text/WelcomeText"
 import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout title="Welcome to Astro.">
-	<div class="min-h-screen flex flex-col items-center justify-center">
-		<div
-			class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg text-center max-w-lg mx-auto"
-		>
-			<WelcomeText client:load />
+	<RouteGuard client:load="react">
+		<div class="min-h-screen flex flex-col items-center justify-center">
+			<div
+				class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg text-center max-w-lg mx-auto"
+			>
+				<WelcomeText client:load />
+			</div>
 		</div>
-	</div>
+	</RouteGuard>
 </Layout>
