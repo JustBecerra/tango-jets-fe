@@ -5,7 +5,7 @@ export const RouteGuard = ({ children }: any) => {
 
 	useEffect(() => {
 		const authToken = document.cookie.includes("authToken")
-		console.log({ authToken })
+
 		if (!authToken) {
 			window.location.href = "/" // Simple redirect
 		} else {
