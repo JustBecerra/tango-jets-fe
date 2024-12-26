@@ -1,4 +1,10 @@
-export async function sendEmail(flightData: Record<string, any>) {
+interface props {
+	to: FormDataEntryValue
+	text: string
+	subject: string
+}
+
+export async function sendEmail(flightData: props) {
 	try {
 		const response = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/email`,

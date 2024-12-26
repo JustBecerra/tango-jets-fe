@@ -5,6 +5,7 @@ import { addFlight } from "../../../lib/actions/flights/actions";
 import { getCookie } from "../../utils/getCookie";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { sendEmail } from "../../../lib/actions/emails/actions"
+import { flightScheduledMessage } from "../../utils/emailMessage"
 
 const ModalFlightAdd: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -30,12 +31,18 @@ const ModalFlightAdd: React.FC = () => {
 			to: flightData.to as string,
 			from: flightData.from as string,
 			airship_title: flightData.airship_title,
+			master_passenger: flightData.master_passenger,
 			createdby: name,
+		}
+		const EmailInfo = {
+			to: transformedFlightData.master_passenger,
+			subject: "Flight scheduled!",
+			text: flightScheduledMessage(transformedFlightData),
 		}
 
 		try {
 			await addFlight(transformedFlightData)
-			await sendEmail(transformedFlightData)
+			await sendEmail(EmailInfo)
 			setShowToast(true)
 			setTimeout(() => {
 				setShowToast(false)
@@ -177,6 +184,21 @@ const ModalFlightAdd: React.FC = () => {
 												type="text"
 												id="airship_title"
 												name="airship_title"
+												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+												required
+											/>
+										</div>
+										<div>
+											<label
+												htmlFor="master_passenger"
+												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+											>
+												Master Passenger
+											</label>
+											<input
+												type="text"
+												id="master_passenger"
+												name="master_passenger"
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												required
 											/>
