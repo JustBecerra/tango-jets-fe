@@ -48,9 +48,9 @@ interface TableProps {
 const TableModal = ({ caseType }: TableProps) => {
 	const [data, setData] = useState<DataType[]>([])
 	const [isHistoryPage, setIsHistoryPage] = useState(false)
-
-	useEffect(() => {
-		// Define an async function inside useEffect
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+		setLoading(true)
 		const fetchData = async () => {
 			if (caseType === "flight") {
 				const flights = await getFlights()
@@ -65,21 +65,24 @@ const TableModal = ({ caseType }: TableProps) => {
 						return currentTime < launchTime
 					})
 				setData(filteredData)
+				setLoading(false)
 			} else if (caseType === "client") {
 				const clients = await getClients()
 				setData(clients)
+				setLoading(false)
 			} else if (caseType === "airship") {
 				const airships = await getAirships()
 				setData(airships)
+				setLoading(false)
 			}
 
 			setIsHistoryPage(window.location.pathname === "/History")
 		}
 
-		fetchData() // Call the async function
-	}, [])
+		fetchData()
+  }, [])
 
-	return (
+  return (
 		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] w-full max-w-[100%] shadow-md sm:rounded-lg">
 			{data.length > 0 ? (
 				<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -137,10 +140,10 @@ const TableModal = ({ caseType }: TableProps) => {
 					</tbody>
 				</table>
 			) : (
-				<EmptyTableCard />
+				<EmptyTableCard loading={loading} />
 			)}
 		</div>
-	)
+  )
 }
 
 export default TableModal
