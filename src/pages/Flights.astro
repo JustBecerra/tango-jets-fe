@@ -4,18 +4,6 @@ import ModalFlightAdd from "../components/modals/ModalFlightAdd"
 import { RouteGuard } from "../components/routeguard"
 import TableModal, { type Flight } from "../components/table/TableModal"
 import Layout from "../layouts/Layout.astro"
-export const prerender = false
-const data = await getFlights()
-const filteredData = data
-	.map((flight: any) => {
-		const { updatedAt, ...rest } = flight
-		return rest
-	})
-	.filter((flight: Flight) => {
-		const launchTime = new Date(flight.launchtime)
-		const currentTime = new Date()
-		return currentTime < launchTime
-	})
 ---
 
 <Layout title="Flights">
@@ -25,11 +13,7 @@ const filteredData = data
 				<ModalFlightAdd client:load />
 			</div>
 			<div>
-				<TableModal
-					info={filteredData}
-					caseType={"flight"}
-					client:only="react"
-				/>
+				<TableModal caseType={"flight"} client:load />
 			</div>
 		</div>
 	</RouteGuard>
