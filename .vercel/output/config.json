@@ -26,18 +26,6 @@
 		{
 			"src": "^\\/Flights\\/?$",
 			"dest": "_render"
-		},
-		{
-			"src": "^\\/History\\/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^\\/Home\\/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^\\/$",
-			"dest": "_render"
 		}
 	]
 }
