@@ -4,6 +4,7 @@ import ModalJetAdd from "../components/modals/ModalJetAdd"
 import TableModal from "../components/table/TableModal"
 import { getAirships } from "../../lib/actions/airships/actions"
 import { RouteGuard } from "../components/routeguard"
+export const prerender = false
 const data = await getAirships()
 ---
 
