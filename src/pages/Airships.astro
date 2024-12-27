@@ -4,8 +4,6 @@ import ModalJetAdd from "../components/modals/ModalJetAdd"
 import TableModal from "../components/table/TableModal"
 import { getAirships } from "../../lib/actions/airships/actions"
 import { RouteGuard } from "../components/routeguard"
-export const prerender = false
-const data = await getAirships()
 ---
 
 <Layout title="Airships">
@@ -15,7 +13,7 @@ const data = await getAirships()
 				<ModalJetAdd client:load />
 			</div>
 			<div>
-				<TableModal info={data} caseType="airship" client:load />
+				<TableModal caseType="airship" client:load />
 			</div>
 		</div>
 	</RouteGuard>
