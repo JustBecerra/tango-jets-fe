@@ -51,39 +51,43 @@ interface TableProps {
 const TableModal = ({ caseType }: TableProps) => {
 	const [data, setData] = useState<DataType[]>([])
 	const [isHistoryPage, setIsHistoryPage] = useState(false)
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(true)
+
 	useEffect(() => {
-		setLoading(true)
+		setIsHistoryPage(window.location.pathname === "/History")
+
 		const fetchData = async () => {
-			if (caseType === "flight") {
-				const flights = await getFlights()
-				const filteredData = flights
-					.map((flight: any) => {
-						const { updatedAt, ...rest } = flight
-						return rest
-					})
-					.filter((flight: any) => {
-						const launchTime = new Date(flight.launchtime)
-						const currentTime = new Date()
-						return currentTime < launchTime
-					})
-				setData(filteredData)
-				setLoading(false)
-			} else if (caseType === "client") {
-				const clients = await getClients()
-				setData(clients)
-				setLoading(false)
-			} else if (caseType === "airship") {
-				const airships = await getAirships()
-				setData(airships)
+			try {
+				let result: DataType[] = []
+
+				if (caseType === "flight") {
+					const flights = await getFlights()
+					result = flights
+						.map((flight: any) => {
+							const { updatedAt, ...rest } = flight
+							return rest
+						})
+						.filter((flight: any) => {
+							const launchTime = new Date(flight.launchtime)
+							const currentTime = new Date()
+							return currentTime < launchTime
+						})
+				} else if (caseType === "client") {
+					result = await getClients()
+				} else if (caseType === "airship") {
+					result = await getAirships()
+				}
+
+				setData(result)
+			} catch (error) {
+				console.error("Failed to fetch data:", error)
+			} finally {
 				setLoading(false)
 			}
-
-			setIsHistoryPage(window.location.pathname === "/History")
 		}
 
 		fetchData()
-	}, [])
+	}, [caseType])
 
 	const buttonRetriever = () => {
 		if (caseType === "flight") {
