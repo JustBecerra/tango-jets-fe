@@ -1,17 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import ModalJetAdd from "../components/modals/ModalJetAdd"
 import TableModal from "../components/table/TableModal"
-import { getAirships } from "../../lib/actions/airships/actions"
 import { RouteGuard } from "../components/routeguard"
 ---
 
 <Layout title="Airships">
 	<RouteGuard client:load="react">
 		<div class="flex flex-col space-y-4">
-			<div>
-				<ModalJetAdd client:load />
-			</div>
 			<div>
 				<TableModal caseType="airship" client:load />
 			</div>

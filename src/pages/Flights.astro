@@ -1,17 +1,12 @@
 ---
-import { getFlights } from "../../lib/actions/flights/actions"
-import ModalFlightAdd from "../components/modals/ModalFlightAdd"
 import { RouteGuard } from "../components/routeguard"
-import TableModal, { type Flight } from "../components/table/TableModal"
+import TableModal from "../components/table/TableModal"
 import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout title="Flights">
 	<RouteGuard client:load="react">
 		<div class="flex flex-col space-y-4">
-			<div>
-				<ModalFlightAdd client:load />
-			</div>
 			<div>
 				<TableModal caseType={"flight"} client:load />
 			</div>
