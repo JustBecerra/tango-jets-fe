@@ -1,10 +1,10 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { loginScheduler } from "../../../lib/actions/login/actions"
 import { Bounce, toast } from "react-toastify"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
 
 export const LoginCard = () => {
-	const [showPassword, setShowPassword] = useState(false)
+	const [showPassword, setShowPassword] = React.useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [loading, setLoading] = useState(false)

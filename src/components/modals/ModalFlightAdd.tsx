@@ -30,7 +30,7 @@ const ModalFlightAdd: React.FC = () => {
 			).toISOString(),
 			to: flightData.to as string,
 			from: flightData.from as string,
-			airship_title: flightData.airship_title,
+			airship_name: flightData.airship_title,
 			master_passenger: flightData.master_passenger,
 			createdby: name,
 		}
@@ -42,7 +42,7 @@ const ModalFlightAdd: React.FC = () => {
 
 		try {
 			await addFlight(transformedFlightData)
-			await sendEmail(EmailInfo)
+			// await sendEmail(EmailInfo)
 			setShowToast(true)
 			setTimeout(() => {
 				setShowToast(false)
