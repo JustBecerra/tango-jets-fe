@@ -19,3 +19,4 @@ Como eliminar rama:
 2 - git branch -d nombrederama (para borrar rama local)
 3 - git branch -D nombrederama (para forzar el borrado)
 4 - git push origin --delete nombrederama (borrar rama remota)
+5 - correr npm run build y volver a hacer flujo git add - git commit - git push
