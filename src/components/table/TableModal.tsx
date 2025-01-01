@@ -11,15 +11,12 @@ import ModalJetAdd from "../modals/ModalJetAdd"
 
 export interface Client {
 	id: number
-	firstname: string
-	lastname: string
-	phonenumber: string
+	fullname: string
+	nationality: string
 	email: string
 	identification: string
-	typeid: string
-	title: string
-	address: string
-	company: string
+	passport: string
+	weight: string
 }
 
 export interface Airship {
