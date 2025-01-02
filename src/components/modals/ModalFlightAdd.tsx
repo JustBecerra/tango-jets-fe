@@ -11,7 +11,7 @@ const ModalFlightAdd: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showToast, setShowToast] = useState(false)
 	const [loading, setLoading] = useState(false)
-
+	const [phase, setPhase] = useState("")
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
 	}
@@ -74,9 +74,46 @@ const ModalFlightAdd: React.FC = () => {
 					<div className="relative w-full max-w-2xl max-h-full">
 						<div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
 							<div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-								<h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-									Add New Flight
-								</h3>
+								{/* stepper */}
+								<ol className="flex items-center w-[90%] text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
+									<li className="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
+										<span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+											<svg
+												className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5"
+												aria-hidden="true"
+												xmlns="http://www.w3.org/2000/svg"
+												fill="currentColor"
+												viewBox="0 0 20 20"
+											>
+												<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+											</svg>
+											Flight
+											<span className="hidden sm:inline-flex sm:ms-2">
+												Info
+											</span>
+										</span>
+									</li>
+									<li className="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
+										<span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+											<svg
+												className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5"
+												aria-hidden="true"
+												xmlns="http://www.w3.org/2000/svg"
+												fill="currentColor"
+												viewBox="0 0 20 20"
+											>
+												<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+											</svg>
+											Quote
+										</span>
+									</li>
+									<li className="flex items-center">
+										<span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+											Confirmation
+										</span>
+									</li>
+								</ol>
+
 								<button
 									type="button"
 									className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
