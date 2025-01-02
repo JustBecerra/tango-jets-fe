@@ -32,11 +32,12 @@ export interface Airship {
 export interface Flight {
 	id: number
 	launchtime: string
-	arrivaltime: string
 	to: string
 	from: string
-	airship_id: string
+	airship_name: string
 	createdby: string
+	master_passenger: string
+	companion_passengers: string[]
 }
 
 type DataType = Flight | Airship | Client
@@ -61,7 +62,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					const flights = await getFlights()
 					result = flights
 						.map((flight: any) => {
-							const { updatedAt, ...rest } = flight
+							const { updatedAt, id, ...rest } = flight
 							return rest
 						})
 						.filter((flight: any) => {

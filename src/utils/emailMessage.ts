@@ -1,6 +1,5 @@
 interface props {
 	launchtime: string
-	arrivaltime: string
 	to: string
 	from: string
 	airship_name: FormDataEntryValue
@@ -9,15 +8,8 @@ interface props {
 }
 
 export const flightScheduledMessage = (transformedFlightData: props) => {
-	const {
-		launchtime,
-		arrivaltime,
-		to,
-		from,
-		airship_name,
-		createdby,
-		master_passenger,
-	} = transformedFlightData
+	const { launchtime, to, from, airship_name, createdby, master_passenger } =
+		transformedFlightData
 	return `Dear ${master_passenger},
 
 We’re pleased to inform you that your flight has been successfully scheduled. Below are the details:
@@ -25,8 +17,6 @@ We’re pleased to inform you that your flight has been successfully scheduled. 
     Flight Number: ${airship_name}
 
     Departure: ${launchtime}
-
-    Arrival: ${arrivaltime}
 
     Departure Airport: ${from}
 

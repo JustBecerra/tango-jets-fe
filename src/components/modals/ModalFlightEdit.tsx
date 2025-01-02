@@ -55,40 +55,6 @@ const ModalFlightEdit = ({
 							<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
 								<div>
 									<label
-										htmlFor="launchtime"
-										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-									>
-										Launch Time
-									</label>
-									<input
-										type="datetime-local"
-										id="launchtime"
-										name="launchtime"
-										value={formData.launchtime}
-										onChange={handleChange}
-										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-										required
-									/>
-								</div>
-								<div>
-									<label
-										htmlFor="arrivaltime"
-										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-									>
-										Arrival Time
-									</label>
-									<input
-										type="datetime-local"
-										id="arrivaltime"
-										name="arrivaltime"
-										value={formData.arrivaltime}
-										onChange={handleChange}
-										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-										required
-									/>
-								</div>
-								<div>
-									<label
 										htmlFor="to"
 										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 									>
@@ -116,6 +82,23 @@ const ModalFlightEdit = ({
 										id="from"
 										name="from"
 										value={formData.from}
+										onChange={handleChange}
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										required
+									/>
+								</div>
+								<div>
+									<label
+										htmlFor="launchtime"
+										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+									>
+										Launch Time
+									</label>
+									<input
+										type="datetime-local"
+										id="launchtime"
+										name="launchtime"
+										value={formData.launchtime}
 										onChange={handleChange}
 										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
