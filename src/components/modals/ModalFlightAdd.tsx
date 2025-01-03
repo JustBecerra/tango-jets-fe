@@ -6,14 +6,36 @@ import { getCookie } from "../../utils/getCookie";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { sendEmail } from "../../../lib/actions/emails/actions"
 import { flightScheduledMessage } from "../../utils/emailMessage"
-import { ModalStepper } from "../stepper/modalStepper"
+import { ModalStepper } from "../stepper/ModalStepper"
 import { StepperButtons } from "../buttons/StepperButtons"
+import { FlightInfo } from "../stepper/FlightInfo"
+
+export interface formType {
+	launchtime: Date
+	to: string
+	from: string
+	price_cost: string
+	price_revenue: number
+	airship_name: string
+	master_passenger: string
+	createdby: string
+}
 
 const ModalFlightAdd: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showToast, setShowToast] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const [phase, setPhase] = useState("first")
+	const [formData, setFormData] = useState<formType>({
+		launchtime: new Date(),
+		to: "",
+		from: "",
+		price_cost: "",
+		price_revenue: 0,
+		airship_name: "",
+		master_passenger: "",
+		createdby: "",
+	})
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
 	}
@@ -29,6 +51,8 @@ const ModalFlightAdd: React.FC = () => {
 			launchtime: new Date(flightData.launchtime as string).toISOString(),
 			to: flightData.to as string,
 			from: flightData.from as string,
+			price_cost: flightData.price_cost,
+			price_revenue: flightData.price_revenue,
 			airship_name: flightData.airship_title,
 			master_passenger: flightData.master_passenger,
 			createdby: name,
@@ -104,86 +128,11 @@ const ModalFlightAdd: React.FC = () => {
 									id="addFlightForm"
 									onSubmit={handleSubmit}
 								>
-									<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-										<div>
-											<label
-												htmlFor="to"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												To
-											</label>
-											<input
-												type="text"
-												id="to"
-												name="to"
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
-										<div>
-											<label
-												htmlFor="from"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												From
-											</label>
-											<input
-												type="text"
-												id="from"
-												name="from"
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
-										<div>
-											<label
-												htmlFor="launchtime"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Launch Time
-											</label>
-											<input
-												type="datetime-local"
-												id="launchtime"
-												name="launchtime"
-												min={new Date()
-													.toISOString()
-													.slice(0, 16)}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
-										<div>
-											<label
-												htmlFor="airship_title"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Airship Name
-											</label>
-											<input
-												type="text"
-												id="airship_title"
-												name="airship_title"
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-												required
-											/>
-										</div>
-										<div>
-											<label
-												htmlFor="master_passenger"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Master Passenger
-											</label>
-											<input
-												type="text"
-												id="master_passenger"
-												name="master_passenger"
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-												required
-											/>
-										</div>
-									</div>
+									<FlightInfo
+										phase={phase}
+										formData={formData}
+										setFormData={setFormData}
+									/>
 									<StepperButtons
 										phase={phase}
 										setPhase={setPhase}
