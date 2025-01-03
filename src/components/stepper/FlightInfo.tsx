@@ -17,10 +17,11 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 		price_cost,
 		price_revenue,
 	} = formData
-	const getPercentage = () => {
+	const getPercentage = (cost: string) => {
+		if (cost === "") return 0
 		const percentage = 12
-		const revenue = (percentage * 100) / parseInt(price_cost)
-		return parseInt(price_cost) + revenue
+		const revenue = (percentage * 100) / parseInt(cost)
+		return parseInt(cost) + revenue
 	}
 	const PhaseFields = () => {
 		if (phase === "first") {
@@ -155,6 +156,9 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								setFormData((prevFormData) => ({
 									...prevFormData,
 									price_cost: e.target.value,
+									price_revenue: getPercentage(
+										e.target.value
+									),
 								}))
 							}
 							type="number"
@@ -179,7 +183,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						<input
 							id="price_revenue"
 							name="price_revenue"
-							value={getPercentage()}
+							value={price_revenue}
 							disabled
 							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							required
