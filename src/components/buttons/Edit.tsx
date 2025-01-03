@@ -38,7 +38,6 @@ const Edit = ({ id, caseType, data }: Props) => {
 		} catch (error) {
 			console.error("Error:", error)
 		}
-		setOpenModal(false)
 	}
 
 	const handleChange = (

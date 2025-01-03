@@ -38,6 +38,8 @@ export interface Flight {
 	createdby: string
 	master_passenger: string
 	companion_passengers: string[]
+	price_cost: string
+	price_revenue: number
 }
 
 type DataType = Flight | Airship | Client
