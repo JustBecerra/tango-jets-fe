@@ -18,7 +18,6 @@ export interface formType {
 	price_revenue: number
 	airship_name: string
 	master_passenger: string
-	createdby: string
 }
 
 const ModalFlightAdd: React.FC = () => {
@@ -34,7 +33,6 @@ const ModalFlightAdd: React.FC = () => {
 		price_revenue: 0,
 		airship_name: "",
 		master_passenger: "",
-		createdby: "",
 	})
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
@@ -43,18 +41,25 @@ const ModalFlightAdd: React.FC = () => {
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		setLoading(true)
-		const formElement = event.target as HTMLFormElement
-		const formData = new FormData(formElement)
-		const flightData = Object.fromEntries(formData.entries())
+		const {
+			launchtime,
+			to,
+			from,
+			price_cost,
+			price_revenue,
+			airship_name,
+			master_passenger,
+		} = formData
+
 		const name = getCookie("username")
 		const transformedFlightData = {
-			launchtime: new Date(flightData.launchtime as string).toISOString(),
-			to: flightData.to as string,
-			from: flightData.from as string,
-			price_cost: flightData.price_cost,
-			price_revenue: flightData.price_revenue,
-			airship_name: flightData.airship_title,
-			master_passenger: flightData.master_passenger,
+			launchtime: launchtime.toISOString().slice(0, 16),
+			to,
+			from,
+			price_cost,
+			price_revenue,
+			airship_name,
+			master_passenger,
 			createdby: name,
 		}
 		const EmailInfo = {

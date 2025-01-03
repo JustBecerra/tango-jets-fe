@@ -1,4 +1,3 @@
-import { useState } from "react"
 import type { formType } from "../modals/ModalFlightAdd"
 
 interface props {
@@ -192,7 +191,27 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 				</div>
 			)
 		} else {
-			return <></>
+			return (
+				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<h2>to: {to === "" ? "TBD" : to}</h2>
+					<h2>from: {from === "" ? "TBD" : from}</h2>
+					<h2>
+						launch time: {launchtime.toISOString().slice(0, 16)}
+					</h2>
+					<h2>
+						master passenger:{" "}
+						{master_passenger === "" ? "TBD" : master_passenger}
+					</h2>
+					<h2>
+						airship: {airship_name === "" ? "TBD" : airship_name}
+					</h2>
+					<h2>cost: {price_cost === "" ? "TBD" : price_cost}</h2>
+					<h2>
+						cost plus revenue:{" "}
+						{price_revenue === 0 ? "TBD" : price_revenue}
+					</h2>
+				</div>
+			)
 		}
 	}
 	return <>{PhaseFields()}</>
