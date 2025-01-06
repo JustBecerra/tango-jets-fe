@@ -64,7 +64,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					const flights = await getFlights()
 					result = flights
 						.map((flight: any) => {
-							const { updatedAt, id, ...rest } = flight
+							const { updatedAt, ...rest } = flight
 							return rest
 						})
 						.filter((flight: any) => {
