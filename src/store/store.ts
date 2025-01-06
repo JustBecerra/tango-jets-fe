@@ -1,13 +1,13 @@
 import { create } from "zustand"
 import type { Airship, Client, Flight } from "../components/table/TableModal"
 
-type State = {
+export type State = {
 	airships: Airship[]
 	flights: Flight[]
 	clients: Client[]
 }
 
-type Action = {
+export type Action = {
 	updateAirships: (airships: State["airships"]) => void
 	updateFlights: (flights: State["flights"]) => void
 	updateClients: (clients: State["clients"]) => void
