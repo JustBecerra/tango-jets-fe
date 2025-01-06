@@ -141,6 +141,7 @@ const ModalFlightAdd: React.FC = () => {
 									<StepperButtons
 										phase={phase}
 										setPhase={setPhase}
+										operation="add"
 									/>
 								</form>
 							</div>
