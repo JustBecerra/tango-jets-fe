@@ -1,13 +1,13 @@
 ---
 import { RouteGuard } from "../components/routeguard"
-import TableModal from "../components/table/TableModal"
+import SchedulerFrame from "../components/scheduler/SchedulerFrame"
 import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout title="History">
+<Layout title="Scheduler">
 	<RouteGuard client:only="react">
 		<div class="flex">
-			<TableModal caseType={"trip"} client:load />
+			<SchedulerFrame />
 		</div>
 	</RouteGuard>
 </Layout>

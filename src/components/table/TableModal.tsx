@@ -89,9 +89,21 @@ const TableModal = ({ caseType }: TableProps) => {
 		fetchData()
 	}, [caseType, flights, clients, airships])
 
+	const handleScheduler = () => {
+		window.location.href = "/Scheduler"
+	}
+
 	const buttonRetriever = () => {
-		if (caseType === "flight") {
-			return <ModalFlightAdd />
+		if (caseType === "trip") {
+			return (
+				<button
+					className="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+					type="button"
+					onClick={handleScheduler}
+				>
+					Add Flight
+				</button>
+			)
 		} else if (caseType === "client") {
 			return <ModalAdd />
 		} else {
