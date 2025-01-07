@@ -25,7 +25,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-fit w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
 					<div>
 						<label
 							htmlFor="to"
@@ -214,5 +214,5 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 			)
 		}
 	}
-	return <>{PhaseFields()}</>
+	return <div className="border-t border-gray-600 py-6">{PhaseFields()}</div>
 }

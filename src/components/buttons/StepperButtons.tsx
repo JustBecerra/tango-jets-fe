@@ -79,7 +79,7 @@ export const StepperButtons = ({ phase, setPhase, operation }: props) => {
 	}
 
 	return (
-		<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+		<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-600 rounded-b">
 			{PhaseDecider()}
 		</div>
 	)
