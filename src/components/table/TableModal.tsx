@@ -38,6 +38,8 @@ export interface Flight {
 	companion_passengers: string[]
 	price_cost: string
 	price_revenue: number
+	phase: number
+	pslc: number
 }
 
 type DataType = Flight | Airship | Client
@@ -59,7 +61,7 @@ const TableModal = ({ caseType }: TableProps) => {
 
 		const fetchData = async () => {
 			try {
-				if (caseType === "flight") {
+				if (caseType === "trip") {
 					setData(
 						flights
 							.map((flight: any) => {
