@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 import type { Airship, Client, Flight } from "../components/table/TableModal"
 
 export type State = {
@@ -13,13 +14,21 @@ export type Action = {
 	updateClients: (clients: State["clients"]) => void
 }
 
-const useStore = create<State & Action>((set) => ({
-	airships: [],
-	flights: [],
-	clients: [],
-	updateAirships: (airships) => set(() => ({ airships: airships })),
-	updateFlights: (flights) => set(() => ({ flights: flights })),
-	updateClients: (clients) => set(() => ({ clients: clients })),
-}))
+const useStore = create(
+	persist<State & Action>(
+		(set) => ({
+			flights: [],
+			updateFlights: (newFlights) => set({ flights: newFlights }),
+			airships: [],
+			updateAirships: (newAirships) => set({ airships: newAirships }),
+			clients: [],
+			updateClients: (newClients) => set({ clients: newClients }),
+		}),
+		{
+			name: "data-storage",
+			storage: createJSONStorage(() => sessionStorage),
+		}
+	)
+)
 
 export default useStore
