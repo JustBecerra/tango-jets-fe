@@ -2,12 +2,10 @@ import { useEffect, useState } from "react"
 import Delete from "../buttons/Delete"
 import { EmptyTableCard } from "../cards/EmptyTableCard"
 import Edit from "../buttons/Edit"
-import { getFlights } from "../../../lib/actions/flights/actions"
-import { getClients } from "../../../lib/actions/clients/actions"
-import { getAirships } from "../../../lib/actions/airships/actions"
 import ModalFlightAdd from "../modals/ModalFlightAdd"
 import ModalAdd from "../modals/ModalAdd"
 import ModalJetAdd from "../modals/ModalJetAdd"
+import useStore from "../../store/store"
 
 export interface Client {
 	id: number
@@ -52,33 +50,33 @@ const TableModal = ({ caseType }: TableProps) => {
 	const [data, setData] = useState<DataType[]>([])
 	const [isHistoryPage, setIsHistoryPage] = useState(false)
 	const [loading, setLoading] = useState(true)
+	const flights = useStore((state) => state.flights)
+	const clients = useStore((state) => state.clients)
+	const airships = useStore((state) => state.airships)
 
 	useEffect(() => {
 		setIsHistoryPage(window.location.pathname === "/History")
 
 		const fetchData = async () => {
 			try {
-				let result: DataType[] = []
-
 				if (caseType === "flight") {
-					const flights = await getFlights()
-					result = flights
-						.map((flight: any) => {
-							const { updatedAt, ...rest } = flight
-							return rest
-						})
-						.filter((flight: any) => {
-							const launchTime = new Date(flight.launchtime)
-							const currentTime = new Date()
-							return currentTime < launchTime
-						})
+					setData(
+						flights
+							.map((flight: any) => {
+								const { updatedAt, ...rest } = flight
+								return rest
+							})
+							.filter((flight: any) => {
+								const launchTime = new Date(flight.launchtime)
+								const currentTime = new Date()
+								return currentTime < launchTime
+							})
+					)
 				} else if (caseType === "client") {
-					result = await getClients()
+					setData(clients)
 				} else if (caseType === "airship") {
-					result = await getAirships()
+					setData(airships)
 				}
-
-				setData(result)
 			} catch (error) {
 				console.error("Failed to fetch data:", error)
 			} finally {
@@ -87,7 +85,7 @@ const TableModal = ({ caseType }: TableProps) => {
 		}
 
 		fetchData()
-	}, [caseType])
+	}, [caseType, flights, clients, airships])
 
 	const buttonRetriever = () => {
 		if (caseType === "flight") {
