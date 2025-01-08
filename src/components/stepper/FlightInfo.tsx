@@ -1,3 +1,4 @@
+import useStore from "../../store/store"
 import type { formType } from "../modals/ModalFlightAdd"
 
 interface props {
@@ -16,6 +17,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 		price_cost,
 		price_revenue,
 	} = formData
+	const { airships } = useStore((state) => state)
 	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0 // Handle empty string input
 
@@ -130,11 +132,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Airship Name
 						</label>
-						<input
-							type="text"
-							id="airship_title"
-							name="airship_title"
-							value={airship_name}
+						<select
 							onChange={(e) =>
 								setFormData((prevFormData) => ({
 									...prevFormData,
@@ -142,8 +140,16 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								}))
 							}
 							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-							required
-						/>
+						>
+							<option defaultValue="Select an option">
+								Select an option
+							</option>
+							{airships.map((airship, index) => (
+								<option value={airship.title} key={index}>
+									{airship.title}
+								</option>
+							))}
+						</select>
 					</div>
 					<div>
 						<label
