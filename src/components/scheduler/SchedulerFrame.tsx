@@ -15,6 +15,7 @@ export interface formType {
 	price_revenue: number
 	airship_name: string
 	master_passenger: string
+	companion_passengers: string[]
 }
 const SchedulerFrame = () => {
 	const [phase, setPhase] = useState("first")
@@ -27,6 +28,7 @@ const SchedulerFrame = () => {
 		price_revenue: 0,
 		airship_name: "",
 		master_passenger: "",
+		companion_passengers: [],
 	})
 
 	const handleSubmit = async (event: React.FormEvent) => {
@@ -39,6 +41,7 @@ const SchedulerFrame = () => {
 			price_revenue,
 			airship_name,
 			master_passenger,
+			companion_passengers,
 		} = formData
 
 		const name = getCookie("username")
@@ -50,6 +53,7 @@ const SchedulerFrame = () => {
 			price_revenue,
 			airship_name,
 			master_passenger,
+			companion_passengers,
 			createdby: name,
 		}
 		const EmailInfo = {
