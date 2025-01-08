@@ -127,7 +127,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 			)
 		} else if (phase === "second") {
 			return (
-				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto ">
 					<div>
 						<label
 							htmlFor="airship_title"
@@ -218,6 +218,20 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 							))}
 						</select>
 					</div>
+					{numberCompanions > 0 &&
+						Array.from({ length: numberCompanions }).map(
+							(_, index) => (
+								<div>
+									<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+										Companion #{index + 1}
+									</label>
+									<input
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										key={index}
+									/>
+								</div>
+							)
+						)}
 				</div>
 			)
 		} else {
