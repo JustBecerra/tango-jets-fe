@@ -1,3 +1,4 @@
+import { useState } from "react"
 import useStore from "../../store/store"
 import type { formType } from "../modals/ModalFlightAdd"
 
@@ -8,6 +9,7 @@ interface props {
 }
 
 export const FlightInfo = ({ phase, formData, setFormData }: props) => {
+	const [numberCompanions, setNumberCompanions] = useState(0)
 	const {
 		to,
 		from,
@@ -17,6 +19,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 		price_cost,
 		price_revenue,
 	} = formData
+	const arrayOfCompanions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	const { airships } = useStore((state) => state)
 	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0 // Handle empty string input
@@ -189,6 +192,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Price revenue
 						</label>
+
 						<input
 							id="price_revenue"
 							name="price_revenue"
@@ -197,6 +201,22 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							required
 						/>
+					</div>
+					<div>
+						<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+							Number of companions
+						</label>
+						<select
+							onChange={(e) =>
+								setNumberCompanions(parseInt(e.target.value))
+							}
+							value={numberCompanions}
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+						>
+							{arrayOfCompanions.map((number) => (
+								<option value={number}>{number}</option>
+							))}
+						</select>
 					</div>
 				</div>
 			)
