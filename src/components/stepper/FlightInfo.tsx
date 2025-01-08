@@ -16,16 +16,19 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 		price_cost,
 		price_revenue,
 	} = formData
-	const getPercentage = (cost: string) => {
-		if (cost === "") return 0
-		const percentage = 12
-		const revenue = (percentage * 100) / parseInt(cost)
-		return parseInt(cost) + revenue
+	const getPercentage = (cost: string): number => {
+		if (cost === "") return 0 // Handle empty string input
+
+		const percentage = 20 // Percentage to increase
+		const costNumber = parseFloat(cost) // Convert cost to a number
+
+		const revenue = costNumber * (percentage / 100) // Calculate 20% of cost
+		return costNumber + revenue // Return total price with markup
 	}
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-fit w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
 					<div>
 						<label
 							htmlFor="to"
@@ -119,7 +122,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 			)
 		} else if (phase === "second") {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
 					<div>
 						<label
 							htmlFor="airship_title"
@@ -192,7 +195,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 			)
 		} else {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
 					<h2>to: {to === "" ? "TBD" : to}</h2>
 					<h2>from: {from === "" ? "TBD" : from}</h2>
 					<h2>

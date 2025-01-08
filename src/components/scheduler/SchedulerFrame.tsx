@@ -64,7 +64,7 @@ const SchedulerFrame = () => {
 			setShowToast(true)
 			setTimeout(() => {
 				setShowToast(false)
-				window.location.reload()
+				window.location.href = "/Trips"
 			}, 2000)
 		} catch (err) {
 			console.error("Error adding flight:", err)
