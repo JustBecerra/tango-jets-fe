@@ -1,30 +1,35 @@
-import { useEffect, useState } from "react"
-import { getCookie } from "../../utils/getCookie"
-import { getAirships } from "../../../lib/actions/airships/actions"
-import useStore from "../../store/store"
-import { getFlights } from "../../../lib/actions/flights/actions"
-import { getClients } from "../../../lib/actions/clients/actions"
+import React, { useEffect, useState } from "react";
+import { getCookie } from "../../utils/getCookie";
+import { format } from "date-fns";
+import { enUS } from "date-fns/locale";
 
 export const WelcomeText = () => {
-	const [employeeName, setEmployeeName] = useState("")
-	const { updateAirships, updateFlights, updateClients } = useStore(
-		(state) => state
-	)
-	useEffect(() => {
-		const fetchData = async () => {
-			const flights = await getFlights()
-			updateFlights(flights)
-			const airships = await getAirships()
-			updateAirships(airships)
-			const clients = await getClients()
-			updateClients(clients)
-		}
-		fetchData()
-		const name = getCookie("username")
-		if (name) {
-			setEmployeeName(name)
-		}
-	}, [])
+  const [employeeName, setEmployeeName] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-	return <h1 className="text-4xl font-bold">Welcome, {employeeName}</h1>
-}
+  useEffect(() => {
+    const fetchData = async () => {};
+    fetchData();
+    const name = getCookie("username");
+    if (name) {
+      setEmployeeName(name);
+    }
+
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const formattedTime = format(currentTime, "EEE dd 🕒 'ARG' hh:mm a", {
+    locale: enUS,
+  });
+
+  return (
+    <div className="m-8 text-center">
+      <h1 className="text-4xl font-bold">Welcome, {employeeName}!</h1>
+      <h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
+    </div>
+  );
+};
