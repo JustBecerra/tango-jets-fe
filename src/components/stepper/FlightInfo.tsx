@@ -1,6 +1,7 @@
 import { useState } from "react"
 import useStore from "../../store/store"
 import type { formType } from "../modals/ModalFlightAdd"
+import { AutoComplete } from "../input/AutoComplete"
 
 interface props {
 	phase: string
@@ -109,19 +110,9 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Master Passenger
 						</label>
-						<input
-							type="text"
-							id="master_passenger"
-							name="master_passenger"
+						<AutoComplete
 							value={master_passenger}
-							onChange={(e) =>
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									master_passenger: e.target.value,
-								}))
-							}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-							required
+							setter={setFormData}
 						/>
 					</div>
 				</div>
