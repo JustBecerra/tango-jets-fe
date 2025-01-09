@@ -38,7 +38,7 @@ export const AutoComplete = ({ value, setter }: props) => {
 
 			{openDropdown && (
 				<ul className="h-[100px] w-[370px] overflow-y-auto border-white border-2 rounded ml-2 bg-white absolute ">
-					{listClients.map((client) => (
+					{listClients.map((client, index) => (
 						<li
 							className="cursor-pointer text-blue-500 border-b-2 border-blue-500 pl-2"
 							onClick={() => {
@@ -48,6 +48,7 @@ export const AutoComplete = ({ value, setter }: props) => {
 								}))
 								setOpenDropdown(false)
 							}}
+							key={index}
 						>
 							{client.fullname}
 						</li>
