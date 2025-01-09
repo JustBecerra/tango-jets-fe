@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { ModalStepper } from "../stepper/ModalStepper"
-import { addFlight } from "../../../lib/actions/flights/actions"
+import { addFlight, getFlights } from "../../../lib/actions/flights/actions"
 import { getCookie } from "../../utils/getCookie"
 import { flightScheduledMessage } from "../../utils/emailMessage"
 import { Toast } from "flowbite-react"
 import { HiCheck } from "react-icons/hi"
 import { FlightInfo } from "../stepper/FlightInfo"
 import { StepperButtons } from "../buttons/StepperButtons"
+import useStore from "../../store/store"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
 export interface formType {
 	launchtime: Date
 	to: string
@@ -30,9 +32,12 @@ const SchedulerFrame = () => {
 		master_passenger: "",
 		companion_passengers: [],
 	})
+	const [loading, setLoading] = useState(false)
+	const { updateFlights } = useStore((state) => state)
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
+		setLoading(true)
 		const {
 			launchtime,
 			to,
@@ -65,6 +70,8 @@ const SchedulerFrame = () => {
 		try {
 			await addFlight(transformedFlightData)
 			// await sendEmail(EmailInfo)
+			const flights = await getFlights()
+			updateFlights(flights)
 			setShowToast(true)
 			setTimeout(() => {
 				setShowToast(false)
@@ -72,6 +79,8 @@ const SchedulerFrame = () => {
 			}, 2000)
 		} catch (err) {
 			console.error("Error adding flight:", err)
+		} finally {
+			setLoading(false)
 		}
 	}
 	return (
@@ -104,6 +113,11 @@ const SchedulerFrame = () => {
 					/>
 				</form>
 			</div>
+			{loading && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+					<LoaderSpinner />
+				</div>
+			)}
 		</div>
 	)
 }
