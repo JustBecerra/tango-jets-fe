@@ -1,4 +1,7 @@
+import { useState } from "react"
+import useStore from "../../store/store"
 import type { formType } from "../modals/ModalFlightAdd"
+import { AutoComplete } from "../input/AutoComplete"
 
 interface props {
 	phase: string
@@ -7,25 +10,32 @@ interface props {
 }
 
 export const FlightInfo = ({ phase, formData, setFormData }: props) => {
+	const [numberCompanions, setNumberCompanions] = useState(0)
 	const {
 		to,
 		from,
 		launchtime,
 		master_passenger,
+		companion_passengers,
 		airship_name,
 		price_cost,
 		price_revenue,
 	} = formData
-	const getPercentage = (cost: string) => {
+	const arrayOfCompanions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+	const { airships } = useStore((state) => state)
+	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0
-		const percentage = 12
-		const revenue = (percentage * 100) / parseInt(cost)
-		return parseInt(cost) + revenue
+
+		const percentage = 20
+		const costNumber = parseFloat(cost)
+
+		const revenue = costNumber * (percentage / 100)
+		return costNumber + revenue
 	}
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
 					<div>
 						<label
 							htmlFor="to"
@@ -100,26 +110,16 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Master Passenger
 						</label>
-						<input
-							type="text"
-							id="master_passenger"
-							name="master_passenger"
+						<AutoComplete
 							value={master_passenger}
-							onChange={(e) =>
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									master_passenger: e.target.value,
-								}))
-							}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-							required
+							setter={setFormData}
 						/>
 					</div>
 				</div>
 			)
 		} else if (phase === "second") {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto ">
 					<div>
 						<label
 							htmlFor="airship_title"
@@ -127,20 +127,25 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Airship Name
 						</label>
-						<input
-							type="text"
-							id="airship_title"
-							name="airship_title"
-							value={airship_name}
+						<select
 							onChange={(e) =>
 								setFormData((prevFormData) => ({
 									...prevFormData,
 									airship_name: e.target.value,
 								}))
 							}
+							value={airship_name}
 							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-							required
-						/>
+						>
+							<option value="" disabled>
+								Select an airship
+							</option>
+							{airships.map((airship, index) => (
+								<option value={airship.title} key={index}>
+									{airship.title}
+								</option>
+							))}
+						</select>
 					</div>
 					<div>
 						<label
@@ -179,6 +184,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						>
 							Price revenue
 						</label>
+
 						<input
 							id="price_revenue"
 							name="price_revenue"
@@ -188,31 +194,82 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 							required
 						/>
 					</div>
+					<div>
+						<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+							Number of companions
+						</label>
+						<select
+							onChange={(e) =>
+								setNumberCompanions(parseInt(e.target.value))
+							}
+							value={numberCompanions}
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+						>
+							{arrayOfCompanions.map((number) => (
+								<option value={number}>{number}</option>
+							))}
+						</select>
+					</div>
+					{numberCompanions > 0 &&
+						Array.from({ length: numberCompanions }).map(
+							(_, index) => (
+								<div key={index}>
+									<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+										Companion #{index + 1}
+									</label>
+									<input
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										value={
+											companion_passengers[index] || ""
+										}
+										onChange={(e) =>
+											setFormData((prevFormData) => {
+												const oldArray = [
+													...prevFormData.companion_passengers,
+												]
+												oldArray[index] = e.target.value
+												return {
+													...prevFormData,
+													companion_passengers:
+														oldArray,
+												}
+											})
+										}
+									/>
+								</div>
+							)
+						)}
 				</div>
 			)
 		} else {
 			return (
-				<div className="h-fit mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-					<h2>to: {to === "" ? "TBD" : to}</h2>
-					<h2>from: {from === "" ? "TBD" : from}</h2>
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+					<h2>To: {to === "" ? "TBD" : to}</h2>
+					<h2>From: {from === "" ? "TBD" : from}</h2>
 					<h2>
-						launch time: {launchtime.toISOString().slice(0, 16)}
+						Launch Time: {launchtime.toISOString().slice(0, 16)}
 					</h2>
 					<h2>
-						master passenger:{" "}
+						Master Passenger:{" "}
 						{master_passenger === "" ? "TBD" : master_passenger}
 					</h2>
 					<h2>
-						airship: {airship_name === "" ? "TBD" : airship_name}
+						Airship: {airship_name === "" ? "TBD" : airship_name}
 					</h2>
-					<h2>cost: {price_cost === "" ? "TBD" : price_cost}</h2>
+					<h2>Cost: {price_cost === "" ? "TBD" : price_cost}</h2>
 					<h2>
-						cost plus revenue:{" "}
+						Cost Plus Revenue:{" "}
 						{price_revenue === 0 ? "TBD" : price_revenue}
 					</h2>
+					<div>
+						<h2>Companion Passengers: </h2>
+						{companion_passengers.map((companion) => (
+							<h3>{companion}</h3>
+						))}
+					</div>
 				</div>
 			)
 		}
 	}
-	return <>{PhaseFields()}</>
+	return <div className="border-t border-gray-600 py-2">{PhaseFields()}</div>
 }

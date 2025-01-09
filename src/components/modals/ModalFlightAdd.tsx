@@ -18,6 +18,7 @@ export interface formType {
 	price_revenue: number
 	airship_name: string
 	master_passenger: string
+	companion_passengers: string[]
 }
 
 const ModalFlightAdd: React.FC = () => {
@@ -33,6 +34,7 @@ const ModalFlightAdd: React.FC = () => {
 		price_revenue: 0,
 		airship_name: "",
 		master_passenger: "",
+		companion_passengers: [],
 	})
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
