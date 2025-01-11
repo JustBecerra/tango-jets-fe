@@ -84,7 +84,7 @@ const SchedulerFrame = () => {
 		}
 	}
 	return (
-		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] w-full max-w-[100%] shadow-md sm:rounded-lg px-6">
+		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] bg-gray-700 w-full max-w-[100%] shadow-md sm:rounded-lg px-6">
 			{showToast && (
 				<div className="fixed top-4 left-1/2 transform -translate-x-1/2">
 					<Toast>
