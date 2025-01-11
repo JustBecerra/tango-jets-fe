@@ -2,16 +2,16 @@
 import { RouteGuard } from "../components/routeguard"
 import { WelcomeText } from "../components/text/WelcomeText"
 import Layout from "../layouts/Layout.astro"
+import { Datitos } from "../components/cargadorDeTablas/Datitos"
 ---
 
-<Layout title="Welcome to Astro.">
-	<RouteGuard client:load="react">
-		<div class="min-h-screen flex flex-col items-center justify-center">
-			<div
-				class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg text-center max-w-lg mx-auto"
-			>
-				<WelcomeText client:load />
-			</div>
-		</div>
-	</RouteGuard>
+<Layout title="Welcome to Tango Jets.">
+    <RouteGuard client:load="react">
+        <div class="min-h-screen flex flex-col items-center justify-start">
+            <div>
+                <WelcomeText client:load />
+            </div>
+                <Datitos client:load />
+        </div>
+    </RouteGuard>
 </Layout>
