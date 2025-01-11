@@ -39,7 +39,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 					<div>
 						<label
 							htmlFor="to"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							To
 						</label>
@@ -54,14 +54,14 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 									to: e.target.value,
 								}))
 							}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
 					<div>
 						<label
 							htmlFor="from"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							From
 						</label>
@@ -76,14 +76,14 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 									from: e.target.value,
 								}))
 							}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
 					<div>
 						<label
 							htmlFor="launchtime"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							Launch Time
 						</label>
@@ -99,14 +99,14 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								}))
 							}
 							min={new Date().toISOString().slice(0, 16)}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
 					<div>
 						<label
 							htmlFor="master_passenger"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							Master Passenger
 						</label>
@@ -123,7 +123,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 					<div>
 						<label
 							htmlFor="airship_title"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							Airship Name
 						</label>
@@ -135,7 +135,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								}))
 							}
 							value={airship_name}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 						>
 							<option value="" disabled>
 								Select an airship
@@ -150,7 +150,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 					<div>
 						<label
 							htmlFor="price_cost"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							Price cost
 						</label>
@@ -173,14 +173,14 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								WebkitAppearance: "none",
 								MozAppearance: "textfield",
 							}}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
 					<div>
 						<label
 							htmlFor="price_revenue"
-							className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+							className="block text-sm font-medium"
 						>
 							Price revenue
 						</label>
@@ -190,12 +190,12 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 							name="price_revenue"
 							value={price_revenue}
 							disabled
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+						<label className="block text-sm font-medium">
 							Number of companions
 						</label>
 						<select
@@ -203,7 +203,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								setNumberCompanions(parseInt(e.target.value))
 							}
 							value={numberCompanions}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 						>
 							{arrayOfCompanions.map((number) => (
 								<option value={number}>{number}</option>
@@ -214,11 +214,11 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						Array.from({ length: numberCompanions }).map(
 							(_, index) => (
 								<div key={index}>
-									<label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+									<label className="block text-sm font-medium">
 										Companion #{index + 1}
 									</label>
 									<input
-										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 										value={
 											companion_passengers[index] || ""
 										}

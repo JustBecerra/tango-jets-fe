@@ -5,10 +5,10 @@ import SidebarTools from "./SidebarTools.astro"
 
 <aside
 	id="sidebar-multi-level-sidebar"
-	class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full"
+	class="fixed top-0 left-0 z-40 w-64 h-screen border-r-2 border-black transition-transform -translate-x-full"
 	aria-label="Sidebar"
 >
-	<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+	<div class="h-full px-3 py-4 overflow-y-auto bg-gray-800">
 		<button
 			data-drawer-target="sidebar-multi-level-sidebar"
 			data-drawer-toggle="sidebar-multi-level-sidebar"
@@ -39,11 +39,11 @@ import SidebarTools from "./SidebarTools.astro"
 			<li>
 				<a
 					href="/Home"
-					class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-300 group dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 transition-colors duration-200"
+					class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-300 group text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-200"
 				>
 					<svg
 						fill="currentColor"
-						class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+						class="w-6 h-6 text-gray-500 transition duration-75 text-gray-400 group-hover:text-white"
 						viewBox="0 0 24 24"
 						xmlns="http://www.w3.org/2000/svg"
 						aria-hidden="true"
@@ -55,7 +55,8 @@ import SidebarTools from "./SidebarTools.astro"
 							d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"
 						></path>
 					</svg>
-					<span class="ml-3" sidebar-toggle-item>Home</span>
+					<span class="ml-3 text-white" sidebar-toggle-item>Home</span
+					>
 				</a>
 			</li>
 			<SidebarNodrop />
