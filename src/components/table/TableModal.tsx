@@ -98,7 +98,7 @@ const TableModal = ({ caseType }: TableProps) => {
 		if (caseType === "flight") {
 			return (
 				<button
-					className="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+					className="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 					type="button"
 					onClick={handleScheduler}
 				>
@@ -117,8 +117,8 @@ const TableModal = ({ caseType }: TableProps) => {
 			{data.length > 0 ? (
 				<>
 					<div className="mb-2">{buttonRetriever()}</div>
-					<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 dark:bg-gray-700 dark:text-gray-400">
+					<table className="w-full text-sm text-left rtl:text-right text-gray-500">
+						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400">
 							<tr>
 								{Object.entries(data[0]).map(
 									([key, value], index) => (
@@ -141,7 +141,7 @@ const TableModal = ({ caseType }: TableProps) => {
 							{data.map((singledata) => (
 								<tr
 									key={singledata.id}
-									className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+									className="bg-white border-b"
 								>
 									{Object.entries(singledata).map(
 										([key, value]) => (
