@@ -61,8 +61,8 @@ const Delete = ({ id, caseType }: Props) => {
 				<Modal.Header />
 				<Modal.Body>
 					<div className="text-center">
-						<HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-200" />
-						<h3 className="mb-5 text-lg font-normal text-gray-400">
+						<HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-900" />
+						<h3 className="mb-5 text-lg font-normal text-gray-900">
 							Are you sure you want to delete this id {id}?
 						</h3>
 						<div className="flex justify-center gap-4">
