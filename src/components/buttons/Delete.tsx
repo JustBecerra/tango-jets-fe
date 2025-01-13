@@ -37,7 +37,7 @@ const Delete = ({ id, caseType }: Props) => {
 				onClick={() => setOpenModal(true)}
 			>
 				<svg
-					className="w-6 h-6 text-gray-800 text-white text-red-500 "
+					className="w-6 h-6 text-red-500"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
