@@ -2,7 +2,6 @@
 import { getFlightById, getFlights } from "../../../lib/actions/flights/actions"
 import { RouteGuard } from "../../components/routeguard"
 import { EditStepperFrame } from "../../components/stepper/EditStepperFrame"
-import { VerticalStepper } from "../../components/stepper/VerticalStepper"
 import type { Flight } from "../../components/table/TableModal"
 import Layout from "../../layouts/Layout.astro"
 
@@ -19,9 +18,6 @@ const bookingPhase = flight.phase
 
 <Layout title="Trip">
 	<RouteGuard client:load="react">
-		<div class="flex h-full justify-center items-center gap-8">
-			<EditStepperFrame client:load />
-			<VerticalStepper phase={bookingPhase} client:load />
-		</div>
+		<EditStepperFrame phase={bookingPhase} client:load />
 	</RouteGuard>
 </Layout>

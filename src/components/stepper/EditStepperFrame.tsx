@@ -1,7 +1,17 @@
-export const EditStepperFrame = () => {
+import { useState } from "react"
+import { VerticalStepper } from "./VerticalStepper"
+import { EditForms } from "./EditForms"
+
+interface props {
+	phase: number
+}
+
+export const EditStepperFrame = ({ phase }: props) => {
+	const [localPhase, setLocalPhase] = useState(phase)
 	return (
-		<div className="w-[600px] h-[80%] bg-gray-800 border-blue-800 rounded">
-			EditStepper
+		<div className="flex h-full justify-center items-center gap-8">
+			<EditForms localPhase={localPhase} setLocalPhase={setLocalPhase} />
+			<VerticalStepper phase={phase} />
 		</div>
 	)
 }
