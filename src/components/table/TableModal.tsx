@@ -141,7 +141,7 @@ const TableModal = ({ caseType }: TableProps) => {
 							{data.map((singledata) => (
 								<tr
 									key={singledata.id}
-									className="bg-white border-b"
+									className="bg-white border-b cursor-pointer hover:bg-gray-200"
 									onClick={() => {
 										window.location.href = `/trip/${singledata.id}`
 									}}

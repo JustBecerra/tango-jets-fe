@@ -1,5 +1,7 @@
 ---
 import { getFlights } from "../../../lib/actions/flights/actions"
+import { RouteGuard } from "../../components/routeguard"
+import { VerticalStepper } from "../../components/stepper/VerticalStepper"
 import type { Flight } from "../../components/table/TableModal"
 import Layout from "../../layouts/Layout.astro"
 
@@ -12,5 +14,9 @@ export async function getStaticPaths() {
 ---
 
 <Layout title="Trip">
-	<div>asdasd</div>
+	<RouteGuard client:load="react">
+		<div class="flex">
+			<VerticalStepper client:load />
+		</div>
+	</RouteGuard>
 </Layout>
