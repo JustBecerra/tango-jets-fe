@@ -1,35 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { getCookie } from "../../utils/getCookie";
-import { format } from "date-fns";
-import { enUS } from "date-fns/locale";
+import { useEffect, useState } from "react"
+import { getCookie } from "../../utils/getCookie"
+import { format } from "date-fns"
+import { enUS } from "date-fns/locale"
 
 export const WelcomeText = () => {
-  const [employeeName, setEmployeeName] = useState("");
-  const [currentTime, setCurrentTime] = useState(new Date());
+	const [employeeName, setEmployeeName] = useState("")
+	const [currentTime, setCurrentTime] = useState(new Date())
 
-  useEffect(() => {
-    const fetchData = async () => {};
-    fetchData();
-    const name = getCookie("username");
-    if (name) {
-      setEmployeeName(name);
-    }
+	useEffect(() => {
+		const name = getCookie("username")
+		if (name) {
+			setEmployeeName(name)
+		}
 
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+		const intervalId = setInterval(() => {
+			setCurrentTime(new Date())
+		}, 1000)
 
-    return () => clearInterval(intervalId);
-  }, []);
+		return () => clearInterval(intervalId)
+	}, [])
 
-  const formattedTime = format(currentTime, "EEE dd 🕒 'ARG' hh:mm a", {
-    locale: enUS,
-  });
+	const formattedTime = format(currentTime, "EEE dd 🕒 'ARG' hh:mm a", {
+		locale: enUS,
+	})
 
-  return (
-    <div className="m-8 text-center">
-      <h1 className="text-4xl font-bold">Welcome, {employeeName}!</h1>
-      <h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
-    </div>
-  );
-};
+	return (
+		<div className="m-8 text-center">
+			<h1 className="text-4xl font-bold">Welcome, {employeeName}!</h1>
+			<h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
+		</div>
+	)
+}

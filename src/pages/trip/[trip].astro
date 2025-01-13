@@ -1,0 +1,16 @@
+---
+import { getFlights } from "../../../lib/actions/flights/actions"
+import type { Flight } from "../../components/table/TableModal"
+import Layout from "../../layouts/Layout.astro"
+
+export async function getStaticPaths() {
+	const flightsRequested = await getFlights()
+	return flightsRequested.map((flight: Flight) => ({
+		params: { trip: flight.id },
+	}))
+}
+---
+
+<Layout title="Trip">
+	<div>asdasd</div>
+</Layout>
