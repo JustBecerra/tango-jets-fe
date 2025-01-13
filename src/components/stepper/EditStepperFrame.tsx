@@ -1,17 +1,18 @@
 import { useState } from "react"
 import { VerticalStepper } from "./VerticalStepper"
 import { EditForms } from "./EditForms"
+import type { Flight } from "../table/TableModal"
 
 interface props {
-	phase: number
+	currentFlight: Flight
 }
 
-export const EditStepperFrame = ({ phase }: props) => {
-	const [localPhase, setLocalPhase] = useState(phase)
+export const EditStepperFrame = ({ currentFlight }: props) => {
+	const [localPhase, setLocalPhase] = useState(currentFlight.phase)
 	return (
 		<div className="flex h-full justify-center items-center gap-8">
 			<EditForms localPhase={localPhase} setLocalPhase={setLocalPhase} />
-			<VerticalStepper phase={phase} />
+			<VerticalStepper phase={currentFlight.phase} />
 		</div>
 	)
 }

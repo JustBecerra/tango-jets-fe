@@ -13,11 +13,10 @@ export async function getStaticPaths() {
 }
 const { trip } = Astro.params
 const flight = await getFlightById(trip)
-const bookingPhase = flight.phase
 ---
 
 <Layout title="Trip">
 	<RouteGuard client:load="react">
-		<EditStepperFrame phase={bookingPhase} client:load />
+		<EditStepperFrame currentFlight={flight} client:load />
 	</RouteGuard>
 </Layout>
