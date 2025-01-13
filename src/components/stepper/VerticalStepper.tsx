@@ -1,4 +1,43 @@
-export const VerticalStepper = () => {
+interface props {
+	phase: number
+}
+
+const steps = [
+	{
+		step: 1,
+		title: "First Contact",
+	},
+	{
+		step: 2,
+		title: "Quote Creation",
+	},
+	{
+		step: 3,
+		title: "Plane Selection",
+	},
+	{
+		step: 4,
+		title: "Internal Checking",
+	},
+	{
+		step: 5,
+		title: "Confirmation",
+	},
+	{
+		step: 6,
+		title: "Flight Payment",
+	},
+	{
+		step: 7,
+		title: "Payment Received",
+	},
+	{
+		step: 8,
+		title: "Post Flight Routine",
+	},
+]
+
+export const VerticalStepper = ({ phase }: props) => {
 	return (
 		<ol className="space-y-4 w-72">
 			<li>

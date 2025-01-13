@@ -1,21 +1,41 @@
 export async function getFlights() {
-  try {
-    const response = await fetch(
-      `${import.meta.env.PUBLIC_BACKEND_URL}/flights`
-    );
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/flights`
+		)
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`)
+		}
 
-    const responseToken = await response.json();
+		const data = await response.json()
 
-    return responseToken;
-  } catch (err) {
-    console.error("Error fetching flights:", err);
-    throw err;
-  }
+		return data
+	} catch (err) {
+		console.error("Error fetching flights:", err)
+		throw err
+	}
 }
+
+export async function getFlightById(id: number) {
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/flight/${id}`
+		)
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`)
+		}
+
+		const data = await response.json()
+
+		return data
+	} catch (err) {
+		console.error(`Error fetching flight #${id}`, err)
+		throw err
+	}
+}
+
 export async function addFlight(flightData: Record<string, any>) {
   try {
     const response = await fetch(
