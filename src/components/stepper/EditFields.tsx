@@ -9,31 +9,68 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 	switch (localPhase) {
 		case 1:
 			return (
-				<div>
-					<h2>{currentFlight.from}</h2>
-					<h2>{currentFlight.to}</h2>
-					<h2>{currentFlight.master_passenger}</h2>
-					<h2>{currentFlight.launchtime}</h2>
+				<div className="grid grid-cols-2 gap-16">
+					<h2 className="text-xl text-center">
+						From: <br />
+						{currentFlight.from}
+					</h2>
+					<h2 className="text-xl text-center">
+						To: <br />
+						{currentFlight.to}
+					</h2>
+					<h2 className="text-xl text-center">
+						Master Passenger: <br />
+						{currentFlight.master_passenger}
+					</h2>
+					<h2 className="text-xl text-center">
+						Launch time: <br />
+						{currentFlight.launchtime.slice(0, 16)}
+					</h2>
 				</div>
 			)
 		case 2:
 			return (
-				<div>
-					<h2>{currentFlight.price_cost}</h2>
-					<h2>{currentFlight.price_revenue}</h2>
+				<div className="grid grid-cols-2 gap-16">
+					<h2 className="text-xl text-center">
+						Cost: <br />${currentFlight.price_cost}
+					</h2>
+					<h2 className="text-xl text-center">
+						Revenue: <br />${currentFlight.price_revenue}
+					</h2>
 				</div>
 			)
 		case 3:
 			return (
-				<div>
+				<>
 					<p>Waiting for Client to choose plane.</p>
-				</div>
+				</>
 			)
 		case 4:
-			return <div></div>
+			return (
+				<>
+					<p>Planes chosen by the client.</p>
+				</>
+			)
+		case 5:
+			return <>Send invoice with detailed prices.</>
+		case 6:
+			return <>Waiting for client to pay.</>
+		case 7:
+			return (
+				<>
+					Check client has correctly payed and alert crew of the
+					plane.
+				</>
+			)
+		default:
+			return <>Post Routine Flight.</>
 	}
 }
 
 export const EditFields = ({ currentFlight, localPhase }: props) => {
-	return <>{fieldDecider({ currentFlight, localPhase })}</>
+	return (
+		<div className="w-full h-fit flex justify-center items-center ">
+			{fieldDecider({ currentFlight, localPhase })}
+		</div>
+	)
 }
