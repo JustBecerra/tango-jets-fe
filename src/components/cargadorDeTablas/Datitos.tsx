@@ -4,10 +4,11 @@ import useStore from "../../store/store";
 import { getFlights } from "../../../lib/actions/flights/actions";
 import { getClients } from "../../../lib/actions/clients/actions";
 
-const FlightTable = React.lazy(() => import("../Home/FlightTable"));
+const DepartingSoon = React.lazy(() => import("../Home/DepartingSoon"));
 const ClientTable = React.lazy(() => import("../Home/ClientTable"));
 const MissingInfoCli = React.lazy(() => import("../Home/MissingInfoCli"));
-
+const InFlight = React.lazy(() => import("../Home/InFlight"));
+const RecentlyLanded = React.lazy(() => import("../Home/RecentlyLanded"));
 export const Datitos = () => {
   const { updateAirships, updateFlights, updateClients, flights, clients } =
     useStore((state) => state);
@@ -27,15 +28,23 @@ export const Datitos = () => {
   return (
     <div className="p-4">
       {/* Diseño superior (tres tablas en fila) */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="overflow-hidden rounded-lg shadow-lg">
-          <FlightTable flights={flights} />
+      <div className="flex justify-end -mb-0">
+        <button
+          type="button"
+          className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:over:border-gray-600 dark:hover:text-gray-400 dark:text-white dark:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Add New Trip
+        </button>
+      </div>
+      <div className="grid grid-cols-3 gap-6 mb-4">
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+          <DepartingSoon flights={flights} />
         </div>
-        <div className="overflow-hidden rounded-lg shadow-lg">
-          <FlightTable flights={flights} />
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+          <InFlight flights={flights} />
         </div>
-        <div className="overflow-hidden rounded-lg shadow-lg">
-          <FlightTable flights={flights} />
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+          <RecentlyLanded flights={flights} />
         </div>
       </div>
 
