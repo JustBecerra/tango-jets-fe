@@ -16,7 +16,7 @@ export const EditForms = ({
 }: props) => {
 	return (
 		<div className="w-[700px] h-[80%] bg-gray-800 border-blue-800 rounded">
-			<EditFields currentFlight={currentFlight} />
+			<EditFields currentFlight={currentFlight} localPhase={localPhase} />
 			<PhaseButtons phase={localPhase} setPhase={setLocalPhase} />
 		</div>
 	)
