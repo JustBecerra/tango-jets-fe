@@ -54,7 +54,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 									to: e.target.value,
 								}))
 							}
-							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
@@ -76,7 +76,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 									from: e.target.value,
 								}))
 							}
-							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
@@ -173,7 +173,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 								WebkitAppearance: "none",
 								MozAppearance: "textfield",
 							}}
-							className="block w-full px-4 py-2 mt-1 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 							required
 						/>
 					</div>
