@@ -4,19 +4,22 @@ import { EditForms } from "./EditForms"
 import type { Flight } from "../table/TableModal"
 
 interface props {
-	currentFlight: Flight
+	flightRequested: Flight
 }
 
-export const EditStepperFrame = ({ currentFlight }: props) => {
-	const [localPhase, setLocalPhase] = useState(currentFlight.phase)
+export const EditStepperFrame = ({ flightRequested }: props) => {
+	const [localPhase, setLocalPhase] = useState(flightRequested.phase)
+	const [currentFlight, setCurrentFlight] = useState<Flight>(flightRequested)
+
 	return (
 		<div className="flex h-full justify-center items-center gap-8">
 			<EditForms
 				localPhase={localPhase}
 				setLocalPhase={setLocalPhase}
 				currentFlight={currentFlight}
+				setCurrentFlight={setCurrentFlight}
 			/>
-			<VerticalStepper phase={currentFlight.phase} />
+			{currentFlight && <VerticalStepper phase={currentFlight.phase} />}
 		</div>
 	)
 }

@@ -17,6 +17,6 @@ const flight = await getFlightById(trip)
 
 <Layout title="Trip">
 	<RouteGuard client:load="react">
-		<EditStepperFrame currentFlight={flight} client:load />
+		<EditStepperFrame flightRequested={flight} client:load />
 	</RouteGuard>
 </Layout>
