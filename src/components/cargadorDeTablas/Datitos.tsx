@@ -37,13 +37,13 @@ export const Datitos = () => {
         </button>
       </div>
       <div className="grid grid-cols-3 gap-6 mb-4">
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
           <DepartingSoon flights={flights} />
         </div>
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
           <InFlight flights={flights} />
         </div>
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
           <RecentlyLanded flights={flights} />
         </div>
       </div>

@@ -50,9 +50,9 @@ const DepartingSoon = ({ flights }: props) => {
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               To
             </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            {/* <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Time
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
@@ -67,9 +67,9 @@ const DepartingSoon = ({ flights }: props) => {
               <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
                 {flight.to}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              {/* <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
                 {formatLaunchTime(flight.launchtime)}
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>
