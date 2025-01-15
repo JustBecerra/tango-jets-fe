@@ -38,34 +38,21 @@ const SchedulerFrame = () => {
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		setLoading(true)
-		const {
-			launchtime,
-			to,
-			from,
-			price_cost,
-			price_revenue,
-			airship_name,
-			master_passenger,
-			companion_passengers,
-		} = formData
+		const { launchtime, to, from, master_passenger } = formData
 
 		const name = getCookie("username")
 		const transformedFlightData = {
 			launchtime: launchtime.toISOString().slice(0, 16),
 			to,
 			from,
-			price_cost,
-			price_revenue,
-			airship_name,
 			master_passenger,
-			companion_passengers,
 			createdby: name,
 		}
-		const EmailInfo = {
-			to: transformedFlightData.master_passenger,
-			subject: "Flight scheduled!",
-			text: flightScheduledMessage(transformedFlightData),
-		}
+		// const EmailInfo = {
+		// 	to: transformedFlightData.master_passenger,
+		// 	subject: "Flight scheduled!",
+		// 	text: flightScheduledMessage(transformedFlightData),
+		// }
 
 		try {
 			await addFlight(transformedFlightData)

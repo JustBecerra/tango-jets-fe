@@ -194,7 +194,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 							required
 						/>
 					</div>
-					<div>
+					{/* <div>
 						<label className="block text-sm font-medium">
 							Number of companions
 						</label>
@@ -238,7 +238,7 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 									/>
 								</div>
 							)
-						)}
+						)} */}
 				</div>
 			)
 		} else {
@@ -263,9 +263,9 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 					</h2>
 					<div>
 						<h2>Companion Passengers: </h2>
-						{companion_passengers.map((companion) => (
+						{companion_passengers.length ? companion_passengers.map((companion) => (
 							<h3>{companion}</h3>
-						))}
+						)) : "TBD"}
 					</div>
 				</div>
 			)

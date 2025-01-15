@@ -8,7 +8,7 @@ interface props {
 }
 
 export const flightScheduledMessage = (transformedFlightData: props) => {
-	const { launchtime, to, from, airship_name, createdby, master_passenger } =
+	const { launchtime, to, from, createdby, master_passenger, airship_name } =
 		transformedFlightData
 	return `Dear ${master_passenger},
 
