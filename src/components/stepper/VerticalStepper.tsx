@@ -82,32 +82,34 @@ const logoDecider = ({ phase, step }: { phase: number; step: number }) => {
 export const VerticalStepper = ({ phase }: props) => {
 	return (
 		<ol className="space-y-4 w-72">
-			{steps.map(({ step, title }: { step: number; title: string }) => (
-				<li>
-					<div
-						className={`w-full p-4 ${
-							phase > step &&
-							"text-green-400 border-green-800 bg-green-800"
-						} border rounded-lg ${
-							phase < step &&
-							"bg-gray-800 border-gray-700 text-gray-400"
-						}
+			{steps.map(
+				({ step, title }: { step: number; title: string }, index) => (
+					<li key={index}>
+						<div
+							className={`w-full p-4 ${
+								phase > step &&
+								"text-green-400 border-green-800 bg-green-800"
+							} border rounded-lg ${
+								phase < step &&
+								"bg-gray-800 border-gray-700 text-gray-400"
+							}
                             ${
 								phase === step &&
 								"bg-gray-800 border-blue-800 text-blue-400"
 							}
                         `}
-						role="alert"
-					>
-						<div className="flex items-center justify-between">
-							<h3 className="font-medium">
-								{step} {title}
-							</h3>
-							{logoDecider({ phase, step })}
+							role="alert"
+						>
+							<div className="flex items-center justify-between">
+								<h3 className="font-medium">
+									{step} {title}
+								</h3>
+								{logoDecider({ phase, step })}
+							</div>
 						</div>
-					</div>
-				</li>
-			))}
+					</li>
+				)
+			)}
 		</ol>
 	)
 }

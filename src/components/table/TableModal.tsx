@@ -160,13 +160,6 @@ const TableModal = ({ caseType }: TableProps) => {
 									)}
 
 									<td className="px-6 py-3 flex whitespace-nowrap">
-										{!isHistoryPage && (
-											<Edit
-												id={singledata.id}
-												caseType={caseType}
-												data={singledata}
-											/>
-										)}
 										<Delete
 											id={singledata.id}
 											caseType={caseType}
