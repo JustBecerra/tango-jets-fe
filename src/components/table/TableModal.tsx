@@ -139,16 +139,16 @@ const TableModal = ({ caseType }: TableProps) => {
 								<tr
 									key={singledata.id}
 									className="bg-white border-b cursor-pointer hover:bg-gray-200"
-									onClick={() => {
-										caseType === "flight"
-											? (window.location.href = `/trip/${singledata.id}`)
-											: ""
-									}}
 								>
 									{Object.entries(singledata).map(
 										([key, value]) => (
 											<td
 												key={key}
+												onClick={() => {
+													caseType === "flight"
+														? (window.location.href = `/trip/${singledata.id}`)
+														: ""
+												}}
 												className="px-6 py-3 whitespace-nowrap"
 											>
 												{value}

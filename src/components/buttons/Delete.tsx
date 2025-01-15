@@ -63,7 +63,10 @@ const Delete = ({ id, caseType, setData }: Props) => {
 		<div>
 			<button
 				className="bg-transparent p-2 ml-2"
-				onClick={() => setOpenModal(true)}
+				onClick={(e) => {
+					e.stopPropagation()
+					setOpenModal(true)
+				}}
 			>
 				<svg
 					className="w-6 h-6 text-red-500"
