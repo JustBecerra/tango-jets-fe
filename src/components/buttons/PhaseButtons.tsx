@@ -3,9 +3,10 @@ import React from "react"
 interface props {
 	phase: number
 	setPhase: React.Dispatch<React.SetStateAction<number>>
+	currentPhase: number
 }
 
-export const PhaseButtons = ({ phase, setPhase }: props) => {
+export const PhaseButtons = ({ phase, setPhase, currentPhase }: props) => {
 	return (
 		<div className="w-[100%] flex justify-around">
 			{phase > 1 && (
@@ -31,6 +32,19 @@ export const PhaseButtons = ({ phase, setPhase }: props) => {
 					}}
 				>
 					Next Phase
+				</button>
+			)}
+
+			{phase === currentPhase && (
+				<button
+					type="button"
+					className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+					onClick={(e) => {
+						e.preventDefault()
+						// setPhase((prev) => prev + 1)
+					}}
+				>
+					Complete Phase
 				</button>
 			)}
 		</div>
