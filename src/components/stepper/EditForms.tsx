@@ -6,7 +6,7 @@ import { EditFields } from "./EditFields"
 interface props {
 	localPhase: number
 	setLocalPhase: React.Dispatch<React.SetStateAction<number>>
-	currentFlight: Flight
+	currentFlight: Flight | null
 }
 
 export const EditForms = ({
@@ -18,11 +18,14 @@ export const EditForms = ({
 		<div className="w-[700px] h-[70%] flex flex-col items-center justify-evenly bg-gray-800 border-blue-800 rounded">
 			<h1 className="text-3xl">Flight Phase: {localPhase}</h1>
 			<EditFields currentFlight={currentFlight} localPhase={localPhase} />
-			<PhaseButtons
-				phase={localPhase}
-				setPhase={setLocalPhase}
-				currentPhase={currentFlight.phase}
-			/>
+			{currentFlight && (
+				<PhaseButtons
+					phase={localPhase}
+					setPhase={setLocalPhase}
+					currentPhase={currentFlight.phase}
+					currentFlightId={currentFlight.id}
+				/>
+			)}
 		</div>
 	)
 }

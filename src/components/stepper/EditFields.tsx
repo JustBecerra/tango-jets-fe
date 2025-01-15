@@ -1,7 +1,7 @@
 import type { Flight } from "../table/TableModal"
 
 interface props {
-	currentFlight: Flight
+	currentFlight: Flight | null
 	localPhase: number
 }
 
@@ -12,19 +12,19 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 				<div className="w-[100%] h-[100%] grid grid-cols-2 gap-16">
 					<h2 className="text-xl text-center">
 						From: <br />
-						{currentFlight.from}
+						{currentFlight && currentFlight.from}
 					</h2>
 					<h2 className="text-xl text-center">
 						To: <br />
-						{currentFlight.to}
+						{currentFlight && currentFlight.to}
 					</h2>
 					<h2 className="text-xl text-center">
 						Master Passenger: <br />
-						{currentFlight.master_passenger}
+						{currentFlight && currentFlight.master_passenger}
 					</h2>
 					<h2 className="text-xl text-center">
 						Launch time: <br />
-						{currentFlight.launchtime.slice(0, 16)}
+						{currentFlight && currentFlight.launchtime.slice(0, 16)}
 					</h2>
 				</div>
 			)
@@ -32,10 +32,11 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 			return (
 				<div className="w-[100%] h-[100%] grid grid-cols-2 gap-16">
 					<h2 className="text-xl text-center">
-						Cost: <br />${currentFlight.price_cost}
+						Cost: <br />${currentFlight && currentFlight.price_cost}
 					</h2>
 					<h2 className="text-xl text-center">
-						Revenue: <br />${currentFlight.price_revenue}
+						Revenue: <br />$
+						{currentFlight && currentFlight.price_revenue}
 					</h2>
 				</div>
 			)
