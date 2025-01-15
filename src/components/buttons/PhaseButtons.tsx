@@ -7,7 +7,7 @@ interface props {
 
 export const PhaseButtons = ({ phase, setPhase }: props) => {
 	return (
-		<div>
+		<div className="w-[100%] flex justify-around">
 			{phase > 1 && (
 				<button
 					type="button"

@@ -9,7 +9,7 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 	switch (localPhase) {
 		case 1:
 			return (
-				<div className="grid grid-cols-2 gap-16">
+				<div className="w-[100%] h-[100%] grid grid-cols-2 gap-16">
 					<h2 className="text-xl text-center">
 						From: <br />
 						{currentFlight.from}
@@ -30,7 +30,7 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 			)
 		case 2:
 			return (
-				<div className="grid grid-cols-2 gap-16">
+				<div className="w-[100%] h-[100%] grid grid-cols-2 gap-16">
 					<h2 className="text-xl text-center">
 						Cost: <br />${currentFlight.price_cost}
 					</h2>
@@ -69,7 +69,7 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 
 export const EditFields = ({ currentFlight, localPhase }: props) => {
 	return (
-		<div className="w-full h-fit flex justify-center items-center ">
+		<div className="w-full h-[30%] flex justify-center items-center ">
 			{fieldDecider({ currentFlight, localPhase })}
 		</div>
 	)
