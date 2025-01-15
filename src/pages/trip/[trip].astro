@@ -1,5 +1,5 @@
 ---
-import { getFlights } from "../../../lib/actions/flights/actions"
+import { getFlightById, getFlights } from "../../../lib/actions/flights/actions"
 import { RouteGuard } from "../../components/routeguard"
 import { EditStepperFrame } from "../../components/stepper/EditStepperFrame"
 import type { Flight } from "../../components/table/TableModal"
@@ -12,10 +12,11 @@ export async function getStaticPaths() {
 	}))
 }
 const { trip } = Astro.params
+const flight = await getFlightById(trip)
 ---
 
 <Layout title="Trip">
 	<RouteGuard client:load="react">
-		<EditStepperFrame tripID={trip} client:load />
+		<EditStepperFrame flightRequested={flight} client:load />
 	</RouteGuard>
 </Layout>

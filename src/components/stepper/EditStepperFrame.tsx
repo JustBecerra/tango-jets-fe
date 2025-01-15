@@ -1,30 +1,23 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { VerticalStepper } from "./VerticalStepper"
 import { EditForms } from "./EditForms"
 import type { Flight } from "../table/TableModal"
-import { getFlightById } from "../../../lib/actions/flights/actions"
 
 interface props {
-	tripID: number
+	flightRequested: Flight
 }
 
-export const EditStepperFrame = ({ tripID }: props) => {
-	const [localPhase, setLocalPhase] = useState(3)
-	const [currentFlight, setCurrentFlight] = useState<Flight | null>(null)
+export const EditStepperFrame = ({ flightRequested }: props) => {
+	const [localPhase, setLocalPhase] = useState(flightRequested.phase)
+	const [currentFlight, setCurrentFlight] = useState<Flight>(flightRequested)
 
-	useEffect(() => {
-		const fetchFlight = async () => {
-			const flight = await getFlightById(tripID)
-			setCurrentFlight(flight)
-		}
-		fetchFlight()
-	}, [])
 	return (
 		<div className="flex h-full justify-center items-center gap-8">
 			<EditForms
 				localPhase={localPhase}
 				setLocalPhase={setLocalPhase}
 				currentFlight={currentFlight}
+				setCurrentFlight={setCurrentFlight}
 			/>
 			{currentFlight && <VerticalStepper phase={currentFlight.phase} />}
 		</div>

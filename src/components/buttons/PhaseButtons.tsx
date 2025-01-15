@@ -1,15 +1,17 @@
 import React from "react"
 import {
-	getFlights,
+	getFlightById,
 	putCompletePhase,
 } from "../../../lib/actions/flights/actions"
-import useStore from "../../store/store"
+import type { Flight } from "../table/TableModal"
 
 interface props {
 	phase: number
 	setPhase: React.Dispatch<React.SetStateAction<number>>
 	currentPhase: number
 	currentFlightId: number
+	setCurrentFlight: React.Dispatch<React.SetStateAction<Flight>>
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const PhaseButtons = ({
@@ -17,15 +19,22 @@ export const PhaseButtons = ({
 	setPhase,
 	currentPhase,
 	currentFlightId,
+	setCurrentFlight,
+	setLoading,
 }: props) => {
-	const { updateFlights } = useStore((state) => state)
 	const handleCompletePhase = async (e: React.FormEvent) => {
-		e.preventDefault()
-		const nextPhase = phase + 1
-		await putCompletePhase({ phase: nextPhase, id: currentFlightId })
-		const flightsRequested = await getFlights()
-		updateFlights(flightsRequested)
-		window.location.reload()
+		setLoading(true)
+		try {
+			e.preventDefault()
+			const nextPhase = phase + 1
+			await putCompletePhase({ phase: nextPhase, id: currentFlightId })
+			const flightsRequested = await getFlightById(currentFlightId)
+			setCurrentFlight(flightsRequested)
+		} catch (err) {
+			console.log(err)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	return (

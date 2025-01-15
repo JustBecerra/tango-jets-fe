@@ -1,8 +1,10 @@
+import LoaderSpinner from "../Loaders/LoaderSpinner"
 import type { Flight } from "../table/TableModal"
 
 interface props {
 	currentFlight: Flight | null
 	localPhase: number
+	loading?: boolean
 }
 
 const fieldDecider = ({ currentFlight, localPhase }: props) => {
@@ -68,10 +70,15 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 	}
 }
 
-export const EditFields = ({ currentFlight, localPhase }: props) => {
+export const EditFields = ({ currentFlight, localPhase, loading }: props) => {
 	return (
 		<div className="w-full h-[30%] flex justify-center items-center ">
 			{fieldDecider({ currentFlight, localPhase })}
+			{loading && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+					<LoaderSpinner />
+				</div>
+			)}
 		</div>
 	)
 }
