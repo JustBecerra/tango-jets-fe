@@ -43,14 +43,11 @@ const RecentlyLanded = ({ flights }: props) => {
               Airship
             </th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              From
+              From - To
             </th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              To
-            </th>
-            {/* <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Time
-            </th> */}
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
@@ -61,13 +58,19 @@ const RecentlyLanded = ({ flights }: props) => {
               </td>
               <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
                 {flight.from}
-              </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="inline-block w-4 h-4 mx-1 text-gray-500"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M13.5 4.5a1 1 0 011.41 0l6 6a1 1 0 010 1.41l-6 6a1 1 0 01-1.41-1.41L17.59 12H4a1 1 0 010-2h13.59l-4.09-4.09a1 1 0 010-1.41z" />
+                </svg>
                 {flight.to}
               </td>
-              {/* <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
                 {formatLandingTime(flight.launchtime)}
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

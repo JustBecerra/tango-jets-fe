@@ -25,6 +25,13 @@ export const Datitos = () => {
     fetchData();
   }, []);
 
+  const handleNewTrip = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    event.preventDefault();
+    window.location.href = "/Scheduler";
+  };
+
   return (
     <div className="p-4">
       {/* Diseño superior (tres tablas en fila) */}
@@ -32,8 +39,9 @@ export const Datitos = () => {
         <button
           type="button"
           className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:over:border-gray-600 dark:hover:text-gray-400 dark:text-white dark:bg-gray-600 dark:focus:ring-gray-800"
+          onClick={handleNewTrip}
         >
-          Add New Trip
+          ➕ New Trip
         </button>
       </div>
       <div className="grid grid-cols-3 gap-6 mb-4">
@@ -49,12 +57,12 @@ export const Datitos = () => {
       </div>
 
       {/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
-      <div className="mt-8 flex gap-6">
-        <div className="flex-[3.1] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+      <div className=" mt-8 flex gap-6">
+        <div className="bg-white flex-[3.1] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
           <MissingInfoCli clients={clients} />
         </div>
         {/* ClientTable: Más pequeño */}
-        <div className="flex-[1.5] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+        <div className="bg-white flex-[1.5] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
           <ClientTable clients={clients} />
         </div>
       </div>
