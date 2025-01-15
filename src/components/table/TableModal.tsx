@@ -43,7 +43,7 @@ export interface Flight {
 	pslc: number
 }
 
-type DataType = Flight | Airship | Client
+export type DataType = Flight | Airship | Client
 
 interface TableProps {
 	caseType: string
@@ -51,15 +51,12 @@ interface TableProps {
 
 const TableModal = ({ caseType }: TableProps) => {
 	const [data, setData] = useState<DataType[]>([])
-	const [isHistoryPage, setIsHistoryPage] = useState(false)
 	const [loading, setLoading] = useState(true)
 	const flights = useStore((state) => state.flights)
 	const clients = useStore((state) => state.clients)
 	const airships = useStore((state) => state.airships)
 
 	useEffect(() => {
-		setIsHistoryPage(window.location.pathname === "/History")
-
 		const fetchData = async () => {
 			try {
 				if (caseType === "flight") {
@@ -163,6 +160,7 @@ const TableModal = ({ caseType }: TableProps) => {
 										<Delete
 											id={singledata.id}
 											caseType={caseType}
+											setData={setData}
 										/>
 									</td>
 								</tr>

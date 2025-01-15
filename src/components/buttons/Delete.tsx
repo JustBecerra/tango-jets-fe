@@ -4,24 +4,53 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { deleteAction } from "../../../lib/actions/delete/actions";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import useStore from "../../store/store"
+import { getFlights } from "../../../lib/actions/flights/actions"
+import type { DataType } from "../table/TableModal"
+import { getClients } from "../../../lib/actions/clients/actions"
+import { getAirships } from "../../../lib/actions/airships/actions"
 
 interface Props {
 	id: number
 	caseType: string
+	setData: React.Dispatch<React.SetStateAction<DataType[]>>
 }
 
-const Delete = ({ id, caseType }: Props) => {
+const Delete = ({ id, caseType, setData }: Props) => {
 	const [openModal, setOpenModal] = useState(false)
 	const [loading, setLoading] = useState(false)
-	const { updateFlights, flights } = useStore((state) => state)
+	const { updateFlights, updateAirships, updateClients } = useStore(
+		(state) => state
+	)
 	const handleDelete = async () => {
 		setLoading(true)
 		try {
 			//PARA PROBAR EL LOADER
 			// await new Promise((resolve) => setTimeout(resolve, 5000));
 			await deleteAction({ caseType: caseType, id })
-			const modifiedFlights = flights.filter((flight) => flight.id !== id)
-			updateFlights(modifiedFlights)
+			if (caseType === "flight") {
+				const newFlights = await getFlights()
+				setData(
+					newFlights
+						.map((flight: any) => {
+							const { updatedAt, ...rest } = flight
+							return rest
+						})
+						.filter((flight: any) => {
+							const launchTime = new Date(flight.launchtime)
+							const currentTime = new Date()
+							return currentTime < launchTime
+						})
+				)
+				updateFlights(newFlights)
+			} else if (caseType === "client") {
+				const newClients = await getClients()
+				setData(newClients)
+				updateClients(newClients)
+			} else if (caseType === "airship") {
+				const newAirships = await getAirships()
+				setData(newAirships)
+				updateAirships(newAirships)
+			}
 		} catch (error) {
 			console.error("Error:", error)
 		} finally {
