@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import type { formType } from "../modals/ModalFlightAdd"
 import useStore from "../../store/store"
 import type { Client } from "../table/TableModal"
+import type { formType } from "../scheduler/SchedulerFrame"
 
 interface props {
 	value: string
@@ -11,7 +11,7 @@ interface props {
 export const AutoComplete = ({ value, setter }: props) => {
 	const { clients } = useStore((state) => state)
 	const [listClients, setListClients] = useState<Client[]>([])
-    const [openDropdown, setOpenDropdown] = useState(false)
+	const [openDropdown, setOpenDropdown] = useState(false)
 	return (
 		<div>
 			<input
