@@ -4,6 +4,7 @@ interface props {
   clients: Flight[];
 }
 const ClientTable = ({ clients }: props) => {
+  const newClientsList = clients.sort((a, b) => b.phase - a.phase);
   return (
     <div className="h-[300px] overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200">
@@ -14,7 +15,7 @@ const ClientTable = ({ clients }: props) => {
               //   className="px-6 py-3 text-left text-lg font-semibold text-gray-700 uppercase tracking-wider"
               className="px-3 py-2 bg-gray-50 font-semibold text-gray-700 uppercase tracking-wider text-sm"
             >
-              🧑‍💼 Clients
+              Trips Status
             </th>
           </tr>
           <tr>
@@ -26,13 +27,27 @@ const ClientTable = ({ clients }: props) => {
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {clients.map((client) => (
-            <tr key={client.id}>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
+        <tbody className="bg-white divide-y divide-gray-200 ">
+          {newClientsList.map((client) => (
+            <tr
+              key={client.id}
+              className={`border-b cursor-pointer ${
+                client.phase === 4
+                  ? "bg-green-100 text-green-800 hover:bg-green-200"
+                  : client.phase === 7
+                  ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                  : "bg-white hover:bg-gray-200"
+              }`}
+              onClick={() => (window.location.href = `/trip/${client.id}`)}
+            >
+              <td
+                className={`px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900`}
+              >
                 {client.master_passenger}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
+              <td
+                className={`px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900`}
+              >
                 {client.phase}
               </td>
             </tr>
