@@ -1,27 +1,25 @@
 import { useState } from "react"
 import useStore from "../../store/store"
-import type { formType } from "../modals/ModalFlightAdd"
 import { AutoComplete } from "../input/AutoComplete"
+import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
 
 interface props {
 	phase: string
 	formData: formType
 	setFormData: React.Dispatch<React.SetStateAction<formType>>
+	airshipData: airshipFormType[]
+	setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>
 }
 
-export const FlightInfo = ({ phase, formData, setFormData }: props) => {
-	const [numberCompanions, setNumberCompanions] = useState(0)
-	const {
-		to,
-		from,
-		launchtime,
-		master_passenger,
-		companion_passengers,
-		airship_name,
-		price_cost,
-		price_revenue,
-	} = formData
-	const arrayOfCompanions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+export const FlightInfo = ({
+	phase,
+	formData,
+	setFormData,
+	airshipData,
+	setAirshipData,
+}: props) => {
+	const { to, from, launchtime, master_passenger } = formData
+	const { airship_name, price_cost, price_revenue } = airshipData[0]
 	const { airships } = useStore((state) => state)
 	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0
@@ -253,20 +251,22 @@ export const FlightInfo = ({ phase, formData, setFormData }: props) => {
 						Master Passenger:{" "}
 						{master_passenger === "" ? "TBD" : master_passenger}
 					</h2>
-					<h2>
+					{/* <h2>
 						Airship: {airship_name === "" ? "TBD" : airship_name}
 					</h2>
 					<h2>Cost: {price_cost === "" ? "TBD" : price_cost}</h2>
 					<h2>
 						Cost Plus Revenue:{" "}
 						{price_revenue === 0 ? "TBD" : price_revenue}
-					</h2>
-					<div>
+					</h2> */}
+					{/* <div>
 						<h2>Companion Passengers: </h2>
-						{companion_passengers.length ? companion_passengers.map((companion) => (
-							<h3>{companion}</h3>
-						)) : "TBD"}
-					</div>
+						{companion_passengers.length
+							? companion_passengers.map((companion) => (
+									<h3>{companion}</h3>
+							  ))
+							: "TBD"}
+					</div> */}
 				</div>
 			)
 		}

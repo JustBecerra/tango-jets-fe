@@ -9,15 +9,18 @@ import { FlightInfo } from "../stepper/FlightInfo"
 import { StepperButtons } from "../buttons/StepperButtons"
 import useStore from "../../store/store"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
+import { sendEmail } from "../../../lib/actions/emails/actions"
 export interface formType {
 	launchtime: Date
 	to: string
 	from: string
-	price_cost: string
+	master_passenger: string
+}
+
+export interface airshipFormType {
+	price_cost: number
 	price_revenue: number
 	airship_name: string
-	master_passenger: string
-	companion_passengers: string[]
 }
 const SchedulerFrame = () => {
 	const [phase, setPhase] = useState("first")
@@ -26,12 +29,16 @@ const SchedulerFrame = () => {
 		launchtime: new Date(),
 		to: "",
 		from: "",
-		price_cost: "",
-		price_revenue: 0,
-		airship_name: "",
 		master_passenger: "",
-		companion_passengers: [],
+		// companion_passengers: [],
 	})
+	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
+		{
+			airship_name: "",
+			price_cost: 0,
+			price_revenue: 0,
+		},
+	])
 	const [loading, setLoading] = useState(false)
 	const { updateFlights } = useStore((state) => state)
 
@@ -48,15 +55,22 @@ const SchedulerFrame = () => {
 			master_passenger,
 			createdby: name,
 		}
-		// const EmailInfo = {
-		// 	to: transformedFlightData.master_passenger,
-		// 	subject: "Flight scheduled!",
-		// 	text: flightScheduledMessage(transformedFlightData),
+
+		// const airshipOptions = {
+		// 	companion_passengers,
+		// 	price_cost,
+		// 	price_revenue,
 		// }
+
+		const EmailInfo = {
+			to: transformedFlightData.master_passenger,
+			subject: "Flight pre-scheduled!",
+			text: flightScheduledMessage(transformedFlightData),
+		}
 
 		try {
 			await addFlight(transformedFlightData)
-			// await sendEmail(EmailInfo)
+			await sendEmail(EmailInfo)
 			const flights = await getFlights()
 			updateFlights(flights)
 			setShowToast(true)
@@ -92,6 +106,8 @@ const SchedulerFrame = () => {
 						phase={phase}
 						formData={formData}
 						setFormData={setFormData}
+						airshipData={airshipData}
+						setAirshipData={setAirshipData}
 					/>
 					<StepperButtons
 						phase={phase}
