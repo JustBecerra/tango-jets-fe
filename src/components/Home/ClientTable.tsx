@@ -1,7 +1,7 @@
-import type { Client } from "../table/TableModal";
+import type { Flight } from "../table/TableModal";
 
 interface props {
-  clients: Client[];
+  clients: Flight[];
 }
 const ClientTable = ({ clients }: props) => {
   return (
@@ -30,10 +30,10 @@ const ClientTable = ({ clients }: props) => {
           {clients.map((client) => (
             <tr key={client.id}>
               <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                {client.fullname}
+                {client.master_passenger}
               </td>
               <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
-                {client.id}
+                {client.phase}
               </td>
             </tr>
           ))}
