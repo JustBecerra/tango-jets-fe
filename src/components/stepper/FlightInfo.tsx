@@ -2,7 +2,7 @@ import { useState } from "react"
 import useStore from "../../store/store"
 import { AutoComplete } from "../input/AutoComplete"
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
-
+import { FaRegPlusSquare } from "react-icons/fa"
 interface props {
 	phase: string
 	formData: formType
@@ -19,7 +19,6 @@ export const FlightInfo = ({
 	setAirshipData,
 }: props) => {
 	const { to, from, launchtime, master_passenger } = formData
-	const { airship_name, price_cost, price_revenue } = airshipData[0]
 	const { airships } = useStore((state) => state)
 	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0
@@ -29,6 +28,17 @@ export const FlightInfo = ({
 
 		const revenue = costNumber * (percentage / 100)
 		return costNumber + revenue
+	}
+
+	const addAirshipOption = () => {
+		setAirshipData((prev) => [
+			...prev,
+			{
+				airship_name: "",
+				price_cost: 0,
+				price_revenue: 0,
+			},
+		])
 	}
 	const PhaseFields = () => {
 		if (phase === "first") {
@@ -117,81 +127,94 @@ export const FlightInfo = ({
 			)
 		} else if (phase === "second") {
 			return (
-				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto ">
-					<div>
-						<label
-							htmlFor="airship_title"
-							className="block text-sm font-medium"
-						>
-							Airship Name
-						</label>
-						<select
-							onChange={(e) =>
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									airship_name: e.target.value,
-								}))
-							}
-							value={airship_name}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-						>
-							<option value="" disabled>
-								Select an airship
-							</option>
-							{airships.map((airship, index) => (
-								<option value={airship.title} key={index}>
-									{airship.title}
-								</option>
-							))}
-						</select>
-					</div>
-					<div>
-						<label
-							htmlFor="price_cost"
-							className="block text-sm font-medium"
-						>
-							Price cost
-						</label>
-						<input
-							value={price_cost}
-							onChange={(e) =>
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									price_cost: e.target.value,
-									price_revenue: getPercentage(
-										e.target.value
-									),
-								}))
-							}
-							type="number"
-							id="price_cost"
-							name="price_cost"
-							style={{
-								appearance: "textfield",
-								WebkitAppearance: "none",
-								MozAppearance: "textfield",
-							}}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-							required
-						/>
-					</div>
-					<div>
-						<label
-							htmlFor="price_revenue"
-							className="block text-sm font-medium"
-						>
-							Price revenue
-						</label>
+				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+					{airshipData.map((airship) => (
+						<>
+							<div>
+								<label
+									htmlFor="airship_title"
+									className="block text-sm font-medium"
+								>
+									Airship Name
+								</label>
+								<select
+									onChange={(e) =>
+										setFormData((prevFormData) => ({
+											...prevFormData,
+											airship_name: e.target.value,
+										}))
+									}
+									value={airship.airship_name}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								>
+									<option value="" disabled>
+										Select an airship
+									</option>
+									{airships.map((airship, index) => (
+										<option
+											value={airship.title}
+											key={index}
+										>
+											{airship.title}
+										</option>
+									))}
+								</select>
+							</div>
+							<div>
+								<label
+									htmlFor="price_cost"
+									className="block text-sm font-medium"
+								>
+									Price cost
+								</label>
+								<input
+									value={airship.price_cost}
+									onChange={(e) =>
+										setFormData((prevFormData) => ({
+											...prevFormData,
+											price_cost: e.target.value,
+											price_revenue: getPercentage(
+												e.target.value
+											),
+										}))
+									}
+									type="number"
+									id="price_cost"
+									name="price_cost"
+									style={{
+										appearance: "textfield",
+										WebkitAppearance: "none",
+										MozAppearance: "textfield",
+									}}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+							</div>
+							<div>
+								<label
+									htmlFor="price_revenue"
+									className="block text-sm font-medium"
+								>
+									Price revenue
+								</label>
 
-						<input
-							id="price_revenue"
-							name="price_revenue"
-							value={price_revenue}
-							disabled
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-							required
-						/>
-					</div>
+								<input
+									id="price_revenue"
+									name="price_revenue"
+									value={airship.price_revenue}
+									disabled
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+							</div>
+							<div className="flex items-center">
+								<FaRegPlusSquare
+									onClick={addAirshipOption}
+									className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
+								/>
+							</div>
+						</>
+					))}
 					{/* <div>
 						<label className="block text-sm font-medium">
 							Number of companions
