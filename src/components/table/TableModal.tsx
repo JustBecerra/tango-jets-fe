@@ -114,7 +114,7 @@ const TableModal = ({ caseType }: TableProps) => {
 			{data.length > 0 ? (
 				<>
 					<div className="mb-2">{buttonRetriever()}</div>
-					<table className="w-full text-sm text-left rtl:text-right text-gray-500">
+					<table className="w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
 						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400">
 							<tr>
 								{Object.entries(data[0]).map(
@@ -134,7 +134,7 @@ const TableModal = ({ caseType }: TableProps) => {
 								</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody className="overflow-y-auto">
 							{data.map((singledata) => (
 								<tr
 									key={singledata.id}
