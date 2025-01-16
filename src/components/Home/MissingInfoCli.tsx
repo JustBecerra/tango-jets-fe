@@ -43,7 +43,11 @@ const MissingInfoCli = ({ clients }: props) => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {clients.map((client) => (
-            <tr key={client.id}>
+            <tr
+              key={client.id}
+              className="bg-white border-b cursor-pointer hover:bg-gray-200"
+              onClick={() => (window.location.href = `/Client`)}
+            >
               {/* <td className="px-3 py-2 whitespace-nowrap font-medium text-gray-900">
                 {client.id}
               </td> */}

@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getAirships } from "../../../lib/actions/airships/actions";
 import useStore from "../../store/store";
 import { getFlights } from "../../../lib/actions/flights/actions";
 import { getClients } from "../../../lib/actions/clients/actions";
+import { getCookie } from "../../utils/getCookie";
 
 const DepartingSoon = React.lazy(() => import("../Home/DepartingSoon"));
 const ClientTable = React.lazy(() => import("../Home/ClientTable"));
@@ -12,6 +13,7 @@ const RecentlyLanded = React.lazy(() => import("../Home/RecentlyLanded"));
 export const Datitos = () => {
   const { updateAirships, updateFlights, updateClients, flights, clients } =
     useStore((state) => state);
+  const [filteredFlights, setFilteredFlights] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +23,12 @@ export const Datitos = () => {
       updateAirships(airshipsRequested);
       const clientsRequested = await getClients();
       updateClients(clientsRequested);
+
+      const username = getCookie("username");
+      const filteredFlights = flightsRequested.filter(
+        (flight: { createdby: string }) => flight.createdby === username
+      );
+      setFilteredFlights(filteredFlights);
     };
     fetchData();
   }, []);
@@ -46,13 +54,13 @@ export const Datitos = () => {
       </div>
       <div className="grid grid-cols-3 gap-6 mb-4">
         <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <DepartingSoon flights={flights} />
+          <DepartingSoon flights={filteredFlights} />
         </div>
         <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <InFlight flights={flights} />
+          <InFlight flights={filteredFlights} />
         </div>
         <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <RecentlyLanded flights={flights} />
+          <RecentlyLanded flights={filteredFlights} />
         </div>
       </div>
 
@@ -63,7 +71,7 @@ export const Datitos = () => {
         </div>
         {/* ClientTable: Más pequeño */}
         <div className="bg-white flex-[1.5] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
-          <ClientTable clients={clients} />
+          <ClientTable clients={filteredFlights} />
         </div>
       </div>
     </div>
