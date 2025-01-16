@@ -25,12 +25,12 @@ export interface airshipFormType {
 const SchedulerFrame = () => {
 	const [phase, setPhase] = useState("first")
 	const [showToast, setShowToast] = useState(false)
+	const airships = useStore((state) => state.airships)
 	const [formData, setFormData] = useState<formType>({
 		launchtime: new Date(),
 		to: "",
 		from: "",
 		master_passenger: "",
-		// companion_passengers: [],
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
@@ -56,20 +56,20 @@ const SchedulerFrame = () => {
 			createdby: name,
 		}
 
-		// const airshipOptions = {
-		// 	companion_passengers,
-		// 	price_cost,
-		// 	price_revenue,
-		// }
-
-		const EmailInfo = {
-			to: transformedFlightData.master_passenger,
-			subject: "Flight pre-scheduled!",
-			text: flightScheduledMessage(transformedFlightData),
-		}
-
 		try {
-			await addFlight(transformedFlightData)
+			const newFlight = await addFlight(transformedFlightData)
+
+			const EmailInfo = {
+				to: transformedFlightData.master_passenger,
+				subject: "Flight pre-scheduled!",
+				text: flightScheduledMessage({
+					transformedFlightData,
+					airshipData,
+					airships,
+					tripID: newFlight.id,
+				}),
+			}
+
 			await sendEmail(EmailInfo)
 			const flights = await getFlights()
 			updateFlights(flights)

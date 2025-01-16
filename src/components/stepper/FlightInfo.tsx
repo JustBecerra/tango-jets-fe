@@ -1,4 +1,3 @@
-import { useState } from "react"
 import useStore from "../../store/store"
 import { AutoComplete } from "../input/AutoComplete"
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
@@ -128,9 +127,9 @@ export const FlightInfo = ({
 		} else if (phase === "second") {
 			return (
 				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-					{airshipData.map((airship) => (
+					{airshipData.map((airship, index) => (
 						<>
-							<div>
+							<div key={index}>
 								<label
 									htmlFor="airship_title"
 									className="block text-sm font-medium"
@@ -139,10 +138,18 @@ export const FlightInfo = ({
 								</label>
 								<select
 									onChange={(e) =>
-										setFormData((prevFormData) => ({
-											...prevFormData,
-											airship_name: e.target.value,
-										}))
+										setAirshipData((prevFormData) =>
+											prevFormData.map((item, index) =>
+												index ===
+												prevFormData.length - 1
+													? {
+															...item,
+															airship_name:
+																e.target.value,
+													  }
+													: item
+											)
+										)
 									}
 									value={airship.airship_name}
 									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -170,13 +177,26 @@ export const FlightInfo = ({
 								<input
 									value={airship.price_cost}
 									onChange={(e) =>
-										setFormData((prevFormData) => ({
-											...prevFormData,
-											price_cost: e.target.value,
-											price_revenue: getPercentage(
-												e.target.value
-											),
-										}))
+										setAirshipData((prevFormData) =>
+											prevFormData.map((item, index) =>
+												index ===
+												prevFormData.length - 1
+													? {
+															...item,
+															price_cost:
+																parseInt(
+																	e.target
+																		.value
+																),
+															price_revenue:
+																getPercentage(
+																	e.target
+																		.value
+																),
+													  }
+													: item
+											)
+										)
 									}
 									type="number"
 									id="price_cost"
