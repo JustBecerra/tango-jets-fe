@@ -21,7 +21,7 @@ export const flightScheduledMessage = (transformedFlightData: props) => {
 
 	Please ensure you arrive at the airport at least one hour before departure for check-in.
 
-	Here is the link to the invoice: [Link]
+	Here is the link to the quote: [Link]
 
 	if you have any questions or need assistance, feel free to contact us.
 
