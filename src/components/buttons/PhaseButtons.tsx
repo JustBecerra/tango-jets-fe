@@ -30,6 +30,7 @@ export const PhaseButtons = ({
 			await putCompletePhase({ phase: nextPhase, id: currentFlightId })
 			const flightsRequested = await getFlightById(currentFlightId)
 			setCurrentFlight(flightsRequested)
+			setPhase((prev) => prev + 1)
 		} catch (err) {
 			console.log(err)
 		} finally {

@@ -1,32 +1,38 @@
+import useStore from "../../store/store"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
-import type { Flight } from "../table/TableModal"
+import type { Client, Flight } from "../table/TableModal"
 
 interface props {
-	currentFlight: Flight | null
+	currentFlight: Flight
 	localPhase: number
 	loading?: boolean
 }
 
 const fieldDecider = ({ currentFlight, localPhase }: props) => {
+	const clients = useStore((state) => state.clients).find(
+		(client: Client) =>
+			client.id === parseInt(currentFlight.master_passenger)
+	)
+
 	switch (localPhase) {
 		case 1:
 			return (
 				<div className="w-[100%] h-[100%] grid grid-cols-2 gap-16">
 					<h2 className="text-xl text-center">
 						From: <br />
-						{currentFlight && currentFlight.from}
+						{currentFlight.from}
 					</h2>
 					<h2 className="text-xl text-center">
 						To: <br />
-						{currentFlight && currentFlight.to}
+						{currentFlight.to}
 					</h2>
 					<h2 className="text-xl text-center">
 						Master Passenger: <br />
-						{currentFlight && currentFlight.master_passenger}
+						{clients && clients.fullname}
 					</h2>
 					<h2 className="text-xl text-center">
 						Launch time: <br />
-						{currentFlight && currentFlight.launchtime.slice(0, 16)}
+						{currentFlight.launchtime.slice(0, 16)}
 					</h2>
 				</div>
 			)
@@ -37,7 +43,7 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 						Cost: <br />${currentFlight && currentFlight.price_cost}
 					</h2>
 					<h2 className="text-xl text-center">
-						Revenue: <br />$
+						Markup: <br />$
 						{currentFlight && currentFlight.price_revenue}
 					</h2>
 				</div>
