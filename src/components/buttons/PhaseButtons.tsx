@@ -1,9 +1,11 @@
 import React from "react"
 import {
 	getFlightById,
+	getFlights,
 	putCompletePhase,
 } from "../../../lib/actions/flights/actions"
 import type { Flight } from "../table/TableModal"
+import useStore from "../../store/store"
 
 interface props {
 	phase: number
@@ -22,6 +24,7 @@ export const PhaseButtons = ({
 	setCurrentFlight,
 	setLoading,
 }: props) => {
+	const updateFlights = useStore((state) => state.updateFlights)
 	const handleCompletePhase = async (e: React.FormEvent) => {
 		setLoading(true)
 		try {
@@ -30,6 +33,8 @@ export const PhaseButtons = ({
 			await putCompletePhase({ phase: nextPhase, id: currentFlightId })
 			const flightsRequested = await getFlightById(currentFlightId)
 			setCurrentFlight(flightsRequested)
+			const newFlights = await getFlights()
+			updateFlights(newFlights)
 			setPhase((prev) => prev + 1)
 		} catch (err) {
 			console.log(err)
