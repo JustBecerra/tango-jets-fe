@@ -50,6 +50,7 @@ interface TableProps {
 }
 
 const TableModal = ({ caseType }: TableProps) => {
+	const [isHistoryPage, setIsHistoryPage] = useState(false)
 	const [data, setData] = useState<DataType[]>([])
 	const [loading, setLoading] = useState(true)
 	const flights = useStore((state) => state.flights)
@@ -57,6 +58,7 @@ const TableModal = ({ caseType }: TableProps) => {
 	const airships = useStore((state) => state.airships)
 
 	useEffect(() => {
+		setIsHistoryPage(window.location.pathname === "/History")
 		const fetchData = async () => {
 			try {
 				if (caseType === "flight") {
@@ -71,6 +73,15 @@ const TableModal = ({ caseType }: TableProps) => {
 								const currentTime = new Date()
 								return currentTime < launchTime
 							})
+					)
+				} else if (caseType === "history") {
+					setData(
+						flights
+							.map((flight: any) => {
+								const { updatedAt, ...rest } = flight
+								return rest
+							})
+							.filter((flight: any) => flight.phase > 7)
 					)
 				} else if (caseType === "client") {
 					setData(clients)
@@ -157,6 +168,14 @@ const TableModal = ({ caseType }: TableProps) => {
 									)}
 
 									<td className="px-6 py-3 flex whitespace-nowrap">
+										{caseType !== "history" &&
+											caseType !== "flight" && (
+												<Edit
+													id={singledata.id}
+													caseType={caseType}
+													data={singledata}
+												/>
+											)}
 										<Delete
 											id={singledata.id}
 											caseType={caseType}
