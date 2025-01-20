@@ -1,6 +1,6 @@
 import type { airshipFormType } from "../components/scheduler/SchedulerFrame"
 import type { Airship } from "../components/table/TableModal"
-
+import hash from "hash.js"
 interface props {
 	transformedFlightData: flightData
 	airshipData: airshipFormType[]
@@ -33,6 +33,11 @@ export const flightScheduledMessage = ({
 			return `${getAirshipID}/${jet.price_revenue.toString()}/`
 		})
 		.join("")
+
+	const fullURL = `https://tango-jets-fe.vercel.app/${tripID}/${AirshipIDs}`
+
+	const hashedURL = hash.sha256().update(fullURL).digest("hex")
+
 	return `Dear ${master_passenger},
 
 	We’re pleased to inform you that your flight has been successfully pre-scheduled. Below are the details:
@@ -45,7 +50,7 @@ export const flightScheduledMessage = ({
 
 	Please ensure you arrive at the airport at least one hour before departure for check-in.
 
-	Here is the link to the quote: https://tango-jets-fe.vercel.app/${tripID}/${AirshipIDs}
+	Here is the link to the quote: ${hashedURL}
 
 	if you have any questions or need assistance, feel free to contact us.
 
