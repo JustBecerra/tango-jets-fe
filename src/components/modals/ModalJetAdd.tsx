@@ -8,23 +8,49 @@ const AddJetModal: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [portraitData, setPortraitData] = useState("")
+  const [portraitData, setPortraitData] = useState<File>(
+		new File(["initial content"], "default.txt", { type: "text/plain" })
+  )
   const [genericData, setGenericData] = useState<File[]>([])
 
   const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
   }
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = ({
+		event,
+		type,
+  }: {
+		event: React.DragEvent<HTMLDivElement>
+		type: string
+  }) => {
 		event.preventDefault()
 		event.stopPropagation()
-		const droppedFiles = Array.from(event.dataTransfer.files)
-		setGenericData((prevFiles) => [...prevFiles, ...droppedFiles])
+		if (type === "generic") {
+			const droppedFiles = Array.from(event.dataTransfer.files)
+			setGenericData((prevFiles) => [...prevFiles, ...droppedFiles])
+		} else if (type === "portrait") {
+			const selectedFile = event.dataTransfer.files[0]
+			setPortraitData(selectedFile)
+		}
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const selectedFiles = Array.from(event.target.files || [])
-		setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+  const handleFileChange = ({
+		event,
+		type,
+  }: {
+		event: React.ChangeEvent<HTMLInputElement>
+		type: string
+  }) => {
+		if (type === "generic") {
+			const selectedFiles = Array.from(event.target.files || [])
+			setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+		} else if (type === "portrait") {
+			if (event.target.files) {
+				const selectedFile = event.target.files[0]
+				setPortraitData(selectedFile)
+			}
+		}
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -209,7 +235,12 @@ const AddJetModal: React.FC = () => {
 											</label>
 											<div
 												onDragOver={handleDragOver}
-												onDrop={handleDrop}
+												onDrop={(event) =>
+													handleDrop({
+														event,
+														type: "portrait",
+													})
+												}
 												className="flex items-center justify-center w-full mt-1"
 											>
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -229,8 +260,12 @@ const AddJetModal: React.FC = () => {
 																d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
 															/>
 														</svg>
-														{portraitData ? (
-															portraitData
+														{portraitData.name ? (
+															<p className="w-full truncate">
+																{
+																	portraitData.name
+																}
+															</p>
 														) : (
 															<>
 																<p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
@@ -255,8 +290,11 @@ const AddJetModal: React.FC = () => {
 														id="portrait"
 														name="portrait"
 														className="hidden"
-														onChange={
-															handleFileChange
+														onChange={(event) =>
+															handleFileChange({
+																event,
+																type: "portrait",
+															})
 														}
 														required
 													/>
@@ -272,7 +310,12 @@ const AddJetModal: React.FC = () => {
 											</label>
 											<div
 												onDragOver={handleDragOver}
-												onDrop={handleDrop}
+												onDrop={(event) =>
+													handleDrop({
+														event,
+														type: "generic",
+													})
+												}
 												className="flex items-center justify-center w-full mt-1"
 											>
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -300,7 +343,7 @@ const AddJetModal: React.FC = () => {
 																	key
 																) => (
 																	<p
-																		className="w-full"
+																		className="w-full truncate"
 																		key={
 																			key
 																		}
@@ -337,8 +380,11 @@ const AddJetModal: React.FC = () => {
 														multiple
 														required
 														className="hidden"
-														onChange={
-															handleFileChange
+														onChange={(event) =>
+															handleFileChange({
+																event,
+																type: "generic",
+															})
 														}
 													/>
 												</label>
