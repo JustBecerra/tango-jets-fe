@@ -5,15 +5,27 @@ import { getFlights } from "../../../lib/actions/flights/actions";
 import { getClients } from "../../../lib/actions/clients/actions";
 import { getCookie } from "../../utils/getCookie";
 
+interface Client {
+  email: string | null;
+  fullname: string | null;
+  id: string | null;
+  identification: string | null;
+  nacionality: string | null;
+  pasaport: string | null;
+  weight: number | null;
+}
+
 const DepartingSoon = React.lazy(() => import("../Home/DepartingSoon"));
 const ClientTable = React.lazy(() => import("../Home/ClientTable"));
 const MissingInfoCli = React.lazy(() => import("../Home/MissingInfoCli"));
 const InFlight = React.lazy(() => import("../Home/InFlight"));
 const RecentlyLanded = React.lazy(() => import("../Home/RecentlyLanded"));
+
 export const Datitos = () => {
   const { updateAirships, updateFlights, updateClients, flights, clients } =
     useStore((state) => state);
   const [filteredFlights, setFilteredFlights] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +37,19 @@ export const Datitos = () => {
       updateClients(clientsRequested);
 
       const username = getCookie("username");
+      const filteredClients = clientsRequested.filter(
+        (client: Client) =>
+          client.email === null ||
+          client.fullname === null ||
+          client.id === null ||
+          client.identification === null ||
+          client.nacionality === null ||
+          client.pasaport === null ||
+          client.weight === null
+      );
+
+      setFilteredClients(filteredClients);
+
       const filteredFlights = flightsRequested.filter(
         (flight: { createdby: string }) => flight.createdby === username
       );
@@ -33,26 +58,11 @@ export const Datitos = () => {
     fetchData();
   }, []);
 
-  const handleNewTrip = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
-    event.preventDefault();
-    window.location.href = "/Scheduler";
-  };
-
   return (
-    <div className="p-4">
+    <div className="p-4 h-full ">
       {/* Diseño superior (tres tablas en fila) */}
-      <div className="flex justify-end -mb-0">
-        <button
-          type="button"
-          className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:over:border-gray-600 dark:hover:text-gray-400 dark:text-white dark:bg-gray-600 dark:focus:ring-gray-800"
-          onClick={handleNewTrip}
-        >
-          ➕ New Trip
-        </button>
-      </div>
-      <div className="grid grid-cols-3 gap-6 mb-4">
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
           <DepartingSoon flights={filteredFlights} />
         </div>
@@ -65,12 +75,12 @@ export const Datitos = () => {
       </div>
 
       {/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
-      <div className=" mt-8 flex gap-6">
-        <div className="bg-white flex-[3.1] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
-          <MissingInfoCli clients={clients} />
+      <div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-white col-span-2 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+          <MissingInfoCli clients={filteredClients} />
         </div>
         {/* ClientTable: Más pequeño */}
-        <div className="bg-white flex-[1.5] overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+        <div className="bg-white col-span-1 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
           <ClientTable clients={filteredFlights} />
         </div>
       </div>

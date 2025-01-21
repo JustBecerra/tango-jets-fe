@@ -5,6 +5,17 @@ interface props {
 }
 
 const InFlight = ({ flights }: props) => {
+  const formatLandingTime = (launchtime: string) => {
+    const date = new Date(launchtime);
+    return date.toLocaleString("en-US", {
+      month: "2-digit",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+
   return (
     <div className="h-[300px] overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200">
@@ -12,7 +23,7 @@ const InFlight = ({ flights }: props) => {
           <tr>
             <th
               colSpan={4}
-              className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-sm"
+              className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-xs"
               // className="px-6 py-3 text-left text-lg font-semibold text-gray-700 uppercase tracking-wider"
             >
               ✈ In Flight
@@ -26,33 +37,40 @@ const InFlight = ({ flights }: props) => {
               Airship
             </th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              From
+              From-To
             </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              To
-            </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 hidden md:table-cell text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Time
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
           {flights.map((flight) => (
-            <tr key={flight.id}>
+            <tr
+              key={flight.id}
+              className="bg-white border-b cursor-pointer hover:bg-gray-200"
+              onClick={() => (window.location.href = `/trip/${flight.id}`)}
+            >
               {/* <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
               {flight.id}
             </td> */}
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
+              <td className="px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
                 {flight.airship_name}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-center whitespace-nowrap text-xs text-gray-700">
                 {flight.from}
-              </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="inline-block w-4 h-4 mx-1 text-gray-500"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M13.5 4.5a1 1 0 011.41 0l6 6a1 1 0 010 1.41l-6 6a1 1 0 01-1.41-1.41L17.59 12H4a1 1 0 010-2h13.59l-4.09-4.09a1 1 0 010-1.41z" />
+                </svg>
                 {flight.to}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
-                {flight.time}
+              <td className="px-6 py-4 hidden md:table-cell text-center whitespace-nowrap text-xs text-gray-700">
+                {formatLandingTime(flight.launchtime)}
               </td>
             </tr>
           ))}
