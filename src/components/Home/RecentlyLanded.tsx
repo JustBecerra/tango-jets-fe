@@ -9,11 +9,11 @@ const RecentlyLanded = ({ flights }: props) => {
   const formatLandingTime = (launchtime: string) => {
     const date = new Date(launchtime);
     return date.toLocaleString("en-US", {
-      month: "short",
+      month: "2-digit",
       day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
     });
   };
 
@@ -39,28 +39,32 @@ const RecentlyLanded = ({ flights }: props) => {
             </th>
           </tr>
           <tr>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3  text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Airship
             </th>
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              From - To
+              From-To
             </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 hidden lg:table-cell text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Time
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
           {filteredFlights.map((flight) => (
-            <tr key={flight.id}>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
+            <tr
+              key={flight.id}
+              className="bg-white border-b cursor-pointer hover:bg-gray-200"
+              onClick={() => (window.location.href = `/trip/${flight.id}`)}
+            >
+              <td className="px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
                 {flight.airship_name}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 text-center whitespace-nowrap text-xs text-gray-700">
                 {flight.from}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="inline-block w-4 h-4 mx-1 text-gray-500"
+                  className="inline-block w-4 h-4 mx-0.5 text-gray-500"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -68,7 +72,7 @@ const RecentlyLanded = ({ flights }: props) => {
                 </svg>
                 {flight.to}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 hidden lg:table-cell text-center whitespace-nowrap text-xs text-gray-700">
                 {formatLandingTime(flight.launchtime)}
               </td>
             </tr>
