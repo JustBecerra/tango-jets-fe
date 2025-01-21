@@ -6,7 +6,7 @@ interface props {
 const ClientTable = ({ clients }: props) => {
   const newClientsList = clients.sort((a, b) => b.phase - a.phase);
   return (
-    <div className="h-[300px] overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50 sticky top-0 z-10">
           <tr>
@@ -35,7 +35,7 @@ const ClientTable = ({ clients }: props) => {
                 client.phase === 4
                   ? "bg-green-100 text-green-800 hover:bg-green-200"
                   : client.phase === 7
-                  ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                  ? "bg-red-100 text-red-800 hover:bg-red-900"
                   : "bg-white hover:bg-gray-200"
               }`}
               onClick={() => (window.location.href = `/trip/${client.id}`)}

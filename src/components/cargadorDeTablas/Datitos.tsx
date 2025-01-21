@@ -59,7 +59,7 @@ export const Datitos = () => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 h-full ">
       {/* Diseño superior (tres tablas en fila) */}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
@@ -75,7 +75,7 @@ export const Datitos = () => {
       </div>
 
       {/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white col-span-2 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
           <MissingInfoCli clients={filteredClients} />
         </div>
