@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import Delete from "../buttons/Delete"
 import { EmptyTableCard } from "../cards/EmptyTableCard"
 import Edit from "../buttons/Edit"
-import ModalFlightAdd from "../modals/ModalFlightAdd"
 import ModalAdd from "../modals/ModalAdd"
 import ModalJetAdd from "../modals/ModalJetAdd"
 import useStore from "../../store/store"
@@ -50,7 +49,6 @@ interface TableProps {
 }
 
 const TableModal = ({ caseType }: TableProps) => {
-	const [isHistoryPage, setIsHistoryPage] = useState(false)
 	const [data, setData] = useState<DataType[]>([])
 	const [loading, setLoading] = useState(true)
 	const flights = useStore((state) => state.flights)
@@ -58,7 +56,6 @@ const TableModal = ({ caseType }: TableProps) => {
 	const airships = useStore((state) => state.airships)
 
 	useEffect(() => {
-		setIsHistoryPage(window.location.pathname === "/History")
 		const fetchData = async () => {
 			try {
 				if (caseType === "flight") {
