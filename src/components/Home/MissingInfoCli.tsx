@@ -6,7 +6,7 @@ interface props {
 
 const MissingInfoCli = ({ clients }: props) => {
   return (
-    <div className="h-[300px] overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200  text-xs sm:text-sm">
         <thead className="bg-gray-50 sticky top-0 z-10">
           <tr>
@@ -24,19 +24,19 @@ const MissingInfoCli = ({ clients }: props) => {
             <th className="px-3 py-2 bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
               Name
             </th>
-            <th className="px-3 py-2 bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-3 py-2 hidden md:table-cell bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
               Email
             </th>
-            <th className="px-3 py-2 bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-3 py-2 hidden md:table-cell bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
               Nationality
             </th>
-            <th className="px-3 py-2 bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-3 py-2 hidden md:table-cell bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
               Identification
             </th>
-            <th className="px-3 py-2 bg-gray-50 font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-3 py-2  bg-gray-50 font-medium text-gray-500 uppercase tracking-wider">
               Passport
             </th>
-            <th className="px-3 py-2 bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-3 py-2 hidden md:table-cell bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
               Weight
             </th>
           </tr>
@@ -45,7 +45,7 @@ const MissingInfoCli = ({ clients }: props) => {
           {clients.map((client) => (
             <tr
               key={client.id}
-              className="bg-white border-b cursor-pointer hover:bg-gray-200"
+              className="bg-white border-b cursor-pointer sm:hover:bg-gray-200"
               onClick={() => (window.location.href = `/Client`)}
             >
               {/* <td className="px-3 py-2 whitespace-nowrap font-medium text-gray-900">
@@ -54,19 +54,19 @@ const MissingInfoCli = ({ clients }: props) => {
               <td className="px-3 py-2 text-center whitespace-nowrap font-medium text-gray-900">
                 {client.fullname}
               </td>
-              <td className="px-3 py-2 text-center whitespace-nowrap text-gray-700">
+              <td className="px-3 py-2 text-center hidden md:table-cell whitespace-nowrap text-gray-700">
                 {client.email}
               </td>
-              <td className="px-3 py-2 text-center whitespace-nowrap text-gray-700">
+              <td className="px-3 py-2 text-center hidden md:table-cell whitespace-nowrap text-gray-700">
                 {client.nationality}
               </td>
-              <td className="px-3 py-2 text-center whitespace-nowrap text-gray-700">
+              <td className="px-3 py-2 text-center hidden md:table-cell whitespace-nowrap text-gray-700">
                 {client.identification}
               </td>
-              <td className="px-3 py-2 text-center whitespace-nowrap text-gray-700">
+              <td className="px-3 py-2  text-center whitespace-nowrap text-gray-700">
                 {client.passport}
               </td>
-              <td className="px-3 py-2 text-center whitespace-nowrap text-gray-700">
+              <td className="px-3 py-2 hidden md:table-cell text-center whitespace-nowrap text-gray-700">
                 {client.weight}
               </td>
             </tr>

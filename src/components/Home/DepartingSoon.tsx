@@ -47,14 +47,18 @@ const DepartingSoon = ({ flights }: props) => {
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               From - To
             </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 hidden md:table-cell text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Time
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
           {filteredFlights.map((flight) => (
-            <tr key={flight.id}>
+            <tr
+              key={flight.id}
+              className="bg-white border-b cursor-pointer hover:bg-gray-200"
+              onClick={() => (window.location.href = `/trip/${flight.id}`)}
+            >
               <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
                 {flight.airship_name}
               </td>
@@ -70,7 +74,7 @@ const DepartingSoon = ({ flights }: props) => {
                 </svg>
                 {flight.to}
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
+              <td className="px-6 py-4 hidden md:table-cell text-center whitespace-nowrap text-sm text-gray-700">
                 {formatLaunchTime(flight.launchtime)}
               </td>
             </tr>
