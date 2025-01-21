@@ -21,20 +21,20 @@ const AddJetModal: React.FC = () => {
 
 		formData.set("title", formData.get("title") as string)
 		formData.set("status", formData.get("status") as string)
-		formData.set("pricepermile", formData.get("pricepermile") as string)
+		// formData.set("pricepermile", formData.get("pricepermile") as string)
 		formData.set("seats", formData.get("seats") as string)
 		formData.set("size", formData.get("size") as string)
 
-		const imagesInput = formElement.querySelector<HTMLInputElement>(
+		const imagesInput = document.querySelector<HTMLInputElement>(
 			'input[name="generic"]'
 		)
 		if (imagesInput?.files) {
-			for (let i = 0; i < imagesInput.files.length; i++) {
+			for (let i = 0; i < imagesInput.files.length - 1; i++) {
 				formData.append("generic", imagesInput.files[i])
 			}
 		}
 
-		const portraitImageInput = formElement.querySelector<HTMLInputElement>(
+		const portraitImageInput = document.querySelector<HTMLInputElement>(
 			'input[name="portrait"]'
 		)
 
@@ -188,15 +188,7 @@ const AddJetModal: React.FC = () => {
 											>
 												Portrait Image
 											</label>
-											{/* <input
-                        type="file"
-                        id="images"
-                        name="images"
-                        multiple
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                      /> */}
-											<div className="flex items-center justify-center w-full">
+											<div className="flex items-center justify-center w-full mt-1">
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 													<div className="flex flex-col items-center justify-center pt-5 pb-6">
 														<svg
@@ -208,9 +200,9 @@ const AddJetModal: React.FC = () => {
 														>
 															<path
 																stroke="currentColor"
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																stroke-width="2"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																strokeWidth="2"
 																d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
 															/>
 														</svg>
@@ -242,7 +234,7 @@ const AddJetModal: React.FC = () => {
 											>
 												Generic Images
 											</label>
-											<div className="flex items-center justify-center w-full">
+											<div className="flex items-center justify-center w-full mt-1">
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 													<div className="flex flex-col items-center justify-center pt-5 pb-6">
 														<svg
@@ -254,9 +246,9 @@ const AddJetModal: React.FC = () => {
 														>
 															<path
 																stroke="currentColor"
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																stroke-width="2"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																strokeWidth="2"
 																d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
 															/>
 														</svg>
