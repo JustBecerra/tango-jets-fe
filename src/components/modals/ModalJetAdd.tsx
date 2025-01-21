@@ -9,10 +9,27 @@ const AddJetModal: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const [portraitData, setPortraitData] = useState("")
-  const [genericData, setGenericData] = useState<string[]>([])
+  const [genericData, setGenericData] = useState<File[]>([])
 
   const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault()
+		event.stopPropagation()
+		const droppedFiles = Array.from(event.dataTransfer.files)
+		setGenericData((prevFiles) => [...prevFiles, ...droppedFiles])
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const selectedFiles = Array.from(event.target.files || [])
+		setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+  }
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault()
+		event.stopPropagation()
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -190,7 +207,11 @@ const AddJetModal: React.FC = () => {
 											>
 												Portrait Image
 											</label>
-											<div className="flex items-center justify-center w-full mt-1">
+											<div
+												onDragOver={handleDragOver}
+												onDrop={handleDrop}
+												className="flex items-center justify-center w-full mt-1"
+											>
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 													<div className="flex flex-col items-center justify-center pt-5 pb-6">
 														<svg
@@ -234,12 +255,8 @@ const AddJetModal: React.FC = () => {
 														id="portrait"
 														name="portrait"
 														className="hidden"
-														onChange={(e) =>
-															setPortraitData(
-																e.target
-																	.files![0]
-																	.name
-															)
+														onChange={
+															handleFileChange
 														}
 														required
 													/>
@@ -253,7 +270,11 @@ const AddJetModal: React.FC = () => {
 											>
 												Generic Images
 											</label>
-											<div className="flex items-center justify-center w-full mt-1">
+											<div
+												onDragOver={handleDragOver}
+												onDrop={handleDrop}
+												className="flex items-center justify-center w-full mt-1"
+											>
 												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 													<div className="flex flex-col w-full items-center justify-center pt-5 pb-6">
 														<svg
@@ -275,16 +296,18 @@ const AddJetModal: React.FC = () => {
 														0 ? (
 															genericData.map(
 																(
-																	data: string,
+																	data: File,
 																	key
 																) => (
 																	<p
-																		className="w-full truncate"
+																		className="w-full"
 																		key={
 																			key
 																		}
 																	>
-																		{data}
+																		{
+																			data.name
+																		}
 																	</p>
 																)
 															)
@@ -314,14 +337,8 @@ const AddJetModal: React.FC = () => {
 														multiple
 														required
 														className="hidden"
-														onChange={(e) =>
-															setGenericData(
-																(prev) => [
-																	...prev,
-																	e.target
-																		.value,
-																]
-															)
+														onChange={
+															handleFileChange
 														}
 													/>
 												</label>
