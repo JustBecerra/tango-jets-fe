@@ -15,6 +15,10 @@ interface Props {
 const Edit = ({ id, caseType, data }: Props) => {
 	const [openModal, setOpenModal] = useState(false)
 	const [formData, setFormData] = useState<Client | Airship | Flight>(data)
+	const [portraitData, setPortraitData] = useState<File>(
+		new File(["initial content"], "", { type: "text/plain" })
+	)
+	const [genericData, setGenericData] = useState<File[]>([])
 
 	const handleEdit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -76,6 +80,10 @@ const Edit = ({ id, caseType, data }: Props) => {
 						handleChange={handleChange}
 						handleEdit={handleEdit}
 						setOpenModal={setOpenModal}
+						genericData={genericData}
+						setGenericData={setGenericData}
+						portraitData={portraitData}
+						setPortraitData={setPortraitData}
 					/>
 				) : caseType === "flight" ? (
 					<ModalFlightEdit

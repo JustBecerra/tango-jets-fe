@@ -1,37 +1,88 @@
 import React, { useState } from "react";
 import type { Airship } from "../table/TableModal";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
+import { PortraitImage } from "../input/PortraitImage"
+import { GenericImage } from "../input/GenericImage"
 
 interface Props {
-  formData: Airship;
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-  handleEdit: (event: React.FormEvent<HTMLFormElement>) => void;
-  setOpenModal: (open: boolean) => void;
+	formData: Airship
+	handleChange: (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) => void
+	handleEdit: (event: React.FormEvent<HTMLFormElement>) => void
+	setOpenModal: (open: boolean) => void
+	genericData: File[]
+	portraitData: File
+	setGenericData: React.Dispatch<React.SetStateAction<File[]>>
+	setPortraitData: React.Dispatch<React.SetStateAction<File>>
 }
 
 const ModalEditJet = ({
-  formData,
-  handleChange,
-  handleEdit,
-  setOpenModal,
+	formData,
+	handleChange,
+	handleEdit,
+	setOpenModal,
+	genericData,
+	portraitData,
+	setGenericData,
+	setPortraitData,
 }: Props) => {
-  const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      await handleEdit(event);
-    } catch (err) {
-      console.error("Error editing jet:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		setLoading(true)
+		try {
+			await handleEdit(event)
+		} catch (err) {
+			console.error("Error editing jet:", err)
+		} finally {
+			setLoading(false)
+		}
+	}
 
-  return (
+	const handleFileChange = ({
+		event,
+		type,
+	}: {
+		event: React.ChangeEvent<HTMLInputElement>
+		type: string
+	}) => {
+		if (type === "generic") {
+			const selectedFiles = Array.from(event.target.files || [])
+			setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+		} else if (type === "portrait") {
+			if (event.target.files) {
+				const selectedFile = event.target.files[0]
+				setPortraitData(selectedFile)
+			}
+		}
+	}
+
+	const handleDrop = ({
+		event,
+		type,
+	}: {
+		event: React.DragEvent<HTMLDivElement>
+		type: string
+	}) => {
+		event.preventDefault()
+		event.stopPropagation()
+		if (type === "generic") {
+			const droppedFiles = Array.from(event.dataTransfer.files)
+			setGenericData((prevFiles) => [...prevFiles, ...droppedFiles])
+		} else if (type === "portrait") {
+			const selectedFile = event.dataTransfer.files[0]
+			setPortraitData(selectedFile)
+		}
+	}
+
+	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault()
+		event.stopPropagation()
+	}
+
+	return (
 		<div
 			id="editJetModal"
 			tabIndex={-1}
@@ -136,6 +187,18 @@ const ModalEditJet = ({
 										required
 									/>
 								</div>
+								<PortraitImage
+									handleFileChange={handleFileChange}
+									handleDragOver={handleDragOver}
+									portraitData={portraitData}
+									handleDrop={handleDrop}
+								/>
+								<GenericImage
+									handleFileChange={handleFileChange}
+									handleDragOver={handleDragOver}
+									genericData={genericData}
+									handleDrop={handleDrop}
+								/>
 							</div>
 							<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 								<button
@@ -163,7 +226,7 @@ const ModalEditJet = ({
 				</div>
 			)}
 		</div>
-  )
-};
+	)
+}
 
 export default ModalEditJet;
