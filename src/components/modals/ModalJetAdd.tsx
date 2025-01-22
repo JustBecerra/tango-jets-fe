@@ -3,27 +3,29 @@ import { Toast } from "flowbite-react";
 import { HiCheck } from "react-icons/hi";
 import { addAirship } from "../../../lib/actions/airships/actions";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
+import { PortraitImage } from "../input/PortraitImage"
+import { GenericImage } from "../input/GenericImage"
 
 const AddJetModal: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [portraitData, setPortraitData] = useState<File>(
-		new File(["initial content"], "default.txt", { type: "text/plain" })
-  )
-  const [genericData, setGenericData] = useState<File[]>([])
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [showToast, setShowToast] = useState(false)
+	const [loading, setLoading] = useState(false)
+	const [portraitData, setPortraitData] = useState<File>(
+		new File(["initial content"], "", { type: "text/plain" })
+	)
+	const [genericData, setGenericData] = useState<File[]>([])
 
-  const handleToggleModal = () => {
+	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
-  }
+	}
 
-  const handleDrop = ({
+	const handleDrop = ({
 		event,
 		type,
-  }: {
+	}: {
 		event: React.DragEvent<HTMLDivElement>
 		type: string
-  }) => {
+	}) => {
 		event.preventDefault()
 		event.stopPropagation()
 		if (type === "generic") {
@@ -33,15 +35,15 @@ const AddJetModal: React.FC = () => {
 			const selectedFile = event.dataTransfer.files[0]
 			setPortraitData(selectedFile)
 		}
-  }
+	}
 
-  const handleFileChange = ({
+	const handleFileChange = ({
 		event,
 		type,
-  }: {
+	}: {
 		event: React.ChangeEvent<HTMLInputElement>
 		type: string
-  }) => {
+	}) => {
 		if (type === "generic") {
 			const selectedFiles = Array.from(event.target.files || [])
 			setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
@@ -51,14 +53,14 @@ const AddJetModal: React.FC = () => {
 				setPortraitData(selectedFile)
 			}
 		}
-  }
+	}
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault()
 		event.stopPropagation()
-  }
+	}
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		setLoading(true)
 		const formElement = event.currentTarget
@@ -101,9 +103,9 @@ const AddJetModal: React.FC = () => {
 		} finally {
 			setLoading(false)
 		}
-  }
+	}
 
-  return (
+	return (
 		<>
 			<button
 				id="addJetButton"
@@ -226,170 +228,19 @@ const AddJetModal: React.FC = () => {
 												required
 											/>
 										</div>
-										<div>
-											<label
-												htmlFor="images"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Portrait Image
-											</label>
-											<div
-												onDragOver={handleDragOver}
-												onDrop={(event) =>
-													handleDrop({
-														event,
-														type: "portrait",
-													})
-												}
-												className="flex items-center justify-center w-full mt-1"
-											>
-												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-													<div className="flex flex-col items-center justify-center pt-5 pb-6">
-														<svg
-															className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-															aria-hidden="true"
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 20 16"
-														>
-															<path
-																stroke="currentColor"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																strokeWidth="2"
-																d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-															/>
-														</svg>
-														{portraitData.name ? (
-															<p className="w-full truncate">
-																{
-																	portraitData.name
-																}
-															</p>
-														) : (
-															<>
-																<p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-																	<span className="font-semibold">
-																		Click to
-																		upload
-																	</span>{" "}
-																	or drag and
-																	drop
-																</p>
-																<p className="text-xs text-gray-500 dark:text-gray-400">
-																	SVG, PNG,
-																	JPG or GIF
-																	(MAX.
-																	800x400px)
-																</p>
-															</>
-														)}
-													</div>
-													<input
-														type="file"
-														id="portrait"
-														name="portrait"
-														className="hidden"
-														onChange={(event) =>
-															handleFileChange({
-																event,
-																type: "portrait",
-															})
-														}
-														required
-													/>
-												</label>
-											</div>
-										</div>
-										<div>
-											<label
-												htmlFor="images"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Generic Images
-											</label>
-											<div
-												onDragOver={handleDragOver}
-												onDrop={(event) =>
-													handleDrop({
-														event,
-														type: "generic",
-													})
-												}
-												className="flex items-center justify-center w-full mt-1"
-											>
-												<label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-													<div className="flex flex-col w-full items-center justify-center pt-5 pb-6">
-														<svg
-															className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-															aria-hidden="true"
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 20 16"
-														>
-															<path
-																stroke="currentColor"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																strokeWidth="2"
-																d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-															/>
-														</svg>
-														{genericData.length >
-														0 ? (
-															genericData.map(
-																(
-																	data: File,
-																	key
-																) => (
-																	<p
-																		className="w-full truncate"
-																		key={
-																			key
-																		}
-																	>
-																		{
-																			data.name
-																		}
-																	</p>
-																)
-															)
-														) : (
-															<>
-																<p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-																	<span className="font-semibold">
-																		Click to
-																		upload
-																	</span>{" "}
-																	or drag and
-																	drop
-																</p>
-																<p className="text-xs text-gray-500 dark:text-gray-400">
-																	SVG, PNG,
-																	JPG or GIF
-																	(MAX.
-																	800x400px)
-																</p>
-															</>
-														)}
-													</div>
-													<input
-														id="generic"
-														name="generic"
-														type="file"
-														multiple
-														required
-														className="hidden"
-														onChange={(event) =>
-															handleFileChange({
-																event,
-																type: "generic",
-															})
-														}
-													/>
-												</label>
-											</div>
-										</div>
+										<PortraitImage
+											handleDragOver={handleDragOver}
+											handleDrop={handleDrop}
+											handleFileChange={handleFileChange}
+											portraitData={portraitData}
+										/>
+
+										<GenericImage
+											handleDragOver={handleDragOver}
+											handleDrop={handleDrop}
+											handleFileChange={handleFileChange}
+											genericData={genericData}
+										/>
 									</div>
 									<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 										<button
@@ -434,7 +285,7 @@ const AddJetModal: React.FC = () => {
 				</div>
 			)}
 		</>
-  )
-};
+	)
+}
 
 export default AddJetModal;
