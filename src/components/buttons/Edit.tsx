@@ -5,6 +5,10 @@ import ModalEditCli from "../modals/ModalEditCli";
 import ModalEditJet from "../modals/ModalEditJet";
 import ModalFlightEdit from "../modals/ModalFlightEdit";
 import type { Airship, Client, Flight } from "../table/TableModal"
+import { getFlights } from "../../../lib/actions/flights/actions"
+import { getClients } from "../../../lib/actions/clients/actions"
+import { getAirships } from "../../../lib/actions/airships/actions"
+import useStore from "../../store/store"
 
 interface Props {
 	id: number
@@ -15,6 +19,11 @@ interface Props {
 const Edit = ({ id, caseType, data }: Props) => {
 	const [openModal, setOpenModal] = useState(false)
 	const [formData, setFormData] = useState<Client | Airship | Flight>(data)
+	const [portraitData, setPortraitData] = useState<File>(
+		new File(["initial content"], "", { type: "text/plain" })
+	)
+	const [genericData, setGenericData] = useState<File[]>([])
+	const { updateClients, updateAirships } = useStore()
 
 	const handleEdit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -22,21 +31,28 @@ const Edit = ({ id, caseType, data }: Props) => {
 		const formElement = event.currentTarget
 		const formData = new FormData(formElement)
 
-		const imagesInput = formElement.querySelector<HTMLInputElement>(
-			'input[name="images"]'
-		)
-		if (imagesInput?.files) {
-			for (let i = 0; i < imagesInput.files.length; i++) {
-				formData.append("images", imagesInput.files[i])
-			}
-		}
+		formData.delete("portrait")
+		formData.delete("generic")
+
+		formData.append("portrait", portraitData)
+
+		genericData.forEach((file) => {
+			formData.append("generic", file)
+		})
 
 		try {
-			await editAction({ caseType, data: formData, id }).then(() =>
-				window.location.reload()
-			)
+			await editAction({ caseType, data: formData, id })
+			if (caseType === "client") {
+				const clients = await getClients()
+				updateClients(clients)
+			} else if (caseType === "airship") {
+				const airships = await getAirships()
+				updateAirships(airships)
+			}
 		} catch (error) {
 			console.error("Error:", error)
+		} finally {
+			setOpenModal(false)
 		}
 	}
 
@@ -76,6 +92,10 @@ const Edit = ({ id, caseType, data }: Props) => {
 						handleChange={handleChange}
 						handleEdit={handleEdit}
 						setOpenModal={setOpenModal}
+						genericData={genericData}
+						setGenericData={setGenericData}
+						portraitData={portraitData}
+						setPortraitData={setPortraitData}
 					/>
 				) : caseType === "flight" ? (
 					<ModalFlightEdit
