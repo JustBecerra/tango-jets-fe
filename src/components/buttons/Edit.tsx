@@ -5,6 +5,10 @@ import ModalEditCli from "../modals/ModalEditCli";
 import ModalEditJet from "../modals/ModalEditJet";
 import ModalFlightEdit from "../modals/ModalFlightEdit";
 import type { Airship, Client, Flight } from "../table/TableModal"
+import { getFlights } from "../../../lib/actions/flights/actions"
+import { getClients } from "../../../lib/actions/clients/actions"
+import { getAirships } from "../../../lib/actions/airships/actions"
+import useStore from "../../store/store"
 
 interface Props {
 	id: number
@@ -19,6 +23,7 @@ const Edit = ({ id, caseType, data }: Props) => {
 		new File(["initial content"], "", { type: "text/plain" })
 	)
 	const [genericData, setGenericData] = useState<File[]>([])
+	const { updateClients, updateAirships } = useStore()
 
 	const handleEdit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -36,11 +41,18 @@ const Edit = ({ id, caseType, data }: Props) => {
 		})
 
 		try {
-			await editAction({ caseType, data: formData, id }).then(() => {
-				window.location.reload()
-			})
+			await editAction({ caseType, data: formData, id })
+			if (caseType === "client") {
+				const clients = await getClients()
+				updateClients(clients)
+			} else if (caseType === "airship") {
+				const airships = await getAirships()
+				updateAirships(airships)
+			}
 		} catch (error) {
 			console.error("Error:", error)
+		} finally {
+			setOpenModal(false)
 		}
 	}
 
