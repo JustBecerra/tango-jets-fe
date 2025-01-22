@@ -68,7 +68,6 @@ const AddJetModal: React.FC = () => {
 
 		formData.set("title", formData.get("title") as string)
 		formData.set("status", formData.get("status") as string)
-		// formData.set("pricepermile", formData.get("pricepermile") as string)
 		formData.set("seats", formData.get("seats") as string)
 		formData.set("size", formData.get("size") as string)
 
@@ -91,7 +90,6 @@ const AddJetModal: React.FC = () => {
 
 		try {
 			const response = await addAirship(formData) // Pass formData here
-			console.log("Airship added successfully:", response)
 
 			setShowToast(true)
 			setTimeout(() => {

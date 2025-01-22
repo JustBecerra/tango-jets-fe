@@ -59,13 +59,13 @@ const ModalEditJet = ({
 		}
 	}
 
-	const handleDrop = ({
+  const handleDrop = ({
 		event,
 		type,
-	}: {
+  }: {
 		event: React.DragEvent<HTMLDivElement>
 		type: string
-	}) => {
+  }) => {
 		event.preventDefault()
 		event.stopPropagation()
 		if (type === "generic") {
@@ -75,14 +75,14 @@ const ModalEditJet = ({
 			const selectedFile = event.dataTransfer.files[0]
 			setPortraitData(selectedFile)
 		}
-	}
+  }
 
-	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault()
 		event.stopPropagation()
-	}
+  }
 
-	return (
+  return (
 		<div
 			id="editJetModal"
 			tabIndex={-1}
@@ -226,7 +226,7 @@ const ModalEditJet = ({
 				</div>
 			)}
 		</div>
-	)
+  )
 }
 
 export default ModalEditJet;

@@ -25,10 +25,11 @@ export const GenericImage = ({
 	handleFileChange,
 	genericData,
 }: props) => {
+    console.log({ genericData })
 	return (
 		<div>
 			<label
-				htmlFor="images"
+				htmlFor="generic"
 				className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 			>
 				Generic Images
@@ -85,7 +86,6 @@ export const GenericImage = ({
 						name="generic"
 						type="file"
 						multiple
-						required
 						className="hidden"
 						onChange={(event) =>
 							handleFileChange({

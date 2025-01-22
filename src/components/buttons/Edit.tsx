@@ -26,19 +26,19 @@ const Edit = ({ id, caseType, data }: Props) => {
 		const formElement = event.currentTarget
 		const formData = new FormData(formElement)
 
-		const imagesInput = formElement.querySelector<HTMLInputElement>(
-			'input[name="images"]'
-		)
-		if (imagesInput?.files) {
-			for (let i = 0; i < imagesInput.files.length; i++) {
-				formData.append("images", imagesInput.files[i])
-			}
-		}
+		formData.delete("portrait")
+		formData.delete("generic")
+
+		formData.append("portrait", portraitData)
+
+		genericData.forEach((file) => {
+			formData.append("generic", file)
+		})
 
 		try {
-			await editAction({ caseType, data: formData, id }).then(() =>
+			await editAction({ caseType, data: formData, id }).then(() => {
 				window.location.reload()
-			)
+			})
 		} catch (error) {
 			console.error("Error:", error)
 		}

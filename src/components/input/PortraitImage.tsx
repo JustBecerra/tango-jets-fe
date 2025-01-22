@@ -23,10 +23,11 @@ export const PortraitImage = ({
 	handleFileChange,
 	portraitData,
 }: props) => {
+    console.log({ portraitData })
 	return (
 		<div>
 			<label
-				htmlFor="images"
+				htmlFor="portrait"
 				className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 			>
 				Portrait Image
@@ -87,7 +88,6 @@ export const PortraitImage = ({
 								type: "portrait",
 							})
 						}
-						required
 					/>
 				</label>
 			</div>
