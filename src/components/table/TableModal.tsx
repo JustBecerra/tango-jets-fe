@@ -118,11 +118,11 @@ const TableModal = ({ caseType }: TableProps) => {
 	}
 
 	return (
-		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] w-full max-w-[100%] shadow-md sm:rounded-lg">
+		<div className=" w-full max-w-[100%] shadow-md sm:rounded-lg">
 			{data.length > 0 ? (
 				<>
 					<div className="mb-2">{buttonRetriever()}</div>
-					<table className="w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
+					<table className=" table-fixed border-collapse border border-gray-400 w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
 						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400">
 							<tr>
 								{Object.entries(data[0]).map(
