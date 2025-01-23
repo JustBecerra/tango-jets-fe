@@ -64,7 +64,7 @@ export const LoginCard = () => {
 			})
 		}
 	}
-	// </ACA>
+
 	return (
 		<div className="flex flex-col w-full items-center">
 			<h1 className="text-4xl font-bold mb-6 text-white">Welcome!</h1>
@@ -73,7 +73,7 @@ export const LoginCard = () => {
 					<div className="flex flex-col items-start w-full">
 						<input
 							className="w-full rounded-full px-4 py-2 text-black"
-							placeholder="Enter Email"
+							placeholder="Enter Username"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>

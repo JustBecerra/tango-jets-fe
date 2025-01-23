@@ -4,11 +4,34 @@ import { HiCheck } from "react-icons/hi";
 import { addClient } from "../../../lib/actions/clients/actions";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { nationalities } from "../../utils/nationalities"
+import { z } from "zod"
+
+const Client = z.object({
+	fullname: z.string().refine((value) => {
+		const words = value.trim().split(/\s+/)
+		return words.length >= 2
+	}),
+	nationality: z.string(),
+	email: z.string().email("it needs to be an email"),
+	identification: z
+		.string()
+		.min(8, "ID needs to have a minimum of 8 characters"),
+	passport: z.string().min(6, "ID needs to have a minimum of 6 characters"),
+	weight: z.string().min(2, "needs to have a minimum of 2 characters"),
+})
 
 const ModalAdd: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showToast, setShowToast] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [errors, setErrors] = useState({
+		fullname: "",
+		nationality: "",
+		email: "",
+		identification: "",
+		passport: "",
+		weight: "",
+	})
 
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
@@ -17,20 +40,30 @@ const ModalAdd: React.FC = () => {
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		setLoading(true)
-		const formElement = event.target as HTMLFormElement
-		const formData = new FormData(formElement)
-		const clientData = Object.fromEntries(formData.entries())
-
-		const transformedClientData = {
-			fullname: clientData.fullname,
-			nationality: clientData.nationality,
-			email: clientData.email,
-			identification: clientData.identification,
-			passport: clientData.passport,
-			weight: clientData.weight,
-		}
 
 		try {
+			const formElement = event.target as HTMLFormElement
+			const formData = new FormData(formElement)
+			const clientData = Object.fromEntries(formData.entries())
+
+			const parsedData = Client.parse({
+				fullname: clientData.fullname,
+				nationality: clientData.nationality,
+				email: clientData.email,
+				identification: clientData.identification,
+				passport: clientData.passport,
+				weight: clientData.weight,
+			})
+
+			const transformedClientData = {
+				fullname: parsedData.fullname,
+				nationality: parsedData.nationality,
+				email: parsedData.email,
+				identification: parsedData.identification,
+				passport: parsedData.passport,
+				weight: parsedData.weight,
+			}
+
 			const response = await addClient(transformedClientData)
 			setShowToast(true)
 			setTimeout(() => {
@@ -40,6 +73,29 @@ const ModalAdd: React.FC = () => {
 			setIsModalOpen(false)
 		} catch (err) {
 			console.error("Error adding client:", err)
+			if (err instanceof z.ZodError) {
+				const newErrors = {
+					fullname:
+						err.errors.find((e) => e.path[0] === "fullname")
+							?.message || "",
+					nationality:
+						err.errors.find((e) => e.path[0] === "nationality")
+							?.message || "",
+					email:
+						err.errors.find((e) => e.path[0] === "email")
+							?.message || "",
+					identification:
+						err.errors.find((e) => e.path[0] === "identification")
+							?.message || "",
+					passport:
+						err.errors.find((e) => e.path[0] === "passport")
+							?.message || "",
+					weight:
+						err.errors.find((e) => e.path[0] === "weight")
+							?.message || "",
+				}
+				setErrors(newErrors)
+			}
 		} finally {
 			setLoading(false)
 		}
@@ -110,6 +166,11 @@ const ModalAdd: React.FC = () => {
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 												required
 											/>
+											{errors.fullname && (
+												<p className="text-red-500 text-xs">
+													{errors.fullname}
+												</p>
+											)}
 										</div>
 										<div>
 											<label
@@ -137,6 +198,11 @@ const ModalAdd: React.FC = () => {
 													)
 												)}
 											</select>
+											{errors.nationality && (
+												<p className="text-red-500 text-xs">
+													{errors.nationality}
+												</p>
+											)}
 										</div>
 										<div>
 											<label
@@ -152,6 +218,11 @@ const ModalAdd: React.FC = () => {
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 												required
 											/>
+											{errors.email && (
+												<p className="text-red-500 text-xs">
+													{errors.email}
+												</p>
+											)}
 										</div>
 										<div>
 											<label
@@ -167,6 +238,11 @@ const ModalAdd: React.FC = () => {
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 												required
 											/>
+											{errors.identification && (
+												<p className="text-red-500 text-xs">
+													{errors.identification}
+												</p>
+											)}
 										</div>
 										<div>
 											<label
@@ -182,6 +258,11 @@ const ModalAdd: React.FC = () => {
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 												required
 											/>
+											{errors.passport && (
+												<p className="text-red-500 text-xs">
+													{errors.passport}
+												</p>
+											)}
 										</div>
 										<div>
 											<label
@@ -197,6 +278,11 @@ const ModalAdd: React.FC = () => {
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 												required
 											/>
+											{errors.weight && (
+												<p className="text-red-500 text-xs">
+													{errors.weight}
+												</p>
+											)}
 										</div>
 									</div>
 									<div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
