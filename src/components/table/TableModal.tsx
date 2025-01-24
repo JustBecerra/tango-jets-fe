@@ -70,6 +70,29 @@ const TableModal = ({ caseType }: TableProps) => {
 								const currentTime = new Date()
 								return currentTime < launchTime
 							})
+							.map((flight: any) => {
+								return {
+									...flight,
+									launchtime: new Date(
+										flight.launchtime
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+									createdAt: new Date(
+										flight.createdAt
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+								}
+							})
 					)
 				} else if (caseType === "history") {
 					setData(
@@ -112,8 +135,10 @@ const TableModal = ({ caseType }: TableProps) => {
 			)
 		} else if (caseType === "client") {
 			return <ModalAdd />
-		} else {
+		} else if(caseType === "airship") {
 			return <ModalJetAdd />
+		} else {
+			return <></>
 		}
 	}
 
@@ -171,19 +196,7 @@ const TableModal = ({ caseType }: TableProps) => {
 														}}
 														className="px-6 py-3 whitespace-nowrap"
 													>
-														{key === "launchtime" ||
-														key === "createdAt"
-															? value.toLocaleString(
-																	"en-US",
-																	{
-																		month: "2-digit",
-																		day: "numeric",
-																		hour: "2-digit",
-																		minute: "2-digit",
-																		hour12: false,
-																	}
-															  )
-															: value}
+														{value}
 													</td>
 												)
 											}
