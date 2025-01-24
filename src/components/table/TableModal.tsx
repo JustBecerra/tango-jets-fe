@@ -135,8 +135,10 @@ const TableModal = ({ caseType }: TableProps) => {
 			)
 		} else if (caseType === "client") {
 			return <ModalAdd />
-		} else {
+		} else if(caseType === "airship") {
 			return <ModalJetAdd />
+		} else {
+			return <></>
 		}
 	}
 
