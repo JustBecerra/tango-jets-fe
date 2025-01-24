@@ -70,6 +70,29 @@ const TableModal = ({ caseType }: TableProps) => {
 								const currentTime = new Date()
 								return currentTime < launchTime
 							})
+							.map((flight: any) => {
+								return {
+									...flight,
+									launchtime: new Date(
+										flight.launchtime
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+									createdAt: new Date(
+										flight.createdAt
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+								}
+							})
 					)
 				} else if (caseType === "history") {
 					setData(
@@ -112,21 +135,28 @@ const TableModal = ({ caseType }: TableProps) => {
 			)
 		} else if (caseType === "client") {
 			return <ModalAdd />
-		} else {
+		} else if(caseType === "airship") {
 			return <ModalJetAdd />
+		} else {
+			return <></>
 		}
 	}
 
 	return (
-		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] w-full max-w-[100%] shadow-md sm:rounded-lg">
+		<div className=" w-full max-w-[100%] shadow-md sm:rounded-lg">
 			{data.length > 0 ? (
 				<>
 					<div className="mb-2">{buttonRetriever()}</div>
-					<table className="w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
+					<table className="border-gray-400 w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
 						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400">
 							<tr>
-								{Object.entries(data[0]).map(
-									([key, value], index) => (
+								{Object.entries(data[0])
+									.filter(
+										([key, value]) =>
+											key !== "pslc" &&
+											key !== "createdAt" // chequear si son necesarios
+									)
+									.map(([key, value], index) => (
 										<th
 											key={index}
 											scope="col"
@@ -134,8 +164,7 @@ const TableModal = ({ caseType }: TableProps) => {
 										>
 											{key}
 										</th>
-									)
-								)}
+									))}
 
 								<th scope="col" className="px-6 py-3">
 									Action
@@ -143,44 +172,53 @@ const TableModal = ({ caseType }: TableProps) => {
 							</tr>
 						</thead>
 						<tbody className="overflow-y-auto">
-							{data.map((singledata) => (
-								<tr
-									key={singledata.id}
-									className="bg-white border-b cursor-pointer hover:bg-gray-200"
-								>
-									{Object.entries(singledata).map(
-										([key, value]) => (
-											<td
-												key={key}
-												onClick={() => {
-													caseType === "flight"
-														? (window.location.href = `/trip/${singledata.id}`)
-														: ""
-												}}
-												className="px-6 py-3 whitespace-nowrap"
-											>
-												{value}
-											</td>
-										)
-									)}
+							{data
+								.map((element: any) => {
+									const { pslc, createdAt, ...rest } = element
+									return rest
+								})
+								.map((singledata: DataType) => (
+									<tr
+										key={singledata.id}
+										className="bg-white border-b cursor-pointer hover:bg-gray-200"
+									>
+										{Object.entries(singledata).map(
+											([key, value]) => {
+												console.log({ key })
+												return (
+													<td
+														key={key}
+														onClick={() => {
+															caseType ===
+															"flight"
+																? (window.location.href = `/trip/${singledata.id}`)
+																: ""
+														}}
+														className="px-6 py-3 whitespace-nowrap"
+													>
+														{value}
+													</td>
+												)
+											}
+										)}
 
-									<td className="px-6 py-3 flex whitespace-nowrap">
-										{caseType !== "history" &&
-											caseType !== "flight" && (
-												<Edit
-													id={singledata.id}
-													caseType={caseType}
-													data={singledata}
-												/>
-											)}
-										<Delete
-											id={singledata.id}
-											caseType={caseType}
-											setData={setData}
-										/>
-									</td>
-								</tr>
-							))}
+										<td className="px-6 py-3 flex whitespace-nowrap">
+											{caseType !== "history" &&
+												caseType !== "flight" && (
+													<Edit
+														id={singledata.id}
+														caseType={caseType}
+														data={singledata}
+													/>
+												)}
+											<Delete
+												id={singledata.id}
+												caseType={caseType}
+												setData={setData}
+											/>
+										</td>
+									</tr>
+								))}
 						</tbody>
 					</table>
 				</>

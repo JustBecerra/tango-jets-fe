@@ -59,31 +59,31 @@ export const Datitos = () => {
   }, []);
 
   return (
-    <div className="p-4 h-full ">
-      {/* Diseño superior (tres tablas en fila) */}
+		<div className="p-4 h-full w-[80%]">
+			{/* Diseño superior (tres tablas en fila) */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <DepartingSoon flights={filteredFlights} />
-        </div>
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <InFlight flights={filteredFlights} />
-        </div>
-        <div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
-          <RecentlyLanded flights={filteredFlights} />
-        </div>
-      </div>
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
+				<div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
+					<DepartingSoon flights={filteredFlights} />
+				</div>
+				<div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
+					<InFlight flights={filteredFlights} />
+				</div>
+				<div className="bg-white overflow-y-auto rounded-lg shadow-lg ">
+					<RecentlyLanded flights={filteredFlights} />
+				</div>
+			</div>
 
-      {/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
-      <div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-white col-span-2 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
-          <MissingInfoCli clients={filteredClients} />
-        </div>
-        {/* ClientTable: Más pequeño */}
-        <div className="bg-white col-span-1 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
-          <ClientTable clients={filteredFlights} />
-        </div>
-      </div>
-    </div>
-  );
+			{/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
+			<div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+				<div className="bg-white col-span-2 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+					<MissingInfoCli clients={filteredClients} />
+				</div>
+				{/* ClientTable: Más pequeño */}
+				<div className="bg-white col-span-1 overflow-y-auto rounded-lg shadow-lg h-[300px] scrollbar-hide">
+					<ClientTable clients={filteredFlights} />
+				</div>
+			</div>
+		</div>
+  )
 };
