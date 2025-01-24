@@ -122,11 +122,16 @@ const TableModal = ({ caseType }: TableProps) => {
 			{data.length > 0 ? (
 				<>
 					<div className="mb-2">{buttonRetriever()}</div>
-					<table className=" table-fixed border-collapse border border-gray-400 w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
+					<table className="border-gray-400 w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-auto">
 						<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400">
 							<tr>
-								{Object.entries(data[0]).map(
-									([key, value], index) => (
+								{Object.entries(data[0])
+									.filter(
+										([key, value]) =>
+											key !== "pslc" &&
+											key !== "createdAt" // chequear si son necesarios
+									)
+									.map(([key, value], index) => (
 										<th
 											key={index}
 											scope="col"
@@ -134,8 +139,7 @@ const TableModal = ({ caseType }: TableProps) => {
 										>
 											{key}
 										</th>
-									)
-								)}
+									))}
 
 								<th scope="col" className="px-6 py-3">
 									Action
@@ -143,44 +147,65 @@ const TableModal = ({ caseType }: TableProps) => {
 							</tr>
 						</thead>
 						<tbody className="overflow-y-auto">
-							{data.map((singledata) => (
-								<tr
-									key={singledata.id}
-									className="bg-white border-b cursor-pointer hover:bg-gray-200"
-								>
-									{Object.entries(singledata).map(
-										([key, value]) => (
-											<td
-												key={key}
-												onClick={() => {
-													caseType === "flight"
-														? (window.location.href = `/trip/${singledata.id}`)
-														: ""
-												}}
-												className="px-6 py-3 whitespace-nowrap"
-											>
-												{value}
-											</td>
-										)
-									)}
+							{data
+								.map((element: any) => {
+									const { pslc, createdAt, ...rest } = element
+									return rest
+								})
+								.map((singledata: DataType) => (
+									<tr
+										key={singledata.id}
+										className="bg-white border-b cursor-pointer hover:bg-gray-200"
+									>
+										{Object.entries(singledata).map(
+											([key, value]) => {
+												console.log({ key })
+												return (
+													<td
+														key={key}
+														onClick={() => {
+															caseType ===
+															"flight"
+																? (window.location.href = `/trip/${singledata.id}`)
+																: ""
+														}}
+														className="px-6 py-3 whitespace-nowrap"
+													>
+														{key === "launchtime" ||
+														key === "createdAt"
+															? value.toLocaleString(
+																	"en-US",
+																	{
+																		month: "2-digit",
+																		day: "numeric",
+																		hour: "2-digit",
+																		minute: "2-digit",
+																		hour12: false,
+																	}
+															  )
+															: value}
+													</td>
+												)
+											}
+										)}
 
-									<td className="px-6 py-3 flex whitespace-nowrap">
-										{caseType !== "history" &&
-											caseType !== "flight" && (
-												<Edit
-													id={singledata.id}
-													caseType={caseType}
-													data={singledata}
-												/>
-											)}
-										<Delete
-											id={singledata.id}
-											caseType={caseType}
-											setData={setData}
-										/>
-									</td>
-								</tr>
-							))}
+										<td className="px-6 py-3 flex whitespace-nowrap">
+											{caseType !== "history" &&
+												caseType !== "flight" && (
+													<Edit
+														id={singledata.id}
+														caseType={caseType}
+														data={singledata}
+													/>
+												)}
+											<Delete
+												id={singledata.id}
+												caseType={caseType}
+												setData={setData}
+											/>
+										</td>
+									</tr>
+								))}
 						</tbody>
 					</table>
 				</>
