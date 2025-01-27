@@ -1,5 +1,7 @@
 ---
 import { getFlightById } from "../../lib/actions/flights/actions"
+import { MapCard } from "../components/cards/MapCard"
+import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
 const ClientFlight = await getFlightById(34)
@@ -18,21 +20,11 @@ console.log({ ClientFlight })
 			you a link to complete the booking process.
 		</p>
 	</div>
-	<div
-		class="w-full h-[30%] p-4 border-2 rounded border-solid bg-white border-gray-300"
-	>
-		<TopQuoteCard />
-	</div>
+
+	<TopQuoteCard />
+
 	<div class="w-full flex justify-around h-[50%] py-4 gap-8">
-		<div
-			class="w-[50%] h-full border-2 rounded border-solid bg-white border-gray-300"
-		>
-			asdasd
-		</div>
-		<div
-			class="w-[50%] h-full border-2 rounded border-solid bg-white border-gray-300"
-		>
-			asdasd
-		</div>
+		<PickAirship />
+		<MapCard />
 	</div></ClientLayout
 >
