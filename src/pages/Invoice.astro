@@ -1,10 +1,12 @@
 ---
+import { getAirshipsForInvoice } from "../../lib/actions/airships/actions"
 import { getFlightById } from "../../lib/actions/flights/actions"
 import { MapCard } from "../components/cards/MapCard"
 import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
 const ClientFlight = await getFlightById(34)
+const Airships = await getAirshipsForInvoice(["31", "32", "34"])
 const { launchtime, to, from, price_revenue } = ClientFlight
 ---
 

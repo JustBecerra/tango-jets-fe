@@ -16,6 +16,33 @@ export async function getAirships() {
 		throw err
 	}
 }
+
+export async function getAirshipsForInvoice(IDs: string[]) {
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/airships/invoice`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ IDs }),
+			}
+		)
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`)
+		}
+
+		const responseToken = await response.json()
+
+		return responseToken
+	} catch (err) {
+		console.error("Error fetching Airships:", err)
+		throw err
+	}
+}
+
 export async function addAirship(formData: FormData) {
 	try {
 		const response = await fetch(
