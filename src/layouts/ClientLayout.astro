@@ -1,5 +1,5 @@
 ---
-import Sidebar from "../components/sidebar/Sidebar.astro"
+import ClientTopBar from "../components/TopBar/ClientTopBar.astro"
 
 interface Props {
 	title: string
@@ -18,10 +18,10 @@ const { title } = Astro.props
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="flex h-screen m-0 font-sans">
-		<Sidebar class="w-64 bg-gray-200 p-5" />
+	<body class="flex flex-col items-center h-screen m-0 font-sans">
+		<ClientTopBar />
 		<div
-			class="flex-1 flex-col flex justify-center items-center p-5 bg-gradient-to-r from-blue-500 to-indigo-300 text-white"
+			class="flex-1 w-[90%] my-4 flex-col flex justify-around items-center"
 		>
 			<slot />
 		</div>
