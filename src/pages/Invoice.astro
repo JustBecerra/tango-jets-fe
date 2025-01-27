@@ -5,7 +5,7 @@ import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
 const ClientFlight = await getFlightById(34)
-console.log({ ClientFlight })
+const { launchtime, to, from, price_revenue } = ClientFlight
 ---
 
 <ClientLayout title="Invoice"
@@ -21,7 +21,12 @@ console.log({ ClientFlight })
 		</p>
 	</div>
 
-	<TopQuoteCard />
+	<TopQuoteCard
+		launchtime={launchtime}
+		to={to}
+		from={from}
+		price_revenue={price_revenue}
+	/>
 
 	<div class="w-full flex justify-around h-[50%] py-4 gap-8">
 		<PickAirship />
