@@ -1,6 +1,7 @@
 ---
 import { getAirshipsForInvoice } from "../../lib/actions/airships/actions"
 import { getFlightById } from "../../lib/actions/flights/actions"
+import { getImages } from "../../lib/actions/images/action"
 import { MapCard } from "../components/cards/MapCard"
 import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
@@ -8,6 +9,17 @@ import ClientLayout from "../layouts/ClientLayout.astro"
 const ClientFlight = await getFlightById(34)
 const Airships = await getAirshipsForInvoice(["31", "32", "34"])
 const { launchtime, to, from, price_revenue } = ClientFlight
+const airshipIDs = ["31", "32", "34"]
+
+const images = await getImages("31")
+
+// const images = await Promise.all(
+// 	airshipIDs.map(async (id: string) => {
+// 		return await getImages(id)
+// 	})
+// )
+
+console.log(images[0].image)
 ---
 
 <ClientLayout title="Quote"
@@ -31,7 +43,7 @@ const { launchtime, to, from, price_revenue } = ClientFlight
 	/>
 
 	<div class="w-full flex justify-around h-[50%] py-4 gap-8">
-		<PickAirship />
+		<PickAirship images={images} client:load />
 		<MapCard client:load />
 	</div></ClientLayout
 >
