@@ -17,7 +17,7 @@ const InFlight = ({ flights }: props) => {
   };
 
   return (
-    <div className="h-[300px] overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50 sticky top-0 z-10">
           <tr>

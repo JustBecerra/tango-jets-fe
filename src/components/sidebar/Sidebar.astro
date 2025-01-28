@@ -5,16 +5,17 @@ import SidebarTools from "./SidebarTools.astro"
 
 <aside
 	id="sidebar-multi-level-sidebar"
-	class="fixed top-0 left-0 z-40 w-64 h-screen border-r-2 border-black transition-transform -translate-x-full"
+	class="fixed top-0 left-0 z-40 w-64 h-screen border-r-2 border-white transition-transform -translate-x-full"
 	aria-label="Sidebar"
 >
-	<div class="h-full px-3 py-4 overflow-y-auto bg-gray-800">
+	<!-- <div class="h-full px-3 py-4 overflow-y-auto bg-gray-800"> -->
+		<div class="h-full px-3 py-4 overflow-y-auto bg-gradient-to-br from-[#68bdf5] via-gray-200 to-blue-300 text-gray-800 rounded-lg shadow-lg">
 		<button
 			data-drawer-target="sidebar-multi-level-sidebar"
 			data-drawer-toggle="sidebar-multi-level-sidebar"
 			aria-controls="sidebar-multi-level-sidebar"
 			type="button"
-			class="absolute right-0 -mr-12 inline-flex items-center p-2 text-sm text-gray-500 rounded-r-lg bg-gray-800 ring-gray-600"
+			class="absolute right-0 -mr-12 inline-flex items-center p-2 text-sm text-gray-500 rounded-r-lg bg-blue-300 ring-gray-600"
 		>
 			<span class="sr-only">Open sidebar</span>
 			<svg

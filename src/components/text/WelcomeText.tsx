@@ -26,7 +26,11 @@ export const WelcomeText = () => {
 
   return (
     <div className="m-8 text-center">
-      <h1 className="text-4xl font-bold">Welcome, {employeeName}!</h1>
+      <h1 className="text-4xl font-bold">
+        Welcome,
+        <span className="text-blue-500 font-cursive">{employeeName}</span>!
+      </h1>
+
       <h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
     </div>
   );
