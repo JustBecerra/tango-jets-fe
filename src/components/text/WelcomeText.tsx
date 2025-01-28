@@ -5,20 +5,24 @@ import { enUS } from "date-fns/locale";
 
 export const WelcomeText = () => {
   const [employeeName, setEmployeeName] = useState("");
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
 
   useEffect(() => {
-    const name = getCookie("username");
-    if (name) {
-      setEmployeeName(name);
-    }
+		const name = getCookie("username")
+		if (name) {
+			setEmployeeName(name)
+		}
 
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+		setCurrentTime(new Date())
 
-    return () => clearInterval(intervalId);
-  }, []);
+		const intervalId = setInterval(() => {
+			setCurrentTime(new Date())
+		}, 1000)
+
+		return () => clearInterval(intervalId)
+  }, [])
+
+  if (!currentTime) return null
 
   const formattedTime = format(currentTime, "EEE dd 🕒 'ARG' hh:mm a", {
     locale: enUS,
