@@ -34,7 +34,7 @@ export const flightScheduledMessage = ({
 		})
 		.join("")
 
-	const fullURL = `https://tango-jets-fe.vercel.app/${tripID}/${AirshipIDs}`
+	const fullURL = `https://tango-jets-fe.vercel.app/Invoice/${tripID}/${AirshipIDs}`
 
 	const hashedURL = hash.sha256().update(fullURL).digest("hex")
 
