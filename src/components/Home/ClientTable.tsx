@@ -5,6 +5,7 @@ interface props {
 }
 const ClientTable = ({ clients }: props) => {
   const newClientsList = clients.sort((a, b) => b.phase - a.phase);
+  console.log({ newClientsList })
   return (
     <div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200">
