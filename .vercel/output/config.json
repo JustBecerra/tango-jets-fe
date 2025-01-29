@@ -10,6 +10,50 @@
 		},
 		{
 			"handle": "filesystem"
+		},
+		{
+			"src": "^\\/_image\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Airships\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Client\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/History\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Home\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Invoice\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Quote\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Scheduler\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/trip\\/([^/]+?)\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/Trips\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/$",
+			"dest": "_render"
 		}
 	]
 }
