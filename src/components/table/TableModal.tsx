@@ -120,50 +120,6 @@ const TableModal = ({ caseType }: TableProps) => {
     fetchData();
   }, [caseType, flights, clients, airships]);
 
-  useEffect(() => {
-		try {
-			setData(
-				flights
-					.map((flight: any) => {
-						const { updatedAt, ...rest } = flight
-						return rest
-					})
-					.filter((flight: any) => {
-						const launchTime = new Date(flight.launchtime)
-						const currentTime = new Date()
-						return currentTime < launchTime
-					})
-					.map((flight: any) => {
-						return {
-							...flight,
-							launchtime: new Date(
-								flight.launchtime
-							).toLocaleString("en-US", {
-								month: "2-digit",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-							}),
-							createdAt: new Date(
-								flight.createdAt
-							).toLocaleString("en-US", {
-								month: "2-digit",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-							}),
-						}
-					})
-			)
-		} catch (error) {
-			console.error("Failed to fetch data:", error)
-		} finally {
-			setLoading(false)
-		}
-  }, [])
-
   const handleScheduler = () => {
 		window.location.href = "/Scheduler"
   }
