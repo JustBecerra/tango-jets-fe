@@ -7,9 +7,12 @@ import Layout from "../../layouts/Layout.astro"
 
 export async function getStaticPaths() {
 	const flightsRequested = await getFlights()
-	return flightsRequested.map((flight: Flight) => ({
-		params: { trip: flight.id },
-	}))
+	return {
+		paths: flightsRequested.map((flight: Flight) => ({
+			params: { trip: flight.id },
+		})),
+		fallback: "blocking", // Dynamically build pages for unlisted routes.
+	}
 }
 const { trip } = Astro.params
 const flight = await getFlightById(trip)
