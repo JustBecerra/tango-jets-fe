@@ -9,12 +9,7 @@ import tailwind from "@astrojs/tailwind"
 
 // https://astro.build/config
 export default defineConfig({
-	adapter: vercel(),
-	output: "server",
+	adapter: vercel({ edgeMiddleware: true }),
+	output: "static",
 	integrations: [react(), tailwind()],
-	server: {
-		headers: {
-			"Cache-Control": "no-store", // Forces dynamic response
-		},
-	},
 })
