@@ -1,15 +1,42 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { VerticalStepper } from "./VerticalStepper"
 import { EditForms } from "./EditForms"
 import type { Flight } from "../table/TableModal"
+import { getFlightById } from "../../../lib/actions/flights/actions"
 
-interface props {
-	flightRequested: Flight
-}
+export const EditStepperFrame = ({ trip }: { trip: string }) => {
+	const [localPhase, setLocalPhase] = useState<number>(3)
+	const [currentFlight, setCurrentFlight] = useState<Flight>({} as Flight)
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 
-export const EditStepperFrame = ({ flightRequested }: props) => {
-	const [localPhase, setLocalPhase] = useState(flightRequested.phase)
-	const [currentFlight, setCurrentFlight] = useState<Flight>(flightRequested)
+	useEffect(() => {
+		if (!trip) {
+			setError("Invalid trip ID")
+			setLoading(false)
+			return
+		}
+
+		const fetchFlight = async () => {
+			try {
+				const transformedTrip = parseInt(trip)
+
+				const response = await getFlightById(transformedTrip)
+
+				setCurrentFlight(response)
+				setLocalPhase(response.phase)
+			} catch (err: any) {
+				setError(err.message)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchFlight()
+	}, [trip])
+
+	if (loading) return <p className="text-gray-300">Loading...</p>
+	if (error) return <p className="text-red-500">{error}</p>
 
 	return (
 		<div className="flex h-full justify-center items-center gap-8">
