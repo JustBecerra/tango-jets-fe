@@ -1,22 +1,14 @@
 ---
+export const prerender = false
 import Layout from "../../layouts/Layout.astro"
 import { RouteGuard } from "../../components/routeguard"
 import { EditStepperFrame } from "../../components/stepper/EditStepperFrame"
-import { getFlights } from "../../../lib/actions/flights/actions"
-import type { Flight } from "../../components/table/TableModal"
 
-export async function getStaticPaths() {
-	const flights = await getFlights()
-	return flights.map((flight: Flight) => ({
-		params: { trip: flight.id },
-	}))
-}
-
-const { trip } = Astro.params
+const tripID = Astro.params.trip || ""
 ---
 
 <Layout title="Trip">
 	<RouteGuard client:load="react">
-		<EditStepperFrame trip={trip} client:load />
+		<EditStepperFrame trip={tripID} client:load />
 	</RouteGuard>
 </Layout>
