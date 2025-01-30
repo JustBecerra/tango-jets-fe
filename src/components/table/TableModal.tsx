@@ -124,6 +124,10 @@ const TableModal = ({ caseType }: TableProps) => {
 		window.location.href = "/Scheduler"
   }
 
+  const handleStepper = (id: number) => {
+		if (caseType === "flight") window.location.href = `/trip/${id}`
+  }
+
   const buttonRetriever = () => {
 		if (caseType === "flight") {
 			return (
@@ -205,12 +209,11 @@ const TableModal = ({ caseType }: TableProps) => {
 												return (
 													<td
 														key={key}
-														onClick={() => {
-															caseType ===
-															"flight"
-																? (window.location.href = `/trip/${singledata.id}`)
-																: ""
-														}}
+														onClick={() =>
+															handleStepper(
+																singledata.id
+															)
+														}
 														className="px-6 py-3 whitespace-nowrap"
 													>
 														{value}
