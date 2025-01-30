@@ -12,4 +12,5 @@ export default defineConfig({
 	adapter: vercel({ edgeMiddleware: true }),
 	output: "server",
 	integrations: [react(), tailwind()],
+	outDir: "dist",
 })
