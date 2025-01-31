@@ -1,1 +1,0 @@
-import{j as t}from"./jsx-runtime.CDeAccHH.js";import{r as e}from"./index.CqbGxsOR.js";import"./index.D2MAbzvX.js";const c=({children:o})=>{const[s,n]=e.useState(!1);return e.useEffect(()=>{document.cookie.includes("authToken")?n(!0):window.location.href="/"},[]),s?t.jsx(t.Fragment,{children:o}):null};export{c as RouteGuard};
