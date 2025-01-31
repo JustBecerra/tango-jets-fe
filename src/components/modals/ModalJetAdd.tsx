@@ -107,7 +107,7 @@ const AddJetModal: React.FC = () => {
     <>
       <button
         id="addJetButton"
-        className="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        className="block text-white  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
         type="button"
         onClick={handleToggleModal}
       >
@@ -122,14 +122,14 @@ const AddJetModal: React.FC = () => {
           className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto backdrop-filter backdrop-blur-sm bg-opacity-50"
         >
           <div className="relative w-full max-w-3xl max-h-full">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
-              <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="relative  rounded-lg shadow bg-gray-800">
+              <div className="flex items-start justify-between p-4 border-b rounded-t border-gray-600">
+                <h3 className="text-xl font-semibold text-white">
                   Add New Airship
                 </h3>
                 <button
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  className=" bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
                   onClick={handleToggleModal}
                 >
                   <svg
@@ -154,37 +154,37 @@ const AddJetModal: React.FC = () => {
                     <div>
                       <label
                         htmlFor="title"
-                        className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-200"
                       >
-                        Jet Title
+                        Operator Make Model
                       </label>
                       <input
                         type="text"
                         id="title"
                         name="title"
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block w-full px-4 py-2 mt-1 text-sm  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                         required
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="status"
-                        className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-200"
                       >
-                        Status
+                        Tail Number
                       </label>
                       <input
                         type="text"
                         id="status"
                         name="status"
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                         required
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="seats"
-                        className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-200"
                       >
                         Seats
                       </label>
@@ -192,24 +192,37 @@ const AddJetModal: React.FC = () => {
                         type="number"
                         id="seats"
                         name="seats"
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="block w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         required
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="size"
-                        className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+                        className="block text-sm font-medium text-gray-200"
                       >
                         Size
                       </label>
-                      <input
-                        type="text"
+                      <select
                         id="size"
                         name="size"
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                         required
-                      />
+                      >
+                        <option value="" disabled selected>
+                          Select a size
+                        </option>
+                        <option value="Turbo-prop">Turbo prop</option>
+                        <option value="Light-jet">Light jet</option>
+                        <option value="Midsize-jet">Midsize jet</option>
+                        <option value="Sup-Midsize-Jet">
+                          Super Midsize Jet
+                        </option>
+                        <option value="Heavy-jet">Heavy jet</option>
+                        <option value="Ultra-Long-Range">
+                          Ultra Long Range
+                        </option>
+                      </select>
                     </div>
                     <PortraitImage
                       handleDragOver={handleDragOver}
@@ -225,17 +238,17 @@ const AddJetModal: React.FC = () => {
                       genericData={genericData}
                     />
                   </div>
-                  <div className="flex justify-start items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <div className="flex justify-start items-center py-6 space-x-2 border-t rounded-b border-gray-600">
                     <button
                       id="submitJet"
                       type="submit"
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
                     >
                       Add Jet
                     </button>
                     <button
                       type="button"
-                      className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                      className=" focus:ring-4 focus:outline-none  rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600"
                       onClick={handleToggleModal}
                     >
                       Cancel
@@ -257,7 +270,7 @@ const AddJetModal: React.FC = () => {
       {showToast && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2">
           <Toast>
-            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 bg-green-800 text-green-200">
               <HiCheck className="h-5 w-5" />
             </div>
             <div className="ml-3 text-sm font-normal">
