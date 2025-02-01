@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import useStore from "../../store/store"
 import { AutoComplete } from "../input/AutoComplete"
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
@@ -29,10 +28,6 @@ export const FlightInfo = ({
 		const revenue = costNumber * (percentage / 100)
 		return costNumber + revenue
 	}
-
-	useEffect(() => {
-		console.log({ airshipData })
-	}, [airshipData])
 
 	const addAirshipOption = () => {
 		setAirshipData((prev) => [
@@ -132,12 +127,10 @@ export const FlightInfo = ({
 		} else if (phase === "second") {
 			return (
 				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-					{airshipData.map((airship, index) => {
-						console.log({ index })
-						console.log(airshipData.length)
+					{airshipData.map((airship, airshipindex) => {
 						return (
 							<>
-								<div key={index}>
+								<div key={airshipindex}>
 									<label
 										htmlFor="airship_title"
 										className="block text-sm font-medium"
@@ -149,8 +142,7 @@ export const FlightInfo = ({
 											setAirshipData((prevFormData) =>
 												prevFormData.map(
 													(item, index) =>
-														index ===
-														prevFormData.length - 1
+														airshipindex === index
 															? {
 																	...item,
 																	airship_name:
@@ -190,8 +182,7 @@ export const FlightInfo = ({
 											setAirshipData((prevFormData) =>
 												prevFormData.map(
 													(item, index) =>
-														index ===
-														prevFormData.length - 1
+														index === airshipindex
 															? {
 																	...item,
 																	price_cost:
@@ -241,7 +232,7 @@ export const FlightInfo = ({
 									/>
 								</div>
 								{airshipData.length > 0 &&
-								airshipData.length !== index + 1 ? (
+								airshipData.length !== airshipindex + 1 ? (
 									<div className="flex items-center w-10 h-10"></div>
 								) : (
 									<div className="flex items-center">
