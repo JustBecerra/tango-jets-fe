@@ -23,7 +23,6 @@ export const PortraitImage = ({
   handleFileChange,
   portraitData,
 }: props) => {
-  console.log({ portraitData });
   return (
     <div>
       <label
