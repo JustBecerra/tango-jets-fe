@@ -1,7 +1,8 @@
 import useStore from "../../store/store"
 import { AutoComplete } from "../input/AutoComplete"
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
-import { FaRegPlusSquare } from "react-icons/fa"
+import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa"
+
 interface props {
 	phase: string
 	formData: formType
@@ -39,6 +40,14 @@ export const FlightInfo = ({
 			},
 		])
 	}
+
+	const subtractAirshipOption = (airshipindex: number) => {
+		const newAirshipData = airshipData.filter(
+			(airship) => airship !== airshipData[airshipindex]
+		)
+		setAirshipData(newAirshipData)
+	}
+
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
@@ -233,7 +242,16 @@ export const FlightInfo = ({
 								</div>
 								{airshipData.length > 0 &&
 								airshipData.length !== airshipindex + 1 ? (
-									<div className="flex items-center w-10 h-10"></div>
+									<div className="flex items-center">
+										<FaRegMinusSquare
+											onClick={() =>
+												subtractAirshipOption(
+													airshipindex
+												)
+											}
+											className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
+										/>
+									</div>
 								) : (
 									<div className="flex items-center">
 										<FaRegPlusSquare
