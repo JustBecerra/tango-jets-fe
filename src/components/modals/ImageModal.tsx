@@ -38,7 +38,7 @@ const ImageModal = ({
 						<img
 							src={currentItem.dataValues.image}
 							alt={`slide ${currentIndex + 1}`}
-							className={`modal-image ${
+							className={`w-1/3 ${
 								isFullscreen ? "fullscreen" : ""
 							}`}
 							onClick={handleImageClick}

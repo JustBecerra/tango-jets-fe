@@ -73,7 +73,7 @@ const Carousel = ({
 						onClick={() => handleImageClick(index)}
 					>
 						<CImage
-							className="d-block w-100"
+							className="d-block w-[400px] h-[300px]"
 							src={item.dataValues.image}
 							alt={`slide ${index + 1}`}
 						/>

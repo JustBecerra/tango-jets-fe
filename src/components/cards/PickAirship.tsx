@@ -33,16 +33,7 @@ export const PickAirship = () => {
 			<div className="flex justify-center items-center w-full border-b-2 border-gray-300 border-solid">
 				<p className="text-2xl mb-2">Aircraft</p>
 			</div>
-			<div className="h-full w-full flex items-center justify-center">
-				{/* {images.map((image: ImagesType, index: number) => (
-					<img
-						key={index}
-						src={image.dataValues.image}
-						width={400}
-						height={400}
-						alt=""
-					/>
-				))} */}
+			<div className="h-full w-full flex flex-col items-center justify-center">
 				<Carousel images={images} items={airship} />
 			</div>
 		</div>
