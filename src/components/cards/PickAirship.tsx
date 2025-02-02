@@ -32,7 +32,7 @@ export const PickAirship = () => {
 				<p className="text-2xl mb-2">Aircraft</p>
 			</div>
 			<div className="h-full w-full flex items-center justify-center">
-				{images.map((image: ImagesType, index: number) => (
+				{/* {images.map((image: ImagesType, index: number) => (
 					<img
 						key={index}
 						src={image.dataValues.image}
@@ -40,7 +40,7 @@ export const PickAirship = () => {
 						height={400}
 						alt=""
 					/>
-				))}
+				))} */}
 			</div>
 		</div>
 	)
