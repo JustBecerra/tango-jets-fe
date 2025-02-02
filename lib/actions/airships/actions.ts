@@ -43,6 +43,31 @@ export async function getAirshipsForInvoice(IDs: string[]) {
 	}
 }
 
+export async function getAirshipImages(ID: string) {
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/images/${ID}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		)
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`)
+		}
+
+		const responseToken = await response.json()
+
+		return responseToken
+	} catch (err) {
+		console.error("Error fetching Airships:", err)
+		throw err
+	}
+}
+
 export async function addAirship(formData: FormData) {
 	try {
 		const response = await fetch(
