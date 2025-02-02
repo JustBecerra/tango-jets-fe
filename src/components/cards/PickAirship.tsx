@@ -3,8 +3,10 @@ import {
 	getAirshipImages,
 	getAirshipsForInvoice,
 } from "../../../lib/actions/airships/actions"
+import Carousel from "./Carousel"
+import type { Airship } from "../table/TableModal"
 
-interface ImagesType {
+export interface ImagesType {
 	dataValues: {
 		id: number
 		airship_id: number
@@ -15,11 +17,11 @@ interface ImagesType {
 
 export const PickAirship = () => {
 	const [images, setImages] = useState<ImagesType[]>([])
-
+	const [airship, setAirship] = useState<Airship>()
 	useEffect(() => {
 		async function fetchImages() {
-			// const response = await getAirshipsForInvoice(["34", "34", "34"])
-
+			const response = await getAirshipsForInvoice(["34", "34", "34"])
+			setAirship(response[0].dataValues)
 			const images = await getAirshipImages("34")
 
 			setImages(images)
@@ -41,6 +43,7 @@ export const PickAirship = () => {
 						alt=""
 					/>
 				))} */}
+				<Carousel images={images} items={airship} />
 			</div>
 		</div>
 	)
