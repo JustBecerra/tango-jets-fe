@@ -1,0 +1,5 @@
+ident,type,name,elevation_ft,continent,iso_country,iso_region,municipality,gps_code,iata_code,local_code,coordinates
+SAEZ,large_airport,Minister Pistarini International Airport,67,SA,AR,AR-B,Buenos Aires (Ezeiza),SAEZ,EZE,EZE,"-34.8222, -58.5358"
+KATL,large_airport,Hartsfield Jackson Atlanta International Airport,1026,NA,US,US-GA,Atlanta,KATL,ATL,ATL,"33.6367, -84.428101"
+EDDM,large_airport,Munich Airport,1487,EU,DE,DE-BY,Munich,EDDM,MUC,,"48.353802, 11.7861"
+KLAX,large_airport,Los Angeles International Airport,125,NA,US,US-CA,Los Angeles,KLAX,LAX,LAX,"33.942501, -118.407997"

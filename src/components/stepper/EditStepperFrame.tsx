@@ -24,13 +24,13 @@ export const EditStepperFrame = ({ flightRequested }: props) => {
             {/* <ArrowLeftIcon className="w-5 h-5 mr-2" /> */}
             Back
           </button>
-          <button
-            type="button"
+          <a
+            href="/itinerary.pdf"
+            download
             className="focus:ring-4 focus:outline-none mb-2 focus:ring-blue-300 rounded-lg border text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600 ml-auto"
-            onClick={() => (window.location.href = "/Trips")}
           >
             Download Itinerary
-          </button>
+          </a>
         </div>
         <EditForms
           localPhase={localPhase}
