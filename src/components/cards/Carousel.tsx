@@ -19,7 +19,6 @@ const Carousel = ({
 
 	storedAirshipData: Airship[]
 }) => {
-	const [currentSlide, setCurrentSlide] = useState(0)
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [clickCount, setClickCount] = useState(0)
@@ -33,8 +32,8 @@ const Carousel = ({
 	const handleSlideChange = (e: any) => {
 		const newIndex = e
 		if (typeof newIndex !== "undefined") {
-			setCurrentSlide(newIndex)
 			setCurrentIndex(newIndex)
+			setCurrentAirship(storedAirshipData[newIndex])
 		} else {
 			console.error(
 				"Slide change event does not contain expected properties"

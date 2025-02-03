@@ -33,22 +33,24 @@ const ImageModal = ({
 				<Modal.Title>Más Imágenes</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div className="grid grid-rows-3 gap-4">
-					{currentItem.length > 0 ? (
-						currentItem.map((image, index) => (
-							<img
-								key={index}
-								src={image.dataValues.image}
-								alt={`slide ${currentIndex + 1}`}
-								className={`w-1/3 ${
-									isFullscreen ? "fullscreen" : ""
-								}`}
-								onClick={handleImageClick}
-							/>
-						))
-					) : (
-						<p>Loading image...</p>
-					)}
+				<div className="flex flex-col">
+					<div className="grid grid-flow-col grid-rows-3 gap-4">
+						{currentItem.length > 0 ? (
+							currentItem.map((image, index) => (
+								<img
+									key={index}
+									src={image.dataValues.image}
+									alt={`slide ${currentIndex + 1}`}
+									className={`w-1/4 ${
+										isFullscreen ? "fullscreen" : ""
+									}`}
+									onClick={handleImageClick}
+								/>
+							))
+						) : (
+							<p>Loading image...</p>
+						)}
+					</div>
 					<h5>{items ? items.title : "Title"}</h5>
 					<p>{items ? items.description : "description"}</p>
 				</div>
