@@ -5,9 +5,20 @@ import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
 import type { Flight } from "../components/table/TableModal"
 import ClientLayout from "../layouts/ClientLayout.astro"
-const ClientFlight = await getFlightById(54) // change ID if no flight matches it
 
+const { tripID, AirshipIDs } = Astro.params
+if (!tripID || !AirshipIDs) return Astro.redirect("/404")
+
+const convertedID = parseInt(tripID)
+const ClientFlight = await getFlightById(convertedID) // change ID if no flight matches it
 const { launchtime, to, from, price_revenue }: Flight = ClientFlight
+
+// export async function getStaticPaths() {
+// 	const flightsRequested = await getFlights()
+// 	return flightsRequested.map((flight: Flight) => ({
+// 		params: { trip: flight.id },
+// 	}))
+// }
 ---
 
 <ClientLayout title="Quote"
