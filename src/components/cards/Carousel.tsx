@@ -22,6 +22,9 @@ const Carousel = ({
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [clickCount, setClickCount] = useState(0)
+	const portraitImages = images.filter(
+		(image) => image?.dataValues?.typeof === "Portrait"
+	)
 
 	const handleSlideChange = (e: any) => {
 		const newIndex = e
@@ -67,22 +70,26 @@ const Carousel = ({
 				className="custom-carousel"
 				onSlid={handleSlideChange}
 			>
-				{images.map((item, index) => (
-					<CCarouselItem
-						key={index}
-						onClick={() => handleImageClick(index)}
-					>
-						<CImage
-							className="d-block w-[400px] h-[300px]"
-							src={item.dataValues.image}
-							alt={`slide ${index + 1}`}
-						/>
-						<CCarouselCaption className="d-none d-md-block">
-							<h5>{items ? items.title : ""}</h5>
-							{/* <p>{items.description}</p> */}
-						</CCarouselCaption>
-					</CCarouselItem>
-				))}
+				{portraitImages ? (
+					portraitImages.map((item, index) => (
+						<CCarouselItem
+							key={index}
+							onClick={() => handleImageClick(index)}
+						>
+							<CImage
+								className="d-block w-[400px] h-[300px]"
+								src={item.dataValues.image}
+								alt={`slide ${index + 1}`}
+							/>
+							<CCarouselCaption className="d-none d-md-block">
+								<h5>{items ? items.title : ""}</h5>
+								{/* <p>{items.description}</p> */}
+							</CCarouselCaption>
+						</CCarouselItem>
+					))
+				) : (
+					<>Loading...</>
+				)}
 			</CCarousel>
 
 			<div id="Boton">

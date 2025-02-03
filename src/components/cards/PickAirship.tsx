@@ -15,16 +15,22 @@ export interface ImagesType {
 	}
 }
 
-export const PickAirship = () => {
-	const [images, setImages] = useState<ImagesType[]>([])
+interface airshipObjects {
+	airshipID: number
+	revenue: number
+}
+
+interface props {
+	airshipObjects: airshipObjects[]
+	images: ImagesType[]
+}
+
+export const PickAirship = ({ images, airshipObjects }: props) => {
 	const [airship, setAirship] = useState<Airship>()
 	useEffect(() => {
 		async function fetchImages() {
 			const response = await getAirshipsForInvoice(["34", "34", "34"])
 			setAirship(response[0].dataValues)
-			const images = await getAirshipImages("34")
-
-			setImages(images)
 		}
 		fetchImages()
 	}, [])

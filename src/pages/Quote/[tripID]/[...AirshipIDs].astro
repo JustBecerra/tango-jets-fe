@@ -1,4 +1,8 @@
 ---
+import {
+	getAirshipImages,
+	getAirshipsForInvoice,
+} from "../../../../lib/actions/airships/actions"
 import { getFlightById } from "../../../../lib/actions/flights/actions"
 import { MapCard } from "../../../components/cards/MapCard"
 import { PickAirship } from "../../../components/cards/PickAirship"
@@ -8,18 +12,25 @@ import ClientLayout from "../../../layouts/ClientLayout.astro"
 
 const { tripID, AirshipIDs } = Astro.params
 if (!tripID || !AirshipIDs) return Astro.redirect("/404")
-const airshipArray = AirshipIDs.split("/")
+const airshipParamsArray = AirshipIDs.split("/")
 const airshipObjects = []
-for (let i = 0; i < airshipArray.length; i += 2) {
+for (let i = 0; i < airshipParamsArray.length; i += 2) {
 	airshipObjects.push({
-		airshipID: parseInt(airshipArray[i]),
-		revenue: parseFloat(airshipArray[i + 1]),
+		airshipID: parseInt(airshipParamsArray[i]),
+		revenue: parseFloat(airshipParamsArray[i + 1]),
 	})
 }
-console.log({ airshipObjects })
+
+const airshipIDsFromParams = airshipObjects.map((airship) =>
+	airship.airshipID.toString()
+)
+const storedAirshipData = await getAirshipsForInvoice(airshipIDsFromParams)
+const imageRequests = airshipIDsFromParams.map((id) => getAirshipImages(id))
+const images = await Promise.all(imageRequests)
+
 const convertedID = parseInt(tripID)
 const ClientFlight = await getFlightById(convertedID)
-const { launchtime, to, from, price_revenue }: Flight = ClientFlight
+const { launchtime, to, from }: Flight = ClientFlight
 ---
 
 <ClientLayout title="Quote"
@@ -39,11 +50,14 @@ const { launchtime, to, from, price_revenue }: Flight = ClientFlight
 		launchtime={launchtime || ""}
 		to={to || ""}
 		from={from || ""}
-		price_revenue={price_revenue || 1200}
 	/>
 
 	<div class="w-full flex justify-around h-[60%] py-4 gap-8">
-		<PickAirship client:load />
+		<PickAirship
+			images={images[0]}
+			airshipObjects={airshipObjects}
+			client:load
+		/>
 		<MapCard client:load />
 	</div></ClientLayout
 >
