@@ -5,6 +5,7 @@ import {
 } from "../../../../lib/actions/airships/actions"
 import { getFlightById } from "../../../../lib/actions/flights/actions"
 import { MapCard } from "../../../components/cards/MapCard"
+import type { ImagesType } from "../../../components/cards/PickAirship"
 import { PickAirship } from "../../../components/cards/PickAirship"
 import TopQuoteCard from "../../../components/cards/TopQuoteCard.astro"
 import type { Flight } from "../../../components/table/TableModal"
@@ -54,8 +55,9 @@ const { launchtime, to, from }: Flight = ClientFlight
 
 	<div class="w-full flex justify-around h-[60%] py-4 gap-8">
 		<PickAirship
-			images={images[0]}
+			images={images as [ImagesType[]]}
 			airshipObjects={airshipObjects}
+			storedAirshipData={storedAirshipData}
 			client:load
 		/>
 		<MapCard client:load />

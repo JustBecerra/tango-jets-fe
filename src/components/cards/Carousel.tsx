@@ -13,16 +13,20 @@ import type { Airship } from "../table/TableModal"
 
 const Carousel = ({
 	images,
-	items,
+	storedAirshipData,
 }: {
-	images: ImagesType[]
-	items: Airship | undefined
+	images: [ImagesType[]]
+
+	storedAirshipData: Airship[]
 }) => {
 	const [currentSlide, setCurrentSlide] = useState(0)
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [clickCount, setClickCount] = useState(0)
-	const portraitImages = images.filter(
+	const [currentAirship, setCurrentAirship] = useState<Airship>(
+		storedAirshipData[currentIndex]
+	)
+	const portraitImages = images[currentIndex].filter(
 		(image) => image?.dataValues?.typeof === "Portrait"
 	)
 
@@ -81,10 +85,6 @@ const Carousel = ({
 								src={item.dataValues.image}
 								alt={`slide ${index + 1}`}
 							/>
-							<CCarouselCaption className="d-none d-md-block">
-								<h5>{items ? items.title : ""}</h5>
-								{/* <p>{items.description}</p> */}
-							</CCarouselCaption>
 						</CCarouselItem>
 					))
 				) : (
@@ -105,7 +105,7 @@ const Carousel = ({
 			<ImageModal
 				show={showModal}
 				handleClose={handleCloseModal}
-				items={items}
+				items={currentAirship}
 				images={images}
 				currentIndex={currentIndex}
 			/>

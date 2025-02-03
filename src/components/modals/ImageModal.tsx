@@ -8,7 +8,7 @@ import type { Airship } from "../table/TableModal"
 interface props {
 	show: boolean
 	handleClose: () => void
-	images: ImagesType[]
+	images: [ImagesType[]]
 	currentIndex: number
 	items: Airship | undefined
 }
@@ -33,16 +33,19 @@ const ImageModal = ({
 				<Modal.Title>Más Imágenes</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div>
-					{currentItem?.dataValues?.image ? (
-						<img
-							src={currentItem.dataValues.image}
-							alt={`slide ${currentIndex + 1}`}
-							className={`w-1/3 ${
-								isFullscreen ? "fullscreen" : ""
-							}`}
-							onClick={handleImageClick}
-						/>
+				<div className="grid grid-rows-3 gap-4">
+					{currentItem.length > 0 ? (
+						currentItem.map((image, index) => (
+							<img
+								key={index}
+								src={image.dataValues.image}
+								alt={`slide ${currentIndex + 1}`}
+								className={`w-1/3 ${
+									isFullscreen ? "fullscreen" : ""
+								}`}
+								onClick={handleImageClick}
+							/>
+						))
 					) : (
 						<p>Loading image...</p>
 					)}
