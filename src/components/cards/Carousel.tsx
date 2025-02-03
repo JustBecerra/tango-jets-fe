@@ -1,0 +1,109 @@
+import { useState } from "react"
+import {
+	CCarousel,
+	CCarouselCaption,
+	CCarouselItem,
+	CImage,
+} from "@coreui/react"
+import "@coreui/coreui/dist/css/coreui.min.css"
+import "./Carousel.css"
+import ImageModal from "../modals/ImageModal"
+import type { ImagesType } from "./PickAirship"
+import type { Airship } from "../table/TableModal"
+
+const Carousel = ({
+	images,
+	items,
+}: {
+	images: ImagesType[]
+	items: Airship | undefined
+}) => {
+	const [currentSlide, setCurrentSlide] = useState(0)
+	const [showModal, setShowModal] = useState(false)
+	const [currentIndex, setCurrentIndex] = useState(0)
+	const [clickCount, setClickCount] = useState(0)
+
+	const handleSlideChange = (e: any) => {
+		const newIndex = e
+		if (typeof newIndex !== "undefined") {
+			setCurrentSlide(newIndex)
+			setCurrentIndex(newIndex)
+		} else {
+			console.error(
+				"Slide change event does not contain expected properties"
+			)
+		}
+	}
+
+	const handleImageClick = (index: number) => {
+		setCurrentIndex(index)
+		setShowModal(true)
+	}
+
+	const handleCloseModal = () => {
+		setShowModal(false)
+	}
+
+	const handleButtonClick = () => {
+		if (clickCount < 1) {
+			alert("Are you sure?")
+			setClickCount(clickCount + 1)
+		} else {
+			if (images && images.length > 0) {
+				alert(
+					`Current slide description: {items[currentIndex].description}`
+				)
+			}
+		}
+	}
+
+	return (
+		<>
+			<CCarousel
+				controls
+				indicators
+				transition="crossfade"
+				interval={false}
+				className="custom-carousel"
+				onSlid={handleSlideChange}
+			>
+				{images.map((item, index) => (
+					<CCarouselItem
+						key={index}
+						onClick={() => handleImageClick(index)}
+					>
+						<CImage
+							className="d-block w-[400px] h-[300px]"
+							src={item.dataValues.image}
+							alt={`slide ${index + 1}`}
+						/>
+						<CCarouselCaption className="d-none d-md-block">
+							<h5>{items ? items.title : ""}</h5>
+							{/* <p>{items.description}</p> */}
+						</CCarouselCaption>
+					</CCarouselItem>
+				))}
+			</CCarousel>
+
+			<div id="Boton">
+				<button
+					id="selectButton"
+					className="styled-button"
+					onClick={handleButtonClick}
+				>
+					Select this Option
+				</button>
+			</div>
+
+			<ImageModal
+				show={showModal}
+				handleClose={handleCloseModal}
+				items={items}
+				images={images}
+				currentIndex={currentIndex}
+			/>
+		</>
+	)
+}
+
+export default Carousel
