@@ -77,46 +77,52 @@ export const FlightInfo = ({
   const PhaseFields = () => {
     if (phase === "first") {
       return (
-        <div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
-          <CsvSelect
-            labelFrom="From"
-            labelTo="To"
-            onSelectFrom={handleSelectFrom}
-            onSelectTo={handleSelectTo}
-            onDistanceCalculated={handleDistanceCalculated}
-            onFlightTimeCalculated={handleFlightTimeCalculated}
-          />
-          <div>
-            <label htmlFor="launchtime" className="block text-sm font-medium">
-              Launch Time
-            </label>
-            <input
-              type="datetime-local"
-              id="launchtime"
-              name="launchtime"
-              value={launchtime.toISOString().slice(0, 16)}
-              onChange={(e) =>
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  launchtime: new Date(e.target.value),
-                }))
-              }
-              min={new Date().toISOString().slice(0, 16)}
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="master_passenger"
-              className="block text-sm font-medium"
-            >
-              Master Passenger
-            </label>
-            <AutoComplete value={master_passenger} setter={setFormData} />
-          </div>
-        </div>
-      );
+			<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
+				<CsvSelect
+					labelFrom="From"
+					labelTo="To"
+					onSelectFrom={handleSelectFrom}
+					onSelectTo={handleSelectTo}
+					onDistanceCalculated={handleDistanceCalculated}
+					onFlightTimeCalculated={handleFlightTimeCalculated}
+				/>
+				<div>
+					<label
+						htmlFor="launchtime"
+						className="block text-sm font-medium"
+					>
+						Launch Time
+					</label>
+					<input
+						type="datetime-local"
+						id="launchtime"
+						name="launchtime"
+						value={launchtime.toISOString().slice(0, 16)}
+						onChange={(e) =>
+							setFormData((prevFormData) => ({
+								...prevFormData,
+								launchtime: new Date(e.target.value),
+							}))
+						}
+						min={new Date().toISOString().slice(0, 16)}
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						required
+					/>
+				</div>
+				<div>
+					<label
+						htmlFor="master_passenger"
+						className="block text-sm font-medium"
+					>
+						Lead Passenger
+					</label>
+					<AutoComplete
+						value={master_passenger}
+						setter={setFormData}
+					/>
+				</div>
+			</div>
+		)
     } else if (phase === "second") {
       return (
         <div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">

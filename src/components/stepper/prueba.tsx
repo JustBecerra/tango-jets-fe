@@ -32,30 +32,30 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   const [averageSpeed] = useState<number>(900); // Velocidad promedio en km/h
 
   useEffect(() => {
-    fetch("../src/airports.csv")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text();
-      })
-      .then((csvText) => {
-        const parsedData = Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true,
-        });
+    fetch("/airports.csv")
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("Network response was not ok")
+			}
+			return response.text()
+		})
+		.then((csvText) => {
+			const parsedData = Papa.parse(csvText, {
+				header: true,
+				skipEmptyLines: true,
+			})
 
-        const filteredData = parsedData.data.map((row: any) => ({
-          ident: row.ident,
-          name: row.name,
-          type: row.type,
-          iata_code: row.iata_code,
-          coordinates: row.coordinates,
-        }));
+			const filteredData = parsedData.data.map((row: any) => ({
+				ident: row.ident,
+				name: row.name,
+				type: row.type,
+				iata_code: row.iata_code,
+				coordinates: row.coordinates,
+			}))
 
-        setOptions(filteredData);
-      })
-      .catch((error) => console.error("Error fetching CSV:", error));
+			setOptions(filteredData)
+		})
+		.catch((error) => console.error("Error fetching CSV:", error))
   }, []);
 
   const calculateDistance = () => {
