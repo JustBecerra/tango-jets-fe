@@ -1,14 +1,15 @@
 ---
-import { getFlightById } from "../../lib/actions/flights/actions"
-import { MapCard } from "../components/cards/MapCard"
-import { PickAirship } from "../components/cards/PickAirship"
-import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
-import type { Flight } from "../components/table/TableModal"
-import ClientLayout from "../layouts/ClientLayout.astro"
+import { getFlightById } from "../../../../lib/actions/flights/actions"
+import { MapCard } from "../../../components/cards/MapCard"
+import { PickAirship } from "../../../components/cards/PickAirship"
+import TopQuoteCard from "../../../components/cards/TopQuoteCard.astro"
+import type { Flight } from "../../../components/table/TableModal"
+import ClientLayout from "../../../layouts/ClientLayout.astro"
 
 const { tripID, AirshipIDs } = Astro.params
 if (!tripID || !AirshipIDs) return Astro.redirect("/404")
-
+const airshipArray = AirshipIDs.split("/")
+console.log({ airshipArray })
 const convertedID = parseInt(tripID)
 const ClientFlight = await getFlightById(convertedID) // change ID if no flight matches it
 const { launchtime, to, from, price_revenue }: Flight = ClientFlight
