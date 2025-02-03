@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import CsvSelect from "../stepper/prueba";
 import useStore from "../../store/store";
 import { AutoComplete } from "../input/AutoComplete";
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
@@ -20,6 +22,9 @@ export const FlightInfo = ({
 }: props) => {
   const { to, from, launchtime, master_passenger } = formData;
   const { airships } = useStore((state) => state);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [flightTime, setFlightTime] = useState<number | null>(null);
+
   const getPercentage = (cost: string): number => {
     if (cost === "") return 0;
 
@@ -28,6 +33,27 @@ export const FlightInfo = ({
 
     const revenue = costNumber * (percentage / 100);
     return costNumber + revenue;
+  };
+  const handleSelectFrom = (value: string) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      from: value,
+    }));
+  };
+
+  const handleSelectTo = (value: string) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      to: value,
+    }));
+  };
+
+  const handleDistanceCalculated = (calculatedDistance: number) => {
+    setDistance(calculatedDistance);
+  };
+
+  const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
+    setFlightTime(calculatedFlightTime);
   };
 
   const addAirshipOption = () => {
@@ -52,44 +78,14 @@ export const FlightInfo = ({
     if (phase === "first") {
       return (
         <div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
-          <div>
-            <label htmlFor="to" className="block text-sm font-medium">
-              To
-            </label>
-            <input
-              type="text"
-              id="to"
-              name="to"
-              value={to}
-              onChange={(e) =>
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  to: e.target.value,
-                }))
-              }
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="from" className="block text-sm font-medium">
-              From
-            </label>
-            <input
-              type="text"
-              id="from"
-              name="from"
-              value={from}
-              onChange={(e) =>
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  from: e.target.value,
-                }))
-              }
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
+          <CsvSelect
+            labelFrom="From"
+            labelTo="To"
+            onSelectFrom={handleSelectFrom}
+            onSelectTo={handleSelectTo}
+            onDistanceCalculated={handleDistanceCalculated}
+            onFlightTimeCalculated={handleFlightTimeCalculated}
+          />
           <div>
             <label htmlFor="launchtime" className="block text-sm font-medium">
               Launch Time
@@ -238,6 +234,13 @@ export const FlightInfo = ({
           <h2>To: {to === "" ? "TBD" : to}</h2>
           <h2>From: {from === "" ? "TBD" : from}</h2>
           <h2>Launch Time: {launchtime.toISOString().slice(0, 16)}</h2>
+          <h2>
+            Distance: {distance !== null ? `${distance.toFixed(2)} km` : "TBD"}
+          </h2>
+          <h2>
+            Flight Time:{" "}
+            {flightTime !== null ? `${flightTime.toFixed(2)} hours` : "TBD"}
+          </h2>
           <h2>
             Master Passenger:{" "}
             {master_passenger === "" ? "TBD" : master_passenger}
