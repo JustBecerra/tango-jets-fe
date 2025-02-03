@@ -9,17 +9,17 @@ import ClientLayout from "../../../layouts/ClientLayout.astro"
 const { tripID, AirshipIDs } = Astro.params
 if (!tripID || !AirshipIDs) return Astro.redirect("/404")
 const airshipArray = AirshipIDs.split("/")
-console.log({ airshipArray })
+const airshipObjects = []
+for (let i = 0; i < airshipArray.length; i += 2) {
+	airshipObjects.push({
+		airshipID: parseInt(airshipArray[i]),
+		revenue: parseFloat(airshipArray[i + 1]),
+	})
+}
+console.log({ airshipObjects })
 const convertedID = parseInt(tripID)
-const ClientFlight = await getFlightById(convertedID) // change ID if no flight matches it
+const ClientFlight = await getFlightById(convertedID)
 const { launchtime, to, from, price_revenue }: Flight = ClientFlight
-
-// export async function getStaticPaths() {
-// 	const flightsRequested = await getFlights()
-// 	return flightsRequested.map((flight: Flight) => ({
-// 		params: { trip: flight.id },
-// 	}))
-// }
 ---
 
 <ClientLayout title="Quote"
