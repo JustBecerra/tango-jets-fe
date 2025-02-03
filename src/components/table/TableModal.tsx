@@ -17,13 +17,13 @@ export interface Client {
 }
 
 export interface Airship {
-  id: number;
-  title: string;
-  seats: number;
-  status: string;
-  size: string;
-  pricepermile: number;
-  images?: File[];
+	id: number
+	title: string
+	seats: number
+	status: string
+	size: string
+	description: string
+	images?: File[]
 }
 
 export interface Flight {

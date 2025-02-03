@@ -1,13 +1,13 @@
 ---
-import { getAirshipsForInvoice } from "../../lib/actions/airships/actions"
 import { getFlightById } from "../../lib/actions/flights/actions"
 import { MapCard } from "../components/cards/MapCard"
 import { PickAirship } from "../components/cards/PickAirship"
 import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
+import type { Flight } from "../components/table/TableModal"
 import ClientLayout from "../layouts/ClientLayout.astro"
-// const ClientFlight = await getFlightById(34)
-// const Airships = await getAirshipsForInvoice(["31", "32", "34"])
-// const { launchtime, to, from, price_revenue } = ClientFlight
+const ClientFlight = await getFlightById(54) // change ID if no flight matches it
+
+const { launchtime, to, from, price_revenue }: Flight = ClientFlight
 ---
 
 <ClientLayout title="Quote"
@@ -23,15 +23,15 @@ import ClientLayout from "../layouts/ClientLayout.astro"
 		</p>
 	</div>
 
-	<!-- <TopQuoteCard
-		launchtime={launchtime}
-		to={to}
-		from={from}
-		price_revenue={price_revenue}
-	/> -->
+	<TopQuoteCard
+		launchtime={launchtime || ""}
+		to={to || ""}
+		from={from || ""}
+		price_revenue={price_revenue || 1200}
+	/>
 
-	<div class="w-full flex justify-around h-[50%] py-4 gap-8">
-		<PickAirship />
+	<div class="w-full flex justify-around h-[60%] py-4 gap-8">
+		<PickAirship client:load />
 		<MapCard client:load />
 	</div></ClientLayout
 >

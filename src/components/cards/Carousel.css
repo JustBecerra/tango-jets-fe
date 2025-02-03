@@ -1,0 +1,43 @@
+.custom-carousel {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+
+  .custom-carousel .carousel-control-prev,
+  .custom-carousel .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #Boton {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .styled-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .styled-button:hover {
+    background-color: #0056b3;
+  }
