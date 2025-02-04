@@ -61,46 +61,46 @@ const AddJetModal: React.FC = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    const formElement = event.currentTarget;
-    const formData = new FormData(formElement);
+		event.preventDefault()
+		setLoading(true)
+		const formElement = event.currentTarget
+		const formData = new FormData(formElement)
 
-    formData.set("title", formData.get("title") as string);
-    formData.set("status", formData.get("status") as string);
-    formData.set("seats", formData.get("seats") as string);
-    formData.set("size", formData.get("size") as string);
+		formData.set("title", formData.get("title") as string)
+		formData.set("status", formData.get("status") as string)
+		formData.set("seats", formData.get("seats") as string)
+		formData.set("size", formData.get("size") as string)
+		console.log({ formData })
+		const imagesInput = document.querySelector<HTMLInputElement>(
+			'input[name="generic"]'
+		)
+		if (imagesInput?.files) {
+			for (let i = 0; i < imagesInput.files.length - 1; i++) {
+				formData.append("generic", imagesInput.files[i])
+			}
+		}
 
-    const imagesInput = document.querySelector<HTMLInputElement>(
-      'input[name="generic"]'
-    );
-    if (imagesInput?.files) {
-      for (let i = 0; i < imagesInput.files.length - 1; i++) {
-        formData.append("generic", imagesInput.files[i]);
-      }
-    }
+		const portraitImageInput = document.querySelector<HTMLInputElement>(
+			'input[name="portrait"]'
+		)
 
-    const portraitImageInput = document.querySelector<HTMLInputElement>(
-      'input[name="portrait"]'
-    );
+		// if (portraitImageInput?.files) {
+		//   formData.append("portrait", portraitImageInput.files[0]);
+		// }
 
-    if (portraitImageInput?.files) {
-      formData.append("portrait", portraitImageInput.files[0]);
-    }
+		try {
+			const response = await addAirship(formData) // Pass formData here
 
-    try {
-      const response = await addAirship(formData); // Pass formData here
-
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        setIsModalOpen(false);
-      }, 2000);
-    } catch (err) {
-      console.error("Error adding airship or uploading files:", err);
-    } finally {
-      setLoading(false);
-    }
+			setShowToast(true)
+			setTimeout(() => {
+				setShowToast(false)
+				setIsModalOpen(false)
+			}, 2000)
+		} catch (err) {
+			console.error("Error adding airship or uploading files:", err)
+		} finally {
+			setLoading(false)
+		}
   };
 
   return (

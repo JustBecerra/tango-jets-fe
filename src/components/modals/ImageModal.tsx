@@ -55,7 +55,7 @@ const ImageModal = ({
 					<p>
 						Description: {items ? items.description : "description"}
 					</p>
-					<p>Status: {items ? items.status : "status"}</p>
+					<p>Tail number: {items ? items.status : "Tail number"}</p>
 					<p>Seats: {items ? items.seats : "seats"}</p>
 					<p>Size: {items ? items.size : "size"}</p>
 				</div>
