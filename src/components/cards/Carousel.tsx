@@ -25,8 +25,8 @@ const Carousel = ({
 	const [currentAirship, setCurrentAirship] = useState<Airship>(
 		storedAirshipData[currentIndex]
 	)
-	const portraitImages = images[currentIndex].filter(
-		(image) => image?.dataValues?.typeof === "Portrait"
+	const portraitImages = images.map((arrayOfMap) =>
+		arrayOfMap.find((image) => image?.dataValues?.typeof === "Portrait")
 	)
 
 	const handleSlideChange = (e: any) => {
@@ -81,7 +81,7 @@ const Carousel = ({
 						>
 							<CImage
 								className="d-block w-[400px] h-[300px]"
-								src={item.dataValues.image}
+								src={item?.dataValues.image}
 								alt={`slide ${index + 1}`}
 							/>
 						</CCarouselItem>
