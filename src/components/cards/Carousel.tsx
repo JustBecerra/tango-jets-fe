@@ -13,21 +13,27 @@ import type { Airship } from "../table/TableModal"
 
 const Carousel = ({
 	images,
-	items,
+	storedAirshipData,
 }: {
-	images: ImagesType[]
-	items: Airship | undefined
+	images: [ImagesType[]]
+
+	storedAirshipData: Airship[]
 }) => {
-	const [currentSlide, setCurrentSlide] = useState(0)
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [clickCount, setClickCount] = useState(0)
+	const [currentAirship, setCurrentAirship] = useState<Airship>(
+		storedAirshipData[currentIndex]
+	)
+	const portraitImages = images[currentIndex].filter(
+		(image) => image?.dataValues?.typeof === "Portrait"
+	)
 
 	const handleSlideChange = (e: any) => {
 		const newIndex = e
 		if (typeof newIndex !== "undefined") {
-			setCurrentSlide(newIndex)
 			setCurrentIndex(newIndex)
+			setCurrentAirship(storedAirshipData[newIndex])
 		} else {
 			console.error(
 				"Slide change event does not contain expected properties"
@@ -67,22 +73,22 @@ const Carousel = ({
 				className="custom-carousel"
 				onSlid={handleSlideChange}
 			>
-				{images.map((item, index) => (
-					<CCarouselItem
-						key={index}
-						onClick={() => handleImageClick(index)}
-					>
-						<CImage
-							className="d-block w-[400px] h-[300px]"
-							src={item.dataValues.image}
-							alt={`slide ${index + 1}`}
-						/>
-						<CCarouselCaption className="d-none d-md-block">
-							<h5>{items ? items.title : ""}</h5>
-							{/* <p>{items.description}</p> */}
-						</CCarouselCaption>
-					</CCarouselItem>
-				))}
+				{portraitImages ? (
+					portraitImages.map((item, index) => (
+						<CCarouselItem
+							key={index}
+							onClick={() => handleImageClick(index)}
+						>
+							<CImage
+								className="d-block w-[400px] h-[300px]"
+								src={item.dataValues.image}
+								alt={`slide ${index + 1}`}
+							/>
+						</CCarouselItem>
+					))
+				) : (
+					<>Loading...</>
+				)}
 			</CCarousel>
 
 			<div id="Boton">
@@ -98,7 +104,7 @@ const Carousel = ({
 			<ImageModal
 				show={showModal}
 				handleClose={handleCloseModal}
-				items={items}
+				items={currentAirship}
 				images={images}
 				currentIndex={currentIndex}
 			/>

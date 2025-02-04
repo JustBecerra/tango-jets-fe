@@ -1,0 +1,65 @@
+---
+import {
+	getAirshipImages,
+	getAirshipsForInvoice,
+} from "../../../../lib/actions/airships/actions"
+import { getFlightById } from "../../../../lib/actions/flights/actions"
+import { MapCard } from "../../../components/cards/MapCard"
+import type { ImagesType } from "../../../components/cards/PickAirship"
+import { PickAirship } from "../../../components/cards/PickAirship"
+import TopQuoteCard from "../../../components/cards/TopQuoteCard.astro"
+import type { Flight } from "../../../components/table/TableModal"
+import ClientLayout from "../../../layouts/ClientLayout.astro"
+
+const { tripID, AirshipIDs } = Astro.params
+if (!tripID || !AirshipIDs) return Astro.redirect("/404")
+const airshipParamsArray = AirshipIDs.split("/")
+const airshipObjects = []
+for (let i = 0; i < airshipParamsArray.length; i += 2) {
+	airshipObjects.push({
+		airshipID: parseInt(airshipParamsArray[i]),
+		revenue: parseFloat(airshipParamsArray[i + 1]),
+	})
+}
+
+const airshipIDsFromParams = airshipObjects.map((airship) =>
+	airship.airshipID.toString()
+)
+const storedAirshipData = await getAirshipsForInvoice(airshipIDsFromParams)
+const imageRequests = airshipIDsFromParams.map((id) => getAirshipImages(id))
+const images = await Promise.all(imageRequests)
+
+const convertedID = parseInt(tripID)
+const ClientFlight = await getFlightById(convertedID)
+const { launchtime, to, from }: Flight = ClientFlight
+---
+
+<ClientLayout title="Quote"
+	><div
+		class="w-full h-[10%] flex items-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
+	>
+		<p>
+			Please review the airship options and launch time for accuracy and
+			contact us with any changes. If the airship and launch time are
+			correct, click the 'Confirm' button to start the booking process.
+			Once we have confirmed availability for the airship, we will send
+			you a link to complete the booking process.
+		</p>
+	</div>
+
+	<TopQuoteCard
+		launchtime={launchtime || ""}
+		to={to || ""}
+		from={from || ""}
+	/>
+
+	<div class="w-full flex justify-around h-[60%] py-4 gap-8">
+		<PickAirship
+			images={images as [ImagesType[]]}
+			airshipObjects={airshipObjects}
+			storedAirshipData={storedAirshipData}
+			client:load
+		/>
+		<MapCard client:load />
+	</div></ClientLayout
+>

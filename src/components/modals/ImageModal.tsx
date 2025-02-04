@@ -8,7 +8,7 @@ import type { Airship } from "../table/TableModal"
 interface props {
 	show: boolean
 	handleClose: () => void
-	images: ImagesType[]
+	images: [ImagesType[]]
 	currentIndex: number
 	items: Airship | undefined
 }
@@ -33,21 +33,31 @@ const ImageModal = ({
 				<Modal.Title>Más Imágenes</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div>
-					{currentItem?.dataValues?.image ? (
-						<img
-							src={currentItem.dataValues.image}
-							alt={`slide ${currentIndex + 1}`}
-							className={`w-1/3 ${
-								isFullscreen ? "fullscreen" : ""
-							}`}
-							onClick={handleImageClick}
-						/>
-					) : (
-						<p>Loading image...</p>
-					)}
+				<div className="flex flex-col">
+					<div className="grid grid-cols-3 gap-4">
+						{currentItem.length > 0 ? (
+							currentItem.map((image, index) => (
+								<img
+									key={index}
+									src={image.dataValues.image}
+									alt={`slide ${currentIndex + 1}`}
+									className={`w-1/2 h-[250px] ${
+										isFullscreen ? "fullscreen" : ""
+									}`}
+									onClick={handleImageClick}
+								/>
+							))
+						) : (
+							<p>Loading image...</p>
+						)}
+					</div>
 					<h5>{items ? items.title : "Title"}</h5>
-					<p>{items ? items.description : "description"}</p>
+					<p>
+						Description: {items ? items.description : "description"}
+					</p>
+					<p>Status: {items ? items.status : "status"}</p>
+					<p>Seats: {items ? items.seats : "seats"}</p>
+					<p>Size: {items ? items.size : "size"}</p>
 				</div>
 			</Modal.Body>
 			<Modal.Footer>
