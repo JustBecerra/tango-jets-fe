@@ -49,7 +49,7 @@ export const flightScheduledMessage = ({
     <p>Please ensure you arrive at the airport at least one hour before departure for check-in.</p>
 
     <p>Here is the link to your quote: 
-        <a href="https://tango-jets-fe.vercel.app/Quote/${encodedURL}" target="_blank">
+        <a href="${fullURL}" target="_blank">
             View Quote
         </a>
     </p>
