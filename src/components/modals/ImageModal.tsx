@@ -52,7 +52,12 @@ const ImageModal = ({
 						)}
 					</div>
 					<h5>{items ? items.title : "Title"}</h5>
-					<p>{items ? items.description : "description"}</p>
+					<p>
+						Description: {items ? items.description : "description"}
+					</p>
+					<p>Status: {items ? items.status : "status"}</p>
+					<p>Seats: {items ? items.seats : "seats"}</p>
+					<p>Size: {items ? items.size : "size"}</p>
 				</div>
 			</Modal.Body>
 			<Modal.Footer>
