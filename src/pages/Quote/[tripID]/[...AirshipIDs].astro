@@ -11,7 +11,19 @@ import TopQuoteCard from "../../../components/cards/TopQuoteCard.astro"
 import type { Flight } from "../../../components/table/TableModal"
 import ClientLayout from "../../../layouts/ClientLayout.astro"
 
-const { tripID, AirshipIDs } = Astro.params
+const url = new URL(Astro.request.url)
+const encodedData = url.searchParams.get("data")
+
+let decodedData = ""
+if (encodedData) {
+	decodedData = Buffer.from(encodedData, "base64").toString("utf-8")
+}
+
+const urlParts = decodedData.split("/")
+const tripID = urlParts[4]
+const AirshipIDs = urlParts.slice(5).join("/")
+
+// const { tripID, AirshipIDs } = Astro.params
 if (!tripID || !AirshipIDs) return Astro.redirect("/404")
 const airshipParamsArray = AirshipIDs.split("/")
 const airshipObjects = []

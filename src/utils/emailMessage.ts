@@ -1,6 +1,6 @@
 import type { airshipFormType } from "../components/scheduler/SchedulerFrame"
 import type { Airship } from "../components/table/TableModal"
-import hash from "hash.js"
+
 interface props {
 	transformedFlightData: flightData
 	airshipData: airshipFormType[]
@@ -36,7 +36,7 @@ export const flightScheduledMessage = ({
 
 	const fullURL = `https://tango-jets-fe.vercel.app/Quote/${tripID}/${AirshipIDs}`
 
-	const hashedURL = hash.sha256().update(fullURL).digest("hex")
+	const encodedURL = btoa(fullURL)
 
 	return `Dear ${master_passenger},
 
@@ -50,7 +50,7 @@ export const flightScheduledMessage = ({
 
 	Please ensure you arrive at the airport at least one hour before departure for check-in.
 
-	Here is the link to the quote: ${hashedURL}
+	Here is the link to the quote: ${fullURL}
 
 	if you have any questions or need assistance, feel free to contact us.
 
