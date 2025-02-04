@@ -56,69 +56,67 @@ const TableModal = ({ caseType }: TableProps) => {
   const airships = useStore((state) => state.airships);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (caseType === "flight") {
-          setData(
-            flights
-              .map((flight: any) => {
-                const { updatedAt, ...rest } = flight;
-                return rest;
-              })
-              .filter((flight: any) => {
-                const launchTime = new Date(flight.launchtime);
-                const currentTime = new Date();
-                return currentTime < launchTime;
-              })
-              .map((flight: any) => {
-                return {
-                  ...flight,
-                  launchtime: new Date(flight.launchtime).toLocaleString(
-                    "en-US",
-                    {
-                      month: "2-digit",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    }
-                  ),
-                  createdAt: new Date(flight.createdAt).toLocaleString(
-                    "en-US",
-                    {
-                      month: "2-digit",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    }
-                  ),
-                };
-              })
-          );
-        } else if (caseType === "history") {
-          setData(
-            flights
-              .map((flight: any) => {
-                const { updatedAt, ...rest } = flight;
-                return rest;
-              })
-              .filter((flight: any) => flight.phase > 7)
-          );
-        } else if (caseType === "client") {
-          setData(clients);
-        } else if (caseType === "airship") {
-          setData(airships);
-        }
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+		const fetchData = async () => {
+			try {
+				if (caseType === "flight") {
+					setData(
+						flights
+							.map((flight: any) => {
+								const { updatedAt, ...rest } = flight
+								return rest
+							})
+							.filter((flight: any) => {
+								const launchTime = new Date(flight.launchtime)
+								const currentTime = new Date()
+								return currentTime < launchTime
+							})
+							.map((flight: any) => {
+								return {
+									...flight,
+									launchtime: new Date(
+										flight.launchtime
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+									createdAt: new Date(
+										flight.createdAt
+									).toLocaleString("en-US", {
+										month: "2-digit",
+										day: "numeric",
+										hour: "2-digit",
+										minute: "2-digit",
+										hour12: false,
+									}),
+								}
+							})
+					)
+				} else if (caseType === "history") {
+					setData(
+						flights
+							.map((flight: any) => {
+								const { updatedAt, ...rest } = flight
+								return rest
+							})
+							.filter((flight: any) => flight.phase > 7)
+					)
+				} else if (caseType === "client") {
+					setData(clients)
+				} else if (caseType === "airship") {
+					setData(airships)
+				}
+			} catch (error) {
+				console.error("Failed to fetch data:", error)
+			} finally {
+				setLoading(false)
+			}
+		}
 
-    fetchData();
-  }, [caseType, flights, clients, airships]);
+		fetchData()
+  }, [caseType, flights, clients, airships])
 
   const handleScheduler = () => {
 		window.location.href = "/Scheduler"

@@ -70,7 +70,7 @@ const AddJetModal: React.FC = () => {
 		formData.set("status", formData.get("status") as string)
 		formData.set("seats", formData.get("seats") as string)
 		formData.set("size", formData.get("size") as string)
-		console.log({ formData })
+
 		const imagesInput = document.querySelector<HTMLInputElement>(
 			'input[name="generic"]'
 		)
