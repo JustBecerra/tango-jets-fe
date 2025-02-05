@@ -36,9 +36,9 @@ const { launchtime, to, from }: Flight = ClientFlight
 
 <ClientLayout title="Quote"
 	><div
-		class="w-full h-[10%] flex items-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
+		class="w-full h-[25%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
 	>
-		<p>
+		<p class="w-full h-fit overflow-hidden text-wrap break-words mb-0">
 			Please review the airship options and launch time for accuracy and
 			contact us with any changes. If the airship and launch time are
 			correct, click the 'Confirm' button to start the booking process.
@@ -53,10 +53,11 @@ const { launchtime, to, from }: Flight = ClientFlight
 		from={from || ""}
 	/>
 
-	<div class="w-full flex justify-around h-[60%] py-4 gap-8">
+	<div
+		class="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8"
+	>
 		<PickAirship
 			images={images as [ImagesType[]]}
-			airshipObjects={airshipObjects}
 			storedAirshipData={storedAirshipData}
 			client:load
 		/>
