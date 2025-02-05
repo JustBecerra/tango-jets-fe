@@ -80,7 +80,7 @@ const Carousel = ({
 							onClick={() => handleImageClick(index)}
 						>
 							<CImage
-								className="d-block sm:w-[400px] h-[300px]"
+								className="d-block w-full h-[300px]"
 								src={item?.dataValues.image}
 								alt={`slide ${index + 1}`}
 							/>
@@ -97,7 +97,7 @@ const Carousel = ({
 					className="styled-button"
 					onClick={handleButtonClick}
 				>
-					Select this Option
+					Confirm Option
 				</button>
 			</div>
 
