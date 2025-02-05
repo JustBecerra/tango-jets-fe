@@ -85,7 +85,7 @@ const SchedulerFrame = () => {
     }
   };
   return (
-    <div className="relative overflow-x-auto overflow-y-auto max-h-[800px] bg-[#166ba3] bg-opacity-30 backdrop-blur-md w-full max-w-[100%] shadow-md sm:rounded-lg px-6">
+    <div className="relative overflow-x-auto bg-slate-500 overflow-y-auto h-full w-full px-12 max-w-7xl max-h-screen mx-auto">
       {showToast && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2">
           <Toast>
@@ -100,8 +100,8 @@ const SchedulerFrame = () => {
         </div>
       )}
       <ModalStepper phase={phase} />
-      <div className="p-6 space-y-6">
-        <form onSubmit={handleSubmit}>
+      <div className="flex-grow flex flex-col justify-center items-center p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="w-full">
           <FlightInfo
             phase={phase}
             formData={formData}
@@ -109,7 +109,9 @@ const SchedulerFrame = () => {
             airshipData={airshipData}
             setAirshipData={setAirshipData}
           />
-          <StepperButtons phase={phase} setPhase={setPhase} operation="add" />
+          <div className="mt-auto">
+            <StepperButtons phase={phase} setPhase={setPhase} operation="add" />
+          </div>
         </form>
       </div>
       {loading && (

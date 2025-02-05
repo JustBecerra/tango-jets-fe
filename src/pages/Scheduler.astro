@@ -6,7 +6,7 @@ import Layout from "../layouts/Layout.astro"
 
 <Layout title="Scheduler">
 	<RouteGuard client:only="react">
-		<div class="flex">
+		<div class="flex flex-1">
 			<SchedulerFrame client:load />
 		</div>
 	</RouteGuard>
