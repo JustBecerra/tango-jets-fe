@@ -34,14 +34,14 @@ const ImageModal = ({
 			</Modal.Header>
 			<Modal.Body>
 				<div className="flex flex-col">
-					<div className="grid grid-cols-3 gap-4">
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 						{currentItem.length > 0 ? (
 							currentItem.map((image, index) => (
 								<img
 									key={index}
 									src={image.dataValues.image}
 									alt={`slide ${currentIndex + 1}`}
-									className={`w-1/2 h-[250px] ${
+									className={`w-[400px] sm:w-1/2 h-[250px] ${
 										isFullscreen ? "fullscreen" : ""
 									}`}
 									onClick={handleImageClick}

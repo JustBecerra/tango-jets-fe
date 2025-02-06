@@ -1,27 +1,23 @@
 import { useState } from "react"
-import {
-	CCarousel,
-	CCarouselCaption,
-	CCarouselItem,
-	CImage,
-} from "@coreui/react"
+import { CCarousel, CCarouselItem, CImage } from "@coreui/react"
 import "@coreui/coreui/dist/css/coreui.min.css"
 import "./Carousel.css"
 import ImageModal from "../modals/ImageModal"
 import type { ImagesType } from "./PickAirship"
-import type { Airship } from "../table/TableModal"
+import type { Airship, Flight } from "../table/TableModal"
+import { putCompletePhase } from "../../../lib/actions/flights/actions"
 
 const Carousel = ({
 	images,
 	storedAirshipData,
+	FlightData,
 }: {
 	images: [ImagesType[]]
-
 	storedAirshipData: Airship[]
+	FlightData: Flight
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
-	const [clickCount, setClickCount] = useState(0)
 	const [currentAirship, setCurrentAirship] = useState<Airship>(
 		storedAirshipData[currentIndex]
 	)
@@ -50,17 +46,25 @@ const Carousel = ({
 		setShowModal(false)
 	}
 
-	const handleButtonClick = () => {
-		if (clickCount < 1) {
-			alert("Are you sure?")
-			setClickCount(clickCount + 1)
-		} else {
-			if (images && images.length > 0) {
-				alert(
-					`Current slide description: {items[currentIndex].description}`
-				)
-			}
+	const handleButtonClick = async () => {
+		try {
+			await putCompletePhase({
+				phase: FlightData.phase + 1,
+				id: FlightData.id,
+			})
+		} catch (error) {
+			console.log(error)
 		}
+		// if (clickCount < 1) {
+		// 	alert("Are you sure?")
+		// 	setClickCount(clickCount + 1)
+		// } else {
+		// 	if (images && images.length > 0) {
+		// 		alert(
+		// 			`Current slide description: {items[currentIndex].description}`
+		// 		)
+		// 	}
+		// }
 	}
 
 	return (
@@ -91,15 +95,23 @@ const Carousel = ({
 				)}
 			</CCarousel>
 
-			<div id="Boton">
-				<button
-					id="selectButton"
-					className="styled-button"
-					onClick={handleButtonClick}
-				>
-					Confirm Option
-				</button>
-			</div>
+			{FlightData.phase > 3 ? (
+				<div id="Boton">
+					<button id="selectButton" className="styled-button">
+						Airship Selection Confirmed
+					</button>
+				</div>
+			) : (
+				<div id="Boton">
+					<button
+						id="selectButton"
+						className="styled-button"
+						onClick={handleButtonClick}
+					>
+						Confirm Option
+					</button>
+				</div>
+			)}
 
 			<ImageModal
 				show={showModal}
