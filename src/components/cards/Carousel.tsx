@@ -65,12 +65,13 @@ const Carousel = ({
 				airship_id: currentAirship.id,
 				price_revenue: airshipObjects.find(
 					(element) => element.airshipID === currentAirship.id
-				)?.revenue,
+				)?.revenue as number,
 				price_cost: airshipObjects.find(
 					(element) => element.airshipID === currentAirship.id
-				)?.cost,
+				)?.cost as number,
+				flight_id: FlightData.id,
 			}
-			// await putQuoteConfirmation(confirmedQuoteData)
+			await putQuoteConfirmation(confirmedQuoteData)
 		} catch (error) {
 			console.log(error)
 		}

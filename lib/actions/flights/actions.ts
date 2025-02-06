@@ -3,6 +3,13 @@ interface phaseProps {
 	phase: number
 }
 
+interface quoteConfirmationProps {
+	airship_id: number
+	price_revenue: number
+	price_cost: number
+	flight_id: number
+}
+
 export async function getFlights() {
 	try {
 		const response = await fetch(
@@ -108,12 +115,16 @@ export async function deleteFlight(id: number) {
 	}
 }
 
-export async function putQuoteConfirmation() {
+export async function putQuoteConfirmation(data: quoteConfirmationProps) {
 	try {
 		const response = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/flight/quote`,
 			{
 				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
 			}
 		)
 
