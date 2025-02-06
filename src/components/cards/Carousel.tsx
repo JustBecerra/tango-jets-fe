@@ -9,6 +9,7 @@ import {
 	putCompletePhase,
 	putQuoteConfirmation,
 } from "../../../lib/actions/flights/actions"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
 
 const Carousel = ({
 	images,
@@ -30,6 +31,7 @@ const Carousel = ({
 	const [currentAirship, setCurrentAirship] = useState<Airship>(
 		storedAirshipData[currentIndex]
 	)
+	const [loading, setLoading] = useState(false)
 	const portraitImages = images.map((arrayOfMap) =>
 		arrayOfMap.find((image) => image?.dataValues?.typeof === "Portrait")
 	)
@@ -56,6 +58,7 @@ const Carousel = ({
 	}
 
 	const handleButtonClick = async () => {
+		setLoading(true)
 		try {
 			await putCompletePhase({
 				phase: FlightData.phase + 1,
@@ -74,6 +77,8 @@ const Carousel = ({
 			await putQuoteConfirmation(confirmedQuoteData)
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -91,22 +96,24 @@ const Carousel = ({
 						className="custom-carousel"
 						onSlid={handleSlideChange}
 					>
-						{portraitImages ? (
-							portraitImages.map((item, index) => (
-								<CCarouselItem
-									key={index}
-									onClick={() => handleImageClick(index)}
-								>
-									<CImage
-										className="d-block w-full h-[300px]"
-										src={item?.dataValues.image}
-										alt={`slide ${index + 1}`}
-									/>
-								</CCarouselItem>
-							))
-						) : (
-							<>Loading...</>
-						)}
+						{portraitImages
+							? portraitImages.map((item, index) => (
+									<CCarouselItem
+										key={index}
+										onClick={() => handleImageClick(index)}
+									>
+										<CImage
+											className="d-block w-full h-[300px]"
+											src={item?.dataValues.image}
+											alt={`slide ${index + 1}`}
+										/>
+									</CCarouselItem>
+							  ))
+							: loading && (
+									<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+										<LoaderSpinner />
+									</div>
+							  )}
 					</CCarousel>
 
 					<div id="Boton">
