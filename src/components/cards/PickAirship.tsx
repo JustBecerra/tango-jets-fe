@@ -1,5 +1,5 @@
 import Carousel from "./Carousel"
-import type { Airship } from "../table/TableModal"
+import type { Airship, Flight } from "../table/TableModal"
 
 export interface ImagesType {
 	dataValues: {
@@ -13,9 +13,20 @@ export interface ImagesType {
 interface props {
 	images: [ImagesType[]]
 	storedAirshipData: Airship[]
+	FlightData: Flight
+	airshipObjects: {
+		airshipID: number
+		revenue: number
+		cost: number
+	}[]
 }
 
-export const PickAirship = ({ images, storedAirshipData }: props) => {
+export const PickAirship = ({
+	images,
+	storedAirshipData,
+	FlightData,
+	airshipObjects,
+}: props) => {
 	return (
 		<div className="w-full sm:w-[50%] h-full p-4  border-2 rounded border-solid bg-white border-gray-300">
 			<div className="flex justify-center items-center w-full border-b-2 border-gray-300 border-solid">
@@ -25,6 +36,8 @@ export const PickAirship = ({ images, storedAirshipData }: props) => {
 				<Carousel
 					images={images}
 					storedAirshipData={storedAirshipData}
+					FlightData={FlightData}
+					airshipObjects={airshipObjects}
 				/>
 			</div>
 		</div>

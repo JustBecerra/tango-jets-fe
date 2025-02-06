@@ -1,30 +1,37 @@
 import { useState } from "react"
-import {
-	CCarousel,
-	CCarouselCaption,
-	CCarouselItem,
-	CImage,
-} from "@coreui/react"
+import { CCarousel, CCarouselItem, CImage } from "@coreui/react"
 import "@coreui/coreui/dist/css/coreui.min.css"
 import "./Carousel.css"
 import ImageModal from "../modals/ImageModal"
 import type { ImagesType } from "./PickAirship"
-import type { Airship } from "../table/TableModal"
+import type { Airship, Flight } from "../table/TableModal"
+import {
+	putCompletePhase,
+	putQuoteConfirmation,
+} from "../../../lib/actions/flights/actions"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
 
 const Carousel = ({
 	images,
 	storedAirshipData,
+	FlightData,
+	airshipObjects,
 }: {
 	images: [ImagesType[]]
-
 	storedAirshipData: Airship[]
+	FlightData: Flight
+	airshipObjects: {
+		airshipID: number
+		revenue: number
+		cost: number
+	}[]
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
-	const [clickCount, setClickCount] = useState(0)
 	const [currentAirship, setCurrentAirship] = useState<Airship>(
 		storedAirshipData[currentIndex]
 	)
+	const [loading, setLoading] = useState(false)
 	const portraitImages = images.map((arrayOfMap) =>
 		arrayOfMap.find((image) => image?.dataValues?.typeof === "Portrait")
 	)
@@ -50,64 +57,84 @@ const Carousel = ({
 		setShowModal(false)
 	}
 
-	const handleButtonClick = () => {
-		if (clickCount < 1) {
-			alert("Are you sure?")
-			setClickCount(clickCount + 1)
-		} else {
-			if (images && images.length > 0) {
-				alert(
-					`Current slide description: {items[currentIndex].description}`
-				)
+	const handleButtonClick = async () => {
+		setLoading(true)
+		try {
+			await putCompletePhase({
+				phase: FlightData.phase + 1,
+				id: FlightData.id,
+			})
+			const confirmedQuoteData = {
+				airship_id: currentAirship.id,
+				price_revenue: airshipObjects.find(
+					(element) => element.airshipID === currentAirship.id
+				)?.revenue as number,
+				price_cost: airshipObjects.find(
+					(element) => element.airshipID === currentAirship.id
+				)?.cost as number,
+				flight_id: FlightData.id,
 			}
+			await putQuoteConfirmation(confirmedQuoteData)
+		} catch (error) {
+			console.log(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
 	return (
 		<>
-			<CCarousel
-				controls
-				indicators
-				transition="crossfade"
-				interval={false}
-				className="custom-carousel"
-				onSlid={handleSlideChange}
-			>
-				{portraitImages ? (
-					portraitImages.map((item, index) => (
-						<CCarouselItem
-							key={index}
-							onClick={() => handleImageClick(index)}
+			{FlightData.phase > 3 ? (
+				<p>Airship selection confirmed</p>
+			) : (
+				<>
+					<CCarousel
+						controls
+						indicators
+						transition="crossfade"
+						interval={false}
+						className="custom-carousel"
+						onSlid={handleSlideChange}
+					>
+						{portraitImages
+							? portraitImages.map((item, index) => (
+									<CCarouselItem
+										key={index}
+										onClick={() => handleImageClick(index)}
+									>
+										<CImage
+											className="d-block w-full h-[300px]"
+											src={item?.dataValues.image}
+											alt={`slide ${index + 1}`}
+										/>
+									</CCarouselItem>
+							  ))
+							: loading && (
+									<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+										<LoaderSpinner />
+									</div>
+							  )}
+					</CCarousel>
+
+					<div id="Boton">
+						<button
+							id="selectButton"
+							className="styled-button"
+							onClick={handleButtonClick}
 						>
-							<CImage
-								className="d-block w-full h-[300px]"
-								src={item?.dataValues.image}
-								alt={`slide ${index + 1}`}
-							/>
-						</CCarouselItem>
-					))
-				) : (
-					<>Loading...</>
-				)}
-			</CCarousel>
+							Confirm Option
+						</button>
+					</div>
 
-			<div id="Boton">
-				<button
-					id="selectButton"
-					className="styled-button"
-					onClick={handleButtonClick}
-				>
-					Confirm Option
-				</button>
-			</div>
-
-			<ImageModal
-				show={showModal}
-				handleClose={handleCloseModal}
-				items={currentAirship}
-				images={images}
-				currentIndex={currentIndex}
-			/>
+					<ImageModal
+						show={showModal}
+						handleClose={handleCloseModal}
+						items={currentAirship}
+						images={images}
+						currentIndex={currentIndex}
+					/>
+				</>
+			)}
 		</>
 	)
 }

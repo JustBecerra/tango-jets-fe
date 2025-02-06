@@ -15,10 +15,11 @@ const { tripID, AirshipIDs } = Astro.params
 if (!tripID || !AirshipIDs) return Astro.redirect("/404")
 const airshipParamsArray = AirshipIDs.split("/")
 const airshipObjects = []
-for (let i = 0; i < airshipParamsArray.length; i += 2) {
+for (let i = 0; i < airshipParamsArray.length; i += 3) {
 	airshipObjects.push({
 		airshipID: parseInt(airshipParamsArray[i]),
 		revenue: parseFloat(airshipParamsArray[i + 1]),
+		cost: parseFloat(airshipParamsArray[i + 2]),
 	})
 }
 
@@ -59,6 +60,8 @@ const { launchtime, to, from }: Flight = ClientFlight
 		<PickAirship
 			images={images as [ImagesType[]]}
 			storedAirshipData={storedAirshipData}
+			FlightData={ClientFlight}
+			airshipObjects={airshipObjects}
 			client:load
 		/>
 		<MapCard client:load />
