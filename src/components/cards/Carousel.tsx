@@ -5,16 +5,25 @@ import "./Carousel.css"
 import ImageModal from "../modals/ImageModal"
 import type { ImagesType } from "./PickAirship"
 import type { Airship, Flight } from "../table/TableModal"
-import { putCompletePhase } from "../../../lib/actions/flights/actions"
+import {
+	putCompletePhase,
+	putQuoteConfirmation,
+} from "../../../lib/actions/flights/actions"
 
 const Carousel = ({
 	images,
 	storedAirshipData,
 	FlightData,
+	airshipObjects,
 }: {
 	images: [ImagesType[]]
 	storedAirshipData: Airship[]
 	FlightData: Flight
+	airshipObjects: {
+		airshipID: number
+		revenue: number
+		cost: number
+	}[]
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
@@ -52,74 +61,72 @@ const Carousel = ({
 				phase: FlightData.phase + 1,
 				id: FlightData.id,
 			})
+			const confirmedQuoteData = {
+				airship_id: currentAirship.id,
+				price_revenue: airshipObjects.find(
+					(element) => element.airshipID === currentAirship.id
+				)?.revenue,
+				price_cost: airshipObjects.find(
+					(element) => element.airshipID === currentAirship.id
+				)?.cost,
+			}
+			// await putQuoteConfirmation(confirmedQuoteData)
 		} catch (error) {
 			console.log(error)
 		}
-		// if (clickCount < 1) {
-		// 	alert("Are you sure?")
-		// 	setClickCount(clickCount + 1)
-		// } else {
-		// 	if (images && images.length > 0) {
-		// 		alert(
-		// 			`Current slide description: {items[currentIndex].description}`
-		// 		)
-		// 	}
-		// }
 	}
 
 	return (
 		<>
-			<CCarousel
-				controls
-				indicators
-				transition="crossfade"
-				interval={false}
-				className="custom-carousel"
-				onSlid={handleSlideChange}
-			>
-				{portraitImages ? (
-					portraitImages.map((item, index) => (
-						<CCarouselItem
-							key={index}
-							onClick={() => handleImageClick(index)}
-						>
-							<CImage
-								className="d-block w-full h-[300px]"
-								src={item?.dataValues.image}
-								alt={`slide ${index + 1}`}
-							/>
-						</CCarouselItem>
-					))
-				) : (
-					<>Loading...</>
-				)}
-			</CCarousel>
-
 			{FlightData.phase > 3 ? (
-				<div id="Boton">
-					<button id="selectButton" className="styled-button">
-						Airship Selection Confirmed
-					</button>
-				</div>
+				<p>Airship selection confirmed</p>
 			) : (
-				<div id="Boton">
-					<button
-						id="selectButton"
-						className="styled-button"
-						onClick={handleButtonClick}
+				<>
+					<CCarousel
+						controls
+						indicators
+						transition="crossfade"
+						interval={false}
+						className="custom-carousel"
+						onSlid={handleSlideChange}
 					>
-						Confirm Option
-					</button>
-				</div>
-			)}
+						{portraitImages ? (
+							portraitImages.map((item, index) => (
+								<CCarouselItem
+									key={index}
+									onClick={() => handleImageClick(index)}
+								>
+									<CImage
+										className="d-block w-full h-[300px]"
+										src={item?.dataValues.image}
+										alt={`slide ${index + 1}`}
+									/>
+								</CCarouselItem>
+							))
+						) : (
+							<>Loading...</>
+						)}
+					</CCarousel>
 
-			<ImageModal
-				show={showModal}
-				handleClose={handleCloseModal}
-				items={currentAirship}
-				images={images}
-				currentIndex={currentIndex}
-			/>
+					<div id="Boton">
+						<button
+							id="selectButton"
+							className="styled-button"
+							onClick={handleButtonClick}
+						>
+							Confirm Option
+						</button>
+					</div>
+
+					<ImageModal
+						show={showModal}
+						handleClose={handleCloseModal}
+						items={currentAirship}
+						images={images}
+						currentIndex={currentIndex}
+					/>
+				</>
+			)}
 		</>
 	)
 }

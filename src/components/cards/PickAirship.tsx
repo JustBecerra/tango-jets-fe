@@ -14,12 +14,18 @@ interface props {
 	images: [ImagesType[]]
 	storedAirshipData: Airship[]
 	FlightData: Flight
+	airshipObjects: {
+		airshipID: number
+		revenue: number
+		cost: number
+	}[]
 }
 
 export const PickAirship = ({
 	images,
 	storedAirshipData,
 	FlightData,
+	airshipObjects,
 }: props) => {
 	return (
 		<div className="w-full sm:w-[50%] h-full p-4  border-2 rounded border-solid bg-white border-gray-300">
@@ -31,6 +37,7 @@ export const PickAirship = ({
 					images={images}
 					storedAirshipData={storedAirshipData}
 					FlightData={FlightData}
+					airshipObjects={airshipObjects}
 				/>
 			</div>
 		</div>

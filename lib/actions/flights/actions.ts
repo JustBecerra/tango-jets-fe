@@ -107,3 +107,23 @@ export async function deleteFlight(id: number) {
 		throw err
 	}
 }
+
+export async function putQuoteConfirmation() {
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/flight/quote`,
+			{
+				method: "PUT",
+			}
+		)
+
+		if (!response.ok) {
+			throw new Error(`Failed to confirm quote: ${response.statusText}`)
+		}
+
+		return response.ok
+	} catch (err) {
+		console.error("Error adding flight:", err)
+		throw err
+	}
+}

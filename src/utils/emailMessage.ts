@@ -30,7 +30,7 @@ export const flightScheduledMessage = ({
 			const getAirshipID = airships.find(
 				(ship) => ship.title === jet.airship_name
 			)?.id
-			return `${getAirshipID}/${jet.price_revenue.toString()}/`
+			return `${getAirshipID}/${jet.price_revenue.toString()}/${jet.price_cost.toString()}`
 		})
 		.join("")
 
