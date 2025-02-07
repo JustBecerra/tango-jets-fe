@@ -78,10 +78,11 @@ const Carousel = ({
 			}
 			await putQuoteConfirmation(confirmedQuoteData)
 			const updatedFlight = await getFlightById(FlightData.id)
-			setReFetchedFlight(updatedFlight)
-			setLoading(false)
+			setReFetchedFlight({ ...updatedFlight })
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -127,7 +128,7 @@ const Carousel = ({
 						</button>
 					</div>
 
-					{loading && (
+					{loading === true && (
 						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 							<LoaderSpinner />
 						</div>
