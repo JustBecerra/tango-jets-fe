@@ -86,7 +86,7 @@ export const FlightInfo = ({
 					onDistanceCalculated={handleDistanceCalculated}
 					onFlightTimeCalculated={handleFlightTimeCalculated}
 				/>
-				<div>
+				<div className="flex flex-col justify-end">
 					<label
 						htmlFor="launchtime"
 						className="block text-sm font-medium"

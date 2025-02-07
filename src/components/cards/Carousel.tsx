@@ -6,6 +6,7 @@ import ImageModal from "../modals/ImageModal"
 import type { ImagesType } from "./PickAirship"
 import type { Airship, Flight } from "../table/TableModal"
 import {
+	getFlightById,
 	putCompletePhase,
 	putQuoteConfirmation,
 } from "../../../lib/actions/flights/actions"
@@ -35,6 +36,7 @@ const Carousel = ({
 	const portraitImages = images.map((arrayOfMap) =>
 		arrayOfMap.find((image) => image?.dataValues?.typeof === "Portrait")
 	)
+	const [reFetchedFlight, setReFetchedFlight] = useState<Flight>(FlightData)
 
 	const handleSlideChange = (e: any) => {
 		const newIndex = e
@@ -75,6 +77,8 @@ const Carousel = ({
 				flight_id: FlightData.id,
 			}
 			await putQuoteConfirmation(confirmedQuoteData)
+			const updatedFlight = await getFlightById(FlightData.id)
+			setReFetchedFlight({ ...updatedFlight })
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -84,7 +88,7 @@ const Carousel = ({
 
 	return (
 		<>
-			{FlightData.phase > 3 ? (
+			{FlightData.phase > 3 || reFetchedFlight.phase > 3 ? (
 				<p>Airship selection confirmed</p>
 			) : (
 				<>
@@ -96,24 +100,22 @@ const Carousel = ({
 						className="custom-carousel"
 						onSlid={handleSlideChange}
 					>
-						{portraitImages
-							? portraitImages.map((item, index) => (
-									<CCarouselItem
-										key={index}
-										onClick={() => handleImageClick(index)}
-									>
-										<CImage
-											className="d-block w-full h-[300px]"
-											src={item?.dataValues.image}
-											alt={`slide ${index + 1}`}
-										/>
-									</CCarouselItem>
-							  ))
-							: loading && (
-									<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-										<LoaderSpinner />
-									</div>
-							  )}
+						{portraitImages ? (
+							portraitImages.map((item, index) => (
+								<CCarouselItem
+									key={index}
+									onClick={() => handleImageClick(index)}
+								>
+									<CImage
+										className="d-block w-full h-[300px]"
+										src={item?.dataValues.image}
+										alt={`slide ${index + 1}`}
+									/>
+								</CCarouselItem>
+							))
+						) : (
+							<>Loading...</>
+						)}
 					</CCarousel>
 
 					<div id="Boton">
@@ -125,6 +127,12 @@ const Carousel = ({
 							Confirm Option
 						</button>
 					</div>
+
+					{loading === true && (
+						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+							<LoaderSpinner />
+						</div>
+					)}
 
 					<ImageModal
 						show={showModal}
