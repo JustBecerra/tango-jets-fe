@@ -257,23 +257,26 @@ export const FlightInfo = ({
       );
     } else {
       return (
-        <div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-          <h2>To: {to === "" ? "TBD" : to}</h2>
-          <h2>From: {from === "" ? "TBD" : from}</h2>
-          <h2>Launch Time: {launchtime.toISOString().slice(0, 16)}</h2>
-          <h2>
-            Distance: {distance !== null ? `${distance.toFixed(2)} km` : "TBD"}
-          </h2>
-          <h2>
-            Flight Time:{" "}
-            {flightTime !== null ? `${flightTime.toFixed(2)} hours` : "TBD"}
-          </h2>
-          <h2>
-            Master Passenger:{" "}
-            {master_passenger === "" ? "TBD" : master_passenger}
-          </h2>
-        </div>
-      );
+			<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+				<h2>To: {to === "" ? "TBD" : to}</h2>
+				<h2>From: {from === "" ? "TBD" : from}</h2>
+				<h2>Launch Time: {launchtime.toISOString().slice(0, 16)}</h2>
+				<h2>
+					Distance:{" "}
+					{distance !== null ? `${distance.toFixed(2)} km` : "TBD"}
+				</h2>
+				<h2>
+					Flight Time:{" "}
+					{flightTime !== null
+						? `${flightTime.toFixed(2)} hours`
+						: "TBD"}
+				</h2>
+				<h2>
+					Lead Passenger:{" "}
+					{master_passenger === "" ? "TBD" : master_passenger}
+				</h2>
+			</div>
+		)
     }
   };
   return <div className="border-t border-gray-600 py-2">{PhaseFields()}</div>;
