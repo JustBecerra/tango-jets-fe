@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { VerticalStepper } from "./VerticalStepper";
-import { EditForms } from "./EditForms";
-import type { Flight } from "../table/TableModal"
+import { useEffect, useState } from "react"
+import { VerticalStepper } from "./VerticalStepper"
+import { EditForms } from "./EditForms"
+import type { Airship, Flight } from "../table/TableModal"
 
 interface props {
 	flightRequested: Flight
+	airships: Airship[]
 }
 
-export const EditStepperFrame = ({ flightRequested }: props) => {
+export const EditStepperFrame = ({ flightRequested, airships }: props) => {
 	const [localPhase, setLocalPhase] = useState(flightRequested.phase)
 	const [currentFlight, setCurrentFlight] = useState<Flight>(flightRequested)
 
@@ -44,6 +45,7 @@ export const EditStepperFrame = ({ flightRequested }: props) => {
 					setLocalPhase={setLocalPhase}
 					currentFlight={currentFlight}
 					setCurrentFlight={setCurrentFlight}
+					airships={airships}
 				/>
 			</div>
 			{currentFlight && <VerticalStepper phase={currentFlight.phase} />}

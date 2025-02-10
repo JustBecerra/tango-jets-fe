@@ -1,18 +1,23 @@
 import useStore from "../../store/store"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
-import type { Client, Flight } from "../table/TableModal"
+import type { Airship, Client, Flight } from "../table/TableModal"
 
 interface props {
 	currentFlight: Flight
 	localPhase: number
 	loading?: boolean
+	airships: Airship[]
 }
 
-const fieldDecider = ({ currentFlight, localPhase }: props) => {
+const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 	const clients = useStore((state) => state.clients).find(
 		(client: Client) =>
 			client.id === parseInt(currentFlight.master_passenger)
 	)
+
+	const getCorrectAirshipName = airships.find(
+		(elem: Airship) => elem.id === currentFlight.airship_id
+	)?.title
 
 	switch (localPhase) {
 		case 1:
@@ -57,7 +62,16 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 		case 4:
 			return (
 				<>
-					<p>Planes chosen by the client.</p>
+					{parseInt(currentFlight.price_cost) > 0 &&
+					currentFlight.price_revenue > 0 ? (
+						<div>
+							<h2>Cost: ${currentFlight.price_cost}</h2>
+							<h2>Markup: ${currentFlight.price_revenue}</h2>
+							<h2>Airship chosen: {getCorrectAirshipName}</h2>
+						</div>
+					) : (
+						<p>No planes have been chosen yet</p>
+					)}
 				</>
 			)
 		case 5:
@@ -76,10 +90,15 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 	}
 }
 
-export const EditFields = ({ currentFlight, localPhase, loading }: props) => {
+export const EditFields = ({
+	currentFlight,
+	localPhase,
+	loading,
+	airships,
+}: props) => {
 	return (
 		<div className="w-full h-[30%] flex justify-center items-center ">
-			{fieldDecider({ currentFlight, localPhase })}
+			{fieldDecider({ currentFlight, localPhase, airships })}
 			{loading && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<LoaderSpinner />
