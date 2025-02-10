@@ -1,0 +1,15 @@
+---
+import { getFlightById } from "../../../lib/actions/flights/actions";
+import { MainEditFlight } from "../../components/edit-trip/MainEditFlight";
+import { RouteGuard } from "../../components/routeguard";
+import Layout from "../../layouts/Layout.astro";
+
+const { id } = Astro.params
+if (!id) return Astro.redirect("/404")
+const currentFlight = await getFlightById(parseInt(id))
+---
+<Layout title="edit-flight">
+	<RouteGuard client:load="react">
+        <MainEditFlight currentFlight={currentFlight} client:only="react" />
+    </RouteGuard>
+</Layout>
