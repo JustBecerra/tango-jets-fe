@@ -27,7 +27,7 @@ const fieldDecider = ({ currentFlight, localPhase }: props) => {
 						{currentFlight.to}
 					</h2>
 					<h2 className="text-xl text-center">
-						Master Passenger: <br />
+						Lead Passenger: <br />
 						{clients && clients.fullname}
 					</h2>
 					<h2 className="text-xl text-center">
