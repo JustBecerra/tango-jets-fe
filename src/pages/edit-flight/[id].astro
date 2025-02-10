@@ -1,15 +1,23 @@
 ---
-import { getFlightById } from "../../../lib/actions/flights/actions";
-import { MainEditFlight } from "../../components/edit-trip/MainEditFlight";
-import { RouteGuard } from "../../components/routeguard";
-import Layout from "../../layouts/Layout.astro";
+import { getClients } from "../../../lib/actions/clients/actions"
+import { getFlightById } from "../../../lib/actions/flights/actions"
+import { MainEditFlight } from "../../components/edit-trip/MainEditFlight"
+import { RouteGuard } from "../../components/routeguard"
+import type { Client } from "../../components/table/TableModal"
+import Layout from "../../layouts/Layout.astro"
 
 const { id } = Astro.params
 if (!id) return Astro.redirect("/404")
-const currentFlight = await getFlightById(parseInt(id))
+let currentFlight = await getFlightById(parseInt(id))
+const clients = await getClients()
+const currentClient = clients.find(
+	(client: Client) => client.id === currentFlight.master_passenger
+)
+currentFlight["master_passenger"] = currentClient.fullname
 ---
+
 <Layout title="edit-flight">
 	<RouteGuard client:load="react">
-        <MainEditFlight currentFlight={currentFlight} client:only="react" />
-    </RouteGuard>
+		<MainEditFlight currentFlight={currentFlight} client:only="react" />
+	</RouteGuard>
 </Layout>
