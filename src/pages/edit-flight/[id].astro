@@ -1,4 +1,5 @@
 ---
+import { getAirships } from "../../../lib/actions/airships/actions"
 import { getClients } from "../../../lib/actions/clients/actions"
 import { getFlightById } from "../../../lib/actions/flights/actions"
 import { MainEditFlight } from "../../components/edit-trip/MainEditFlight"
@@ -14,10 +15,15 @@ const currentClient = clients.find(
 	(client: Client) => client.id === currentFlight.master_passenger
 )
 currentFlight["master_passenger"] = currentClient.fullname
+const airships = await getAirships()
 ---
 
 <Layout title="edit-flight">
 	<RouteGuard client:load="react">
-		<MainEditFlight currentFlight={currentFlight} client:only="react" />
+		<MainEditFlight
+			currentFlight={currentFlight}
+			airships={airships}
+			client:only="react"
+		/>
 	</RouteGuard>
 </Layout>
