@@ -64,10 +64,21 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 				<>
 					{parseInt(currentFlight.price_cost) > 0 &&
 					currentFlight.price_revenue > 0 ? (
-						<div>
-							<h2>Cost: ${currentFlight.price_cost}</h2>
-							<h2>Markup: ${currentFlight.price_revenue}</h2>
-							<h2>Airship chosen: {getCorrectAirshipName}</h2>
+						<div className="flex flex-col w-1/2 h-[70%] justify-center items-center">
+							<h1 className="text-3xl mb-6">
+								The client has chosen
+							</h1>
+							<h2 className="text-xl">
+								Airship chosen: {getCorrectAirshipName}
+							</h2>
+							<div className="flex gap-4 mt-4">
+								<h2 className="text-xl">
+									Cost: ${currentFlight.price_cost}
+								</h2>
+								<h2 className="text-xl">
+									Markup: ${currentFlight.price_revenue}
+								</h2>
+							</div>
 						</div>
 					) : (
 						<p>No planes have been chosen yet</p>
