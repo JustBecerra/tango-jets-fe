@@ -27,19 +27,21 @@ export interface Airship {
 }
 
 export interface Flight {
-  [x: string]: any;
-  id: number;
-  launchtime: string;
-  to: string;
-  from: string;
-  airship_name: string;
-  createdby: string;
-  master_passenger: string;
-  companion_passengers: string[];
-  price_cost: string;
-  price_revenue: number;
-  phase: number;
-  pslc: number;
+	[x: string]: any
+	id: number
+	launchtime: string
+	to: string
+	from: string
+	airship_name: string
+	createdby: string
+	master_passenger: string
+	companion_passengers: string[]
+	price_cost: string
+	price_revenue: number
+	phase: number
+	pslc: number
+	type_of: string
+	associated_to: string
 }
 
 export type DataType = Flight | Airship | Client;

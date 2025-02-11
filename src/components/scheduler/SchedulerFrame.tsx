@@ -10,6 +10,7 @@ import { StepperButtons } from "../buttons/StepperButtons";
 import useStore from "../../store/store";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { sendEmail } from "../../../lib/actions/emails/actions";
+import type { Flight } from "../table/TableModal"
 export interface formType {
 	launchtime: Date
 	to: string
@@ -24,7 +25,11 @@ export interface airshipFormType {
 	price_revenue: number
 	airship_name: string
 }
-const SchedulerFrame = () => {
+const SchedulerFrame = ({
+	FlightsForAssociation,
+}: {
+	FlightsForAssociation: Flight[]
+}) => {
 	const [phase, setPhase] = useState("first")
 	const [showToast, setShowToast] = useState(false)
 	const airships = useStore((state) => state.airships)
@@ -89,7 +94,7 @@ const SchedulerFrame = () => {
 		}
 	}
 	return (
-		<div className="relative overflow-x-auto overflow-y-auto max-h-[800px] h-[500px] bg-[#166ba3] bg-opacity-30 backdrop-blur-md w-full max-w-[100%] shadow-md sm:rounded-lg px-6">
+		<div className="relative overflow-x-auto overflow-y-hidden max-h-[800px] h-[500px] bg-[#166ba3] bg-opacity-30 backdrop-blur-md w-full max-w-[100%] shadow-md sm:rounded-lg px-6">
 			{showToast && (
 				<div className="fixed top-4 left-1/2 transform -translate-x-1/2">
 					<Toast>
@@ -112,6 +117,7 @@ const SchedulerFrame = () => {
 						setFormData={setFormData}
 						airshipData={airshipData}
 						setAirshipData={setAirshipData}
+						FlightsForAssociation={FlightsForAssociation}
 					/>
 					<StepperButtons
 						phase={phase}

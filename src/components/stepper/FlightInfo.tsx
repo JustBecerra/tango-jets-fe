@@ -1,32 +1,41 @@
-import React, { useState } from "react";
-import CsvSelect from "../stepper/prueba";
-import useStore from "../../store/store";
-import { AutoComplete } from "../input/AutoComplete";
-import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
-import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
+import React, { useEffect, useState } from "react"
+import CsvSelect from "../stepper/prueba"
+import useStore from "../../store/store"
+import { AutoComplete } from "../input/AutoComplete"
+import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
+import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa"
+import type { Flight } from "../table/TableModal"
+import { getFlights } from "../../../lib/actions/flights/actions"
 
 interface props {
-  phase: string;
-  formData: formType;
-  setFormData: React.Dispatch<React.SetStateAction<formType>>;
-  airshipData: airshipFormType[];
-  setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>;
+	phase: string
+	formData: formType
+	setFormData: React.Dispatch<React.SetStateAction<formType>>
+	airshipData: airshipFormType[]
+	setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>
+	FlightsForAssociation: Flight[]
 }
 
 export const FlightInfo = ({
-  phase,
-  formData,
-  setFormData,
-  airshipData,
-  setAirshipData,
+	phase,
+	formData,
+	setFormData,
+	airshipData,
+	setAirshipData,
+	FlightsForAssociation,
 }: props) => {
-  const { to, from, launchtime, master_passenger, associated_to, type_of } =
+	const { to, from, launchtime, master_passenger, associated_to, type_of } =
 		formData
-  const { airships } = useStore((state) => state)
-  const [distance, setDistance] = useState<number | null>(null)
-  const [flightTime, setFlightTime] = useState<number | null>(null)
+	const filteredFlights = FlightsForAssociation.filter(
+		(elem: Flight) =>
+			elem.type_of !== "initial" && elem.associated_to === null
+	)
+	const { airships } = useStore((state) => state)
+	const [distance, setDistance] = useState<number | null>(null)
+	const [flightTime, setFlightTime] = useState<number | null>(null)
+	const [flightsList, setFlightsList] = useState<Flight[]>(filteredFlights)
 
-  const getPercentage = (cost: string): number => {
+	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0
 
 		const percentage = 20
@@ -34,30 +43,30 @@ export const FlightInfo = ({
 
 		const revenue = costNumber * (percentage / 100)
 		return costNumber + revenue
-  }
-  const handleSelectFrom = (value: string) => {
+	}
+	const handleSelectFrom = (value: string) => {
 		setFormData((prevFormData) => ({
 			...prevFormData,
 			from: value,
 		}))
-  }
+	}
 
-  const handleSelectTo = (value: string) => {
+	const handleSelectTo = (value: string) => {
 		setFormData((prevFormData) => ({
 			...prevFormData,
 			to: value,
 		}))
-  }
+	}
 
-  const handleDistanceCalculated = (calculatedDistance: number) => {
+	const handleDistanceCalculated = (calculatedDistance: number) => {
 		setDistance(calculatedDistance)
-  }
+	}
 
-  const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
+	const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
 		setFlightTime(calculatedFlightTime)
-  }
+	}
 
-  const addAirshipOption = () => {
+	const addAirshipOption = () => {
 		setAirshipData((prev) => [
 			...prev,
 			{
@@ -66,19 +75,19 @@ export const FlightInfo = ({
 				price_revenue: 0,
 			},
 		])
-  }
+	}
 
-  const subtractAirshipOption = (airshipindex: number) => {
+	const subtractAirshipOption = (airshipindex: number) => {
 		const newAirshipData = airshipData.filter(
 			(airship) => airship !== airshipData[airshipindex]
 		)
 		setAirshipData(newAirshipData)
-  }
+	}
 
-  const PhaseFields = () => {
+	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-[300px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2">
+				<div className="h-[300px] w-[800px] grid grid-cols-1 gap-6 sm:grid-cols-2">
 					<CsvSelect
 						labelFrom="From"
 						labelTo="To"
@@ -166,10 +175,13 @@ export const FlightInfo = ({
 							}}
 						>
 							<option value="">-- Select --</option>
-							<option value="return">Return flight</option>
-							<option value="connection">
-								Connection flight
-							</option>
+							{type_of !== "return" &&
+								type_of !== "connection" &&
+								filteredFlights.map((flight, index) => (
+									<option key={index} value={flight.id}>
+										{flight.id}
+									</option>
+								))}
 						</select>
 					</div>
 				</div>
@@ -350,6 +362,6 @@ export const FlightInfo = ({
 				</div>
 			)
 		}
-  }
-  return <div className="border-t border-gray-600 py-2">{PhaseFields()}</div>;
-};
+	}
+	return <div className="border-t border-gray-600 py-2">{PhaseFields()}</div>
+}
