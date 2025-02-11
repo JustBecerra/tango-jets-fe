@@ -4,7 +4,7 @@ interface Props {
 
 export const ModalStepper = ({ phase }: Props) => {
 	return (
-		<div className="p-2 rounded mb-8 mt-4">
+		<div className="p-2 rounded mt-4 h-[10%]">
 			<ol className="flex items-center w-full text-sm font-medium text-center sm:text-base ">
 				<li
 					className={`flex md:w-full items-center text-blue-600 
