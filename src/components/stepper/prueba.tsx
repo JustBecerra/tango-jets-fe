@@ -105,7 +105,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 		}
 	}
 	return (
-		<div className="flex items-end space-x-4">
+		<div className="flex items-end space-x-4 h-fit">
 			<div>
 				<label
 					htmlFor="airportSelect1"
@@ -116,7 +116,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 				<select
 					id="airportSelect1"
 					className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-					value={toDefaultValue || ""}
+					value={fromDefaultValue || ""}
 					onChange={(e) => {
 						setSelectedAirport1(e.target.value)
 						if (onSelectFrom) onSelectFrom(e.target.value)
@@ -141,7 +141,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 				<select
 					id="airportSelect2"
 					className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-					value={fromDefaultValue || ""}
+					value={toDefaultValue || ""}
 					onChange={(e) => {
 						setSelectedAirport2(e.target.value)
 						if (onSelectTo) onSelectTo(e.target.value)
