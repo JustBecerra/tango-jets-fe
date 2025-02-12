@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import CsvSelect from "../stepper/prueba"
 import useStore from "../../store/store"
 import { AutoComplete } from "../input/AutoComplete"
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
 import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa"
 import type { Flight } from "../table/TableModal"
-import { getFlights } from "../../../lib/actions/flights/actions"
 
 interface props {
 	phase: string
@@ -33,7 +32,6 @@ export const FlightInfo = ({
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
-	const [flightsList, setFlightsList] = useState<Flight[]>(filteredFlights)
 
 	const getPercentage = (cost: string): number => {
 		if (cost === "") return 0
@@ -95,6 +93,8 @@ export const FlightInfo = ({
 						onSelectTo={handleSelectTo}
 						onDistanceCalculated={handleDistanceCalculated}
 						onFlightTimeCalculated={handleFlightTimeCalculated}
+						toDefaultValue={formData.to}
+						fromDefaultValue={formData.from}
 					/>
 					<div className="flex flex-col justify-end h-fit">
 						<label
@@ -195,7 +195,10 @@ export const FlightInfo = ({
 					{airshipData.map((airship, airshipindex) => {
 						return (
 							<>
-								<div className="flex flex-col justify-center items-start " key={airshipindex}>
+								<div
+									className="flex flex-col justify-center items-start "
+									key={airshipindex}
+								>
 									<label
 										htmlFor="airship_title"
 										className="block text-sm font-medium"
