@@ -87,7 +87,7 @@ export const FlightInfo = ({
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-[300px] w-[800px] grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
 					<CsvSelect
 						labelFrom="From"
 						labelTo="To"
@@ -96,7 +96,7 @@ export const FlightInfo = ({
 						onDistanceCalculated={handleDistanceCalculated}
 						onFlightTimeCalculated={handleFlightTimeCalculated}
 					/>
-					<div className="flex flex-col justify-end">
+					<div className="flex flex-col justify-end h-fit">
 						<label
 							htmlFor="launchtime"
 							className="block text-sm font-medium"
@@ -119,7 +119,7 @@ export const FlightInfo = ({
 							required
 						/>
 					</div>
-					<div>
+					<div className="flex flex-col justify-end h-fit">
 						<label
 							htmlFor="master_passenger"
 							className="block text-sm font-medium"
@@ -131,7 +131,7 @@ export const FlightInfo = ({
 							setter={setFormData}
 						/>
 					</div>
-					<div>
+					<div className="flex flex-col justify-end h-fit">
 						<label
 							htmlFor="type_of_flight"
 							className="block text-sm font-medium"
@@ -156,7 +156,12 @@ export const FlightInfo = ({
 							</option>
 						</select>
 					</div>
-					<div>
+
+					<div
+						className={`flex flex-col justify-end h-fit ${
+							type_of === "initial" ? "invisible" : ""
+						}`}
+					>
 						<label
 							htmlFor="associated_to"
 							className="block text-sm font-medium"
@@ -175,24 +180,22 @@ export const FlightInfo = ({
 							}}
 						>
 							<option value="">-- Select --</option>
-							{type_of !== "return" &&
-								type_of !== "connection" &&
-								filteredFlights.map((flight, index) => (
-									<option key={index} value={flight.id}>
-										{flight.id}
-									</option>
-								))}
+							{filteredFlights.map((flight, index) => (
+								<option key={index} value={flight.id}>
+									{flight.id}
+								</option>
+							))}
 						</select>
 					</div>
 				</div>
 			)
 		} else if (phase === "second") {
 			return (
-				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+				<div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
 					{airshipData.map((airship, airshipindex) => {
 						return (
 							<>
-								<div key={airshipindex}>
+								<div className="flex flex-col justify-center items-start " key={airshipindex}>
 									<label
 										htmlFor="airship_title"
 										className="block text-sm font-medium"
@@ -231,7 +234,7 @@ export const FlightInfo = ({
 										))}
 									</select>
 								</div>
-								<div>
+								<div className="flex flex-col justify-center items-start ">
 									<label
 										htmlFor="price_cost"
 										className="block text-sm font-medium"
@@ -276,7 +279,7 @@ export const FlightInfo = ({
 										required
 									/>
 								</div>
-								<div>
+								<div className="flex flex-col justify-center items-start ">
 									<label
 										htmlFor="price_revenue"
 										className="block text-sm font-medium"
@@ -358,6 +361,11 @@ export const FlightInfo = ({
 					<h2>
 						Lead Passenger:{" "}
 						{master_passenger === "" ? "TBD" : master_passenger}
+					</h2>
+					<h2>Type of flight: {type_of === "" ? "TBD" : type_of}</h2>
+					<h2>
+						Associated to flight with ID:{" "}
+						{associated_to === "" ? "TBD" : associated_to}
 					</h2>
 				</div>
 			)

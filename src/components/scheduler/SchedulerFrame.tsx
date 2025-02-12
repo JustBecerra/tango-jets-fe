@@ -38,7 +38,7 @@ const SchedulerFrame = ({
 		to: "",
 		from: "",
 		master_passenger: "",
-		type_of: "",
+		type_of: "initial",
 		associated_to: "",
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([

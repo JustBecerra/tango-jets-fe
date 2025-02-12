@@ -103,7 +103,11 @@ const TableModal = ({ caseType }: TableProps) => {
 								const { updatedAt, ...rest } = flight
 								return rest
 							})
-							.filter((flight: any) => flight.phase > 7)
+							.filter(
+								(flight: Flight) =>
+									flight.phase > 7 ||
+									flight.launchtime < new Date().toISOString()
+							)
 					)
 				} else if (caseType === "client") {
 					setData(clients)

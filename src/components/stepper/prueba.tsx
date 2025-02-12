@@ -105,7 +105,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 		}
 	}
 	return (
-		<div className="flex items-end space-x-4">
+		<div className="flex items-end space-x-4 h-fit">
 			<div>
 				<label
 					htmlFor="airportSelect1"
