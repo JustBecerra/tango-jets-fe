@@ -340,7 +340,7 @@ export const FlightInfo = ({
 			)
 		} else {
 			return (
-				<div className="h-[200px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+				<div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
 					<h2>To: {to === "" ? "TBD" : to}</h2>
 					<h2>From: {from === "" ? "TBD" : from}</h2>
 					<h2>
