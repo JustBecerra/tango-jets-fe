@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 const Weather = () => {
   const LATITUDE = -34.8222; // Latitud de LA
   const LONGITUDE = -58.5358; // Longitud de LA
-
-  const API_KEY = "99476dfdeec176571d60c3be1d4beeca";
+  const API_KEY = import.meta.env.PUBLIC_API_KEY;
 
   interface WeatherData {
     name: string;
@@ -79,35 +78,3 @@ const Weather = () => {
 };
 
 export default Weather;
-
-// import { useState, useEffect } from "react";
-
-// const AviationWeather = ({ ICAO = "SABE" }) => {
-//   const [metar, setMetar] = useState("Cargando...");
-
-//   useEffect(() => {
-//     const fetchMetar = async () => {
-//       try {
-//         const response = await fetch(
-//           `https://aviationweather.gov/api/data/metar?ids=${ICAO}&format=json`
-//         );
-//         const data = await response.json();
-//         setMetar(data && data[0] ? data[0].raw_text : "No disponible");
-//       } catch (error) {
-//         setMetar("Error al obtener datos");
-//       }
-//     };
-
-//     fetchMetar();
-//   }, [ICAO]);
-
-//   return (
-//     <div className="weather p-4 rounded-lg bg-gray-200 max-w-md">
-//       <h2 className="text-lg font-semibold">METAR de {ICAO}</h2>
-//       <p className="text-sm text-gray-600">{metar}</p>
-
-//     </div>
-//   );
-// };
-
-// export default AviationWeather;
