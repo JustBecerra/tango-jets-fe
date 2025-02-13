@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import useStore from "../../store/store";
 import type { Client } from "../table/TableModal";
 import type { formType } from "../scheduler/SchedulerFrame";
+import type { formEditType } from "../edit-trip/MainEditFlight"
 
 interface props {
-  value: string;
-  setter: React.Dispatch<React.SetStateAction<formType>>;
+	value: string
+	setter: React.Dispatch<React.SetStateAction<formType>>
 }
 
 export const AutoComplete = ({ value, setter }: props) => {
