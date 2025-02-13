@@ -33,10 +33,16 @@ export const FlightInfo = ({
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
 
-	const getPercentage = (cost: string): number => {
+	const getPercentage = ({
+		cost,
+		newPercentage = "20",
+	}: {
+		cost: string
+		newPercentage?: string
+	}): number => {
 		if (cost === "") return 0
 
-		const percentage = 20
+		const percentage = parseFloat(newPercentage)
 		const costNumber = parseFloat(cost)
 
 		const revenue = costNumber * (percentage / 100)
@@ -71,6 +77,7 @@ export const FlightInfo = ({
 				airship_name: "",
 				price_cost: 0,
 				price_revenue: 0,
+				percentage: 20,
 			},
 		])
 	}
@@ -261,9 +268,13 @@ export const FlightInfo = ({
 																		),
 																	price_revenue:
 																		getPercentage(
-																			e
-																				.target
-																				.value
+																			{
+																				cost: e
+																					.target
+																					.value,
+																				newPercentage:
+																					item.percentage.toString(),
+																			}
 																		),
 															  }
 															: item
@@ -287,7 +298,48 @@ export const FlightInfo = ({
 										htmlFor="price_revenue"
 										className="block text-sm font-medium"
 									>
-										Price with 20% commission
+										Price with{" "}
+										<input
+											value={airship.percentage}
+											type="number"
+											style={{
+												appearance: "textfield",
+												WebkitAppearance: "none",
+												MozAppearance: "textfield",
+											}}
+											onChange={(e) => {
+												setAirshipData((prevFormData) =>
+													prevFormData.map(
+														(item, index) =>
+															index ===
+															airshipindex
+																? {
+																		...item,
+																		percentage:
+																			parseFloat(
+																				e
+																					.target
+																					.value
+																			),
+																		price_revenue:
+																			getPercentage(
+																				{
+																					cost: item.price_cost.toString(),
+																					newPercentage:
+																						e
+																							.target
+																							.value,
+																				}
+																			),
+																  }
+																: item
+													)
+												)
+											}}
+											placeholder="20%"
+											className="w-[8%]"
+										/>
+										% commission
 									</label>
 
 									<input
