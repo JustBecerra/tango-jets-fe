@@ -33,6 +33,7 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		price_revenue: currentFlight.price_revenue,
 		master_passenger: currentFlight.master_passenger,
 	})
+	const [revenuePercentage, setRevenuePercentage] = useState(20)
 
 	const [loading, setLoading] = useState(false)
 	const [distance, setDistance] = useState<number | null>(null)
@@ -52,10 +53,16 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		}))
 	}
 
-	const getPercentage = (cost: string): number => {
+	const getPercentage = ({
+		cost,
+		newPercentage = "20",
+	}: {
+		cost: string
+		newPercentage?: string
+	}): number => {
 		if (cost === "") return 0
 
-		const percentage = 20
+		const percentage = parseFloat(newPercentage)
 		const costNumber = parseFloat(cost)
 
 		const revenue = costNumber * (percentage / 100)
@@ -198,9 +205,11 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 								setFormData((prevFormData) => ({
 									...prevFormData,
 									price_cost: e.target.value,
-									price_revenue: getPercentage(
-										e.target.value
-									),
+									price_revenue: getPercentage({
+										cost: e.target.value,
+										newPercentage:
+											revenuePercentage.toString(),
+									}),
 								}))
 							}
 							type="number"
@@ -220,7 +229,32 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 							htmlFor="price_revenue"
 							className="block text-sm font-medium"
 						>
-							Price with 20% commission
+							Price with{" "}
+							<input
+								value={revenuePercentage}
+								type="number"
+								style={{
+									appearance: "textfield",
+									WebkitAppearance: "none",
+									MozAppearance: "textfield",
+								}}
+								onChange={(e) => {
+									setRevenuePercentage(
+										parseFloat(e.target.value)
+									),
+										setFormData((prevFormData) => ({
+											...prevFormData,
+
+											price_revenue: getPercentage({
+												cost: prevFormData.price_cost,
+												newPercentage: e.target.value,
+											}),
+										}))
+								}}
+								placeholder="20%"
+								className="w-[8%]"
+							/>
+							% commission
 						</label>
 
 						<input

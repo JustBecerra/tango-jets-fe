@@ -32,7 +32,6 @@ export const FlightInfo = ({
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
-	const [percentageOfRevenue, setPercentageOfRevenue] = useState(20)
 
 	const getPercentage = ({
 		cost,
@@ -273,6 +272,8 @@ export const FlightInfo = ({
 																				cost: e
 																					.target
 																					.value,
+																				newPercentage:
+																					item.percentage.toString(),
 																			}
 																		),
 															  }
@@ -338,7 +339,7 @@ export const FlightInfo = ({
 											placeholder="20%"
 											className="w-[8%]"
 										/>
-										commission
+										% commission
 									</label>
 
 									<input
