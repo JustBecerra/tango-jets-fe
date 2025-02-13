@@ -24,6 +24,7 @@ export interface airshipFormType {
 	price_cost: number
 	price_revenue: number
 	airship_name: string
+	percentage: number
 }
 const SchedulerFrame = ({
 	FlightsForAssociation,
@@ -46,6 +47,7 @@ const SchedulerFrame = ({
 			airship_name: "",
 			price_cost: 0,
 			price_revenue: 0,
+			percentage: 20,
 		},
 	])
 	const [loading, setLoading] = useState(false)
