@@ -61,57 +61,70 @@ const AddJetModal: React.FC = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault()
-		setLoading(true)
-		const formElement = event.currentTarget
-		const formData = new FormData(formElement)
+    event.preventDefault();
+    setLoading(true);
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
 
-		formData.set("title", formData.get("title") as string)
-		formData.set("status", formData.get("status") as string)
-		formData.set("seats", formData.get("seats") as string)
-		formData.set("size", formData.get("size") as string)
+    formData.set("title", formData.get("title") as string);
+    formData.set("status", formData.get("status") as string);
+    formData.set("seats", formData.get("seats") as string);
+    formData.set("size", formData.get("size") as string);
 
-		const imagesInput = document.querySelector<HTMLInputElement>(
-			'input[name="generic"]'
-		)
-		if (imagesInput?.files) {
-			for (let i = 0; i < imagesInput.files.length - 1; i++) {
-				formData.append("generic", imagesInput.files[i])
-			}
-		}
+    const imagesInput = document.querySelector<HTMLInputElement>(
+      'input[name="generic"]'
+    );
+    if (imagesInput?.files) {
+      for (let i = 0; i < imagesInput.files.length - 1; i++) {
+        formData.append("generic", imagesInput.files[i]);
+      }
+    }
 
-		const portraitImageInput = document.querySelector<HTMLInputElement>(
-			'input[name="portrait"]'
-		)
+    const portraitImageInput = document.querySelector<HTMLInputElement>(
+      'input[name="portrait"]'
+    );
 
-		// if (portraitImageInput?.files) {
-		//   formData.append("portrait", portraitImageInput.files[0]);
-		// }
+    // if (portraitImageInput?.files) {
+    //   formData.append("portrait", portraitImageInput.files[0]);
+    // }
 
-		try {
-			const response = await addAirship(formData) // Pass formData here
+    try {
+      const response = await addAirship(formData); // Pass formData here
 
-			setShowToast(true)
-			setTimeout(() => {
-				setShowToast(false)
-				setIsModalOpen(false)
-			}, 2000)
-		} catch (err) {
-			console.error("Error adding airship or uploading files:", err)
-		} finally {
-			setLoading(false)
-		}
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        setIsModalOpen(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Error adding airship or uploading files:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <button
-        id="addJetButton"
-        className="block text-white  focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+        className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
         type="button"
         onClick={handleToggleModal}
       >
-        Add Airship
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 text-blue-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+        <span className="text-sm font-medium text-gray-800">New Airship</span>
       </button>
 
       {isModalOpen && (
@@ -270,7 +283,7 @@ const AddJetModal: React.FC = () => {
       {showToast && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2">
           <Toast>
-            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 bg-green-800 text-green-200">
+            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 ">
               <HiCheck className="h-5 w-5" />
             </div>
             <div className="ml-3 text-sm font-normal">
