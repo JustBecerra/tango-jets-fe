@@ -220,95 +220,118 @@ const TableModal = ({ caseType }: TableProps) => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
-    <>
-      <div className="w-full max-w-[100%]">
-        <div className="flex items-center justify-between mt-2 mb-2">
-          {caseType !== "airship" && (
-            <div className="relative">
-              <input
-                type="text"
-                placeholder={`Search ${
-                  caseType === "client" ? "Client" : "Client"
-                }`}
-                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="absolute left-3 top-3 w-6 h-6 text-gray-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
-            </div>
-          )}
-          {buttonRetriever()}
-        </div>
+		<>
+			<div className="w-full max-w-[100%]">
+				<div className="flex items-center justify-between mt-2 mb-2">
+					{caseType !== "airship" && (
+						<div className="relative">
+							<input
+								type="text"
+								placeholder={`Search ${
+									caseType === "client" ? "Client" : "Client"
+								}`}
+								className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="absolute left-3 top-3 w-6 h-6 text-gray-500"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+								/>
+							</svg>
+						</div>
+					)}
+					{buttonRetriever()}
+				</div>
 
-        {filteredData.length > 0 ? (
-          <>
-            <div className="overflow-hidden rounded-2xl shadow-md">
-              <table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
-                <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
-                  <tr>
-                    {Object.keys(currentItems[0] || {}).map((key, index) => (
-                      <th key={index} className="px-6 py-3">
-                        {key}
-                      </th>
-                    ))}
-                    <th className="px-6 py-3">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="overflow-y-auto rounded-b-3xl">
-                  {currentItems.map((singledata: DataType) => (
-                    <tr
-                      key={singledata.id}
-                      className="bg-white border-b cursor-pointer hover:bg-gray-200"
-                    >
-                      {Object.entries(singledata).map(([key, value]) => (
-                        <td key={key} className="px-6 py-3 whitespace-nowrap">
-                          {value}
-                        </td>
-                      ))}
-                      <td className="px-6 py-3 flex whitespace-nowrap">
-                        {caseType !== "history" && caseType !== "flight" && (
-                          <Edit
-                            id={singledata.id}
-                            caseType={caseType}
-                            data={singledata}
-                          />
-                        )}
-                        <Delete
-                          id={singledata.id}
-                          caseType={caseType}
-                          setData={setData}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          <EmptyTableCard loading={loading} />
-        )}
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-      />
-    </>
-  );
+				{filteredData.length > 0 ? (
+					<>
+						<div className="overflow-hidden rounded-2xl shadow-md">
+							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
+								<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
+									<tr>
+										{Object.keys(currentItems[0] || {}).map(
+											(key, index) => (
+												<th
+													key={index}
+													className="px-6 py-3"
+												>
+													{key}
+												</th>
+											)
+										)}
+										<th className="px-6 py-3">Action</th>
+									</tr>
+								</thead>
+								<tbody className="overflow-y-auto rounded-b-3xl">
+									{currentItems.map(
+										(singledata: DataType) => (
+											<tr
+												key={singledata.id}
+												onClick={() =>
+													handleStepper(singledata.id)
+												}
+												className="bg-white border-b cursor-pointer hover:bg-gray-200"
+											>
+												{Object.entries(singledata).map(
+													([key, value]) => (
+														<td
+															key={key}
+															className="px-6 py-3 whitespace-nowrap"
+														>
+															{value}
+														</td>
+													)
+												)}
+												<td className="px-6 py-3 flex whitespace-nowrap">
+													{caseType !== "history" &&
+														caseType !==
+															"flight" && (
+															<Edit
+																id={
+																	singledata.id
+																}
+																caseType={
+																	caseType
+																}
+																data={
+																	singledata
+																}
+															/>
+														)}
+													<Delete
+														id={singledata.id}
+														caseType={caseType}
+														setData={setData}
+													/>
+												</td>
+											</tr>
+										)
+									)}
+								</tbody>
+							</table>
+						</div>
+					</>
+				) : (
+					<EmptyTableCard loading={loading} />
+				)}
+			</div>
+			<Pagination
+				currentPage={currentPage}
+				totalPages={totalPages}
+				handlePageChange={handlePageChange}
+			/>
+		</>
+  )
 };
 
 export default TableModal;
