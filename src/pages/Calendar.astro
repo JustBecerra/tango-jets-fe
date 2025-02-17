@@ -1,18 +1,8 @@
 ---
-import { RouteGuard } from "../components/routeguard"
-import TableModal from "../components/table/TableModal"
-import Layout from "../layouts/Layout.astro"
-import Clima from "../components/Clima"
-
-
+import Layout from "../layouts/Layout.astro";
+import CalendarComponent from '../components/Calendar/calendar.jsx';
 ---
 
-
-<Layout title="Calendar">
-	<RouteGuard client:only="react">
-		<div class="flex">
-			<Clima client:load >
-		</div>
-	</RouteGuard>
+<Layout title="Tango Jets">
+  <CalendarComponent client:load/>
 </Layout>
-

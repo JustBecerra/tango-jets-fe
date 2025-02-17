@@ -1,0 +1,12 @@
+.calendar-container {
+    width: 100%;
+    max-width: 1200px; 
+    height: 100%;
+    max-height: 600px; 
+    margin: 0 auto; 
+  }
+  
+  .fc {
+    font-size: 1.2em; 
+    height: 100%;
+  }
