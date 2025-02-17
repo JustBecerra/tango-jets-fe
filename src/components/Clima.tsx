@@ -3,7 +3,7 @@
 // const Weather = () => {
 //   const LATITUDE = -34.8222; // Latitud de LA
 //   const LONGITUDE = -58.5358; // Longitud de LA
-//   const API_KEY = import.meta.env.PUBLIC_API_KEY;
+//   const API_KEY = import.meta.env.PUBLIC_APIKEY_SECRET;
 
 //   interface WeatherData {
 //     name: string;
