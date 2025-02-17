@@ -1,13 +1,18 @@
 ---
+import { getFlights } from "../../lib/actions/flights/actions"
 import { RouteGuard } from "../components/routeguard"
 import SchedulerFrame from "../components/scheduler/SchedulerFrame"
 import Layout from "../layouts/Layout.astro"
+const FlightsForAssociation = await getFlights()
 ---
 
 <Layout title="Scheduler">
 	<RouteGuard client:only="react">
 		<div class="flex">
-			<SchedulerFrame client:load />
+			<SchedulerFrame
+				FlightsForAssociation={FlightsForAssociation}
+				client:load
+			/>
 		</div>
 	</RouteGuard>
 </Layout>

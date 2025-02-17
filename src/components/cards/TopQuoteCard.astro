@@ -1,26 +1,25 @@
 ---
-const { launchtime, to, from, price_revenue } = Astro.props
+const { launchtime, to, from } = Astro.props
 ---
 
 <div
 	class="w-full h-[30%] flex flex-col justify-evenly p-4 border-2 rounded border-solid bg-white border-gray-300"
 >
 	<div
-		class="flex justify-between w-full border-b-2 border-gray-300 border-solid"
+		class="flex justify-center sm:justify-between w-full border-b-2 border-gray-300 border-solid"
 	>
 		<p class="text-2xl mb-2">Trip Summary</p>
-		<p class="text-xl mb-2">Total: ${price_revenue}</p>
 	</div>
-	<div class="w-full flex items-center justify-around">
+	<div class="w-full flex items-center justify-center sm:justify-around">
 		<div class="flex flex-col w-[45%] mt-8">
 			<div
 				class="w-full flex justify-center border-b-2 border-gray-300 border-solid"
 			>
 				<p class="text-sm">DEPART</p>
 			</div>
-			<div class="flex justify-around mt-4">
+			<div class="flex flex-col sm:flex-row justify-around mt-4">
 				<div class="flex flex-col justify-center items-center">
-					<p>
+					<p class="text-nowrap">
 						{
 							new Date(launchtime).toLocaleString("en-US", {
 								month: "2-digit",
@@ -60,7 +59,7 @@ const { launchtime, to, from, price_revenue } = Astro.props
 			>
 				<p class="text-sm">ARRIVE</p>
 			</div>
-			<div class="flex justify-around mt-4">
+			<div class="flex justify-around mt-4 flex-col sm:flex-row">
 				<div class="flex flex-col justify-center items-center">
 					<p>TBD</p>
 				</div>
