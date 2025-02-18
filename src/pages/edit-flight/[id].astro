@@ -17,7 +17,7 @@ const currentClient = clients.find(
 )
 
 currentFlight["master_passenger"] = currentClient.fullname
-currentFlight["airship_id"] = airships.find(
+currentFlight["airship_name"] = airships.find(
 	(airship: Airship) => airship.id === currentFlight.airship_id
 ).title
 ---

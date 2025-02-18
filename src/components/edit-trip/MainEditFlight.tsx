@@ -21,6 +21,7 @@ export interface formEditType {
 	price_cost: string
 	price_revenue: number
 	master_passenger: string
+	companion_passengers: string[]
 }
 
 export const MainEditFlight = ({ currentFlight, airships }: props) => {
@@ -28,10 +29,14 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		launchtime: new Date(currentFlight.launchtime),
 		to: currentFlight.to,
 		from: currentFlight.from,
-		airship_name: currentFlight.airship_id,
+		airship_name: currentFlight.airship_name,
 		price_cost: currentFlight.price_cost,
 		price_revenue: currentFlight.price_revenue,
 		master_passenger: currentFlight.master_passenger,
+		companion_passengers:
+			currentFlight.companion_passengers.length === 0
+				? ["lucciano", "thionis", "H", "sorbetiere"]
+				: currentFlight.companion_passengers,
 	})
 	const [revenuePercentage, setRevenuePercentage] = useState(20)
 
@@ -271,6 +276,31 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 							required
 						/>
 					</div>
+				</div>
+				<div className="grid grid-cols-3 w-full gap-2">
+					{formData.companion_passengers.map((companion, index) => (
+						<div className="w-full" key={index}>
+							<label>Companion #{index + 1}</label>
+							<input
+								id={`companion ${index}`}
+								name={`companion ${index}`}
+								value={companion}
+								className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+								onChange={(e) =>
+									setFormData((prevFormData) => ({
+										...prevFormData,
+										companion_passengers:
+											prevFormData.companion_passengers.map(
+												(c, i) =>
+													i === index
+														? e.target.value
+														: c
+											),
+									}))
+								}
+							/>
+						</div>
+					))}
 				</div>
 
 				{loading && (
