@@ -18,29 +18,29 @@ export interface Client {
 }
 
 export interface Flight {
-  id: number;
-  launchtime: string;
-  to: string;
-  from: string;
-  airship_name: string;
-  createdby: string;
-  master_passenger: string;
-  companion_passengers: string[];
-  price_cost: string;
-  price_revenue: number;
-  phase: number;
-  pslc: number;
-  type_of: string;
-  associated_to: string;
+	id: number
+	launchtime: string
+	to: string
+	from: string
+	airship_name: string
+	createdby: string
+	master_passenger: string
+	companion_passengers: string[]
+	price_cost: string
+	price_revenue: number
+	phase: number
+	pslc: number
+	type_of: string
+	associated_to: string
 }
-
 export interface Airship {
-  id: number;
-  name: string;
-  capacity: number;
-  flight_range: string;
-  speed: string;
-  price: string;
+	id: number
+	title: string
+	seats: number
+	status: string
+	size: string
+	description: string
+	images?: File[]
 }
 
 export type DataType = Flight | Client | Airship;
@@ -164,8 +164,8 @@ const TableModal = ({ caseType }: TableProps) => {
       return item.master_passenger
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase());
-    } else if (caseType === "airship" && "name" in item) {
-      return item.name?.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (caseType === "airship" && "title" in item) {
+      return item.title?.toLowerCase().includes(searchTerm.toLowerCase());
     }
     return true;
   });

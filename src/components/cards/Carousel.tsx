@@ -140,6 +140,12 @@ const Carousel = ({
 						items={currentAirship}
 						images={images}
 						currentIndex={currentIndex}
+						revenue={
+							airshipObjects.find(
+								(element) =>
+									element.airshipID === currentAirship.id
+							)?.revenue as number
+						}
 					/>
 				</>
 			)}

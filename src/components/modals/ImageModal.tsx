@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./Modal.css"
 import type { ImagesType } from "../cards/PickAirship"
-import type { Airship } from "../table/TableModal"
+import type { Airship, Flight } from "../table/TableModal"
 
 interface props {
 	show: boolean
@@ -11,6 +11,7 @@ interface props {
 	images: [ImagesType[]]
 	currentIndex: number
 	items: Airship | undefined
+	revenue: number
 }
 
 const ImageModal = ({
@@ -19,6 +20,7 @@ const ImageModal = ({
 	items,
 	currentIndex,
 	images,
+	revenue,
 }: props) => {
 	const [isFullscreen, setIsFullscreen] = useState(false)
 	const currentItem = images[currentIndex]
@@ -52,6 +54,7 @@ const ImageModal = ({
 						)}
 					</div>
 					<h5>{items ? items.title : "Title"}</h5>
+					<p>Price: ${revenue}</p>
 					<p>
 						Description: {items ? items.description : "description"}
 					</p>
