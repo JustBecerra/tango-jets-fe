@@ -1,12 +1,13 @@
 import CsvSelect from "../stepper/prueba"
 import { AutoComplete } from "../input/AutoComplete"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Airship, Flight } from "../table/TableModal"
 import type { formType } from "../scheduler/SchedulerFrame"
 import { editAction } from "../../../lib/actions/edit/actions"
 import { getFlights } from "../../../lib/actions/flights/actions"
 import useStore from "../../store/store"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
+import { FaRegPlusSquare } from "react-icons/fa"
 
 interface props {
 	currentFlight: Flight
@@ -33,10 +34,7 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		price_cost: currentFlight.price_cost,
 		price_revenue: currentFlight.price_revenue,
 		master_passenger: currentFlight.master_passenger,
-		companion_passengers:
-			currentFlight.companion_passengers.length === 0
-				? ["lucciano", "thionis", "H", "sorbetiere"]
-				: currentFlight.companion_passengers,
+		companion_passengers: currentFlight.companion_passengers,
 	})
 	const [revenuePercentage, setRevenuePercentage] = useState(20)
 
@@ -57,6 +55,20 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 			to: value,
 		}))
 	}
+
+	const addCompanionOption = () => {
+		setFormData((prev) => ({
+			...prev,
+			companion_passengers: [
+				...prev.companion_passengers,
+				"New Passenger",
+			],
+		}))
+	}
+
+	useEffect(() => {
+		console.log({ formData })
+	}, [formData.companion_passengers])
 
 	const getPercentage = ({
 		cost,
@@ -301,6 +313,19 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 							/>
 						</div>
 					))}
+					{formData.companion_passengers.length < 8 && (
+						<>
+							<div className="w-full flex items-center justify-center block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+								<button className="hover:bg-gray-900 w-full h-full">
+									Add Passenger
+								</button>
+								<FaRegPlusSquare
+									onClick={addCompanionOption}
+									className="mx-auto cursor-pointer h-8 w-8 text-green-500"
+								/>
+							</div>
+						</>
+					)}
 				</div>
 
 				{loading && (
