@@ -1,6 +1,6 @@
 import CsvSelect from "../stepper/prueba"
 import { AutoComplete } from "../input/AutoComplete"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import type { Airship, Flight } from "../table/TableModal"
 import type { formType } from "../scheduler/SchedulerFrame"
 import { editAction } from "../../../lib/actions/edit/actions"
@@ -49,6 +49,13 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		}))
 	}
 
+	const airshipSeats = useMemo(
+		() =>
+			airships.find((airship) => airship.title === formData.airship_name)
+				?.seats || 8,
+		[]
+	)
+
 	const handleSelectTo = (value: string) => {
 		setFormData((prevFormData) => ({
 			...prevFormData,
@@ -56,7 +63,8 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 		}))
 	}
 
-	const addCompanionOption = () => {
+	const addCompanionOption = (e: any) => {
+		e.preventDefault()
 		setFormData((prev) => ({
 			...prev,
 			companion_passengers: [
@@ -65,10 +73,6 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 			],
 		}))
 	}
-
-	useEffect(() => {
-		console.log({ formData })
-	}, [formData.companion_passengers])
 
 	const getPercentage = ({
 		cost,
@@ -104,6 +108,10 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 			convertedData.append(
 				"price_revenue",
 				formData.price_revenue.toString()
+			)
+			convertedData.append(
+				"companion_passengers",
+				JSON.stringify(formData.companion_passengers)
 			)
 
 			await editAction({
@@ -208,7 +216,7 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 						))}
 					</select>
 				</div>
-				<div className="flex  gap-2">
+				<div className="flex gap-2">
 					<div className="w-1/2">
 						<label
 							htmlFor="price_cost"
@@ -313,16 +321,19 @@ export const MainEditFlight = ({ currentFlight, airships }: props) => {
 							/>
 						</div>
 					))}
-					{formData.companion_passengers.length < 8 && (
+					{formData.companion_passengers.length < airshipSeats && (
 						<>
-							<div className="w-full flex items-center justify-center block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-								<button className="hover:bg-gray-900 w-full h-full">
+							<div
+								onClick={addCompanionOption}
+								className="w-full cursor-pointer flex items-center bg-green-600 hover:bg-green-800 justify-center block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+							>
+								<button
+									type="button"
+									className="block w-fit py-2 mt-1 text-sm text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+								>
 									Add Passenger
 								</button>
-								<FaRegPlusSquare
-									onClick={addCompanionOption}
-									className="mx-auto cursor-pointer h-8 w-8 text-green-500"
-								/>
+								<FaRegPlusSquare className="ml-2  h-8 w-8 text-white" />
 							</div>
 						</>
 					)}
