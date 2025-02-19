@@ -1,21 +1,24 @@
 ---
 import { getAirships } from "../../../lib/actions/airships/actions"
 import { getClients } from "../../../lib/actions/clients/actions"
-import { getFlightById } from "../../../lib/actions/flights/actions"
+import { getFlightById, getFlights } from "../../../lib/actions/flights/actions"
 import { MainEditFlight } from "../../components/edit-trip/MainEditFlight"
 import { RouteGuard } from "../../components/routeguard"
-import type { Airship, Client } from "../../components/table/TableModal"
+import type { Airship, Client, Flight } from "../../components/table/TableModal"
 import Layout from "../../layouts/Layout.astro"
 
 const { id } = Astro.params
 if (!id) return Astro.redirect("/404")
 const airships = await getAirships()
 const currentFlight = await getFlightById(parseInt(id))
+const flights = await getFlights()
 const clients = await getClients()
 const currentClient = clients.find(
 	(client: Client) => client.id === currentFlight.master_passenger
 )
-
+const filteredFlights = flights.filter(
+	(elem: Flight) => elem.id !== parseInt(id)
+)
 currentFlight["master_passenger"] = currentClient.fullname
 currentFlight["airship_name"] = airships.find(
 	(airship: Airship) => airship.id === currentFlight.airship_id
@@ -27,6 +30,7 @@ currentFlight["airship_name"] = airships.find(
 		<MainEditFlight
 			currentFlight={currentFlight}
 			airships={airships}
+			associationFlights={filteredFlights}
 			client:load
 		/>
 	</RouteGuard>
