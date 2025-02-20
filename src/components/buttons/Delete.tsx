@@ -21,7 +21,8 @@ const Delete = ({ id, caseType, setData }: Props) => {
 	const { updateFlights, updateAirships, updateClients } = useStore(
 		(state) => state
 	)
-	const handleDelete = async () => {
+	const handleDelete = async (e: any) => {
+		e.stopPropagation()
 		setLoading(true)
 		try {
 			//PARA PROBAR EL LOADER
@@ -87,7 +88,9 @@ const Delete = ({ id, caseType, setData }: Props) => {
 			<Modal
 				show={openModal}
 				size="md"
-				onClose={() => setOpenModal(false)}
+				onClose={() => {
+					setOpenModal(false)
+				}}
 				popup
 			>
 				<Modal.Header />
@@ -106,7 +109,10 @@ const Delete = ({ id, caseType, setData }: Props) => {
 							</Button>
 							<Button
 								color="gray"
-								onClick={() => setOpenModal(false)}
+								onClick={(e) => {
+									e.stopPropagation()
+									setOpenModal(false)
+								}}
 							>
 								No, cancel
 							</Button>

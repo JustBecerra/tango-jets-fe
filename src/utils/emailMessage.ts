@@ -34,9 +34,12 @@ export const flightScheduledMessage = ({
 		})
 		.join("")
 
-	const fullURL = `https://tango-jets-fe.vercel.app/Quote/${tripID}/${AirshipIDs}`
+	
 
-	const encodedURL = btoa(fullURL)
+	const params = `${tripID}/${AirshipIDs}`
+	const encodedURL = encodeURIComponent(btoa(params))
+
+	const fullURL = `https://tango-jets-fe.vercel.app/Quote/${encodedURL}`
 
 	return `
     <p>Dear ${master_passenger},</p>
