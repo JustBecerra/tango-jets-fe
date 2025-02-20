@@ -2,18 +2,24 @@
 import {
 	getAirshipImages,
 	getAirshipsForInvoice,
-} from "../../../../lib/actions/airships/actions"
-import { getFlightById } from "../../../../lib/actions/flights/actions"
-import { MapCard } from "../../../components/cards/MapCard"
-import type { ImagesType } from "../../../components/cards/PickAirship"
-import { PickAirship } from "../../../components/cards/PickAirship"
-import TopQuoteCard from "../../../components/cards/TopQuoteCard.astro"
-import type { Flight } from "../../../components/table/TableModal"
-import ClientLayout from "../../../layouts/ClientLayout.astro"
+} from "../../lib/actions/airships/actions"
+import { getFlightById } from "../../lib/actions/flights/actions"
+import { MapCard } from "../components/cards/MapCard"
+import { PickAirship, type ImagesType } from "../components/cards/PickAirship"
+import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
+import type { Flight } from "../components/table/TableModal"
+import ClientLayout from "../layouts/ClientLayout.astro"
 
-const { tripID, AirshipIDs } = Astro.params
-if (!tripID || !AirshipIDs) return Astro.redirect("/404")
-const airshipParamsArray = AirshipIDs.split("/")
+const url = new URL(Astro.request.url)
+const encodedData = url.searchParams.get("data")
+
+if (!encodedData) return Astro.redirect("/404")
+const decodedURIComponent = decodeURIComponent(encodedData)
+
+const decodedString = atob(decodedURIComponent).replace(/\/$/, "")
+
+const [tripID, ...airshipParamsArray] = decodedString.split("/")
+
 const airshipObjects = []
 for (let i = 0; i < airshipParamsArray.length; i += 3) {
 	airshipObjects.push({
@@ -26,8 +32,12 @@ for (let i = 0; i < airshipParamsArray.length; i += 3) {
 const airshipIDsFromParams = airshipObjects.map((airship) =>
 	airship.airshipID.toString()
 )
+
 const storedAirshipData = await getAirshipsForInvoice(airshipIDsFromParams)
-const imageRequests = airshipIDsFromParams.map((id) => getAirshipImages(id))
+const imageRequests = airshipIDsFromParams.map((id) =>
+	getAirshipImages(parseInt(id))
+)
+
 const images = await Promise.all(imageRequests)
 
 const convertedID = parseInt(tripID)

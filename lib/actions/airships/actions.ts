@@ -43,7 +43,7 @@ export async function getAirshipsForInvoice(IDs: string[]) {
 	}
 }
 
-export async function getAirshipImages(ID: string) {
+export async function getAirshipImages(ID: number) {
 	try {
 		const response = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/images/${ID}`,
