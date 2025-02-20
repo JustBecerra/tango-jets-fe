@@ -259,16 +259,11 @@ const AddJetModal: React.FC = () => {
 											/>
 										</div>
 										<div>
-											<label
-												htmlFor="description"
-												className="block text-sm font-medium text-gray-200 invisible"
-											>
+											<label className="block text-sm font-medium text-gray-200 invisible">
 												Description
 											</label>
 											<input
 												type="text"
-												id="description"
-												name="description"
 												className="block invisible w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
 											/>
 										</div>
