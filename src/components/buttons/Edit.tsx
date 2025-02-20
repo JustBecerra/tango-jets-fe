@@ -39,7 +39,6 @@ const Edit = ({ id, caseType, data }: Props) => {
 		genericData.forEach((file) => {
 			formData.append("generic", file)
 		})
-		console.log({ formData })
 
 		try {
 			await editAction({ caseType, data: formData, id })
