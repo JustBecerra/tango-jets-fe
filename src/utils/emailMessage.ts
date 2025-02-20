@@ -34,9 +34,13 @@ export const flightScheduledMessage = ({
 		})
 		.join("")
 
-	const fullURL = `https://tango-jets-fe.vercel.app/Quote/${tripID}/${AirshipIDs}`
+	
 
-	const encodedURL = btoa(fullURL)
+	const params = `${tripID}/${AirshipIDs}`
+	const encodedURL = encodeURIComponent(btoa(encodeURIComponent(params)))
+
+	const fullURL = `https://tango-jets-fe.vercel.app/Quote/${encodedURL}`
+	const localURL = `http://localhost:4321/Quote?data=${encodedURL}`
 
 	return `
     <p>Dear ${master_passenger},</p>
@@ -49,7 +53,7 @@ export const flightScheduledMessage = ({
     <p>Please ensure you arrive at the airport at least one hour before departure for check-in.</p>
 
     <p>Here is the link to your quote: 
-        <a href="${fullURL}" target="_blank">
+        <a href="${localURL}" target="_blank">
             View Quote
         </a>
     </p>
