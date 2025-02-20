@@ -124,7 +124,7 @@ const ModalEditJet = ({
 										htmlFor="title"
 										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 									>
-										Jet Title
+										Operator Make Model
 									</label>
 									<input
 										type="text"
@@ -141,7 +141,7 @@ const ModalEditJet = ({
 										htmlFor="status"
 										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 									>
-										Status
+										Tail Number
 									</label>
 									<input
 										type="text"
@@ -177,14 +177,57 @@ const ModalEditJet = ({
 									>
 										Size
 									</label>
-									<input
-										type="text"
+									<select
 										id="size"
 										name="size"
 										value={formData.size}
 										onChange={handleChange}
-										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-										required
+										className="block w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+									>
+										<option value="">Select a size</option>
+										<option value="Turbo-prop">
+											Turbo prop
+										</option>
+										<option value="Light-jet">
+											Light jet
+										</option>
+										<option value="Midsize-jet">
+											Midsize jet
+										</option>
+										<option value="Sup-Midsize-Jet">
+											Super Midsize Jet
+										</option>
+										<option value="Heavy-jet">
+											Heavy jet
+										</option>
+										<option value="Ultra-Long-Range">
+											Ultra Long Range
+										</option>
+									</select>
+								</div>
+								<div>
+									<label
+										htmlFor="description"
+										className="block text-sm font-medium text-gray-200"
+									>
+										Description
+									</label>
+									<input
+										type="text"
+										id="description"
+										name="description"
+										value={formData.description}
+										onChange={handleChange}
+										className="block w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-200 invisible">
+										Description
+									</label>
+									<input
+										type="text"
+										className="block invisible w-full px-4 py-2 mt-1 text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
 									/>
 								</div>
 								<PortraitImage

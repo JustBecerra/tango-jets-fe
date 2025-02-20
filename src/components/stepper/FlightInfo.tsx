@@ -236,10 +236,10 @@ export const FlightInfo = ({
 										</option>
 										{airships.map((airship, index) => (
 											<option
-												value={airship.name}
+												value={airship.title}
 												key={index}
 											>
-												{airship.name}
+												{airship.title}
 											</option>
 										))}
 									</select>
