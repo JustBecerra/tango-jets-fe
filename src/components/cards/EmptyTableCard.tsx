@@ -1,25 +1,23 @@
-import LoaderSpinner from "../Loaders/LoaderSpinner"
+import LoaderSpinner from "../Loaders/LoaderSpinner";
 
-interface props {
-	loading: boolean
+interface Props {
+  loading: boolean;
 }
 
-export const EmptyTableCard = ({ loading }: props) => {
-	return (
-		<>
-			{loading ? (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-					<LoaderSpinner />
-				</div>
-			) : (
-				<>
-					<div className="flex justify-center items-center border-2 border-white rounded-lg h-[400px] w-[400px]">
-						<h2 className="text-2xl font-bold">
-							There is no data to show
-						</h2>
-					</div>
-				</>
-			)}
-		</>
-	)
-}
+export const EmptyTableCard = ({ loading }: Props) => {
+  return (
+    <>
+      {loading ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-xl">
+          <LoaderSpinner />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <p className="text-zinc-400 text-lg">
+            The Trip you’re looking for can’t be found.
+          </p>
+        </div>
+      )}
+    </>
+  );
+};
