@@ -10,7 +10,6 @@ import {
 	getAirships,
 } from "../../../lib/actions/airships/actions"
 import useStore from "../../store/store"
-import type { ImagesType } from "../cards/PickAirship"
 
 interface Props {
 	id: number
@@ -21,7 +20,7 @@ interface Props {
 const Edit = ({ id, caseType, data }: Props) => {
 	const [openModal, setOpenModal] = useState(false)
 	const [formData, setFormData] = useState<Client | Airship | Flight>(data)
-	const [portraitData, setPortraitData] = useState<File | ImagesType>(
+	const [portraitData, setPortraitData] = useState<File>(
 		new File(["initial content"], "", { type: "text/plain" })
 	)
 	const [genericData, setGenericData] = useState<File[]>([])
@@ -36,13 +35,9 @@ const Edit = ({ id, caseType, data }: Props) => {
 		formData.delete("portrait")
 		formData.delete("generic")
 
-		if (portraitData instanceof File) {
-			formData.append("portrait", portraitData)
-		} else {
-			formData.append("portrait", portraitData.dataValues.image)
-		}
+		formData.append("portrait", portraitData)
 
-		genericData.forEach((file) => {
+		genericData.forEach((file: File) => {
 			formData.append("generic", file)
 		})
 
@@ -62,19 +57,49 @@ const Edit = ({ id, caseType, data }: Props) => {
 		}
 	}
 
+	const convertToFile = async (
+		imageUrl: string,
+		fileName: string
+	): Promise<File> => {
+		const response = await fetch(imageUrl)
+		const blob = await response.blob()
+		return new File([blob], fileName || "image.png", { type: blob.type })
+	}
+
 	useEffect(() => {
 		const fetchImages = async () => {
 			if (caseType === "airship") {
 				const getImages = await getAirshipImages(formData.id)
-				const portrait = getImages.find(
+
+				// Convert portrait image to File
+				const portraitImage = getImages.find(
 					(elem: any) => elem.dataValues.typeof === "Portrait"
 				)
-				const generic = getImages.filter(
+				const portraitFile = portraitImage
+					? await convertToFile(
+							portraitImage.dataValues.image,
+							portraitImage.dataValues.original_name
+					  )
+					: null
+
+				// Convert generic images to File[]
+				const genericImages = getImages.filter(
 					(elem: any) => elem.dataValues.typeof === "Generic"
 				)
+
+				const genericFiles = await Promise.all(
+					genericImages.map(async (img: any) =>
+						convertToFile(
+							img.dataValues.image,
+							img.dataValues.original_name
+						)
+					)
+				)
+
 				console.log({ getImages })
-				setPortraitData(portrait)
-				setGenericData(generic)
+
+				if (portraitFile) setPortraitData(portraitFile)
+				setGenericData(genericFiles)
 			}
 		}
 		fetchImages()
