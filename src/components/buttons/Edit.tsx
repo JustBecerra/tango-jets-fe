@@ -70,8 +70,6 @@ const Edit = ({ id, caseType, data }: Props) => {
 		const fetchImages = async () => {
 			if (caseType === "airship") {
 				const getImages = await getAirshipImages(formData.id)
-
-				// Convert portrait image to File
 				const portraitImage = getImages.find(
 					(elem: any) => elem.dataValues.typeof === "Portrait"
 				)
@@ -82,7 +80,6 @@ const Edit = ({ id, caseType, data }: Props) => {
 					  )
 					: null
 
-				// Convert generic images to File[]
 				const genericImages = getImages.filter(
 					(elem: any) => elem.dataValues.typeof === "Generic"
 				)
@@ -95,8 +92,6 @@ const Edit = ({ id, caseType, data }: Props) => {
 						)
 					)
 				)
-
-				console.log({ getImages })
 
 				if (portraitFile) setPortraitData(portraitFile)
 				setGenericData(genericFiles)
