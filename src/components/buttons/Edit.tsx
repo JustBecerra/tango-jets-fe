@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import { editAction } from "../../../lib/actions/edit/actions";
-
-import ModalEditCli from "../modals/ModalEditCli";
-import ModalEditJet from "../modals/ModalEditJet";
-import ModalFlightEdit from "../modals/ModalFlightEdit";
+import React, { useEffect, useState } from "react"
+import { editAction } from "../../../lib/actions/edit/actions"
+import ModalEditCli from "../modals/ModalEditCli"
+import ModalEditJet from "../modals/ModalEditJet"
+import ModalFlightEdit from "../modals/ModalFlightEdit"
 import type { Airship, Client, Flight } from "../table/TableModal"
-import { getFlights } from "../../../lib/actions/flights/actions"
 import { getClients } from "../../../lib/actions/clients/actions"
-import { getAirships } from "../../../lib/actions/airships/actions"
+import {
+	getAirshipImages,
+	getAirships,
+} from "../../../lib/actions/airships/actions"
 import useStore from "../../store/store"
+import type { ImagesType } from "../cards/PickAirship"
 
 interface Props {
 	id: number
@@ -19,7 +21,7 @@ interface Props {
 const Edit = ({ id, caseType, data }: Props) => {
 	const [openModal, setOpenModal] = useState(false)
 	const [formData, setFormData] = useState<Client | Airship | Flight>(data)
-	const [portraitData, setPortraitData] = useState<File>(
+	const [portraitData, setPortraitData] = useState<File | ImagesType>(
 		new File(["initial content"], "", { type: "text/plain" })
 	)
 	const [genericData, setGenericData] = useState<File[]>([])
@@ -34,7 +36,11 @@ const Edit = ({ id, caseType, data }: Props) => {
 		formData.delete("portrait")
 		formData.delete("generic")
 
-		formData.append("portrait", portraitData)
+		if (portraitData instanceof File) {
+			formData.append("portrait", portraitData)
+		} else {
+			formData.append("portrait", portraitData.dataValues.image)
+		}
 
 		genericData.forEach((file) => {
 			formData.append("generic", file)
@@ -56,6 +62,24 @@ const Edit = ({ id, caseType, data }: Props) => {
 		}
 	}
 
+	useEffect(() => {
+		const fetchImages = async () => {
+			if (caseType === "airship") {
+				const getImages = await getAirshipImages(formData.id)
+				const portrait = getImages.find(
+					(elem: any) => elem.dataValues.typeof === "Portrait"
+				)
+				const generic = getImages.filter(
+					(elem: any) => elem.dataValues.typeof === "Generic"
+				)
+				console.log({ getImages })
+				setPortraitData(portrait)
+				setGenericData(generic)
+			}
+		}
+		fetchImages()
+	}, [])
+
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
@@ -70,7 +94,7 @@ const Edit = ({ id, caseType, data }: Props) => {
 				onClick={() => setOpenModal(true)}
 			>
 				<svg
-					className="w-6 h-6 text-blue-500 "
+					className="w-6 h-6 text-blue-500"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -116,4 +140,4 @@ const Edit = ({ id, caseType, data }: Props) => {
 	)
 }
 
-export default Edit;
+export default Edit

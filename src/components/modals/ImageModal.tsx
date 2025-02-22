@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./Modal.css"
 import type { ImagesType } from "../cards/PickAirship"
-import type { Airship, Flight } from "../table/TableModal"
+import type { Airship } from "../table/TableModal"
 
 interface props {
 	show: boolean

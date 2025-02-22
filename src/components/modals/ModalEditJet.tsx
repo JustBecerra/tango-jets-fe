@@ -3,6 +3,7 @@ import type { Airship } from "../table/TableModal";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { PortraitImage } from "../input/PortraitImage"
 import { GenericImage } from "../input/GenericImage"
+import type { ImagesType } from "../cards/PickAirship"
 
 interface Props {
 	formData: Airship
@@ -12,9 +13,9 @@ interface Props {
 	handleEdit: (event: React.FormEvent<HTMLFormElement>) => void
 	setOpenModal: (open: boolean) => void
 	genericData: File[]
-	portraitData: File
+	portraitData: File | ImagesType
 	setGenericData: React.Dispatch<React.SetStateAction<File[]>>
-	setPortraitData: React.Dispatch<React.SetStateAction<File>>
+	setPortraitData: React.Dispatch<React.SetStateAction<File | ImagesType>>
 }
 
 const ModalEditJet = ({
