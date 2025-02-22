@@ -7,6 +7,7 @@ export interface ImagesType {
 		airship_id: number
 		image: string
 		typeof: string
+		original_name: string
 	}
 }
 

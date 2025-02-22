@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { editAction } from "../../../lib/actions/edit/actions";
-
-import ModalEditCli from "../modals/ModalEditCli";
-import ModalEditJet from "../modals/ModalEditJet";
-import ModalFlightEdit from "../modals/ModalFlightEdit";
+import React, { useEffect, useState } from "react"
+import { editAction } from "../../../lib/actions/edit/actions"
+import ModalEditCli from "../modals/ModalEditCli"
+import ModalEditJet from "../modals/ModalEditJet"
+import ModalFlightEdit from "../modals/ModalFlightEdit"
 import type { Airship, Client, Flight } from "../table/TableModal"
-import { getFlights } from "../../../lib/actions/flights/actions"
 import { getClients } from "../../../lib/actions/clients/actions"
-import { getAirships } from "../../../lib/actions/airships/actions"
+import {
+	getAirshipImages,
+	getAirships,
+} from "../../../lib/actions/airships/actions"
 import useStore from "../../store/store"
 
 interface Props {
@@ -36,7 +37,7 @@ const Edit = ({ id, caseType, data }: Props) => {
 
 		formData.append("portrait", portraitData)
 
-		genericData.forEach((file) => {
+		genericData.forEach((file: File) => {
 			formData.append("generic", file)
 		})
 
@@ -56,6 +57,49 @@ const Edit = ({ id, caseType, data }: Props) => {
 		}
 	}
 
+	const convertToFile = async (
+		imageUrl: string,
+		fileName: string
+	): Promise<File> => {
+		const response = await fetch(imageUrl)
+		const blob = await response.blob()
+		return new File([blob], fileName || "image.png", { type: blob.type })
+	}
+
+	useEffect(() => {
+		const fetchImages = async () => {
+			if (caseType === "airship") {
+				const getImages = await getAirshipImages(formData.id)
+				const portraitImage = getImages.find(
+					(elem: any) => elem.dataValues.typeof === "Portrait"
+				)
+				const portraitFile = portraitImage
+					? await convertToFile(
+							portraitImage.dataValues.image,
+							portraitImage.dataValues.original_name
+					  )
+					: null
+
+				const genericImages = getImages.filter(
+					(elem: any) => elem.dataValues.typeof === "Generic"
+				)
+
+				const genericFiles = await Promise.all(
+					genericImages.map(async (img: any) =>
+						convertToFile(
+							img.dataValues.image,
+							img.dataValues.original_name
+						)
+					)
+				)
+
+				if (portraitFile) setPortraitData(portraitFile)
+				setGenericData(genericFiles)
+			}
+		}
+		fetchImages()
+	}, [])
+
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
@@ -70,7 +114,7 @@ const Edit = ({ id, caseType, data }: Props) => {
 				onClick={() => setOpenModal(true)}
 			>
 				<svg
-					className="w-6 h-6 text-blue-500 "
+					className="w-6 h-6 text-blue-500"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -116,4 +160,4 @@ const Edit = ({ id, caseType, data }: Props) => {
 	)
 }
 
-export default Edit;
+export default Edit

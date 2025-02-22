@@ -25,8 +25,6 @@ const Delete = ({ id, caseType, setData }: Props) => {
 		e.stopPropagation()
 		setLoading(true)
 		try {
-			//PARA PROBAR EL LOADER
-			// await new Promise((resolve) => setTimeout(resolve, 5000));
 			await deleteAction({ caseType: caseType, id })
 			if (caseType === "flight") {
 				const newFlights = await getFlights()
@@ -56,12 +54,16 @@ const Delete = ({ id, caseType, setData }: Props) => {
 			console.error("Error:", error)
 		} finally {
 			setLoading(false)
-			setOpenModal(false) // Cierra el modal después de eliminar
+			setOpenModal(false)
 		}
 	}
 
 	return (
-		<div>
+		<div
+			onClick={(e) => {
+				e.stopPropagation()
+			}}
+		>
 			<button
 				className="bg-transparent p-2 ml-2"
 				onClick={(e) => {

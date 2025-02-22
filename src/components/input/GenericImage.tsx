@@ -63,7 +63,7 @@ export const GenericImage = ({
 						{genericData.length > 0 ? (
 							genericData.map((data: File, key) => (
 								<p
-									className="w-full truncate text-white"
+									className="w-full text-center truncate text-white"
 									key={key}
 								>
 									{data.name}
