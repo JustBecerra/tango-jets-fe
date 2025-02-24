@@ -23,6 +23,7 @@ const Edit = ({ id, caseType, data }: Props) => {
 	const [portraitData, setPortraitData] = useState<File>(
 		new File(["initial content"], "", { type: "text/plain" })
 	)
+
 	const [genericData, setGenericData] = useState<File[]>([])
 	const { updateClients, updateAirships } = useStore()
 
@@ -32,14 +33,21 @@ const Edit = ({ id, caseType, data }: Props) => {
 		const formElement = event.currentTarget
 		const formData = new FormData(formElement)
 
-		formData.delete("portrait")
-		formData.delete("generic")
+		if (portraitData instanceof File) {
+			formData.delete("portrait")
+			formData.append("portrait", portraitData)
+		} else {
+			console.warn("portraitData is not a File:", portraitData)
+		}
 
-		formData.append("portrait", portraitData)
-
-		genericData.forEach((file: File) => {
-			formData.append("generic", file)
-		})
+		if (Array.isArray(genericData) && genericData.length > 0) {
+			formData.delete("generic")
+			genericData.forEach((file: File) => {
+				formData.append("generic", file)
+			})
+		} else {
+			console.warn("genericData is empty or not an array:", genericData)
+		}
 
 		try {
 			await editAction({ caseType, data: formData, id })
