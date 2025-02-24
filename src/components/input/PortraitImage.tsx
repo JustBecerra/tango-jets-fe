@@ -1,5 +1,3 @@
-import type { ImagesType } from "../cards/PickAirship"
-
 interface props {
 	handleDragOver: (event: React.DragEvent<HTMLDivElement>) => void
 	handleDrop: ({
@@ -25,7 +23,6 @@ export const PortraitImage = ({
 	handleFileChange,
 	portraitData,
 }: props) => {
-
 	return (
 		<div>
 			<label
@@ -71,7 +68,6 @@ export const PortraitImage = ({
 									<span className="font-semibold">
 										Click to upload
 									</span>{" "}
-									or drag and drop
 								</p>
 								<p className="text-xs text-gray-500 dark:text-gray-400">
 									PNG or JPG

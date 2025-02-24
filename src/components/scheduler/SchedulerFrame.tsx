@@ -138,8 +138,7 @@ import { useState } from "react";
 import { ModalStepper } from "../stepper/ModalStepper";
 import { addFlight, getFlights } from "../../../lib/actions/flights/actions";
 import { getCookie } from "../../utils/getCookie";
-import { flightScheduledMessage } from "../../utils/emailMessage";
-import { Toast } from "flowbite-react";
+import { flightScheduledMessage } from "../../utils/emailMessage"
 import { HiCheck } from "react-icons/hi";
 import { FlightInfo } from "../stepper/FlightInfo";
 import { StepperButtons } from "../buttons/StepperButtons";

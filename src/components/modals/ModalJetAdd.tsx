@@ -1,66 +1,67 @@
 import React, { useState } from "react";
 import { Toast } from "flowbite-react";
 import { HiCheck } from "react-icons/hi";
-import { addAirship } from "../../../lib/actions/airships/actions";
-import LoaderSpinner from "../Loaders/LoaderSpinner";
-import { PortraitImage } from "../input/PortraitImage";
-import { GenericImage } from "../input/GenericImage";
+import { addAirship, getAirships } from "../../../lib/actions/airships/actions"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
+import { PortraitImage } from "../input/PortraitImage"
+import { GenericImage } from "../input/GenericImage"
+import useStore from "../../store/store"
 
 const AddJetModal: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [portraitData, setPortraitData] = useState<File>(
-    new File(["initial content"], "", { type: "text/plain" })
-  );
-  const [genericData, setGenericData] = useState<File[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [showToast, setShowToast] = useState(false)
+	const [loading, setLoading] = useState(false)
+	const [portraitData, setPortraitData] = useState<File>(
+		new File(["initial content"], "", { type: "text/plain" })
+	)
+	const [genericData, setGenericData] = useState<File[]>([])
+	const { updateAirships } = useStore((state) => state)
+	const handleToggleModal = () => {
+		setIsModalOpen((prev) => !prev)
+	}
 
-  const handleToggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
+	const handleDrop = ({
+		event,
+		type,
+	}: {
+		event: React.DragEvent<HTMLDivElement>
+		type: string
+	}) => {
+		event.preventDefault()
+		event.stopPropagation()
+		if (type === "generic") {
+			const droppedFiles = Array.from(event.dataTransfer.files)
+			setGenericData((prevFiles) => [...prevFiles, ...droppedFiles])
+		} else if (type === "portrait") {
+			const selectedFile = event.dataTransfer.files[0]
+			setPortraitData(selectedFile)
+		}
+	}
 
-  const handleDrop = ({
-    event,
-    type,
-  }: {
-    event: React.DragEvent<HTMLDivElement>;
-    type: string;
-  }) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (type === "generic") {
-      const droppedFiles = Array.from(event.dataTransfer.files);
-      setGenericData((prevFiles) => [...prevFiles, ...droppedFiles]);
-    } else if (type === "portrait") {
-      const selectedFile = event.dataTransfer.files[0];
-      setPortraitData(selectedFile);
-    }
-  };
+	const handleFileChange = ({
+		event,
+		type,
+	}: {
+		event: React.ChangeEvent<HTMLInputElement>
+		type: string
+	}) => {
+		if (type === "generic") {
+			const selectedFiles = Array.from(event.target.files || [])
+			setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+		} else if (type === "portrait") {
+			if (event.target.files) {
+				const selectedFile = event.target.files[0]
+				setPortraitData(selectedFile)
+			}
+		}
+	}
 
-  const handleFileChange = ({
-    event,
-    type,
-  }: {
-    event: React.ChangeEvent<HTMLInputElement>;
-    type: string;
-  }) => {
-    if (type === "generic") {
-      const selectedFiles = Array.from(event.target.files || []);
-      setGenericData((prevFiles) => [...prevFiles, ...selectedFiles]);
-    } else if (type === "portrait") {
-      if (event.target.files) {
-        const selectedFile = event.target.files[0];
-        setPortraitData(selectedFile);
-      }
-    }
-  };
+	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault()
+		event.stopPropagation()
+	}
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		setLoading(true)
 		const formElement = event.currentTarget
@@ -86,7 +87,8 @@ const AddJetModal: React.FC = () => {
 
 		try {
 			const response = await addAirship(formData)
-
+			const airships = await getAirships()
+			updateAirships(airships)
 			setShowToast(true)
 			setTimeout(() => {
 				setShowToast(false)
@@ -97,9 +99,9 @@ const AddJetModal: React.FC = () => {
 		} finally {
 			setLoading(false)
 		}
-  }
+	}
 
-  return (
+	return (
 		<>
 			<button
 				className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
@@ -324,7 +326,7 @@ const AddJetModal: React.FC = () => {
 				</div>
 			)}
 		</>
-  )
-};
+	)
+}
 
 export default AddJetModal;
