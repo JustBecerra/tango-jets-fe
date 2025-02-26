@@ -2,7 +2,8 @@
 import { getFlightById } from "../../lib/actions/flights/actions"
 import TopInvoiceCard from "../components/cards/TopInvoiceCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
-const currentFlight = await getFlightById(112)
+const initialFlight = await getFlightById(112)
+const returnFlight = await getFlightById(123)
 ---
 
 <ClientLayout title="Invoice"
@@ -16,5 +17,7 @@ const currentFlight = await getFlightById(112)
 		</p>
 	</div>
 
-	<TopInvoiceCard currentFlight={currentFlight} />
+	<TopInvoiceCard currentFlight={initialFlight} legNumber={1} />
+
+	<TopInvoiceCard currentFlight={returnFlight} legNumber={2} />
 </ClientLayout>

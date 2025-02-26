@@ -1,15 +1,15 @@
 ---
-const { currentFlight } = Astro.props
-
+const { currentFlight, legNumber } = Astro.props
 ---
+
 <div
 	class="w-full h-[30%] flex flex-col pb-4 border-2 rounded border-solid bg-white border-gray-300"
 >
-    <div class="bg-gray-800 flex items-center justify-between">
-        <p class="text-2xl text-white mb-2 ml-2">Leg 1</p>
-        <p class="text-2xl text-white mr-2">${currentFlight.price_revenue}</p>
-    </div>
-    <div class="w-full flex items-center justify-center sm:justify-around">
+	<div class="bg-gray-800 flex items-center justify-between">
+		<p class="text-2xl text-white mb-2 ml-2">Leg {legNumber}</p>
+		<p class="text-2xl text-white mr-2">${currentFlight.price_revenue}</p>
+	</div>
+	<div class="w-full flex items-center justify-center sm:justify-around">
 		<div class="flex flex-col w-[45%] mt-8">
 			<div
 				class="w-full flex justify-center border-b-2 border-gray-300 border-solid"
@@ -20,14 +20,17 @@ const { currentFlight } = Astro.props
 				<div class="flex flex-col justify-center items-center">
 					<p class="text-nowrap">
 						{
-							new Date(currentFlight.launchtime).toLocaleString("en-US", {
-								month: "2-digit",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
-								year: "numeric",
-								hour12: false,
-							})
+							new Date(currentFlight.launchtime).toLocaleString(
+								"en-US",
+								{
+									month: "2-digit",
+									day: "numeric",
+									hour: "2-digit",
+									minute: "2-digit",
+									year: "numeric",
+									hour12: false,
+								}
+							)
 						}
 					</p>
 				</div>
@@ -60,9 +63,7 @@ const { currentFlight } = Astro.props
 			</div>
 			<div class="flex justify-around mt-4 flex-col sm:flex-row">
 				<div class="flex flex-col justify-center items-center">
-					<p class="text-nowrap">
-						TBD
-					</p>
+					<p class="text-nowrap">TBD</p>
 				</div>
 				<div class="flex flex-col justify-center items-center">
 					<p>{currentFlight.to}</p>
