@@ -1,0 +1,74 @@
+---
+const { currentFlight, legNumber } = Astro.props
+---
+
+<div
+	class="w-full h-[30%] flex flex-col pb-4 border-2 rounded border-solid bg-white border-gray-300"
+>
+	<div class="bg-gray-800 flex items-center justify-between">
+		<p class="text-2xl text-white mb-2 ml-2">Leg {legNumber}</p>
+		<p class="text-2xl text-white mr-2">${currentFlight.price_revenue}</p>
+	</div>
+	<div class="w-full flex items-center justify-center sm:justify-around">
+		<div class="flex flex-col w-[45%] mt-8">
+			<div
+				class="w-full flex justify-center border-b-2 border-gray-300 border-solid"
+			>
+				<p class="text-sm">DEPART</p>
+			</div>
+			<div class="flex flex-col sm:flex-row justify-around mt-4">
+				<div class="flex flex-col justify-center items-center">
+					<p class="text-nowrap">
+						{
+							new Date(currentFlight.launchtime).toLocaleString(
+								"en-US",
+								{
+									month: "2-digit",
+									day: "numeric",
+									hour: "2-digit",
+									minute: "2-digit",
+									year: "numeric",
+									hour12: false,
+								}
+							)
+						}
+					</p>
+				</div>
+				<div class="flex flex-col justify-center items-center">
+					<p>{currentFlight.from}</p>
+				</div>
+			</div>
+		</div>
+		<div class="w-[10%] flex justify-center">
+			<svg
+				class="w-6 h-6 text-gray-500 rotate-90"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				fill="currentColor"
+				viewBox="0 0 24 24"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M12 2a1 1 0 0 1 .932.638l7 18a1 1 0 0 1-1.326 1.281L13 19.517V13a1 1 0 1 0-2 0v6.517l-5.606 2.402a1 1 0 0 1-1.326-1.281l7-18A1 1 0 0 1 12 2Z"
+					clip-rule="evenodd"></path>
+			</svg>
+		</div>
+		<div class="flex flex-col w-[45%] mt-8">
+			<div
+				class="w-full flex justify-center border-b-2 border-gray-300 border-solid"
+			>
+				<p class="text-sm">ARRIVE</p>
+			</div>
+			<div class="flex justify-around mt-4 flex-col sm:flex-row">
+				<div class="flex flex-col justify-center items-center">
+					<p class="text-nowrap">TBD</p>
+				</div>
+				<div class="flex flex-col justify-center items-center">
+					<p>{currentFlight.to}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

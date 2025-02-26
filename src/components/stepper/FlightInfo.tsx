@@ -26,8 +26,7 @@ export const FlightInfo = ({
 	const { to, from, launchtime, master_passenger, associated_to, type_of } =
 		formData
 	const filteredFlights = FlightsForAssociation.filter(
-		(elem: Flight) =>
-			elem.type_of !== "initial" && elem.associated_to === null
+		(elem: Flight) => elem.type_of === "initial"
 	)
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)

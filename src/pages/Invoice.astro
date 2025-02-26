@@ -1,5 +1,23 @@
 ---
+import { getFlightById } from "../../lib/actions/flights/actions"
+import TopInvoiceCard from "../components/cards/TopInvoiceCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
+const initialFlight = await getFlightById(112)
+const returnFlight = await getFlightById(123)
 ---
 
-<ClientLayout title="Invoice"><div></div></ClientLayout>
+<ClientLayout title="Invoice"
+	><div
+		class="w-fit h-[15%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
+	>
+		<p class="w-fit h-fit overflow-hidden text-wrap break-words mb-0">
+			Please review the flight details and let us know if everything is
+			correct. If you have any questions or need modifications, feel free
+			to contact us.
+		</p>
+	</div>
+
+	<TopInvoiceCard currentFlight={initialFlight} legNumber={1} />
+
+	<TopInvoiceCard currentFlight={returnFlight} legNumber={2} />
+</ClientLayout>

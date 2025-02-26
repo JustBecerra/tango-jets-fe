@@ -107,7 +107,7 @@ export const MainEditFlight = ({
 			const convertedData = new FormData()
 			convertedData.append(
 				"launchtime",
-				formData.launchtime.toISOString()
+				formData.launchtime.toISOString().slice(0, 16)
 			)
 			convertedData.append("to", formData.to)
 			convertedData.append("from", formData.from)
@@ -122,6 +122,7 @@ export const MainEditFlight = ({
 				"companion_passengers",
 				JSON.stringify(formData.companion_passengers)
 			)
+
 			convertedData.append("type_of", formData.type_of)
 			convertedData.append("associated_to", formData.associated_to)
 
