@@ -4,6 +4,8 @@ import { RouteGuard } from "../components/routeguard"
 import SchedulerFrame from "../components/scheduler/SchedulerFrame"
 import Layout from "../layouts/Layout.astro"
 const FlightsForAssociation = await getFlights()
+const url = new URL(Astro.request.url)
+const flightID = url.searchParams.get("flightID")
 ---
 
 <Layout title="Scheduler">
@@ -11,6 +13,7 @@ const FlightsForAssociation = await getFlights()
 		<div class="flex">
 			<SchedulerFrame
 				FlightsForAssociation={FlightsForAssociation}
+				flightID={flightID}
 				client:load
 			/>
 		</div>
