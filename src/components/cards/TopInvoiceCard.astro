@@ -1,5 +1,10 @@
 ---
 const { currentFlight, legNumber } = Astro.props
+function capitalizeFirstLetter(value: string) {
+	return String(value).charAt(0).toUpperCase() + String(value).slice(1)
+}
+const typeOfFlight = currentFlight.type_of
+const fakePassengers = ["John Doe", "Jane Doe", "John Smith"]
 ---
 
 <div
@@ -7,6 +12,9 @@ const { currentFlight, legNumber } = Astro.props
 >
 	<div class="bg-gray-800 flex items-center justify-between">
 		<p class="text-2xl text-white mb-2 ml-2">Leg {legNumber}</p>
+		<p class="text-2xl text-white mb-2 ml-2">
+			{capitalizeFirstLetter(typeOfFlight)} Flight
+		</p>
 		<p class="text-2xl text-white mr-2">${currentFlight.price_revenue}</p>
 	</div>
 	<div class="w-full flex items-center justify-center sm:justify-around">
@@ -69,6 +77,19 @@ const { currentFlight, legNumber } = Astro.props
 					<p>{currentFlight.to}</p>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div>
+		<p>Master Passenger: {currentFlight.master_passenger}</p>
+		<div>
+			<p>Companion Passengers:</p>
+			<ul>
+				{
+					fakePassengers.map((passenger: string) => (
+						<li>{passenger}</li>
+					))
+				}
+			</ul>
 		</div>
 	</div>
 </div>
