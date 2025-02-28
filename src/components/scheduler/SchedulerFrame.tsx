@@ -29,8 +29,10 @@ export interface airshipFormType {
 
 const SchedulerFrame = ({
 	FlightsForAssociation,
+	flightID,
 }: {
 	FlightsForAssociation: Flight[]
+	flightID: string | null
 }) => {
 	const [phase, setPhase] = useState("first")
 	const [showToast, setShowToast] = useState(false)
@@ -40,8 +42,8 @@ const SchedulerFrame = ({
 		to: "",
 		from: "",
 		master_passenger: "",
-		type_of: "initial",
-		associated_to: "",
+		type_of: flightID ? "connection" : "initial",
+		associated_to: flightID ? flightID : "",
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
