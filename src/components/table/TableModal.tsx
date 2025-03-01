@@ -353,7 +353,6 @@ const TableModal = ({ caseType }: TableProps) => {
     "id",
     "price_revenue",
     "pslc",
-    "type_of",
     "associated_to",
     "createdby",
     "isChildFlight",

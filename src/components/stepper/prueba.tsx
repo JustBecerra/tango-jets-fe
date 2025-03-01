@@ -33,7 +33,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   >([]);
   const [selectedAirport1, setSelectedAirport1] = useState("");
   const [selectedAirport2, setSelectedAirport2] = useState("");
-  const [averageSpeed] = useState<number>(900); // Velocidad promedio en km/h
+  const [averageSpeed, setAverageSpeed] = useState<number>(900); // Velocidad promedio en km/h
 
   useEffect(() => {
     fetch("/airports.csv")
