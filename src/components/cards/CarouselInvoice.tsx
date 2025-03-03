@@ -10,17 +10,13 @@ interface props {
     selectedAirship: Airship
 }
 
-export const CarouselInvoice = ({airshipImages, selectedAirship} : props) => {
+export const CarouselInvoice = ({ airshipImages, selectedAirship }: props) => {
+	const [currentIndex, setCurrentIndex] = useState(0)
+	const [currentImage, setCurrentImage] = useState<ImagesType>(
+		airshipImages[currentIndex]
+	)
 
-    const [currentIndex, setCurrentIndex] = useState(0)
-        const [currentImage, setCurrentImage] = useState<ImagesType>(
-            airshipImages[currentIndex]
-        )
-
-
-
-
-    const handleSlideChange = (e: any) => {
+	const handleSlideChange = (e: any) => {
 		const newIndex = e
 		if (typeof newIndex !== "undefined") {
 			setCurrentIndex(newIndex)
@@ -32,34 +28,28 @@ export const CarouselInvoice = ({airshipImages, selectedAirship} : props) => {
 		}
 	}
 
-  return (
-    <div><CCarousel
-    controls
-    indicators
-    transition="crossfade"
-    interval={false}
-    className="custom-carousel"
-    onSlid={handleSlideChange}
->
-    {
-        airshipImages ? (
-            airshipImages.map((item, index) => (
-                <CCarouselItem
-                    key={index}
-                >
-                    <CImage
-                        className="d-block w-full h-[300px]"
-                        src={item?.dataValues.image}
-                        alt={`slide ${index + 1}`}
-                    />
-                </CCarouselItem>
-            ))
-        ) : (
-            <>Loading...</>
-        )
-    }
-</CCarousel>
-
-</div>
-  )
+	return (
+		<CCarousel
+			controls
+			indicators
+			transition="crossfade"
+			interval={false}
+			className="custom-carousel"
+			onSlid={handleSlideChange}
+		>
+			{airshipImages ? (
+				airshipImages.map((item, index) => (
+					<CCarouselItem key={index}>
+						<CImage
+							className="d-block w-full h-[300px]"
+							src={item?.dataValues.image}
+							alt={`slide ${index + 1}`}
+						/>
+					</CCarouselItem>
+				))
+			) : (
+				<>Loading...</>
+			)}
+		</CCarousel>
+	)
 }

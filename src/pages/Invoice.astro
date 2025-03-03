@@ -28,16 +28,23 @@ const selectedAirship = await getAirshipsForInvoice(["40"])
 			</p>
 		</div>
 
-		<div
-			class="w-full h-[100px] sm:h-[500px] flex items-center justify-center"
-		>
-			<MapCard client:load />
-		</div>
+		<div class="flex flex-row w-full h-full">
+			<div
+				class="w-1/2 h-[100px] sm:h-[500px] flex items-center justify-center"
+			>
+				<MapCard client:load />
+			</div>
 
-		<CarouselInvoice
-			airshipImages={airshipImages}
-			selectedAirship={selectedAirship}
-		/>
+			<div
+				class="w-1/2 h-[100px] sm:h-[500px] flex items-center justify-center"
+			>
+				<CarouselInvoice
+					airshipImages={airshipImages}
+					selectedAirship={selectedAirship}
+					client:load
+				/>
+			</div>
+		</div>
 
 		<TopInvoiceCard currentFlight={initialFlight} legNumber={1} />
 
