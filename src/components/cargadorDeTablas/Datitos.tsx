@@ -13,6 +13,7 @@ interface Client {
   nacionality: string | null;
   pasaport: string | null;
   weight: number | null;
+  date_of_birth: string | null;
 }
 
 const DepartingSoon = React.lazy(() => import("../Home/DepartingSoon"));
@@ -40,12 +41,21 @@ export const Datitos = () => {
       const filteredClients = clientsRequested.filter(
         (client: Client) =>
           client.email === null ||
+          client.email === "TBD" ||
           client.fullname === null ||
+          client.fullname === "TBD" ||
           client.id === null ||
+          client.id === "TBD" ||
           client.identification === null ||
+          client.identification === "TBD" ||
           client.nacionality === null ||
+          client.nacionality === "TBD" ||
           client.pasaport === null ||
-          client.weight === null
+          client.pasaport === "TBD" ||
+          client.weight === null ||
+          client.weight === 0 ||
+          client.date_of_birth === null ||
+          client.date_of_birth === "TBD"
       );
 
       setFilteredClients(filteredClients);
@@ -60,30 +70,28 @@ export const Datitos = () => {
 
   // return (
   return (
-		<div className="p-4 h-full w-full">
-  
-  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
-    <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
-      <DepartingSoon flights={filteredFlights} />
-    </div>
-    <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
-      <InFlight flights={filteredFlights} />
-    </div>
-    <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
-      <RecentlyLanded flights={filteredFlights} />
-    </div>
-  </div>
+    <div className="p-4 h-full w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
+        <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
+          <DepartingSoon flights={filteredFlights} />
+        </div>
+        <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
+          <InFlight flights={filteredFlights} />
+        </div>
+        <div className="bg-white rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full col-span-1">
+          <RecentlyLanded flights={filteredFlights} />
+        </div>
+      </div>
 
-
-			{/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
-			<div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-				<div className="bg-white col-span-2 rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full">
-					<MissingInfoCli clients={filteredClients} />
-				</div>
-				<div className="bg-white col-span-1 rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full">
-					<ClientTable clients={filteredFlights} />
-				</div>
-			</div>
-		</div>
-  )
+      {/* Diseño inferior (dos tablas, ajustadas en tamaño) */}
+      <div className="my-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-white col-span-2 rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full">
+          <MissingInfoCli clients={filteredClients} />
+        </div>
+        <div className="bg-white col-span-1 rounded-lg shadow-lg min-h-[200px] h-[300px] max-w-full">
+          <ClientTable clients={filteredFlights} />
+        </div>
+      </div>
+    </div>
+  );
 };
