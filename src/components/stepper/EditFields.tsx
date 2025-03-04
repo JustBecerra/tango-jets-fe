@@ -32,16 +32,17 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 			launchtime: currentFlight.launchtime.slice(0, 16),
 			to: currentFlight.to,
 			from: currentFlight.from,
-			master_passenger: currentFlight.master_passenger,
+			master_passenger: clients?.fullname || "Passenger",
 			createdby: currentFlight.createdby,
 		}
 		const flightIDs = flights
 		const EmailInfo = {
-			to: currentFlight.master_passenger,
+			to: clients?.fullname || "",
 			subject: "Flight Invoice",
 			text: invoiceMessage({
 				transformedFlightData,
-				flightIDs: flightIDs,
+				flightIDs,
+				airshipID: currentFlight.airship_id,
 			}),
 		}
 		await sendEmail(EmailInfo)

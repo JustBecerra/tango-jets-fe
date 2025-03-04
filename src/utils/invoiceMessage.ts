@@ -8,22 +8,25 @@ interface flightData {
 }
 
 interface props {
-    transformedFlightData: flightData
-    flightIDs: number[]
+	transformedFlightData: flightData
+	flightIDs: number[]
+	airshipID: number
 }
 
 export const invoiceMessage = ({
-    transformedFlightData,
+	transformedFlightData,
 	flightIDs,
+	airshipID,
 }: props) => {
-     const { launchtime, to, from, createdby, master_passenger } = transformedFlightData
+	const { launchtime, to, from, createdby, master_passenger } =
+		transformedFlightData
 
-    const params = `${flightIDs}`
-    const encodedURL = encodeURIComponent(btoa(params))
+	const params = `${airshipID}/${flightIDs}`
+	const encodedURL = encodeURIComponent(btoa(params))
 
-    const fullURL = `https://tango-jets-fe.vercel.app/Invoice?data=${encodedURL}`
+	const fullURL = `https://tango-jets-fe.vercel.app/Invoice?data=${encodedURL}`
 
-    return `
+	return `
     <p>Dear ${master_passenger},</p>
 
     <p>We’re pleased to inform you that your flight has been successfully scheduled. Below are the details:</p>
@@ -46,4 +49,4 @@ export const invoiceMessage = ({
     <p>${createdby}</p>
 
     `
-    }
+}
