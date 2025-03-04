@@ -96,7 +96,7 @@ export const WelcomeText = () => {
         </h1>
 
         <h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
-        <h2 className="text-1xl font-semibold mt-4">{formattedZonedTime}</h2>
+        <h2 className="text-1xl font-semibold mt-1">{formattedZonedTime}</h2>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-xl font-semibold mb-4">Select Time Zone</h2>
