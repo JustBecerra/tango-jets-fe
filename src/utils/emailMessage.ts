@@ -22,8 +22,7 @@ export const flightScheduledMessage = ({
 	airships,
 	tripID,
 }: props) => {
-	const { launchtime, to, from, createdby, master_passenger } =
-		transformedFlightData
+	const { createdby, master_passenger } = transformedFlightData
 
 	const AirshipIDs = airshipData
 		.map((jet) => {
@@ -34,8 +33,6 @@ export const flightScheduledMessage = ({
 		})
 		.join("")
 
-	
-
 	const params = `${tripID}/${AirshipIDs}`
 	const encodedURL = encodeURIComponent(btoa(params))
 
@@ -43,25 +40,21 @@ export const flightScheduledMessage = ({
 
 	return `
     <p>Dear ${master_passenger},</p>
-    <p>We’re pleased to inform you that your flight has been successfully pre-scheduled. Below are the details:</p>
-    
-    <p><strong>Departure:</strong> ${launchtime}</p>
-    <p><strong>Departure Airport:</strong> ${from}</p>
-    <p><strong>Arrival Airport:</strong> ${to}</p>
 
-    <p>Please ensure you arrive at the airport at least one hour before departure for check-in.</p>
+<p>We’re pleased to inform you that your flight has been successfully pre-scheduled. Below are the details:</p>
 
-    <p>Here is the link to your quote: 
-        <a href="${fullURL}" target="_blank">
-            View Quote
-        </a>
-    </p>
+<p>To proceed with your booking, please select your preferred airship from the available options:</p>
 
-    <p>If you have any questions or need assistance, feel free to contact us.</p>
+<p><a href="${fullURL}" target="_blank"><strong>Choose Your Airship</strong></a></p>
 
-    <p>Thank you for choosing Tango Jets.</p>
+<p>Please make your selection as soon as possible to ensure availability.</p>
 
-    <p>Best regards,</p>
-    <p>${createdby}</p>
+<p>If you have any questions or need assistance, feel free to contact us.</p>
+
+<p>Thank you for choosing Tango Jets.</p>
+
+<p>Best regards,</p>
+<p>${createdby}</p>
+
 `
 }
