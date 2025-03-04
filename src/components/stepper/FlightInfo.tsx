@@ -28,6 +28,10 @@ export const FlightInfo = ({
 	const filteredFlights = FlightsForAssociation.filter(
 		(elem: Flight) => elem.type_of === "initial"
 	)
+		.map((flight) => flight.id)
+		.sort(function compareNumbers(a, b) {
+			return a - b
+		})
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
@@ -187,8 +191,8 @@ export const FlightInfo = ({
 						>
 							<option value="">-- Select --</option>
 							{filteredFlights.map((flight, index) => (
-								<option key={index} value={flight.id}>
-									{flight.id}
+								<option key={index} value={flight}>
+									{flight}
 								</option>
 							))}
 						</select>

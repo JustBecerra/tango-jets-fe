@@ -1,23 +1,45 @@
 ---
+import {
+	getAirshipImages,
+	getAirshipsForInvoice,
+} from "../../lib/actions/airships/actions"
 import { getFlightById } from "../../lib/actions/flights/actions"
+import { CarouselInvoice } from "../components/cards/CarouselInvoice"
+
+import { MapCard } from "../components/cards/MapCard"
+
 import TopInvoiceCard from "../components/cards/TopInvoiceCard.astro"
 import ClientLayout from "../layouts/ClientLayout.astro"
 const initialFlight = await getFlightById(112)
 const returnFlight = await getFlightById(123)
+const airshipImages = await getAirshipImages(40)
+const selectedAirship = await getAirshipsForInvoice(["40"])
 ---
 
-<ClientLayout title="Invoice"
-	><div
-		class="w-fit h-[15%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
-	>
-		<p class="w-fit h-fit overflow-hidden text-wrap break-words mb-0">
-			Please review the flight details and let us know if everything is
-			correct. If you have any questions or need modifications, feel free
-			to contact us.
-		</p>
+<ClientLayout title="Invoice">
+	<div class="flex flex-col items-center justify-center w-full h-full gap-8">
+		<div
+			class="w-fit h-[15%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
+		>
+			<p class="w-fit h-fit overflow-hidden text-wrap break-words mb-0">
+				Please review the flight details and let us know if everything
+				is correct. If you have any questions or need modifications,
+				feel free to contact us.
+			</p>
+		</div>
+
+		<div class="flex flex-col sm:flex-row w-full h-full gap-8">
+			<MapCard client:load />
+
+			<CarouselInvoice
+				airshipImages={airshipImages}
+				selectedAirship={selectedAirship}
+				client:load
+			/>
+		</div>
+
+		<TopInvoiceCard currentFlight={initialFlight} legNumber={1} />
+
+		<TopInvoiceCard currentFlight={returnFlight} legNumber={2} />
 	</div>
-
-	<TopInvoiceCard currentFlight={initialFlight} legNumber={1} />
-
-	<TopInvoiceCard currentFlight={returnFlight} legNumber={2} />
 </ClientLayout>

@@ -26,6 +26,7 @@ export interface Flight {
   to: string;
   from: string;
   airship_name: string;
+  airship_id: number;
   createdby: string;
   master_passenger: string;
   companion_passengers: string[];
