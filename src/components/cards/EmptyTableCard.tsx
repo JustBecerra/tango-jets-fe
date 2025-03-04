@@ -13,6 +13,7 @@ export const EmptyTableCard = ({ loading }: Props) => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <img src="/rafa.JPG" alt="Rafa" className="mb-4" />
           <p className="text-zinc-400 text-lg">
             The Trip you’re looking for can’t be found.
           </p>

@@ -31,7 +31,7 @@ const MissingInfoCli = ({ clients }: props) => {
               Nationality
             </th>
             <th className="px-3 py-2 hidden md:table-cell bg-gray-50  font-medium text-gray-500 uppercase tracking-wider">
-              Identification
+              Date
             </th>
             <th className="px-3 py-2  bg-gray-50 font-medium text-gray-500 uppercase tracking-wider">
               Passport
@@ -61,7 +61,7 @@ const MissingInfoCli = ({ clients }: props) => {
                 {client.nationality}
               </td>
               <td className="px-3 py-2 text-center hidden md:table-cell whitespace-nowrap text-gray-700">
-                {client.identification}
+                {client.date_of_birth}
               </td>
               <td className="px-3 py-2  text-center whitespace-nowrap text-gray-700">
                 {client.passport}
