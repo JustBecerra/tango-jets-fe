@@ -1,4 +1,6 @@
+import { sendEmail } from "../../../lib/actions/emails/actions"
 import useStore from "../../store/store"
+import { invoiceMessage } from "../../utils/invoiceMessage"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
 import type { Airship, Client, Flight } from "../table/TableModal"
 
@@ -14,10 +16,36 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 		(client: Client) =>
 			client.id === parseInt(currentFlight.master_passenger)
 	)
-
+	const flights = useStore((state) => state.flights)
+		.filter(
+			(flight: Flight) =>
+				parseInt(flight.associated_to) === currentFlight.id
+		)
+		.map((flight: Flight) => flight.id)
+	flights.unshift(currentFlight.id)
 	const getCorrectAirshipName = airships.find(
 		(elem: Airship) => elem.id === currentFlight.airship_id
 	)?.title
+
+	const handleInvoice = async () => {
+		const transformedFlightData = {
+			launchtime: currentFlight.launchtime.slice(0, 16),
+			to: currentFlight.to,
+			from: currentFlight.from,
+			master_passenger: currentFlight.master_passenger,
+			createdby: currentFlight.createdby,
+		}
+		const flightIDs = flights
+		const EmailInfo = {
+			to: currentFlight.master_passenger,
+			subject: "Flight Invoice",
+			text: invoiceMessage({
+				transformedFlightData,
+				flightIDs: flightIDs,
+			}),
+		}
+		await sendEmail(EmailInfo)
+	}
 
 	switch (localPhase) {
 		case 1:
@@ -86,7 +114,23 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 				</>
 			)
 		case 5:
-			return <>Send invoice with detailed prices.</>
+			return (
+				<div className="flex flex-col w-1/2 h-[70%] justify-center items-center">
+					{currentFlight.phase <= 5 ? (
+						<>
+							<p>Send invoice with detailed prices.</p>
+							<button
+								onClick={handleInvoice}
+								className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+							>
+								Send Invoice
+							</button>
+						</>
+					) : (
+						<p>Invoice has been sent.</p>
+					)}
+				</div>
+			)
 		case 6:
 			return <>Waiting for client to pay.</>
 		case 7:
