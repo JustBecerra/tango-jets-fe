@@ -2,6 +2,7 @@ interface props {
 	to: FormDataEntryValue
 	text: string
 	subject: string
+	contract?: boolean
 }
 
 export async function sendEmail(flightData: props) {
