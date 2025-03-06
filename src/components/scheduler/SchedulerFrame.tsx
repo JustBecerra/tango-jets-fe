@@ -91,6 +91,7 @@ const SchedulerFrame = ({
 					airships,
 					tripID: newFlight.id,
 				}),
+				contract: false,
 			}
 
 			await sendEmail(EmailInfo)
