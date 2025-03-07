@@ -156,10 +156,22 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 			return <>Waiting for client to pay.</>
 		case 7:
 			return (
-				<>
-					Check client has correctly payed and alert crew of the
-					plane.
-				</>
+				<div className="flex flex-col w-full h-[70%] justify-center items-center gap-6">
+					<p>
+						Check client has correctly payed and alert crew of the
+						plane.
+					</p>
+					<div className="w-1/2 flex justify-center items-center gap-6 h-fit">
+						<select className="block w-1/2 px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+							<option>Pilot 1</option>
+							<option>Pilot 2</option>
+							<option>Pilot 3</option>
+						</select>
+						<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+							Confirm Pilot
+						</button>
+					</div>
+				</div>
 			)
 		default:
 			return <>Post Routine Flight.</>
