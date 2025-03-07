@@ -9,7 +9,7 @@ export async function editAction({ caseType, data, id }: editProps) {
     data.append("id", id.toString());
 
     const url = `${import.meta.env.PUBLIC_BACKEND_URL}/${caseType}`;
-    console.log("Request URL:", url);
+
     let body: FormData | string;
 
     if (caseType === "airship") {
