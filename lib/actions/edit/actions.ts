@@ -1,43 +1,44 @@
 interface editProps {
-	caseType: string
-	data: FormData
-	id: number
+  caseType: string;
+  data: FormData;
+  id: number;
 }
 
 export async function editAction({ caseType, data, id }: editProps) {
-	try {
-		data.append("id", id.toString())
+  try {
+    data.append("id", id.toString());
 
-		const url = `${import.meta.env.PUBLIC_BACKEND_URL}/${caseType}`
-		let body: FormData | string
+    const url = `${import.meta.env.PUBLIC_BACKEND_URL}/${caseType}`;
 
-		if (caseType === "airship") {
-			body = data
-		} else {
-			body = JSON.stringify(Object.fromEntries(data))
-		}
+    let body: FormData | string;
 
-		const response = await fetch(url, {
-			method: "PUT",
-			body: body,
-			headers:
-				caseType !== "airship"
-					? {
-							"Content-Type": "application/json",
-						}
-					: undefined,
-		})
+    if (caseType === "airship") {
+      body = data;
+    } else {
+      body = JSON.stringify(Object.fromEntries(data));
+    }
 
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`)
-		}
+    const response = await fetch(url, {
+      method: "PUT",
+      body: body,
+      headers:
+        caseType !== "airship"
+          ? {
+              "Content-Type": "application/json",
+            }
+          : undefined,
+    });
 
-		const responseText = await response.text()
-		const responseData = responseText ? JSON.parse(responseText) : {}
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-		return responseData
-	} catch (err) {
-		console.error("Error editing element:", err)
-		throw err
-	}
+    const responseText = await response.text();
+    const responseData = responseText ? JSON.parse(responseText) : {};
+
+    return responseData;
+  } catch (err) {
+    console.error("Error editing element:", err);
+    throw err;
+  }
 }
