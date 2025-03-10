@@ -122,6 +122,23 @@ const ModalEditCli = ({
 								</div>
 								<div>
 									<label
+										htmlFor="title"
+										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+									>
+										Title
+									</label>
+									<input
+										type="text"
+										id="title"
+										name="title"
+										value={formData.title}
+										onChange={handleChange}
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										required
+									/>
+								</div>
+								<div>
+									<label
 										htmlFor="nationality"
 										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
 									>
@@ -177,6 +194,23 @@ const ModalEditCli = ({
 										onChange={handleChange}
 										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 										required
+									/>
+								</div>
+								<div>
+									<label
+										htmlFor="date_of_birth"
+										className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+									>
+										Date of birth
+									</label>
+									<input
+										type="datetime-local"
+										defaultValue={new Date()
+											.toISOString()
+											.slice(0, 16)}
+										id="date_of_birth"
+										name="date_of_birth"
+										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 									/>
 								</div>
 							</div>
