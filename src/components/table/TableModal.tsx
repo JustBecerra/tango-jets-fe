@@ -304,7 +304,6 @@ const TableModal = ({ caseType }: TableProps) => {
 	const hiddenColumns = [
 		"id",
 		"price_revenue",
-		"pslc",
 		"associated_to",
 		"createdby",
 		"isChildFlight",
