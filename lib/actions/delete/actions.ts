@@ -5,7 +5,6 @@ interface deleteProps {
 
 export async function deleteAction({ caseType, id }: deleteProps) {
 	try {
-		console.log({ caseType })
 		const response = await fetch(
 			`${import.meta.env.PUBLIC_BACKEND_URL}/${caseType}/${id}`,
 			{
