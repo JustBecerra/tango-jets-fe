@@ -31,34 +31,37 @@ const Delete = <T extends Pilot | DataType>({
     e.stopPropagation();
     setLoading(true);
     try {
-      await deleteAction({ caseType: caseType, id });
-      if (caseType === "flight") {
-        const newFlights = await getFlights();
-        setData(
-          newFlights
-            .map((flight: any) => {
-              const { updatedAt, ...rest } = flight;
-              return rest;
-            })
-            .filter((flight: any) => {
-              const launchTime = new Date(flight.launchtime);
-              const currentTime = new Date();
-              return currentTime < launchTime;
-            })
-        );
-        updateFlights(newFlights);
-      } else if (caseType === "client") {
-        const newClients = await getClients();
-        setData(newClients);
-        updateClients(newClients);
-      } else if (caseType === "airship") {
-        const newAirships = await getAirships();
-        setData(newAirships);
-        updateAirships(newAirships);
-      } else if (caseType === "pilot") {
-        const newPilots = await getPilots();
-        setData(newPilots);
-      }
+      await deleteAction({
+			caseType: caseType === "history" ? "flight" : caseType,
+			id,
+		})
+		if (caseType === "flight" || caseType === "history") {
+			const newFlights = await getFlights()
+			setData(
+				newFlights
+					.map((flight: any) => {
+						const { updatedAt, ...rest } = flight
+						return rest
+					})
+					.filter((flight: any) => {
+						const launchTime = new Date(flight.launchtime)
+						const currentTime = new Date()
+						return currentTime < launchTime
+					})
+			)
+			updateFlights(newFlights)
+		} else if (caseType === "client") {
+			const newClients = await getClients()
+			setData(newClients)
+			updateClients(newClients)
+		} else if (caseType === "airship") {
+			const newAirships = await getAirships()
+			setData(newAirships)
+			updateAirships(newAirships)
+		} else if (caseType === "pilot") {
+			const newPilots = await getPilots()
+			setData(newPilots)
+		}
     } catch (error) {
       console.error("Error:", error);
     } finally {

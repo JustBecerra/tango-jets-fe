@@ -1,18 +1,31 @@
+import React from "react"
 import { sendEmail } from "../../../lib/actions/emails/actions"
 import useStore from "../../store/store"
 import { contractMessage } from "../../utils/contractMessage"
 import { invoiceMessage } from "../../utils/invoiceMessage"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
 import type { Airship, Client, Flight } from "../table/TableModal"
+import { assignPilot } from "../../../lib/actions/pilots/actions"
 
 interface props {
 	currentFlight: Flight
 	localPhase: number
 	loading?: boolean
 	airships: Airship[]
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
+const fieldDecider = ({
+	currentFlight,
+	localPhase,
+	airships,
+	setLoading,
+}: props) => {
+	const pilots = useStore((state) => state.pilots)
+	const chosenPilotName = pilots.find(
+		(pilot) => pilot.id === currentFlight.pilot_id
+	)?.fullname
+	const [chosenPilot, setChosenPilot] = React.useState(chosenPilotName || "")
 	const clients = useStore((state) => state.clients).find(
 		(client: Client) =>
 			client.id === parseInt(currentFlight.master_passenger)
@@ -24,9 +37,23 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 		)
 		.map((flight: Flight) => flight.id)
 	flights.unshift(currentFlight.id)
+
 	const getCorrectAirshipName = airships.find(
 		(elem: Airship) => elem.id === currentFlight.airship_id
 	)?.title
+
+	const handlePilotAssignation = async () => {
+		setLoading(true)
+		const pilotToBeAssigned = pilots.find(
+			(pilot) => pilot.fullname === chosenPilot
+		)
+		const FlightUpdate = {
+			flight_id: currentFlight.id,
+			pilot_id: pilotToBeAssigned?.id || 0,
+		}
+		await assignPilot(FlightUpdate)
+		setLoading(false)
+	}
 
 	const handleInvoice = async () => {
 		const transformedFlightData = {
@@ -156,10 +183,32 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 			return <>Waiting for client to pay.</>
 		case 7:
 			return (
-				<>
-					Check client has correctly payed and alert crew of the
-					plane.
-				</>
+				<div className="flex flex-col w-full h-[70%] justify-center items-center gap-6">
+					<p>
+						Check client has correctly payed and alert crew of the
+						plane.
+					</p>
+					<div className="w-1/2 flex justify-center items-center gap-6 h-fit">
+						<select
+							value={chosenPilot}
+							onChange={(e) => setChosenPilot(e.target.value)}
+							className="block w-1/2 px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						>
+							<option value="">-- select --</option>
+							{pilots.map((pilot, key) => (
+								<option key={key} value={pilot.fullname}>
+									{pilot.fullname}
+								</option>
+							))}
+						</select>
+						<button
+							onClick={handlePilotAssignation}
+							className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+						>
+							Confirm Pilot
+						</button>
+					</div>
+				</div>
 			)
 		default:
 			return <>Post Routine Flight.</>
@@ -171,10 +220,11 @@ export const EditFields = ({
 	localPhase,
 	loading,
 	airships,
+	setLoading,
 }: props) => {
 	return (
 		<div className="w-full h-[30%] flex justify-center items-center ">
-			{fieldDecider({ currentFlight, localPhase, airships })}
+			{fieldDecider({ currentFlight, localPhase, airships, setLoading })}
 			{loading && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<LoaderSpinner />

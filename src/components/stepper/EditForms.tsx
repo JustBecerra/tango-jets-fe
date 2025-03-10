@@ -27,6 +27,7 @@ export const EditForms = ({
 				localPhase={localPhase}
 				loading={loading}
 				airships={airships}
+				setLoading={setLoading}
 			/>
 			{currentFlight && (
 				<PhaseButtons
