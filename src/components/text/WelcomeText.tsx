@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getCookie } from "../../utils/getCookie";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { toZonedTime } from "date-fns-tz";
-import { toast } from "react-toastify";
+import { toZonedTime } from "date-fns-tz"
 
 interface ModalProps {
   isOpen: boolean;

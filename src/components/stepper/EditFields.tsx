@@ -12,10 +12,20 @@ interface props {
 	localPhase: number
 	loading?: boolean
 	airships: Airship[]
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
-	const [chosenPilot, setChosenPilot] = React.useState("")
+const fieldDecider = ({
+	currentFlight,
+	localPhase,
+	airships,
+	setLoading,
+}: props) => {
+	const pilots = useStore((state) => state.pilots)
+	const chosenPilotName = pilots.find(
+		(pilot) => pilot.id === currentFlight.pilot_id
+	)?.fullname
+	const [chosenPilot, setChosenPilot] = React.useState(chosenPilotName || "")
 	const clients = useStore((state) => state.clients).find(
 		(client: Client) =>
 			client.id === parseInt(currentFlight.master_passenger)
@@ -27,13 +37,13 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 		)
 		.map((flight: Flight) => flight.id)
 	flights.unshift(currentFlight.id)
-	const pilots = useStore((state) => state.pilots)
 
 	const getCorrectAirshipName = airships.find(
 		(elem: Airship) => elem.id === currentFlight.airship_id
 	)?.title
 
 	const handlePilotAssignation = async () => {
+		setLoading(true)
 		const pilotToBeAssigned = pilots.find(
 			(pilot) => pilot.fullname === chosenPilot
 		)
@@ -42,6 +52,7 @@ const fieldDecider = ({ currentFlight, localPhase, airships }: props) => {
 			pilot_id: pilotToBeAssigned?.id || 0,
 		}
 		await assignPilot(FlightUpdate)
+		setLoading(false)
 	}
 
 	const handleInvoice = async () => {
@@ -209,10 +220,11 @@ export const EditFields = ({
 	localPhase,
 	loading,
 	airships,
+	setLoading,
 }: props) => {
 	return (
 		<div className="w-full h-[30%] flex justify-center items-center ">
-			{fieldDecider({ currentFlight, localPhase, airships })}
+			{fieldDecider({ currentFlight, localPhase, airships, setLoading })}
 			{loading && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<LoaderSpinner />
