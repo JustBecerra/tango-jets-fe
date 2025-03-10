@@ -77,86 +77,86 @@ const TableModal = ({ caseType }: TableProps) => {
 	const flights = useStore((state) => state.flights)
 	const clients = useStore((state) => state.clients)
 	const airships = useStore((state) => state.airships)
-  const setPilots = useStore((state) => state.updatePilots)
+	const setPilots = useStore((state) => state.updatePilots)
 
 	// Nuevo useEffect para hacer llamadas al primer render
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				if (caseType === "flight" || caseType === "history") {
-					const flightsMap = await getFlights()
-          const pilots = await getPilots()
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			if (caseType === "flight" || caseType === "history") {
+	// 				const flightsMap = await getFlights()
+	// 				const pilots = await getPilots()
 
-					let processedFlights = flights.map((flight: any) => {
-						const { updatedAt, ...rest } = flight
-						return rest
-					})
+	// 				let processedFlights = flights.map((flight: any) => {
+	// 					const { updatedAt, ...rest } = flight
+	// 					return rest
+	// 				})
 
-					if (caseType === "flight") {
-						processedFlights = processedFlights.filter(
-							(flight: any) => {
-								const launchTime = new Date(flight.launchtime)
-								const currentTime = new Date()
-								return currentTime < launchTime
-							}
-						)
-					} else if (caseType === "history") {
-						processedFlights = processedFlights.filter(
-							(flight: Flight) =>
-								flight.phase > 7 ||
-								flight.launchtime < new Date().toISOString()
-						)
-					}
+	// 				if (caseType === "flight") {
+	// 					processedFlights = processedFlights.filter(
+	// 						(flight: any) => {
+	// 							const launchTime = new Date(flight.launchtime)
+	// 							const currentTime = new Date()
+	// 							return currentTime < launchTime
+	// 						}
+	// 					)
+	// 				} else if (caseType === "history") {
+	// 					processedFlights = processedFlights.filter(
+	// 						(flight: Flight) =>
+	// 							flight.phase > 7 ||
+	// 							flight.launchtime < new Date().toISOString()
+	// 					)
+	// 				}
 
-					processedFlights = processedFlights.map((flight: any) => {
-						const formattedFlight = {
-							...flight,
-							launchtime: new Date(
-								flight.launchtime
-							).toLocaleString("en-US", {
-								month: "2-digit",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-							}),
-							createdAt: new Date(
-								flight.createdAt
-							).toLocaleString("en-US", {
-								month: "2-digit",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit",
-								hour12: false,
-							}),
-							isChildFlight:
-								flight.type_of === "return" ||
-								flight.type_of === "connection",
-							parentFlightId: flight.associated_to
-								? parseInt(flight.associated_to)
-								: undefined,
-						}
-						flightsMap.set(flight.id, formattedFlight)
-						return formattedFlight
-					})
-          setPilots(pilots)
-					setData(processedFlights)
-				} else if (caseType === "client") {
-          const fetchClients = await getClients()
-					setData(fetchClients)
-				} else if (caseType === "airship") {
-          const fetchAirship = await getAirships()
-					setData(fetchAirship)
-				}
-			} catch (error) {
-				console.error("Failed to fetch data:", error)
-			} finally {
-				setLoading(false)
-			}
-		}
+	// 				processedFlights = processedFlights.map((flight: any) => {
+	// 					const formattedFlight = {
+	// 						...flight,
+	// 						launchtime: new Date(
+	// 							flight.launchtime
+	// 						).toLocaleString("en-US", {
+	// 							month: "2-digit",
+	// 							day: "numeric",
+	// 							hour: "2-digit",
+	// 							minute: "2-digit",
+	// 							hour12: false,
+	// 						}),
+	// 						createdAt: new Date(
+	// 							flight.createdAt
+	// 						).toLocaleString("en-US", {
+	// 							month: "2-digit",
+	// 							day: "numeric",
+	// 							hour: "2-digit",
+	// 							minute: "2-digit",
+	// 							hour12: false,
+	// 						}),
+	// 						isChildFlight:
+	// 							flight.type_of === "return" ||
+	// 							flight.type_of === "connection",
+	// 						parentFlightId: flight.associated_to
+	// 							? parseInt(flight.associated_to)
+	// 							: undefined,
+	// 					}
+	// 					flightsMap.set(flight.id, formattedFlight)
+	// 					return formattedFlight
+	// 				})
+	// 				setPilots(pilots)
+	// 				setData(processedFlights)
+	// 			} else if (caseType === "client") {
+	// 				const fetchClients = await getClients()
+	// 				setData(fetchClients)
+	// 			} else if (caseType === "airship") {
+	// 				const fetchAirship = await getAirships()
+	// 				setData(fetchAirship)
+	// 			}
+	// 		} catch (error) {
+	// 			console.error("Failed to fetch data:", error)
+	// 		} finally {
+	// 			setLoading(false)
+	// 		}
+	// 	}
 
-		fetchData()
-	}, [caseType, flights, clients, airships])
+	// 	fetchData()
+	// }, [])
 
 	useEffect(() => {
 		const fetchData = async () => {
