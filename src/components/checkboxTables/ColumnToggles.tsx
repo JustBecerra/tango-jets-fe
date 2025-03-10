@@ -7,13 +7,12 @@ interface ColumnTogglesProps {
 }
 
 const columns = [
-  { key: "id", label: "ID" },
-  { key: "createdby", label: "Created By" },
-  { key: "price_revenue", label: "Price Revenue" },
-  { key: "pslc", label: "PSLC" },
-  { key: "type_of", label: "Type Of" },
-  { key: "associated_to", label: "Associated To" },
-];
+	{ key: "id", label: "ID" },
+	{ key: "createdby", label: "Created By" },
+	{ key: "price_revenue", label: "Price Revenue" },
+	{ key: "type_of", label: "Type Of" },
+	{ key: "associated_to", label: "Associated To" },
+]
 
 const ColumnToggles = ({
   toggleColumn,
