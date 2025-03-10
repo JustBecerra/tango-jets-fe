@@ -38,7 +38,7 @@ export interface Flight {
 	arrivaltime: string
 	type_of: string
 	associated_to: string
-	pilot_id: number
+	pilot_id: string
 	// CAMBIO 1: Agregar propiedades para relación padre-hijo
 	isChildFlight?: boolean
 	parentFlightId?: number

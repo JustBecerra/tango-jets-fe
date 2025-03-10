@@ -6,6 +6,7 @@ import { invoiceMessage } from "../../utils/invoiceMessage"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
 import type { Airship, Client, Flight } from "../table/TableModal"
 import { assignPilot, getPilots } from "../../../lib/actions/pilots/actions"
+import { getFlights } from "../../../lib/actions/flights/actions"
 
 interface props {
 	currentFlight: Flight
@@ -22,11 +23,13 @@ const fieldDecider = ({
 	setLoading,
 }: props) => {
 	const pilots = useStore((state) => state.pilots)
-	const chosenPilotName = pilots.find(
-		(pilot) => pilot.id === currentFlight.pilot_id
-	)?.fullname
 
-	const [chosenPilot, setChosenPilot] = React.useState(chosenPilotName)
+	const [chosenPilot, setChosenPilot] = React.useState(currentFlight.pilot_id)
+
+	React.useEffect(() => {
+		setChosenPilot(currentFlight.pilot_id)
+	}, [currentFlight.pilot_id])
+
 	const clients = useStore((state) => state.clients).find(
 		(client: Client) =>
 			client.id === parseInt(currentFlight.master_passenger)
@@ -39,15 +42,12 @@ const fieldDecider = ({
 		)
 		.map((flight: Flight) => flight.id)
 	const updatePilots = useStore((state) => state.updatePilots)
+	const updateFlights = useStore((state) => state.updateFlights)
 	flights.unshift(currentFlight.id)
 
 	const getCorrectAirshipName = airships.find(
 		(elem: Airship) => elem.id === currentFlight.airship_id
 	)?.title
-
-	React.useEffect(() => {
-		setChosenPilot(chosenPilotName)
-	}, [chosenPilotName])
 
 	const handlePilotAssignation = async () => {
 		setLoading(true)
@@ -60,7 +60,9 @@ const fieldDecider = ({
 		}
 		await assignPilot(FlightUpdate)
 		const refetchPilots = await getPilots()
+		const refetchFlights = await getFlights()
 		updatePilots(refetchPilots)
+		updateFlights(refetchFlights)
 		setLoading(false)
 	}
 
@@ -112,7 +114,7 @@ const fieldDecider = ({
 					</h2>
 					<h2 className="text-xl text-center">
 						Lead Passenger: <br />
-						{clients && clients.fullname}
+						{currentFlight.master_passenger}
 					</h2>
 					<h2 className="text-xl text-center">
 						Launch time: <br />
