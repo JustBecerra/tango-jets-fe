@@ -83,7 +83,6 @@ const ViewFlightInfo = ({ formData, setOpenModal, caseType }: Props) => {
 										value: formData.type_of,
 									},
 									{ label: "Phase", value: formData.phase },
-									{ label: "Pslc", value: formData.pslc },
 									{
 										label: "Associated To",
 										value: formData.associated_to,
