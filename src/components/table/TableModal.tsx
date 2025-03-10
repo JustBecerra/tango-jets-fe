@@ -21,24 +21,25 @@ export interface Client {
 }
 
 export interface Flight {
-  id: number;
-  launchtime: string;
-  to: string;
-  from: string;
-  airship_name: string;
-  airship_id: number;
-  createdby: string;
-  master_passenger: string;
-  companion_passengers: string[];
-  price_cost: string;
-  price_revenue: number;
-  phase: number;
-  pslc: number;
-  type_of: string;
-  associated_to: string;
-  // CAMBIO 1: Agregar propiedades para relación padre-hijo
-  isChildFlight?: boolean;
-  parentFlightId?: number;
+	id: number
+	launchtime: string
+	to: string
+	from: string
+	airship_name: string
+	airship_id: number
+	createdby: string
+	master_passenger: string
+	companion_passengers: string[]
+	price_cost: string
+	price_revenue: number
+	phase: number
+	pslc: number
+	type_of: string
+	associated_to: string
+	pilot_id: number
+	// CAMBIO 1: Agregar propiedades para relación padre-hijo
+	isChildFlight?: boolean
+	parentFlightId?: number
 }
 
 export interface Airship {
