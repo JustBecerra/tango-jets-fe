@@ -7,11 +7,8 @@ import ModalJetAdd from "../modals/ModalJetAdd";
 import useStore from "../../store/store";
 import Pagination from "../Pagination/Pagination";
 import ColumnToggles from "../checkboxTables/ColumnToggles";
-import ViewFlightInfo from "../modals/ViewFlightInfo";
-import { getFlights } from "../../../lib/actions/flights/actions"
-import { getPilots } from "../../../lib/actions/pilots/actions";
-import { getClients } from "../../../lib/actions/clients/actions";
-import { getAirships } from "../../../lib/actions/airships/actions";
+import ViewFlightInfo from "../modals/ViewFlightInfo"
+import { getPilots } from "../../../lib/actions/pilots/actions"
 
 export interface Client {
 	id: number
@@ -21,6 +18,7 @@ export interface Client {
 	identification: string
 	passport: string
 	weight: string
+	title: string
 	date_of_birth: string
 }
 
@@ -37,7 +35,7 @@ export interface Flight {
 	price_cost: string
 	price_revenue: number
 	phase: number
-	pslc: number
+	arrivaltime: string
 	type_of: string
 	associated_to: string
 	pilot_id: number
