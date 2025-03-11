@@ -121,52 +121,52 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   };
 
   return (
-    <div className="flex items-end space-x-4 h-fit">
-      <div>
-        <label
-          htmlFor="airportSelect1"
-          className="block font-semibold text-gray-700"
-        >
-          {labelFrom}
-        </label>
-        <select
-          id="airportSelect1"
-          className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-          value={selectedAirport1}
-          onChange={handleSelectAirport1}
-        >
-          <option value="">-- Select --</option>
-          {options.map((option, index) => (
-            <option key={index} value={option.ident}>
-              {option.name} ({option.ident}) - {option.iata_code}
-            </option>
-          ))}
-        </select>
-      </div>
+		<div className="flex items-end space-x-4 h-fit">
+			<div>
+				<label
+					htmlFor="airportSelect1"
+					className="block font-semibold text-gray-700"
+				>
+					{labelFrom}
+				</label>
+				<select
+					id="airportSelect1"
+					className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+					value={fromDefaultValue}
+					onChange={handleSelectAirport1}
+				>
+					<option value="">-- Select --</option>
+					{options.map((option, index) => (
+						<option key={index} value={option.ident}>
+							{option.name} ({option.ident}) - {option.iata_code}
+						</option>
+					))}
+				</select>
+			</div>
 
-      <div>
-        <label
-          htmlFor="airportSelect2"
-          className="block font-semibold text-gray-700"
-        >
-          {labelTo}
-        </label>
-        <select
-          id="airportSelect2"
-          className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-          value={selectedAirport2}
-          onChange={handleSelectAirport2}
-        >
-          <option value="">-- Select --</option>
-          {options.map((option, index) => (
-            <option key={index} value={option.ident}>
-              {option.name} ({option.ident}) - {option.iata_code}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
-  );
+			<div>
+				<label
+					htmlFor="airportSelect2"
+					className="block font-semibold text-gray-700"
+				>
+					{labelTo}
+				</label>
+				<select
+					id="airportSelect2"
+					className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+					value={toDefaultValue}
+					onChange={handleSelectAirport2}
+				>
+					<option value="">-- Select --</option>
+					{options.map((option, index) => (
+						<option key={index} value={option.ident}>
+							{option.name} ({option.ident}) - {option.iata_code}
+						</option>
+					))}
+				</select>
+			</div>
+		</div>
+  )
 };
 
 export default CsvSelect;
