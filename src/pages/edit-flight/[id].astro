@@ -12,17 +12,10 @@ if (!id) return Astro.redirect("/404")
 const airships = await getAirships()
 const currentFlight = await getFlightById(parseInt(id))
 const flights = await getFlights()
-const clients = await getClients()
-const currentClient = clients.find(
-	(client: Client) => client.id === currentFlight.master_passenger
-)
+
 const filteredFlights = flights.filter(
 	(elem: Flight) => elem.id !== parseInt(id)
 )
-currentFlight["master_passenger"] = currentClient.fullname
-currentFlight["airship_name"] = airships.find(
-	(airship: Airship) => airship.id === currentFlight.airship_id
-).title
 ---
 
 <Layout title="edit-flight">

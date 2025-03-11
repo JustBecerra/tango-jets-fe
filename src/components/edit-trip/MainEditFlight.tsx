@@ -368,29 +368,45 @@ export const MainEditFlight = ({
 					</div>
 				</div>
 				<div className="grid grid-cols-3 w-full gap-2">
-					{formData.companion_passengers.map((companion, index) => (
-						<div className="w-full" key={index}>
-							<label>Companion #{index + 1}</label>
-							<input
-								id={`companion ${index}`}
-								name={`companion ${index}`}
-								value={companion}
-								className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-								onChange={(e) =>
-									setFormData((prevFormData) => ({
-										...prevFormData,
-										companion_passengers:
-											prevFormData.companion_passengers.map(
-												(c, i) =>
-													i === index
-														? e.target.value
-														: c
-											),
-									}))
-								}
-							/>
+					{formData.companion_passengers.length > 0 ? (
+						formData.companion_passengers.map(
+							(companion, index) => (
+								<div className="w-full" key={index}>
+									<label>Companion #{index + 1}</label>
+									<div className="w-full flex items-center justify-center">
+										<input
+											id={`companion ${index}`}
+											name={`companion ${index}`}
+											value={companion}
+											className="block w-full px-4 py-2 text-sm text-gray-900 bg-gray-50 border border-y-gray-300 border-l-gray-300 rounded-l-lg focus:ring-blue-500 focus:border-blue-500"
+											onChange={(e) =>
+												setFormData((prevFormData) => ({
+													...prevFormData,
+													companion_passengers:
+														prevFormData.companion_passengers.map(
+															(c, i) =>
+																i === index
+																	? e.target
+																			.value
+																	: c
+														),
+												}))
+											}
+										/>
+										<button className="block py-2 px-4 text-sm text-white bg-red-600 border border-y-gray-300 border-r-gray-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500">
+											X
+										</button>
+									</div>
+								</div>
+							)
+						)
+					) : (
+						<div className="flex items-center justify-center">
+							<p className=" text-center">
+								No companion passengers assigned
+							</p>
 						</div>
-					))}
+					)}
 					{formData.companion_passengers.length < airshipSeats && (
 						<>
 							<div
