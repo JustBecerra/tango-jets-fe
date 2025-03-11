@@ -99,6 +99,16 @@ export const MainEditFlight = ({
 		return costNumber + revenue
 	}
 
+	const handleDeleteCompanion = (e: any, companion: string) => {
+		e.preventDefault()
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			companion_passengers: prevFormData.companion_passengers.filter(
+				(c) => c !== companion
+			),
+		}))
+	}
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setLoading(true)
@@ -393,7 +403,16 @@ export const MainEditFlight = ({
 												}))
 											}
 										/>
-										<button className="block py-2 px-4 text-sm text-white bg-red-600 border border-y-gray-300 border-r-gray-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500">
+										<button
+											onClick={(e) =>
+												handleDeleteCompanion(
+													e,
+													companion
+												)
+											}
+											type="button"
+											className="block py-2 px-4 text-sm text-white bg-red-600 border border-y-gray-300 border-r-gray-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500"
+										>
 											X
 										</button>
 									</div>
