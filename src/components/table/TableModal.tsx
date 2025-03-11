@@ -310,6 +310,11 @@ const TableModal = ({ caseType }: TableProps) => {
 		"parentFlightId",
 	]
 
+	// Funcion para asegurarse de chequear que filtre la airship de titulo TBD
+	function isAirship(item: DataType): item is Airship {
+		return (item as Airship).title !== undefined
+	}
+
 	return (
 		<>
 			<ColumnToggles
@@ -380,8 +385,17 @@ const TableModal = ({ caseType }: TableProps) => {
 								</thead>
 								<tbody className="overflow-y-auto rounded-b-3xl">
 									{/* CAMBIO 11: Renderizado jerárquico de filas */}
-									{currentItems.map(
-										(singledata: DataType) => {
+									{currentItems
+										.filter((item) => {
+											if (
+												caseType === "airship" &&
+												isAirship(item)
+											) {
+												return item.title !== "TBD"
+											}
+											return true
+										})
+										.map((singledata: DataType) => {
 											// Verificar si es un vuelo hijo
 											const isChild =
 												(caseType === "flight" ||
@@ -554,8 +568,7 @@ const TableModal = ({ caseType }: TableProps) => {
 													</td>
 												</tr>
 											)
-										}
-									)}
+										})}
 								</tbody>
 							</table>
 						</div>
