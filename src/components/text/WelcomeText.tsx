@@ -87,35 +87,43 @@ export const WelcomeText = () => {
   };
 
   return (
-    <div>
-      <div className="m-8 text-center">
-        <h1 className="text-4xl font-bold" onClick={openModal}>
-          Welcome,
-          <span className="text-blue-500 font-cursive">{employeeName}</span>!
-        </h1>
-
-        <h2 className="text-1xl font-semibold mt-4">{formattedTime}</h2>
-        <h2 className="text-1xl font-semibold mt-1">{formattedZonedTime}</h2>
-      </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h2 className="text-xl font-semibold mb-4">Select Time Zone</h2>
-        <label htmlFor="modalTimeZoneSelector" className="mr-2">
-          Time Zone:
-        </label>
-        <select
-          id="modalTimeZoneSelector"
-          value={selectedTimeZone}
-          onChange={handleTimeZoneChange}
-          className="w-full p-2 border rounded"
-        >
-          <option value="America/New_York">New York</option>
-          <option value="America/Los_Angeles">Los Angeles</option>
-          <option value="Europe/London">London</option>
-          <option value="Europe/Madrid">Madrid</option>
-          <option value="Asia/Tokyo">Tokyo</option>
-          <option value="Asia/Shanghai">Shanghai</option>
-        </select>
-      </Modal>
-    </div>
-  );
+		<div>
+			<div className="mb-8 text-center flex flex-col items-center">
+				<h1 className="text-4xl font-bold" onClick={openModal}>
+					Welcome,
+					<span className="text-blue-500 font-cursive">
+						{employeeName}
+					</span>
+					!
+				</h1>
+				<div className="flex flex-col items-start w-[200px]">
+					<h2 className="text-1xl font-semibold mt-4 self-stretch text-left">
+						{formattedTime}
+					</h2>
+					<h2 className="text-1xl font-semibold mt-1 self-stretch text-left">
+						{formattedZonedTime}
+					</h2>
+				</div>
+			</div>
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+				<h2 className="text-xl font-semibold mb-4">Select Time Zone</h2>
+				<label htmlFor="modalTimeZoneSelector" className="mr-2">
+					Time Zone:
+				</label>
+				<select
+					id="modalTimeZoneSelector"
+					value={selectedTimeZone}
+					onChange={handleTimeZoneChange}
+					className="w-full p-2 border rounded"
+				>
+					<option value="America/New_York">New York</option>
+					<option value="America/Los_Angeles">Los Angeles</option>
+					<option value="Europe/London">London</option>
+					<option value="Europe/Madrid">Madrid</option>
+					<option value="Asia/Tokyo">Tokyo</option>
+					<option value="Asia/Shanghai">Shanghai</option>
+				</select>
+			</Modal>
+		</div>
+  )
 };
