@@ -47,8 +47,13 @@ const InFlight = ({ flights }: props) => {
 					} divide-y divide-gray-200 rounded-b-lg`}
 				>
 					{flights.length === 0 ? (
-						<tr className="h-full">
-							<td className="h-full" colSpan={3}>
+						<tr className={`${flights.length === 0} && "h-full"`}>
+							<td
+								className={`${
+									flights.length === 0
+								} && "h-full"`}
+								colSpan={3}
+							>
 								<div className="flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50">
 									<LoaderSpinner />
 								</div>
