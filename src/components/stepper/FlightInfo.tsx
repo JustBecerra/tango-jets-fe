@@ -429,5 +429,5 @@ export const FlightInfo = ({
 			)
 		}
 	}
-	return <div className="border-t border-gray-600 py-2">{PhaseFields()}</div>
+	return <div className="py-2">{PhaseFields()}</div>
 }
