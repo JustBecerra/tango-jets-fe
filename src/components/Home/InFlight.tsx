@@ -41,7 +41,11 @@ const InFlight = ({ flights }: props) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody className="bg-white w-full h-full divide-y divide-gray-200 rounded-b-lg">
+				<tbody
+					className={`bg-white ${
+						flights.length === 0 && "w-full h-full"
+					} divide-y divide-gray-200 rounded-b-lg`}
+				>
 					{flights.length === 0 ? (
 						<tr className="h-full">
 							<td className="h-full" colSpan={3}>
