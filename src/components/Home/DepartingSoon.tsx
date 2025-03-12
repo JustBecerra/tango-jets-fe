@@ -31,7 +31,11 @@ const DepartingSoon = ({ flights }: props) => {
 
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-			<table className="min-w-full divide-y divide-gray-200 h-[300px]">
+			<table
+				className={`min-w-full divide-y divide-gray-200 ${
+					flights.length === 0 && "h-[300px]"
+				} `}
+			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
 						<th

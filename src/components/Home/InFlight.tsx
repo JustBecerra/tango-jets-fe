@@ -19,12 +19,16 @@ const InFlight = ({ flights }: props) => {
 
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-			<table className="min-w-full divide-y divide-gray-200 h-[300px]">
+			<table
+				className={`min-w-full divide-y divide-gray-200 ${
+					flights.length === 0 && "h-[300px]"
+				} `}
+			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
 						<th
 							colSpan={4}
-							className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-xs"
+							className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-sm"
 						>
 							✈ In Flight
 						</th>
@@ -68,10 +72,10 @@ const InFlight = ({ flights }: props) => {
 									(window.location.href = `/trip/${flight.id}`)
 								}
 							>
-								<td className="px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
+								<td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-900">
 									{flight.airship_name}
 								</td>
-								<td className="px-6 py-4 text-center whitespace-nowrap text-xs text-gray-700">
+								<td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-700">
 									{flight.from}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +87,7 @@ const InFlight = ({ flights }: props) => {
 									</svg>
 									{flight.to}
 								</td>
-								<td className="px-6 py-4 hidden md:table-cell text-center whitespace-nowrap text-xs text-gray-700">
+								<td className="px-6 py-4 hidden md:table-cell text-center whitespace-nowrap text-sm text-gray-700">
 									{formatLandingTime(flight.launchtime)}
 								</td>
 							</tr>

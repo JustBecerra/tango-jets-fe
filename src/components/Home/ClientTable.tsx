@@ -8,12 +8,15 @@ const ClientTable = ({ clients }: props) => {
 	const newClientsList = clients.sort((a, b) => b.phase - a.phase)
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-			<table className="min-w-full divide-y divide-gray-200 h-[300px]">
+			<table
+				className={`min-w-full divide-y divide-gray-200 ${
+					clients.length === 0 && "h-[300px]"
+				} `}
+			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
 						<th
 							colSpan={3}
-							//   className="px-6 py-3 text-left text-lg font-semibold text-gray-700 uppercase tracking-wider"
 							className="px-3 py-2 bg-gray-50 font-semibold text-gray-700 uppercase tracking-wider text-sm"
 						>
 							Trips Status
