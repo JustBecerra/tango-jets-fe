@@ -23,8 +23,9 @@ const InFlight = React.lazy(() => import("../Home/InFlight"));
 const RecentlyLanded = React.lazy(() => import("../Home/RecentlyLanded"));
 
 export const Datitos = () => {
-  const { updateAirships, updateFlights, updateClients, flights, clients } =
-    useStore((state) => state);
+  const { updateAirships, updateFlights, updateClients } = useStore(
+		(state) => state
+  )
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
 
