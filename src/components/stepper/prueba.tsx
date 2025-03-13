@@ -40,7 +40,7 @@ const fetchAirports = async (
       setResults(airports);
     }
   } catch (error) {
-    console.error("Error al obtener aeropuertos:", error);
+    console.error("Error getting airports:", error);
   }
 };
 
@@ -138,7 +138,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                     setFrom(place.display);
                     setFromAirport(place);
                     setFromResults([]);
-                    if (onSelectFrom) onSelectFrom(place.id);
+                    if (onSelectFrom) onSelectFrom(place.display);
                     if (toAirport) {
                       const dist = calculateDistance(
                         place.lat,
@@ -188,7 +188,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                     setTo(place.display);
                     setToAirport(place);
                     setToResults([]);
-                    if (onSelectTo) onSelectTo(place.id);
+                    if (onSelectTo) onSelectTo(place.display);
                     if (fromAirport) {
                       const dist = calculateDistance(
                         fromAirport.lat,
@@ -214,7 +214,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
         </div>
       </div>
 
-      {/* Distancia y Tiempo de Vuelo */}
       {distance !== null && (
         <div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
           Distance: <strong>{distance} km</strong>
