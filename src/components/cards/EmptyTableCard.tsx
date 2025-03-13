@@ -2,16 +2,10 @@ import LoaderSpinner from "../Loaders/LoaderSpinner";
 import type { DataType } from "../table/TableModal"
 
 interface Props {
-	loading: boolean
-	currentItems: DataType[]
 	searchTerm: string
 }
 
-export const EmptyTableCard = ({
-	loading,
-	currentItems,
-	searchTerm,
-}: Props) => {
+export const EmptyTableCard = ({ searchTerm }: Props) => {
 	return (
 		<>
 			{searchTerm === "" ? (
