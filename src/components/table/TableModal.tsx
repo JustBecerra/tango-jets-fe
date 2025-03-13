@@ -317,7 +317,7 @@ const TableModal = ({ caseType }: TableProps) => {
 	}
 
 	return (
-		<>
+		<div className="flex flex-col items-center justify-center min-h-screen flex-1 gap-8">
 			<ColumnToggles
 				toggleColumn={toggleColumn}
 				collapsedColumns={collapsedColumns}
@@ -592,7 +592,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					caseType={caseType}
 				/>
 			)}
-		</>
+		</div>
 	)
 }
 
