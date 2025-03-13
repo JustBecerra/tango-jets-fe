@@ -114,7 +114,7 @@ const TablePilot = ({ caseType }: TableProps) => {
 					<ModalAddPilot />
 				</div>
 
-				{currentItems.length > 0 ? (
+				{!loading && currentItems.length > 0 ? (
 					<div className="overflow-hidden rounded-2xl shadow-md">
 						<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
 							<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
@@ -179,7 +179,7 @@ const TablePilot = ({ caseType }: TableProps) => {
 					</div>
 				) : (
 					<div className="flex-grow flex items-center min-h-[400px] justify-center">
-						<EmptyTableCard loading={loading} />
+						<EmptyTableCard searchTerm={searchTerm} />
 					</div>
 				)}
 			</div>
