@@ -356,7 +356,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					{buttonRetriever()}
 				</div>
 
-				{currentItems.length > 0 ? (
+				{!loading && currentItems.length > 0 ? (
 					<>
 						<div className="overflow-hidden rounded-2xl shadow-md">
 							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
@@ -576,7 +576,11 @@ const TableModal = ({ caseType }: TableProps) => {
 					</>
 				) : (
 					<div className="flex-grow flex items-center min-h-[400px] justify-center">
-						<EmptyTableCard loading={loading} />
+						<EmptyTableCard
+							currentItems={currentItems}
+							loading={loading}
+							searchTerm={searchTerm}
+						/>
 					</div>
 				)}
 			</div>
