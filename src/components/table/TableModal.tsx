@@ -311,6 +311,8 @@ const TableModal = ({ caseType }: TableProps) => {
 		"isChildFlight",
 		"parentFlightId",
 		"pilot_id",
+		"longitude",
+		"latitude",
 	]
 
 	// Funcion para asegurarse de chequear que filtre la airship de titulo TBD
