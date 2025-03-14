@@ -3,12 +3,13 @@ import type { DataType } from "../table/TableModal"
 
 interface Props {
 	searchTerm: string
+	loading: boolean
 }
 
-export const EmptyTableCard = ({ searchTerm }: Props) => {
+export const EmptyTableCard = ({ searchTerm, loading }: Props) => {
 	return (
 		<>
-			{searchTerm === "" ? (
+			{searchTerm === "" && loading ? (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-xl">
 					<LoaderSpinner />
 				</div>
