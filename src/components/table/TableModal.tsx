@@ -152,7 +152,9 @@ const TableModal = ({ caseType }: TableProps) => {
 			} catch (error) {
 				console.error("Failed to fetch data:", error)
 			} finally {
-				setLoading(false)
+				setTimeout(() => {
+					setLoading(false)
+				}, 1000)
 			}
 		}
 
@@ -356,7 +358,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					{buttonRetriever()}
 				</div>
 
-				{!loading && currentItems.length > 0 ? (
+				{currentItems.length > 0 && !loading ? (
 					<>
 						<div className="overflow-hidden rounded-2xl shadow-md">
 							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
@@ -576,10 +578,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					</>
 				) : (
 					<div className="flex-grow flex items-center min-h-[400px] justify-center">
-						<EmptyTableCard
-							searchTerm={searchTerm}
-							loading={loading}
-						/>
+						<EmptyTableCard loading={loading} />
 					</div>
 				)}
 			</div>
