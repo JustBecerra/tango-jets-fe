@@ -135,10 +135,12 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                   key={place.id}
                   className="p-2 cursor-pointer hover:bg-gray-200"
                   onClick={() => {
-                    setFrom(place.display);
+                    const val =
+                      place.display.length > 50 ? place.id : place.display;
+                    setFrom(val);
                     setFromAirport(place);
                     setFromResults([]);
-                    if (onSelectFrom) onSelectFrom(place.display);
+                    if (onSelectFrom) onSelectFrom(val);
                     if (toAirport) {
                       const dist = calculateDistance(
                         place.lat,
@@ -185,10 +187,12 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                   key={place.id}
                   className="p-2 cursor-pointer hover:bg-gray-200"
                   onClick={() => {
-                    setTo(place.display);
+                    const val =
+                      place.display.length > 50 ? place.id : place.display;
+                    setTo(val);
                     setToAirport(place);
                     setToResults([]);
-                    if (onSelectTo) onSelectTo(place.display);
+                    if (onSelectTo) onSelectTo(val);
                     if (fromAirport) {
                       const dist = calculateDistance(
                         fromAirport.lat,
