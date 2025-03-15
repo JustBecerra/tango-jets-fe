@@ -74,6 +74,12 @@ const { launchtime, to, from }: Flight = ClientFlight
 			airshipObjects={airshipObjects}
 			client:only="react"
 		/>
-		<MapCard client:load />
+		<MapCard
+			first_latitude={ClientFlight.first_latitude}
+			first_longitude={ClientFlight.first_longitude}
+			second_latitude={ClientFlight.second_latitude}
+			second_longitude={ClientFlight.second_longitude}
+			client:load
+		/>
 	</div></ClientLayout
 >

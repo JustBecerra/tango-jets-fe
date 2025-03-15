@@ -98,102 +98,109 @@ export const FlightInfo = ({
   const PhaseFields = () => {
     if (phase === "first") {
       return (
-        <div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
-          <CsvSelect
-            labelFrom="From"
-            labelTo="To"
-            onSelectFrom={handleSelectFrom}
-            onSelectTo={handleSelectTo}
-            onDistanceCalculated={handleDistanceCalculated}
-            onFlightTimeCalculated={handleFlightTimeCalculated}
-            toDefaultValue={formData.to}
-            fromDefaultValue={formData.from}
-          />
-          <div className="flex flex-col justify-end h-fit">
-            <label htmlFor="launchtime" className="block text-sm font-medium">
-              Launch Time
-            </label>
-            <input
-              type="datetime-local"
-              id="launchtime"
-              name="launchtime"
-              value={launchtime.toISOString().slice(0, 16)}
-              onChange={(e) =>
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  launchtime: new Date(e.target.value),
-                }))
-              }
-              min={new Date().toISOString().slice(0, 16)}
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="flex flex-col justify-end h-fit">
-            <label
-              htmlFor="master_passenger"
-              className="block text-sm font-medium"
-            >
-              Lead Passenger
-            </label>
-            <AutoComplete value={master_passenger} setter={setFormData} />
-          </div>
-          <div className="flex flex-col justify-end h-fit">
-            <label
-              htmlFor="type_of_flight"
-              className="block text-sm font-medium"
-            >
-              Type of flight
-            </label>
-            <select
-              id="typeof"
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              value={type_of}
-              onChange={(e) => {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  type_of: e.target.value,
-                }));
-              }}
-            >
-              <option value="initial">Initial flight</option>
-              <option value="return">Return flight</option>
-              <option value="connection">Connection flight</option>
-            </select>
-          </div>
+			<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
+				<CsvSelect
+					labelFrom="From"
+					labelTo="To"
+					onSelectFrom={handleSelectFrom}
+					onSelectTo={handleSelectTo}
+					onDistanceCalculated={handleDistanceCalculated}
+					onFlightTimeCalculated={handleFlightTimeCalculated}
+					toDefaultValue={formData.to}
+					fromDefaultValue={formData.from}
+					setFormData={setFormData}
+				/>
+				<div className="flex flex-col justify-end h-fit">
+					<label
+						htmlFor="launchtime"
+						className="block text-sm font-medium"
+					>
+						Launch Time
+					</label>
+					<input
+						type="datetime-local"
+						id="launchtime"
+						name="launchtime"
+						value={launchtime.toISOString().slice(0, 16)}
+						onChange={(e) =>
+							setFormData((prevFormData) => ({
+								...prevFormData,
+								launchtime: new Date(e.target.value),
+							}))
+						}
+						min={new Date().toISOString().slice(0, 16)}
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						required
+					/>
+				</div>
+				<div className="flex flex-col justify-end h-fit">
+					<label
+						htmlFor="master_passenger"
+						className="block text-sm font-medium"
+					>
+						Lead Passenger
+					</label>
+					<AutoComplete
+						value={master_passenger}
+						setter={setFormData}
+					/>
+				</div>
+				<div className="flex flex-col justify-end h-fit">
+					<label
+						htmlFor="type_of_flight"
+						className="block text-sm font-medium"
+					>
+						Type of flight
+					</label>
+					<select
+						id="typeof"
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						value={type_of}
+						onChange={(e) => {
+							setFormData((prevFormData) => ({
+								...prevFormData,
+								type_of: e.target.value,
+							}))
+						}}
+					>
+						<option value="initial">Initial flight</option>
+						<option value="return">Return flight</option>
+						<option value="connection">Connection flight</option>
+					</select>
+				</div>
 
-          <div
-            className={`flex flex-col justify-end h-fit ${
-              type_of === "initial" ? "invisible" : ""
-            }`}
-          >
-            <label
-              htmlFor="associated_to"
-              className="block text-sm font-medium"
-            >
-              Associated to which flights
-            </label>
-            <select
-              id="associated_to"
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              value={associated_to}
-              onChange={(e) => {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  associated_to: e.target.value,
-                }));
-              }}
-            >
-              <option value="">-- Select --</option>
-              {filteredFlights.map((flight, index) => (
-                <option key={index} value={flight}>
-                  {flight}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      );
+				<div
+					className={`flex flex-col justify-end h-fit ${
+						type_of === "initial" ? "invisible" : ""
+					}`}
+				>
+					<label
+						htmlFor="associated_to"
+						className="block text-sm font-medium"
+					>
+						Associated to which flights
+					</label>
+					<select
+						id="associated_to"
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						value={associated_to}
+						onChange={(e) => {
+							setFormData((prevFormData) => ({
+								...prevFormData,
+								associated_to: e.target.value,
+							}))
+						}}
+					>
+						<option value="">-- Select --</option>
+						{filteredFlights.map((flight, index) => (
+							<option key={index} value={flight}>
+								{flight}
+							</option>
+						))}
+					</select>
+				</div>
+			</div>
+		)
     } else if (phase === "second") {
       return (
         <div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
