@@ -18,8 +18,10 @@ export interface formType {
 	master_passenger: string
 	type_of: string
 	associated_to: string
-	longitude: string
-	latitude: string
+	first_longitude: string
+	first_latitude: string
+	second_longitude: string
+	second_latitude: string
 }
 
 export interface airshipFormType {
@@ -46,8 +48,10 @@ const SchedulerFrame = ({
 		master_passenger: "",
 		type_of: flightID ? "connection" : "initial",
 		associated_to: flightID ? flightID : "",
-		latitude: "",
-		longitude: "",
+		first_longitude: "",
+		first_latitude: "",
+		second_longitude: "",
+		second_latitude: "",
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
@@ -70,8 +74,10 @@ const SchedulerFrame = ({
 			master_passenger,
 			type_of,
 			associated_to,
-			latitude,
-			longitude,
+			first_longitude,
+			first_latitude,
+			second_longitude,
+			second_latitude,
 		} = formData
 
 		const name = getCookie("username")
@@ -83,8 +89,10 @@ const SchedulerFrame = ({
 			createdby: name,
 			type_of,
 			associated_to,
-			latitude,
-			longitude,
+			first_longitude,
+			first_latitude,
+			second_longitude,
+			second_latitude,
 		}
 
 		try {

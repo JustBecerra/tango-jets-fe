@@ -11,12 +11,23 @@ import Feature from "ol/Feature"
 import { Style, Stroke } from "ol/style"
 import type { Coordinate } from "ol/coordinate"
 
-const Travelmap = () => {
+interface props {
+	first_latitude: string
+	first_longitude: string
+	second_latitude: string
+	second_longitude: string
+}
+
+const Travelmap = ({
+	first_latitude,
+	first_longitude,
+	second_latitude,
+	second_longitude,
+}: props) => {
 	useEffect(() => {
 		const points = [
-			fromLonLat([-74.006, 40.7128]),
-			fromLonLat([-0.1276, 51.5074]),
-			fromLonLat([139.6917, 35.6895]),
+			fromLonLat([parseInt(first_longitude), parseInt(first_latitude)]),
+			fromLonLat([parseInt(second_longitude), parseInt(second_latitude)]),
 		]
 
 		const pointFeatures = points.map(
