@@ -9,43 +9,34 @@ import { RouteGuard } from "../../components/routeguard";
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState([]);
-  const [createdByFilter, setCreatedByFilter] = useState(''); // State for the selected createdby filter
-  const [createdByOptions, setCreatedByOptions] = useState([]); // State for the dropdown options
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const flights = await getFlights(); 
+      const flights = await getFlights();
       const phaseColors = {
-        1: 'red',
-        2: 'blue',
         3: 'green',
         4: 'orange',
         5: 'purple',
         6: 'red',
         7: 'blue',
         8: 'pink',
-        9: 'yellow',
+        9: 'cyan',
         10: 'cyan',
       };
-      const events = flights.map(flight => { // Limit to the first 4 events
+      const events = flights.map(flight => {
         const launchTime = new Date(flight.launchtime);
         const endTime = new Date(launchTime);
-        endTime.setDate(launchTime.getDate() + 2); // Add 2 days to launch time
+        endTime.setDate(launchTime.getDate() + 2);
 
         return {
-          title: `${flight.from}--${flight.to}`, 
-          start: launchTime.toISOString(), 
-          end: endTime.toISOString(), 
-          url: `/trip/${flight.id}`, 
-          backgroundColor: phaseColors[flight.phase] || 'blue', 
-          createdby: flight.createdby, // Include createdby in the event object
+          title: `${flight.from}--${flight.to}`,
+          start: launchTime.toISOString(),
+          end: endTime.toISOString(),
+          url: `/trip/${flight.id}`,
+          backgroundColor: phaseColors[flight.phase] || 'blue',
         };
       });
       setEvents(events);
-
-      // Extract unique createdby values for the dropdown options
-      const uniqueCreatedBy = [...new Set(flights.map(flight => flight.createdby))];
-      setCreatedByOptions(uniqueCreatedBy);
     };
 
     fetchEvents();
@@ -55,35 +46,17 @@ const CalendarComponent = () => {
     alert(`Date clicked: ${info.dateStr}`);
   };
 
-  const handleCreatedByChange = (event) => {
-    setCreatedByFilter(event.target.value);
-  };
-
-  // Filter events based on the selected createdby value
-  const filteredEvents = createdByFilter
-    ? events.filter(event => event.createdby === parseInt(createdByFilter))
-    : events;
-
   return (
     <RouteGuard>
-      <div className="calendar-container">
-        <div className="filter-container">
-          <label htmlFor="createdByFilter">Filter by Created By:</label>
-          <select id="createdByFilter" value={createdByFilter} onChange={handleCreatedByChange}>
-            <option value="">All</option>
-            {createdByOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
-        </div>
+      <div className="calendar-container overflow-hidden">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          initialDate={new Date().toISOString().split('T')[0]} // Set initial date to today
-          events={filteredEvents}
+          initialDate={new Date().toISOString().split('T')[0]}
+          events={events}
           dateClick={handleDateClick}
           eventContent={renderEventContent}
-          eventBackgroundColor={(info) => info.event.extendedProps.backgroundColor} // Ensure background color is used
+          eventBackgroundColor={(info) => info.event.extendedProps.backgroundColor}
         />
       </div>
     </RouteGuard>
