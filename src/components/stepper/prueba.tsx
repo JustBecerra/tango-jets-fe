@@ -61,8 +61,10 @@ const calculateDistance = (
 	const dLon = (lon2 - lon1) * (Math.PI / 180)
 	setFormData((prevFormData) => ({
 		...prevFormData,
-		latitude: dLat.toString(),
-		longitude: dLon.toString(),
+		first_latitude: lat1.toString(),
+		first_longitude: lon1.toString(),
+		second_latitude: lat2.toString(),
+		second_longitude: lon2.toString(),
 	}))
 	const a =
 		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
