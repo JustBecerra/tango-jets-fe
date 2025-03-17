@@ -101,12 +101,12 @@ const SchedulerFrame = ({
 			const EmailInfo = {
 				to: transformedFlightData.master_passenger,
 				subject: "Flight pre-scheduled!",
-				text: flightScheduledMessage({
-					transformedFlightData,
+				url: flightScheduledMessage({
 					airshipData,
 					airships,
 					tripID: newFlight.id,
 				}),
+				type_of_email: "quote",
 				contract: false,
 			}
 
