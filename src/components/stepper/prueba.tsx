@@ -12,6 +12,7 @@ interface CsvSelectProps {
 	toDefaultValue?: string
 	fromDefaultValue?: string
 	setFormData: React.Dispatch<React.SetStateAction<formType>>
+	formData: formType
 }
 const MAX_RESULTS = 5
 
@@ -92,6 +93,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	toDefaultValue,
 	fromDefaultValue,
 	setFormData,
+	formData,
 }) => {
 	const [from, setFrom] = useState(fromDefaultValue || "")
 	const [to, setTo] = useState(toDefaultValue || "")
@@ -243,6 +245,84 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 							))}
 						</ul>
 					)}
+				</div>
+
+				{/*initial flight latitude */}
+				<div className="flex flex-col flex-1">
+					<label className="block text-sm font-medium text-gray-700">
+						Initial Flight Latitude
+					</label>
+					<input
+						type="text"
+						value={formData.first_latitude}
+						onChange={(e) => {
+							setFormData((prevFormData) => ({
+								...prevFormData,
+								first_latitude: e.target.value,
+							}))
+						}}
+						className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+					/>
+				</div>
+
+				{/* initial flight longitude */}
+				<div className="flex flex-col flex-1">
+					<div className="w-full">
+						<label className="block text-sm font-medium text-gray-700">
+							Initial Flight Longitude
+						</label>
+						<input
+							type="text"
+							value={formData.first_longitude}
+							onChange={(e) => {
+								setFormData((prevFormData) => ({
+									...prevFormData,
+									first_longitude: e.target.value,
+								}))
+							}}
+							className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						/>
+					</div>
+				</div>
+
+				{/* end flight latitude */}
+				<div className="flex flex-col flex-1">
+					<div className="w-full">
+						<label className="block text-sm font-medium text-gray-700">
+							End Flight Latitude
+						</label>
+						<input
+							type="text"
+							value={formData.second_latitude}
+							onChange={(e) => {
+								setFormData((prevFormData) => ({
+									...prevFormData,
+									second_latitude: e.target.value,
+								}))
+							}}
+							className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						/>
+					</div>
+				</div>
+
+				{/* end flight longitude */}
+				<div className="flex flex-col flex-1">
+					<div className="w-full">
+						<label className="block text-sm font-medium text-gray-700">
+							End Flight Longitude
+						</label>
+						<input
+							type="text"
+							value={formData.second_longitude}
+							onChange={(e) => {
+								setFormData((prevFormData) => ({
+									...prevFormData,
+									second_longitude: e.target.value,
+								}))
+							}}
+							className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						/>
+					</div>
 				</div>
 			</div>
 

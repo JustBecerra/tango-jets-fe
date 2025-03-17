@@ -151,7 +151,10 @@ const SchedulerFrame = ({
 			</div>
 
 			<div className="p-8 space-y-8 h-[90%]">
-				<form onSubmit={handleSubmit} className="space-y-6">
+				<form
+					onSubmit={handleSubmit}
+					className="space-y-6 flex flex-col"
+				>
 					<div className="rounded-xl">
 						<FlightInfo
 							phase={phase}
