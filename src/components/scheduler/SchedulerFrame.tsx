@@ -22,6 +22,7 @@ export interface formType {
 	first_latitude: string
 	second_longitude: string
 	second_latitude: string
+	flight_time: string
 }
 
 export interface airshipFormType {
@@ -52,6 +53,7 @@ const SchedulerFrame = ({
 		first_latitude: "",
 		second_longitude: "",
 		second_latitude: "",
+		flight_time: "",
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
@@ -101,12 +103,12 @@ const SchedulerFrame = ({
 			const EmailInfo = {
 				to: transformedFlightData.master_passenger,
 				subject: "Flight pre-scheduled!",
-				text: flightScheduledMessage({
-					transformedFlightData,
+				url: flightScheduledMessage({
 					airshipData,
 					airships,
 					tripID: newFlight.id,
 				}),
+				type_of_email: "quote",
 				contract: false,
 			}
 
