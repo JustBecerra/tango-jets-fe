@@ -1,6 +1,7 @@
 interface props {
 	to: FormDataEntryValue
-	text: string
+	url: string
+	type_of_email: string
 	subject: string
 	contract?: boolean
 }

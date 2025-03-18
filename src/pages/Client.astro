@@ -6,10 +6,6 @@ import { RouteGuard } from "../components/routeguard"
 
 <Layout title="Clients">
 	<RouteGuard client:load="react">
-		<div class="flex flex-col space-y-4">
-			<div>
-				<TableModal caseType="client" client:load />
-			</div>
-		</div>
+		<TableModal caseType="client" client:load />
 	</RouteGuard>
 </Layout>

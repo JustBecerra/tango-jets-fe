@@ -152,7 +152,9 @@ const TableModal = ({ caseType }: TableProps) => {
 			} catch (error) {
 				console.error("Failed to fetch data:", error)
 			} finally {
-				setLoading(false)
+				setTimeout(() => {
+					setLoading(false)
+				}, 1000)
 			}
 		}
 
@@ -308,6 +310,11 @@ const TableModal = ({ caseType }: TableProps) => {
 		"createdby",
 		"isChildFlight",
 		"parentFlightId",
+		"pilot_id",
+		"first_longitude",
+		"first_latitude",
+		"second_longitude",
+		"second_latitude",
 	]
 
 	// Funcion para asegurarse de chequear que filtre la airship de titulo TBD
@@ -316,7 +323,7 @@ const TableModal = ({ caseType }: TableProps) => {
 	}
 
 	return (
-		<>
+		<div className="flex flex-col items-center justify-center min-h-screen flex-1 gap-8">
 			<ColumnToggles
 				toggleColumn={toggleColumn}
 				collapsedColumns={collapsedColumns}
@@ -355,7 +362,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					{buttonRetriever()}
 				</div>
 
-				{currentItems.length > 0 ? (
+				{currentItems.length > 0 && !loading ? (
 					<>
 						<div className="overflow-hidden rounded-2xl shadow-md">
 							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
@@ -591,7 +598,7 @@ const TableModal = ({ caseType }: TableProps) => {
 					caseType={caseType}
 				/>
 			)}
-		</>
+		</div>
 	)
 }
 

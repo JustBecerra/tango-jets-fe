@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import './calendar.css';
+import React, { useState, useEffect } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import "./calendar.css";
 import { getFlights } from "../../../lib/actions/flights/actions";
 import { RouteGuard } from "../../components/routeguard";
-
+import LoaderSpinner from "../Loaders/LoaderSpinner";
 const CalendarComponent = () => {
   const [events, setEvents] = useState([]);
-
   useEffect(() => {
     const fetchEvents = async () => {
       const flights = await getFlights();

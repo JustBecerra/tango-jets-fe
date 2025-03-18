@@ -6,10 +6,6 @@ import { RouteGuard } from "../components/routeguard"
 
 <Layout title="Airships">
 	<RouteGuard client:load="react">
-		<div class=" flex flex-col  items-center justify-start relative w-full overflow-hidden">
-			<div>
-				<TableModal caseType="airship" client:load />
-			</div>
-		</div>
+		<TableModal caseType="airship" client:load />
 	</RouteGuard>
 </Layout>
