@@ -78,11 +78,11 @@ const fieldDecider = ({
 		const EmailInfo = {
 			to: clients?.fullname || "",
 			subject: "Flight Invoice",
-			text: invoiceMessage({
-				transformedFlightData,
+			url: invoiceMessage({
 				flightIDs,
 				airshipID: currentFlight.airship_id,
 			}),
+			type_of_email: "invoice",
 			contract: false,
 		}
 		await sendEmail(EmailInfo)
@@ -92,9 +92,10 @@ const fieldDecider = ({
 		const EmailInfo = {
 			to: clients?.fullname || "",
 			subject: "Flight contract",
-			text: contractMessage({
+			url: contractMessage({
 				master_passenger: clients?.fullname || "Passenger",
 			}),
+			type_of_email: "contract",
 			contract: true,
 		}
 		await sendEmail(EmailInfo)
