@@ -79,7 +79,6 @@ const fieldDecider = ({
 			to: clients?.fullname || "",
 			subject: "Flight Invoice",
 			url: invoiceMessage({
-				transformedFlightData,
 				flightIDs,
 				airshipID: currentFlight.airship_id,
 			}),
