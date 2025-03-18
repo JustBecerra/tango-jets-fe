@@ -39,6 +39,7 @@ export interface Flight {
 	type_of: string
 	associated_to: string
 	pilot_id: string
+	flight_time: string
 	// CAMBIO 1: Agregar propiedades para relación padre-hijo
 	isChildFlight?: boolean
 	parentFlightId?: number
@@ -315,6 +316,7 @@ const TableModal = ({ caseType }: TableProps) => {
 		"first_latitude",
 		"second_longitude",
 		"second_latitude",
+		"flight_time",
 	]
 
 	// Funcion para asegurarse de chequear que filtre la airship de titulo TBD
