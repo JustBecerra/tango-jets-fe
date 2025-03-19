@@ -7,41 +7,32 @@ import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
 import type { Flight } from "../table/TableModal";
 
 interface props {
-  phase: string;
-  formData: formType;
-  setFormData: React.Dispatch<React.SetStateAction<formType>>;
-  airshipData: airshipFormType[];
-  setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>;
-  FlightsForAssociation: Flight[];
+	phase: string
+	formData: formType
+	setFormData: React.Dispatch<React.SetStateAction<formType>>
+	airshipData: airshipFormType[]
+	setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>
 }
 
 export const FlightInfo = ({
-  phase,
-  formData,
-  setFormData,
-  airshipData,
-  setAirshipData,
-  FlightsForAssociation,
+	phase,
+	formData,
+	setFormData,
+	airshipData,
+	setAirshipData,
 }: props) => {
-  const { to, from, launchtime, master_passenger, flight_time } = formData
-  const filteredFlights = FlightsForAssociation.filter(
-		(elem: Flight) => elem.type_of === "initial"
-  )
-		.map((flight) => flight.id)
-		.sort(function compareNumbers(a, b) {
-			return a - b
-		})
-  const { airships } = useStore((state) => state)
-  const [distance, setDistance] = useState<number | null>(null)
-  const [flightTime, setFlightTime] = useState<number | null>(null)
+	const { to, from, launchtime, master_passenger, flight_time } = formData
+	const { airships } = useStore((state) => state)
+	const [distance, setDistance] = useState<number | null>(null)
+	const [flightTime, setFlightTime] = useState<number | null>(null)
 
-  const getPercentage = ({
+	const getPercentage = ({
 		cost,
 		newPercentage = "20",
-  }: {
+	}: {
 		cost: string
 		newPercentage?: string
-  }): { revenue: number; roundingDifference: number } => {
+	}): { revenue: number; roundingDifference: number } => {
 		if (cost === "") return { revenue: 0, roundingDifference: 0 }
 
 		const percentage = parseFloat(newPercentage)
@@ -52,30 +43,30 @@ export const FlightInfo = ({
 		const roundingDifference = roundedRevenue - (costNumber + revenue)
 
 		return { revenue: roundedRevenue, roundingDifference }
-  }
-  const handleSelectFrom = (value: string) => {
+	}
+	const handleSelectFrom = (value: string) => {
 		setFormData((prevFormData) => ({
 			...prevFormData,
 			from: value,
 		}))
-  }
+	}
 
-  const handleSelectTo = (value: string) => {
+	const handleSelectTo = (value: string) => {
 		setFormData((prevFormData) => ({
 			...prevFormData,
 			to: value,
 		}))
-  }
+	}
 
-  const handleDistanceCalculated = (calculatedDistance: number) => {
+	const handleDistanceCalculated = (calculatedDistance: number) => {
 		setDistance(calculatedDistance)
-  }
+	}
 
-  const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
+	const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
 		setFlightTime(calculatedFlightTime)
-  }
+	}
 
-  const addAirshipOption = () => {
+	const addAirshipOption = () => {
 		setAirshipData((prev) => [
 			...prev,
 			{
@@ -85,16 +76,16 @@ export const FlightInfo = ({
 				percentage: 20,
 			},
 		])
-  }
+	}
 
-  const subtractAirshipOption = (airshipindex: number) => {
+	const subtractAirshipOption = (airshipindex: number) => {
 		const newAirshipData = airshipData.filter(
 			(airship) => airship !== airshipData[airshipindex]
 		)
 		setAirshipData(newAirshipData)
-  }
+	}
 
-  const PhaseFields = () => {
+	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
 				<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
@@ -379,6 +370,6 @@ export const FlightInfo = ({
 				</div>
 			)
 		}
-  }
-  return <div className="py-2">{PhaseFields()}</div>;
-};
+	}
+	return <div className="py-2">{PhaseFields()}</div>
+}
