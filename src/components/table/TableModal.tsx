@@ -104,7 +104,7 @@ const TableModal = ({ caseType }: TableProps) => {
 						processedFlights = processedFlights.filter(
 							(flight: Flight) =>
 								flight.phase > 7 ||
-								flight.launchtime < new Date().toISOString()
+								flight.arrivaltime < new Date().toISOString()
 						)
 					}
 
