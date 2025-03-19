@@ -25,6 +25,10 @@ export interface formEditType {
 	master_passenger: string
 	companion_passengers: string[]
 	flight_time: string
+	first_latitude: string
+	first_longitude: string
+	second_latitude: string
+	second_longitude: string
 }
 
 export const MainEditFlight = ({
@@ -42,6 +46,10 @@ export const MainEditFlight = ({
 		master_passenger: currentFlight.master_passenger,
 		companion_passengers: currentFlight.companion_passengers,
 		flight_time: currentFlight.flight_time,
+		first_latitude: currentFlight.first_latitude,
+		first_longitude: currentFlight.first_longitude,
+		second_latitude: currentFlight.second_latitude,
+		second_longitude: currentFlight.second_longitude,
 	})
 	const [revenuePercentage, setRevenuePercentage] = useState(20)
 
@@ -131,6 +139,10 @@ export const MainEditFlight = ({
 				JSON.stringify(formData.companion_passengers)
 			)
 			convertedData.append("flight_time", formData.flight_time)
+			convertedData.append("first_latitude", formData.first_latitude)
+			convertedData.append("first_longitude", formData.first_longitude)
+			convertedData.append("second_latitude", formData.second_latitude)
+			convertedData.append("second_longitude", formData.second_longitude)
 
 			await editAction({
 				caseType: "flight",
@@ -166,9 +178,7 @@ export const MainEditFlight = ({
 					onSelectTo={handleSelectTo}
 					onDistanceCalculated={handleDistanceCalculated}
 					onFlightTimeCalculated={handleFlightTimeCalculated}
-					toDefaultValue={formData.to}
-					fromDefaultValue={formData.from}
-					flight_time={formData.flight_time}
+					formData={formData}
 					setFormData={setFormData}
 				/>
 				<div className="flex flex-col justify-end">
