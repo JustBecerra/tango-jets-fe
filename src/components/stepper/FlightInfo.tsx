@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import CsvSelect from "../stepper/prueba";
+import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
 import useStore from "../../store/store";
+import CsvSelect from "../stepper/prueba";
 import { AutoComplete } from "../input/AutoComplete";
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
-import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
 import type { Flight } from "../table/TableModal";
 
 interface props {
@@ -54,6 +54,7 @@ export const FlightInfo = ({
 
     return { revenue: roundedRevenue, roundingDifference };
   };
+
   const handleSelectFrom = (value: string) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -84,6 +85,7 @@ export const FlightInfo = ({
         price_cost: 0,
         price_revenue: 0,
         percentage: 20,
+        extra_price: 0,
       },
     ]);
   };
@@ -98,109 +100,103 @@ export const FlightInfo = ({
   const PhaseFields = () => {
     if (phase === "first") {
       return (
-			<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
-				<CsvSelect
-					labelFrom="From"
-					labelTo="To"
-					onSelectFrom={handleSelectFrom}
-					onSelectTo={handleSelectTo}
-					onDistanceCalculated={handleDistanceCalculated}
-					onFlightTimeCalculated={handleFlightTimeCalculated}
-					toDefaultValue={formData.to}
-					fromDefaultValue={formData.from}
-					setFormData={setFormData}
-				/>
-				<div className="flex flex-col justify-end h-fit">
-					<label
-						htmlFor="launchtime"
-						className="block text-sm font-medium"
-					>
-						Launch Time
-					</label>
-					<input
-						type="datetime-local"
-						id="launchtime"
-						name="launchtime"
-						value={launchtime.toISOString().slice(0, 16)}
-						onChange={(e) =>
-							setFormData((prevFormData) => ({
-								...prevFormData,
-								launchtime: new Date(e.target.value),
-							}))
-						}
-						min={new Date().toISOString().slice(0, 16)}
-						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-						required
-					/>
-				</div>
-				<div className="flex flex-col justify-end h-fit">
-					<label
-						htmlFor="master_passenger"
-						className="block text-sm font-medium"
-					>
-						Lead Passenger
-					</label>
-					<AutoComplete
-						value={master_passenger}
-						setter={setFormData}
-					/>
-				</div>
-				<div className="flex flex-col justify-end h-fit">
-					<label
-						htmlFor="type_of_flight"
-						className="block text-sm font-medium"
-					>
-						Type of flight
-					</label>
-					<select
-						id="typeof"
-						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-						value={type_of}
-						onChange={(e) => {
-							setFormData((prevFormData) => ({
-								...prevFormData,
-								type_of: e.target.value,
-							}))
-						}}
-					>
-						<option value="initial">Initial flight</option>
-						<option value="return">Return flight</option>
-						<option value="connection">Connection flight</option>
-					</select>
-				</div>
+        <div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
+          <CsvSelect
+            labelFrom="From"
+            labelTo="To"
+            onSelectFrom={handleSelectFrom}
+            onSelectTo={handleSelectTo}
+            onDistanceCalculated={handleDistanceCalculated}
+            onFlightTimeCalculated={handleFlightTimeCalculated}
+            toDefaultValue={formData.to}
+            fromDefaultValue={formData.from}
+            setFormData={setFormData}
+          />
+          <div className="flex flex-col justify-end h-fit">
+            <label htmlFor="launchtime" className="block text-sm font-medium">
+              Launch Time
+            </label>
+            <input
+              type="datetime-local"
+              id="launchtime"
+              name="launchtime"
+              value={launchtime.toISOString().slice(0, 16)}
+              onChange={(e) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  launchtime: new Date(e.target.value),
+                }))
+              }
+              min={new Date().toISOString().slice(0, 16)}
+              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="flex flex-col justify-end h-fit">
+            <label
+              htmlFor="master_passenger"
+              className="block text-sm font-medium"
+            >
+              Lead Passenger
+            </label>
+            <AutoComplete value={master_passenger} setter={setFormData} />
+          </div>
+          <div className="flex flex-col justify-end h-fit">
+            <label
+              htmlFor="type_of_flight"
+              className="block text-sm font-medium"
+            >
+              Type of flight
+            </label>
+            <select
+              id="typeof"
+              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              value={type_of}
+              onChange={(e) => {
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  type_of: e.target.value,
+                }));
+              }}
+            >
+              <option value="initial">Initial flight</option>
+              <option value="return">Return flight</option>
+              <option value="connection">Connection flight</option>
+            </select>
+          </div>
 
-				<div
-					className={`flex flex-col justify-end h-fit ${
-						type_of === "initial" ? "invisible" : ""
-					}`}
-				>
-					<label
-						htmlFor="associated_to"
-						className="block text-sm font-medium"
-					>
-						Associated to which flights
-					</label>
-					<select
-						id="associated_to"
-						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-						value={associated_to}
-						onChange={(e) => {
-							setFormData((prevFormData) => ({
-								...prevFormData,
-								associated_to: e.target.value,
-							}))
-						}}
-					>
-						<option value="">-- Select --</option>
-						{filteredFlights.map((flight, index) => (
-							<option key={index} value={flight}>
-								{flight}
-							</option>
-						))}
-					</select>
-				</div>
-			</div>
-		)
+          <div
+            className={`flex flex-col justify-end h-fit ${
+              type_of === "initial" ? "invisible" : ""
+            }`}
+          >
+            <label
+              htmlFor="associated_to"
+              className="block text-sm font-medium"
+            >
+              Associated to which flights
+            </label>
+            <select
+              id="associated_to"
+              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              value={associated_to}
+              onChange={(e) => {
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  associated_to: e.target.value,
+                }));
+              }}
+            >
+              <option value="">-- Select --</option>
+              {filteredFlights.map((flight, index) => (
+                <option key={index} value={flight}>
+                  {flight}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      );
     } else if (phase === "second") {
       return (
         <div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
@@ -209,12 +205,10 @@ export const FlightInfo = ({
               cost: airship.price_cost.toString(),
               newPercentage: airship.percentage.toString(),
             });
+            const totalRevenue = revenue + airship.extra_price;
             return (
-              <>
-                <div
-                  className="flex flex-col justify-center items-start "
-                  key={airshipindex}
-                >
+              <React.Fragment key={airshipindex}>
+                <div className="flex flex-col justify-center items-start ">
                   <label
                     htmlFor="airship_title"
                     className="block text-sm font-medium"
@@ -241,7 +235,7 @@ export const FlightInfo = ({
                       Select an airship
                     </option>
                     {airships.map((airship, index) => (
-                      <option value={airship.title} key={index}>
+                      <option key={index} value={airship.title}>
                         {airship.title}
                       </option>
                     ))}
@@ -256,22 +250,28 @@ export const FlightInfo = ({
                   </label>
                   <input
                     value={airship.price_cost}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const newCost = parseInt(e.target.value) || 0;
+                      const { revenue, roundingDifference } = getPercentage({
+                        cost: e.target.value,
+                        newPercentage: airship.percentage.toString(),
+                      });
+
+                      // Calcular totalRevenue incluyendo el extra_price
+                      const totalRevenue = revenue + (airship.extra_price || 0);
+
                       setAirshipData((prevFormData) =>
                         prevFormData.map((item, index) =>
                           index === airshipindex
                             ? {
                                 ...item,
-                                price_cost: parseInt(e.target.value),
-                                price_revenue: getPercentage({
-                                  cost: e.target.value,
-                                  newPercentage: item.percentage.toString(),
-                                }).revenue,
+                                price_cost: newCost,
+                                price_revenue: totalRevenue,
                               }
                             : item
                         )
-                      )
-                    }
+                      );
+                    }}
                     type="number"
                     id="price_cost"
                     name="price_cost"
@@ -297,20 +297,26 @@ export const FlightInfo = ({
                         appearance: "textfield",
                         WebkitAppearance: "none",
                         MozAppearance: "textfield",
-                        width: "30px",
+                        width: "20px",
                       }}
                       onChange={(e) => {
+                        const newPercentage = parseFloat(e.target.value) || 0;
                         const { revenue, roundingDifference } = getPercentage({
                           cost: airship.price_cost.toString(),
                           newPercentage: e.target.value,
                         });
+
+                        // Calcular totalRevenue incluyendo el extra_price
+                        const totalRevenue =
+                          revenue + (airship.extra_price || 0);
+
                         setAirshipData((prevFormData) =>
                           prevFormData.map((item, index) =>
                             index === airshipindex
                               ? {
                                   ...item,
-                                  percentage: parseFloat(e.target.value),
-                                  price_revenue: revenue,
+                                  percentage: newPercentage,
+                                  price_revenue: totalRevenue,
                                 }
                               : item
                           )
@@ -319,20 +325,56 @@ export const FlightInfo = ({
                       placeholder="20%"
                       className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
-                    % commission
+                    % commission +{" "}
+                    <input
+                      value={
+                        airship.extra_price === 0 ? "" : airship.extra_price
+                      }
+                      type="number"
+                      style={{
+                        appearance: "textfield",
+                        WebkitAppearance: "none",
+                        MozAppearance: "textfield",
+                        width: "35px",
+                      }}
+                      onChange={(e) => {
+                        const newExtraPrice = parseFloat(e.target.value) || 0;
+                        const { revenue, roundingDifference } = getPercentage({
+                          cost: airship.price_cost.toString(),
+                          newPercentage: airship.percentage.toString(),
+                        });
+
+                        // Calcular totalRevenue con el nuevo extra_price
+                        const totalRevenue = revenue + newExtraPrice;
+
+                        setAirshipData((prevFormData) =>
+                          prevFormData.map((item, index) =>
+                            index === airshipindex
+                              ? {
+                                  ...item,
+                                  extra_price: newExtraPrice,
+                                  price_revenue: totalRevenue,
+                                }
+                              : item
+                          )
+                        );
+                      }}
+                      placeholder="Extra"
+                      className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
                   </label>
 
                   <input
                     id="price_revenue"
                     name="price_revenue"
-                    value={airship.price_revenue}
+                    value={totalRevenue}
                     onChange={(e) =>
                       setAirshipData((prevFormData) =>
                         prevFormData.map((item, index) =>
                           index === airshipindex
                             ? {
                                 ...item,
-                                price_revenue: parseInt(e.target.value),
+                                price_revenue: parseInt(e.target.value) || 0,
                               }
                             : item
                         )
@@ -361,7 +403,7 @@ export const FlightInfo = ({
                     />
                   </div>
                 )}
-              </>
+              </React.Fragment>
             );
           })}
         </div>
