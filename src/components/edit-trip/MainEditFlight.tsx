@@ -155,6 +155,7 @@ export const MainEditFlight = ({
 	const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
 		setFlightTime(calculatedFlightTime)
 	}
+
 	return (
 		<div className="w-[800px] h-[600px]">
 			<form className="flex flex-col gap-4" onSubmit={handleSubmit}>

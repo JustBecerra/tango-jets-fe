@@ -284,7 +284,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 								flight_time: e.target.value,
 							}))
 						}
-						placeholder="flight time"
 						value={flight_time}
 						className="bg-transparent focus:outline-none"
 					/>
