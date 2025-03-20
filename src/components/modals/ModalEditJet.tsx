@@ -50,7 +50,7 @@ const ModalEditJet = ({
 	}) => {
 		if (type === "generic") {
 			const selectedFiles = Array.from(event.target.files || [])
-			setGenericData((prevFiles) => [...prevFiles, ...selectedFiles])
+			setGenericData(selectedFiles)
 		} else if (type === "portrait") {
 			if (event.target.files) {
 				const selectedFile = event.target.files[0]
