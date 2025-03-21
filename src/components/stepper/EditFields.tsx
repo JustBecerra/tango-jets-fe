@@ -77,7 +77,6 @@ const fieldDecider = ({
 				airshipID: currentFlight.airship_id,
 			}),
 			type_of_email: "invoice",
-			contract: false,
 		}
 		await sendEmail(EmailInfo)
 	}
@@ -88,9 +87,10 @@ const fieldDecider = ({
 			subject: "Flight contract",
 			url: contractMessage({
 				master_passenger: clients?.fullname || "Passenger",
+				date: currentFlight.launchtime,
+				price: currentFlight.price_revenue,
 			}),
 			type_of_email: "contract",
-			contract: true,
 		}
 		await sendEmail(EmailInfo)
 	}
@@ -156,13 +156,16 @@ const fieldDecider = ({
 								</h2>
 							</div>
 							<button
-    onClick={() => {
-        window.location.href = `/Signing?data=${btoa(encodeURIComponent(currentFlight.id))}`;
-    }}
-    className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
->
-    Send Contract
-</button>
+								// onClick={() => {
+								// 	window.location.href = `/Signing?data=${btoa(
+								// 		encodeURIComponent(currentFlight.id)
+								// 	)}`
+								// }}
+								onClick={handleContract}
+								className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+							>
+								Send Contract
+							</button>
 						</div>
 					) : (
 						<p>No planes have been chosen yet</p>
