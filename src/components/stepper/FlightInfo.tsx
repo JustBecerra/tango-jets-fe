@@ -96,9 +96,7 @@ export const FlightInfo = ({
 						onSelectTo={handleSelectTo}
 						onDistanceCalculated={handleDistanceCalculated}
 						onFlightTimeCalculated={handleFlightTimeCalculated}
-						toDefaultValue={formData.to}
-						fromDefaultValue={formData.from}
-						flight_time={formData.flight_time}
+						formData={formData}
 						setFormData={setFormData}
 					/>
 					<div className="flex flex-col justify-end h-fit">
