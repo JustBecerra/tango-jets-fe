@@ -110,6 +110,7 @@ export const FlightInfo = ({
             onFlightTimeCalculated={handleFlightTimeCalculated}
             toDefaultValue={formData.to}
             fromDefaultValue={formData.from}
+            flight_time={formData.flight_time}
             setFormData={setFormData}
           />
           <div className="flex flex-col justify-end h-fit">

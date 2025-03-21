@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import type { formType } from "../scheduler/SchedulerFrame";
+import type { formEditType } from "../edit-trip/MainEditFlight";
 
 interface CsvSelectProps {
   labelFrom?: string;
@@ -11,7 +12,10 @@ interface CsvSelectProps {
   onFlightTimeCalculated?: (flightTime: number) => void;
   toDefaultValue?: string;
   fromDefaultValue?: string;
-  setFormData: React.Dispatch<React.SetStateAction<formType>>;
+  setFormData:
+    | React.Dispatch<React.SetStateAction<formType>>
+    | React.Dispatch<React.SetStateAction<formEditType>>;
+  flight_time: string;
 }
 const MAX_RESULTS = 5;
 
@@ -52,14 +56,16 @@ const calculateDistance = (
   lon1: number,
   lat2: number,
   lon2: number,
-  setFormData: React.Dispatch<React.SetStateAction<formType>>
+  setFormData:
+    | React.Dispatch<React.SetStateAction<formType>>
+    | React.Dispatch<React.SetStateAction<formEditType>>
 ): number => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return 0;
 
   const R = 6371; // Radio de la Tierra en km
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
-  setFormData((prevFormData) => ({
+  setFormData((prevFormData: any) => ({
     ...prevFormData,
     first_latitude: lat1.toString(),
     first_longitude: lon1.toString(),
@@ -92,6 +98,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   toDefaultValue,
   fromDefaultValue,
   setFormData,
+  flight_time,
 }) => {
   const [from, setFrom] = useState(fromDefaultValue || "");
   const [to, setTo] = useState(toDefaultValue || "");
@@ -100,7 +107,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   const [fromResults, setFromResults] = useState<any[]>([]);
   const [toResults, setToResults] = useState<any[]>([]);
   const [distance, setDistance] = useState<number | null>(null);
-  const [flightTime, setFlightTime] = useState<string | null>(null);
 
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
@@ -149,7 +155,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                     setFrom(place.display);
                     setFromAirport(place);
                     setFromResults([]);
-                    if (onSelectFrom) onSelectFrom(place.id); //ATENCION AQUI poner .display se debe corregir en las tablas que se reciba el iata code
+                    if (onSelectFrom) onSelectFrom(place.id);
                     if (toAirport) {
                       const dist = calculateDistance(
                         place.lat,
@@ -159,7 +165,11 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                         setFormData
                       );
                       setDistance(dist);
-                      setFlightTime(calculateFlightTime(dist));
+                      setFormData((prevFormData: any) => ({
+                        ...prevFormData,
+                        flight_time: calculateFlightTime(dist),
+                      }));
+
                       if (onDistanceCalculated) onDistanceCalculated(dist);
                       if (onFlightTimeCalculated)
                         onFlightTimeCalculated(
@@ -210,7 +220,11 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                         setFormData
                       );
                       setDistance(dist);
-                      setFlightTime(calculateFlightTime(dist));
+                      setFormData((prevFormData: any) => ({
+                        ...prevFormData,
+                        flight_time: calculateFlightTime(dist),
+                      }));
+
                       if (onDistanceCalculated) onDistanceCalculated(dist);
                       if (onFlightTimeCalculated)
                         onFlightTimeCalculated(
@@ -232,9 +246,23 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
           Distance: <strong>{distance} km</strong>
         </div>
       )}
-      {flightTime !== null && (
-        <div className="mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
-          Flight time: <strong>{flightTime} hs</strong>
+      {flight_time !== null && (
+        <div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
+          <label className="block text-sm font-medium text-gray-700">
+            <strong>Flight time:</strong>
+          </label>
+          <input
+            type="text"
+            onChange={(e) =>
+              setFormData((prevFormData: any) => ({
+                ...prevFormData,
+                flight_time: e.target.value,
+              }))
+            }
+            placeholder="flight time"
+            value={flight_time}
+            className="bg-transparent focus:outline-none"
+          />
         </div>
       )}
     </div>

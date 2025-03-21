@@ -24,8 +24,7 @@ export interface formEditType {
 	price_revenue: number
 	master_passenger: string
 	companion_passengers: string[]
-	type_of: string
-	associated_to: string
+	flight_time: string
 }
 
 export const MainEditFlight = ({
@@ -42,8 +41,7 @@ export const MainEditFlight = ({
 		price_revenue: currentFlight.price_revenue,
 		master_passenger: currentFlight.master_passenger,
 		companion_passengers: currentFlight.companion_passengers,
-		type_of: currentFlight.type_of || "initial",
-		associated_to: currentFlight.associated_to,
+		flight_time: currentFlight.flight_time,
 	})
 	const [revenuePercentage, setRevenuePercentage] = useState(20)
 
@@ -132,9 +130,7 @@ export const MainEditFlight = ({
 				"companion_passengers",
 				JSON.stringify(formData.companion_passengers)
 			)
-
-			convertedData.append("type_of", formData.type_of)
-			convertedData.append("associated_to", formData.associated_to)
+			convertedData.append("flight_time", formData.flight_time)
 
 			await editAction({
 				caseType: "flight",
@@ -171,6 +167,8 @@ export const MainEditFlight = ({
 					onFlightTimeCalculated={handleFlightTimeCalculated}
 					toDefaultValue={formData.to}
 					fromDefaultValue={formData.from}
+					flight_time={formData.flight_time}
+					setFormData={setFormData}
 				/>
 				<div className="flex flex-col justify-end">
 					<label
@@ -319,64 +317,7 @@ export const MainEditFlight = ({
 						/>
 					</div>
 				</div>
-				<div className="flex gap-2">
-					<div className="w-1/2 flex flex-col justify-end h-fit">
-						<label
-							htmlFor="type_of_flight"
-							className="block text-sm font-medium"
-						>
-							Type of flight
-						</label>
-						<select
-							id="type_of"
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-							value={formData.type_of}
-							onChange={(e) => {
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									type_of: e.target.value,
-								}))
-							}}
-						>
-							<option value="initial">Initial flight</option>
-							<option value="return">Return flight</option>
-							<option value="connection">
-								Connection flight
-							</option>
-						</select>
-					</div>
 
-					<div
-						className={`flex flex-col justify-end w-1/2 h-fit ${
-							formData.type_of === "initial" ? "invisible" : ""
-						}`}
-					>
-						<label
-							htmlFor="associated_to"
-							className="block text-sm font-medium"
-						>
-							Associated to which flights
-						</label>
-						<select
-							id="associated_to"
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-							value={formData.associated_to || ""}
-							onChange={(e) => {
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									associated_to: e.target.value,
-								}))
-							}}
-						>
-							<option value="">-- Select --</option>
-							{associationFlights.map((flight, index) => (
-								<option key={index} value={flight.id}>
-									{flight.id}
-								</option>
-							))}
-						</select>
-					</div>
-				</div>
 				<div className="grid grid-cols-3 w-full gap-2">
 					{formData.companion_passengers.length > 0 ? (
 						formData.companion_passengers.map(
