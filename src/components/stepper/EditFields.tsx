@@ -156,11 +156,13 @@ const fieldDecider = ({
 								</h2>
 							</div>
 							<button
-								onClick={handleContract}
-								className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
-							>
-								Send Contract
-							</button>
+    onClick={() => {
+        window.location.href = `/Signing?data=${btoa(encodeURIComponent(currentFlight.id))}`;
+    }}
+    className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+>
+    Send Contract
+</button>
 						</div>
 					) : (
 						<p>No planes have been chosen yet</p>
