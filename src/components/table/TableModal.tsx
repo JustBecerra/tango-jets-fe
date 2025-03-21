@@ -40,6 +40,10 @@ export interface Flight {
 	associated_to: string
 	pilot_id: string
 	flight_time: string
+	first_latitude: string
+	first_longitude: string
+	second_latitude: string
+	second_longitude: string
 	// CAMBIO 1: Agregar propiedades para relación padre-hijo
 	isChildFlight?: boolean
 	parentFlightId?: number
@@ -104,7 +108,7 @@ const TableModal = ({ caseType }: TableProps) => {
 						processedFlights = processedFlights.filter(
 							(flight: Flight) =>
 								flight.phase > 7 ||
-								flight.launchtime < new Date().toISOString()
+								flight.arrivaltime < new Date().toISOString()
 						)
 					}
 

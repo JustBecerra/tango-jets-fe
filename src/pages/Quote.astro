@@ -43,6 +43,16 @@ const images = await Promise.all(imageRequests)
 const convertedID = parseInt(tripID)
 const ClientFlight = await getFlightById(convertedID)
 const { launchtime, to, from }: Flight = ClientFlight
+const Coordinates = [
+	{
+		latitude: ClientFlight.first_latitude,
+		longitude: ClientFlight.first_longitude,
+	},
+	{
+		latitude: ClientFlight.second_latitude,
+		longitude: ClientFlight.second_longitude,
+	},
+]
 ---
 
 <ClientLayout title="Quote"
@@ -74,12 +84,6 @@ const { launchtime, to, from }: Flight = ClientFlight
 			airshipObjects={airshipObjects}
 			client:only="react"
 		/>
-		<MapCard
-			first_latitude={ClientFlight.first_latitude}
-			first_longitude={ClientFlight.first_longitude}
-			second_latitude={ClientFlight.second_latitude}
-			second_longitude={ClientFlight.second_longitude}
-			client:load
-		/>
+		<MapCard Coordinates={Coordinates} client:load />
 	</div></ClientLayout
 >
