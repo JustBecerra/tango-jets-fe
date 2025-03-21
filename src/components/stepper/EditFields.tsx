@@ -67,16 +67,10 @@ const fieldDecider = ({
 	}
 
 	const handleInvoice = async () => {
-		const transformedFlightData = {
-			launchtime: currentFlight.launchtime.slice(0, 16),
-			to: currentFlight.to,
-			from: currentFlight.from,
-			master_passenger: clients?.fullname || "Passenger",
-			createdby: currentFlight.createdby,
-		}
 		const flightIDs = flights
+
 		const EmailInfo = {
-			to: clients?.fullname || "",
+			to: currentFlight.master_passenger || "",
 			subject: "Flight Invoice",
 			url: invoiceMessage({
 				flightIDs,
@@ -90,7 +84,7 @@ const fieldDecider = ({
 
 	const handleContract = async () => {
 		const EmailInfo = {
-			to: clients?.fullname || "",
+			to: currentFlight.master_passenger || "",
 			subject: "Flight contract",
 			url: contractMessage({
 				master_passenger: clients?.fullname || "Passenger",
