@@ -67,16 +67,10 @@ const fieldDecider = ({
 	}
 
 	const handleInvoice = async () => {
-		const transformedFlightData = {
-			launchtime: currentFlight.launchtime.slice(0, 16),
-			to: currentFlight.to,
-			from: currentFlight.from,
-			master_passenger: clients?.fullname || "Passenger",
-			createdby: currentFlight.createdby,
-		}
 		const flightIDs = flights
+
 		const EmailInfo = {
-			to: clients?.fullname || "",
+			to: currentFlight.master_passenger || "",
 			subject: "Flight Invoice",
 			url: invoiceMessage({
 				flightIDs,
@@ -90,7 +84,7 @@ const fieldDecider = ({
 
 	const handleContract = async () => {
 		const EmailInfo = {
-			to: clients?.fullname || "",
+			to: currentFlight.master_passenger || "",
 			subject: "Flight contract",
 			url: contractMessage({
 				master_passenger: clients?.fullname || "Passenger",
@@ -162,11 +156,13 @@ const fieldDecider = ({
 								</h2>
 							</div>
 							<button
-								onClick={handleContract}
-								className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
-							>
-								Send Contract
-							</button>
+    onClick={() => {
+        window.location.href = `/Signing?data=${btoa(encodeURIComponent(currentFlight.id))}`;
+    }}
+    className="text-white mt-6 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+>
+    Send Contract
+</button>
 						</div>
 					) : (
 						<p>No planes have been chosen yet</p>

@@ -10,12 +10,10 @@ interface CsvSelectProps {
   onSelectTo?: (value: string) => void;
   onDistanceCalculated?: (distance: number) => void;
   onFlightTimeCalculated?: (flightTime: number) => void;
-  toDefaultValue?: string;
-  fromDefaultValue?: string;
+  formData: formType | formEditType;
   setFormData:
     | React.Dispatch<React.SetStateAction<formType>>
     | React.Dispatch<React.SetStateAction<formEditType>>;
-  flight_time: string;
 }
 const MAX_RESULTS = 5;
 
@@ -95,13 +93,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
   onSelectTo,
   onDistanceCalculated,
   onFlightTimeCalculated,
-  toDefaultValue,
-  fromDefaultValue,
+  formData,
   setFormData,
-  flight_time,
 }) => {
-  const [from, setFrom] = useState(fromDefaultValue || "");
-  const [to, setTo] = useState(toDefaultValue || "");
   const [fromAirport, setFromAirport] = useState<any>(null);
   const [toAirport, setToAirport] = useState<any>(null);
   const [fromResults, setFromResults] = useState<any[]>([]);
@@ -137,9 +131,12 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
           </label>
           <input
             type="text"
-            value={from}
+            value={formData.from}
             onChange={(e) => {
-              setFrom(e.target.value);
+              setFormData((prev: any) => ({
+                ...prev,
+                from: e.target.value,
+              }));
               fetchAirports(e.target.value, setFromResults);
             }}
             className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -152,8 +149,11 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                   key={place.id}
                   className="p-2 cursor-pointer hover:bg-gray-200"
                   onClick={() => {
-                    setFrom(place.display);
                     setFromAirport(place);
+                    setFormData((prev: any) => ({
+                      ...prev,
+                      from: place.display,
+                    }));
                     setFromResults([]);
                     if (onSelectFrom) onSelectFrom(place.id);
                     if (toAirport) {
@@ -192,9 +192,12 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
           </label>
           <input
             type="text"
-            value={to}
+            value={formData.to}
             onChange={(e) => {
-              setTo(e.target.value);
+              setFormData((prev: any) => ({
+                ...prev,
+                to: e.target.value,
+              }));
               fetchAirports(e.target.value, setToResults);
             }}
             className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -207,8 +210,11 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                   key={place.id}
                   className="p-2 cursor-pointer hover:bg-gray-200"
                   onClick={() => {
-                    setTo(place.display);
                     setToAirport(place);
+                    setFormData((prev: any) => ({
+                      ...prev,
+                      to: place.display,
+                    }));
                     setToResults([]);
                     if (onSelectTo) onSelectTo(place.id);
                     if (fromAirport) {
@@ -246,7 +252,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
           Distance: <strong>{distance} km</strong>
         </div>
       )}
-      {flight_time !== null && (
+      {formData.flight_time !== null && (
         <div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
           <label className="block text-sm font-medium text-gray-700">
             <strong>Flight time:</strong>
@@ -259,8 +265,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
                 flight_time: e.target.value,
               }))
             }
-            placeholder="flight time"
-            value={flight_time}
+            value={formData.flight_time}
             className="bg-transparent focus:outline-none"
           />
         </div>

@@ -12,7 +12,6 @@ interface props {
   setFormData: React.Dispatch<React.SetStateAction<formType>>;
   airshipData: airshipFormType[];
   setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>;
-  FlightsForAssociation: Flight[];
 }
 
 export const FlightInfo = ({
@@ -21,17 +20,8 @@ export const FlightInfo = ({
   setFormData,
   airshipData,
   setAirshipData,
-  FlightsForAssociation,
 }: props) => {
-  const { to, from, launchtime, master_passenger, associated_to, type_of } =
-    formData;
-  const filteredFlights = FlightsForAssociation.filter(
-    (elem: Flight) => elem.type_of === "initial"
-  )
-    .map((flight) => flight.id)
-    .sort(function compareNumbers(a, b) {
-      return a - b;
-    });
+  const { to, from, launchtime, master_passenger, flight_time } = formData;
   const { airships } = useStore((state) => state);
   const [distance, setDistance] = useState<number | null>(null);
   const [flightTime, setFlightTime] = useState<number | null>(null);
@@ -54,7 +44,6 @@ export const FlightInfo = ({
 
     return { revenue: roundedRevenue, roundingDifference };
   };
-
   const handleSelectFrom = (value: string) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -108,9 +97,7 @@ export const FlightInfo = ({
             onSelectTo={handleSelectTo}
             onDistanceCalculated={handleDistanceCalculated}
             onFlightTimeCalculated={handleFlightTimeCalculated}
-            toDefaultValue={formData.to}
-            fromDefaultValue={formData.from}
-            flight_time={formData.flight_time}
+            formData={formData}
             setFormData={setFormData}
           />
           <div className="flex flex-col justify-end h-fit">
@@ -142,60 +129,6 @@ export const FlightInfo = ({
             </label>
             <AutoComplete value={master_passenger} setter={setFormData} />
           </div>
-          <div className="flex flex-col justify-end h-fit">
-            <label
-              htmlFor="type_of_flight"
-              className="block text-sm font-medium"
-            >
-              Type of flight
-            </label>
-            <select
-              id="typeof"
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              value={type_of}
-              onChange={(e) => {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  type_of: e.target.value,
-                }));
-              }}
-            >
-              <option value="initial">Initial flight</option>
-              <option value="return">Return flight</option>
-              <option value="connection">Connection flight</option>
-            </select>
-          </div>
-
-          <div
-            className={`flex flex-col justify-end h-fit ${
-              type_of === "initial" ? "invisible" : ""
-            }`}
-          >
-            <label
-              htmlFor="associated_to"
-              className="block text-sm font-medium"
-            >
-              Associated to which flights
-            </label>
-            <select
-              id="associated_to"
-              className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              value={associated_to}
-              onChange={(e) => {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  associated_to: e.target.value,
-                }));
-              }}
-            >
-              <option value="">-- Select --</option>
-              {filteredFlights.map((flight, index) => (
-                <option key={index} value={flight}>
-                  {flight}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       );
     } else if (phase === "second") {
@@ -208,8 +141,11 @@ export const FlightInfo = ({
             });
             const totalRevenue = revenue + airship.extra_price;
             return (
-              <React.Fragment key={airshipindex}>
-                <div className="flex flex-col justify-center items-start ">
+              <>
+                <div
+                  className="flex flex-col justify-center items-start "
+                  key={airshipindex}
+                >
                   <label
                     htmlFor="airship_title"
                     className="block text-sm font-medium"
@@ -236,7 +172,7 @@ export const FlightInfo = ({
                       Select an airship
                     </option>
                     {airships.map((airship, index) => (
-                      <option key={index} value={airship.title}>
+                      <option value={airship.title} key={index}>
                         {airship.title}
                       </option>
                     ))}
@@ -404,7 +340,7 @@ export const FlightInfo = ({
                     />
                   </div>
                 )}
-              </React.Fragment>
+              </>
             );
           })}
         </div>
@@ -419,16 +355,10 @@ export const FlightInfo = ({
             Distance: {distance !== null ? `${distance.toFixed(2)} km` : "TBD"}
           </h2>
           <h2>
-            Flight Time:{" "}
-            {flightTime !== null ? `${flightTime.toFixed(2)} hours` : "TBD"}
+            Flight Time: {flight_time !== null ? `${flight_time} hours` : "TBD"}
           </h2>
           <h2>
             Lead Passenger: {master_passenger === "" ? "TBD" : master_passenger}
-          </h2>
-          <h2>Type of flight: {type_of === "" ? "TBD" : type_of}</h2>
-          <h2>
-            Associated to flight with ID:{" "}
-            {associated_to === "" ? "TBD" : associated_to}
           </h2>
         </div>
       );
