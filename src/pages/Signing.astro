@@ -1,8 +1,8 @@
 ---
+import { getFiles } from "../../lib/actions/file/actions"
 import SignatureCanva from "../components/ContractSign/SignatureCanva"
 import ClientLayout from "../layouts/ClientLayout.astro"
 
-//const url = new URL(Astro.request.url)
 const url = new URL(Astro.request.url)
 const encodedData = url.searchParams.get("data")
 
@@ -12,8 +12,14 @@ const decodedURIComponent = decodeURIComponent(encodedData)
 const decodedString = atob(decodedURIComponent).replace(/\/$/, "")
 
 const [master_passenger, date, price] = decodedString.split("/")
+const images = await getFiles()
+const first_image = images.find(
+	(elem: any) => elem.original_name === "Contrato_page-0001.jpg"
+)
+const second_image = images.find(
+	(elem: any) => elem.original_name === "Contrato_page-0002.jpg"
+)
 
-//constante que deberiamos remplazar con DB
 const contractData = {
 	name: master_passenger,
 	date,
@@ -21,7 +27,7 @@ const contractData = {
 }
 ---
 
-<ClientLayout title="Quote"
+<ClientLayout title="Signing"
 	><div
 		class="w-full h-[25%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
 	>
@@ -31,7 +37,12 @@ const contractData = {
 		</p>
 	</div>
 
-	<SignatureCanva contractData={contractData} client:load />
+	<SignatureCanva
+		contractData={contractData}
+		first_image={first_image}
+		second_image={second_image}
+		client:load
+	/>
 	<div
 		class="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8"
 	>

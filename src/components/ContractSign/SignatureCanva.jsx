@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import jsPDF from 'jspdf';
+import { useRef, useEffect } from "react"
+import jsPDF from "jspdf"
 
-const SignatureCanva = ({ contractData }) => {
+const SignatureCanva = ({ contractData, first_image, second_image }) => {
 	const canvasRef = useRef(null)
 
 	const drawContract = (ctx, baseImage, secondImage) => {
@@ -59,75 +59,45 @@ const SignatureCanva = ({ contractData }) => {
 		const ctx = canvas.getContext("2d")
 		if (!ctx) return
 
-		// Load the first image
 		const baseImage = new Image()
-		baseImage.src = "../src/components/ContractSign/Contrato_page-0001.jpg" // Replace with the actual path to your first image"
-
-		// Load the second image
 		const secondImage = new Image()
-		secondImage.src =
-			"../src/components/ContractSign/Contrato_page-0002.jpg" // Replace with the actual path to your second image
+
+		let first_image_url
+		if (typeof first_image.source.data === "string") {
+			first_image_url = `data:image/jpeg;base64,${first_image.source.data}`
+		} else {
+			const first_blob = new Blob(
+				[new Uint8Array(first_image.source.data)],
+				{ type: "image/jpeg" }
+			)
+			first_image_url = URL.createObjectURL(first_blob)
+		}
+
+		let second_image_url
+		if (typeof second_image.source.data === "string") {
+			second_image_url = `data:image/jpeg;base64,${second_image.source.data}`
+		} else {
+			const second_blob = new Blob(
+				[new Uint8Array(second_image.source.data)],
+				{ type: "image/jpeg" }
+			)
+			second_image_url = URL.createObjectURL(second_blob)
+		}
 
 		baseImage.onload = () => {
 			secondImage.onload = () => {
-				// Adjust canvas size to fit both images
 				canvas.width = Math.max(baseImage.width, secondImage.width)
 				canvas.height = baseImage.height + secondImage.height
-
-				// Draw the contract on the canvas
 				drawContract(ctx, baseImage, secondImage)
 			}
+			secondImage.src = second_image_url // Start loading the second image
 		}
 
-		let drawing = false
-
-		const isWithinWritableArea = (x, y) => {
-			const writableHeight = canvas.height * 0.1 // Bottom 10%
-			const startY = canvas.height - writableHeight
-
-			return y >= startY
-		}
-
-		const startDrawing = (e) => {
-			const rect = canvas.getBoundingClientRect()
-			const scaleX = canvas.width / rect.width // Scale factor for X
-			const scaleY = canvas.height / rect.height // Scale factor for Y
-			const x = (e.clientX - rect.left) * scaleX
-			const y = (e.clientY - rect.top) * scaleY
-
-			drawing = true
-			ctx.beginPath()
-			ctx.moveTo(x, y)
-		}
-
-		const draw = (e) => {
-			if (!drawing) return
-
-			const rect = canvas.getBoundingClientRect()
-			const scaleX = canvas.width / rect.width // Scale factor for X
-			const scaleY = canvas.height / rect.height // Scale factor for Y
-			const x = (e.clientX - rect.left) * scaleX
-			const y = (e.clientY - rect.top) * scaleY
-
-			ctx.lineTo(x, y)
-			ctx.stroke()
-		}
-
-		const stopDrawing = () => {
-			drawing = false
-			ctx.closePath()
-		}
-
-		canvas.addEventListener("mousedown", startDrawing)
-		canvas.addEventListener("mousemove", draw)
-		canvas.addEventListener("mouseup", stopDrawing)
-		canvas.addEventListener("mouseout", stopDrawing)
+		baseImage.src = first_image_url // Start loading the first image
 
 		return () => {
-			canvas.removeEventListener("mousedown", startDrawing)
-			canvas.removeEventListener("mousemove", draw)
-			canvas.removeEventListener("mouseup", stopDrawing)
-			canvas.removeEventListener("mouseout", stopDrawing)
+			URL.revokeObjectURL(first_image_url)
+			URL.revokeObjectURL(second_image_url)
 		}
 	}, [contractData])
 
