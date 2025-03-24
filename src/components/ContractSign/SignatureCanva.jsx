@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react"
 import jsPDF from "jspdf"
+import { postFile } from "../../../lib/actions/file/actions"
 
 const SignatureCanva = ({ contractData, first_image, second_image }) => {
 	const canvasRef = useRef(null)
@@ -135,8 +136,7 @@ const SignatureCanva = ({ contractData, first_image, second_image }) => {
 			}
 		}
 	}
-
-	const downloadPDF = () => {
+	const downloadPDF = async () => {
 		const canvas = canvasRef.current
 		if (!canvas) return
 
@@ -146,6 +146,8 @@ const SignatureCanva = ({ contractData, first_image, second_image }) => {
 			unit: "px",
 			format: [canvas.width, canvas.height],
 		})
+
+		const saveFile = await postFile(pdf, contractData.flightID)
 
 		pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height)
 		pdf.save("contract_with_signature.pdf")

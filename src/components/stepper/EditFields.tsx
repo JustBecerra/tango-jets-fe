@@ -89,6 +89,7 @@ const fieldDecider = ({
 				master_passenger: clients?.fullname || "Passenger",
 				date: currentFlight.launchtime,
 				price: currentFlight.price_revenue,
+				flightID: currentFlight.id,
 			}),
 			type_of_email: "contract",
 		}

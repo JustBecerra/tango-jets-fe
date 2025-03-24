@@ -11,7 +11,7 @@ const decodedURIComponent = decodeURIComponent(encodedData)
 
 const decodedString = atob(decodedURIComponent).replace(/\/$/, "")
 
-const [master_passenger, date, price] = decodedString.split("/")
+const [flightID, master_passenger, date, price] = decodedString.split("/")
 const images = await getFiles()
 const first_image = images.find(
 	(elem: any) => elem.original_name === "Contrato_page-0001.jpg"
@@ -21,6 +21,7 @@ const second_image = images.find(
 )
 
 const contractData = {
+	flightID,
 	name: master_passenger,
 	date,
 	price,
