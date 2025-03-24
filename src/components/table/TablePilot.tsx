@@ -179,7 +179,7 @@ const TablePilot = ({ caseType }: TableProps) => {
 					</div>
 				) : (
 					<div className="flex-grow flex items-center min-h-[400px] justify-center">
-						<EmptyTableCard searchTerm={searchTerm} />
+						<EmptyTableCard loading={loading} />
 					</div>
 				)}
 			</div>
