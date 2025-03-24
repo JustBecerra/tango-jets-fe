@@ -104,17 +104,16 @@ const SchedulerFrame = ({
     try {
       const newFlight = await addFlight(transformedFlightData);
 
-      const EmailInfo = {
-        to: transformedFlightData.master_passenger,
-        subject: "Flight pre-scheduled!",
-        url: flightScheduledMessage({
-          airshipData,
-          airships,
-          tripID: newFlight.id,
-        }),
-        type_of_email: "quote",
-        contract: false,
-      };
+			const EmailInfo = {
+				to: transformedFlightData.master_passenger,
+				subject: "Flight pre-scheduled!",
+				url: flightScheduledMessage({
+					airshipData,
+					airships,
+					tripID: newFlight.id,
+				}),
+				type_of_email: "quote",
+			}
 
       await sendEmail(EmailInfo);
       const flights = await getFlights();
