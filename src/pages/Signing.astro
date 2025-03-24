@@ -1,52 +1,51 @@
 ---
-import {
-	getAirshipImages,
-	getAirshipsForInvoice,
-} from "../../lib/actions/airships/actions"
-import { getFlightById } from "../../lib/actions/flights/actions"
-import TopQuoteCard from "../components/cards/TopQuoteCard.astro"
-//top-Sign-card
-import type { Flight } from "../components/table/TableModal"
+import { getFiles } from "../../lib/actions/file/actions"
+import SignatureCanva from "../components/ContractSign/SignatureCanva"
 import ClientLayout from "../layouts/ClientLayout.astro"
-import SignaturePad from "../components/ContractSign/SignatureCanva.jsx"
 
-//const url = new URL(Astro.request.url)
-const url = new URL("https://tango-jets-fe.vercel.app/Quote?data=MjAyLzMxLzE0NDAvMTIwMC8%3D")
-const encodedData = url.searchParams.get("data");
+const url = new URL(Astro.request.url)
+const encodedData = url.searchParams.get("data")
 
 if (!encodedData) return Astro.redirect("/404")
 const decodedURIComponent = decodeURIComponent(encodedData)
 
 const decodedString = atob(decodedURIComponent).replace(/\/$/, "")
 
-const [tripID, ...airshipParamsArray] = decodedString.split("/")
+const [flightID, master_passenger, date, price] = decodedString.split("/")
+const images = await getFiles()
+const first_image = images.find(
+	(elem: any) => elem.original_name === "Contrato_page-0001.jpg"
+)
+const second_image = images.find(
+	(elem: any) => elem.original_name === "Contrato_page-0002.jpg"
+)
 
-
-
-//constante que deberiamos remplazar con DB
 const contractData = {
-  name: 'Astro',
- 
-};
-
-const convertedID = parseInt(tripID)
-const ClientFlight = await getFlightById(convertedID)
-const { launchtime, to, from }: Flight = ClientFlight
+	flightID,
+	name: master_passenger,
+	date,
+	price,
+}
 ---
 
-<ClientLayout title="Quote"
+<ClientLayout title="Signing"
 	><div
 		class="w-full h-[25%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]"
 	>
 		<p class="w-full h-fit overflow-hidden text-wrap break-words mb-0">
-			Read the following information carefully, Sign it and then click "I agree" so that we can continue
-        		</p>
+			Read the following information carefully, Sign it and then click "I
+			agree" so that we can continue
+		</p>
 	</div>
 
-	<SignaturePad contractData={contractData} client:load />
+	<SignatureCanva
+		contractData={contractData}
+		first_image={first_image}
+		second_image={second_image}
+		client:load
+	/>
 	<div
 		class="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8"
 	>
-		
 	</div></ClientLayout
 >
