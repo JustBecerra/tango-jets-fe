@@ -112,7 +112,6 @@ const SchedulerFrame = ({
 					tripID: newFlight.id,
 				}),
 				type_of_email: "quote",
-				contract: false,
 			}
 
 			await sendEmail(EmailInfo)

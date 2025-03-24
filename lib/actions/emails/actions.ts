@@ -3,7 +3,6 @@ interface props {
 	url: string
 	type_of_email: string
 	subject: string
-	contract?: boolean
 }
 
 export async function sendEmail(flightData: props) {
