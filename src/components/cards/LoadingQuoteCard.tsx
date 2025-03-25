@@ -56,12 +56,12 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 
 				setCoordinates([
 					{
-						latitude: flightData.first_latitude || 0,
-						longitude: flightData.first_longitude || 0,
+						latitude: flightData.first_latitude,
+						longitude: flightData.first_longitude,
 					},
 					{
-						latitude: flightData.second_latitude || 0,
-						longitude: flightData.second_longitude || 0,
+						latitude: flightData.second_latitude,
+						longitude: flightData.second_longitude,
 					},
 				])
 			} catch (error) {
@@ -71,7 +71,7 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 
 		fetchData()
 	}, [])
-	console.log({ airshipParamsArray })
+
 	if (airshipParamsArray[0] === "undefined") {
 		return <div>No airships options were, talk to your scheduler</div>
 	}
@@ -111,7 +111,13 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 					</div>
 				)}
 
-				<MapCard Coordinates={coordinates} />
+				{coordinates.length > 0 ? (
+					<MapCard Coordinates={coordinates} />
+				) : (
+					<div className="w-full sm:w-[50%] h-full p-4  border-2 flex items-center justify-center bg-black bg-opacity-50">
+						<LoaderSpinner />
+					</div>
+				)}
 			</div>
 		</>
 	)
