@@ -14,5 +14,9 @@ const [tripID, ...airshipParamsArray] = decodedString.split("/")
 ---
 
 <ClientLayout title="Quote">
-	<LoadingQuoteCard tripID={tripID} airshipParamsArray={airshipParamsArray} />
+	<LoadingQuoteCard
+		tripID={tripID}
+		airshipParamsArray={airshipParamsArray}
+		client:load
+	/>
 </ClientLayout>
