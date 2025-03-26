@@ -73,7 +73,7 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	}, [])
 
 	if (airshipParamsArray[0] === "undefined") {
-		return <div>No airships options were, talk to your scheduler</div>
+		return <div>No airships options were sent, talk to your scheduler</div>
 	}
 	return (
 		<>
