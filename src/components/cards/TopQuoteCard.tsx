@@ -46,15 +46,19 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 					</div>
 					<div className="w-full flex flex-col items-center justify-center sm:justify-around px-2 mt-2">
 						<div className="w-full flex justify-between items-center">
-							<h3 className="text-2xl">{elem.title}</h3>
+							<h3 className="text-2xl font-bold">{elem.title}</h3>
 							<button className="rounded border-solid border-2 border-gray-800 p-1">
 								View quote details
 							</button>
 						</div>
 						<div className="w-full flex justify-between items-center">
-							<div className="flex flex-col justify-center">
-								<p>{launchtime}</p>
-								<p>{extractCodes(from || "", to || "")}</p>
+							<div className="flex flex-col h-fit justify-center">
+								<p className="h-fit text-gray-700 mb-0">
+									{launchtime}
+								</p>
+								<p className="h-fit text-gray-700">
+									{extractCodes(from || "", to || "")}
+								</p>
 							</div>
 							<button className="bg-blue-700 h-fit w-fit p-2 text-white rounded">
 								Request this option
