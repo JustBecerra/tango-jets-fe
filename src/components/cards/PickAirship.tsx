@@ -33,7 +33,7 @@ export const PickAirship = ({
 			<div className="flex justify-center items-center w-full border-b-2 border-gray-300 border-solid">
 				<p className="text-2xl mb-2">Aircraft options</p>
 			</div>
-			<div className="h-full w-full flex flex-col items-center justify-center">
+			<div className="h-fit w-full flex flex-col items-center justify-center">
 				<Carousel
 					images={images}
 					storedAirshipData={storedAirshipData}

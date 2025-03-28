@@ -75,6 +75,7 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	if (airshipParamsArray[0] === "undefined") {
 		return <div>No airships options were sent, talk to your scheduler</div>
 	}
+
 	return (
 		<>
 			<div className="w-full h-[25%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]">
@@ -87,10 +88,13 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 					process.
 				</p>
 			</div>
+
 			<TopQuoteCard
 				launchtime={clientFlight?.launchtime}
 				to={clientFlight?.to}
 				from={clientFlight?.from}
+				revenue={parseFloat(airshipParamsArray[2])}
+				storedAirshipData={storedAirshipData}
 			/>
 
 			<div className="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8">
