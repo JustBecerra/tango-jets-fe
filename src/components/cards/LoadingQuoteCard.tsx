@@ -15,6 +15,12 @@ interface props {
 	tripID: string
 }
 
+interface AirshipObjectInterface {
+	airshipID: number
+	revenue: number
+	cost: number
+}
+
 export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	const [storedAirshipData, setStoredAirshipData] = useState<Airship[]>([])
 	const [images, setImages] = useState<ImagesType[][]>([])
@@ -22,19 +28,30 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	const [coordinates, setCoordinates] = useState<
 		{ latitude: string; longitude: string }[]
 	>([])
+	const [airshipObjects, setAirshipObjects] = useState<
+		AirshipObjectInterface[]
+	>([])
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const airshipObjects = []
+			const airshipTempObject = []
 			for (let i = 0; i < airshipParamsArray.length; i += 3) {
-				airshipObjects.push({
+				setAirshipObjects((prev) => [
+					...prev,
+					{
+						airshipID: parseInt(airshipParamsArray[i]),
+						revenue: parseFloat(airshipParamsArray[i + 1]),
+						cost: parseFloat(airshipParamsArray[i + 2]),
+					},
+				])
+				airshipTempObject.push({
 					airshipID: parseInt(airshipParamsArray[i]),
 					revenue: parseFloat(airshipParamsArray[i + 1]),
 					cost: parseFloat(airshipParamsArray[i + 2]),
 				})
 			}
 
-			const airshipIDsFromParams = airshipObjects.map((airship) =>
+			const airshipIDsFromParams = airshipTempObject.map((airship) =>
 				airship.airshipID.toString()
 			)
 
@@ -89,25 +106,24 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 				</p>
 			</div>
 
-			<TopQuoteCard
-				launchtime={clientFlight?.launchtime}
-				to={clientFlight?.to}
-				from={clientFlight?.from}
-				revenue={parseFloat(airshipParamsArray[2])}
-				storedAirshipData={storedAirshipData}
-			/>
-
+			<div className="flex flex-col w-full gap-y-2">
+				{storedAirshipData.map((elem, i) => (
+					<TopQuoteCard
+						launchtime={clientFlight?.launchtime}
+						to={clientFlight?.to}
+						from={clientFlight?.from}
+						revenue={airshipObjects[i].revenue}
+						singleAirship={elem}
+					/>
+				))}
+			</div>
 			<div className="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8">
 				{clientFlight !== null ? (
 					<PickAirship
 						images={images as [ImagesType[]]}
 						storedAirshipData={storedAirshipData}
 						FlightData={clientFlight}
-						airshipObjects={airshipParamsArray.map((_, i) => ({
-							airshipID: parseInt(airshipParamsArray[i]),
-							revenue: parseFloat(airshipParamsArray[i + 1]),
-							cost: parseFloat(airshipParamsArray[i + 2]),
-						}))}
+						airshipObjects={airshipObjects}
 					/>
 				) : (
 					<div className="w-full sm:w-[50%] h-full p-4  border-2 flex items-center justify-center bg-black bg-opacity-50">
