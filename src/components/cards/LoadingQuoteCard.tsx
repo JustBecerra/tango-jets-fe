@@ -15,6 +15,12 @@ interface props {
 	tripID: string
 }
 
+interface AirshipObjectInterface {
+	airshipID: number
+	revenue: number
+	cost: number
+}
+
 export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	const [storedAirshipData, setStoredAirshipData] = useState<Airship[]>([])
 	const [images, setImages] = useState<ImagesType[][]>([])
@@ -22,19 +28,30 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	const [coordinates, setCoordinates] = useState<
 		{ latitude: string; longitude: string }[]
 	>([])
+	const [airshipObjects, setAirshipObjects] = useState<
+		AirshipObjectInterface[]
+	>([])
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const airshipObjects = []
+			const airshipTempObject = []
 			for (let i = 0; i < airshipParamsArray.length; i += 3) {
-				airshipObjects.push({
+				setAirshipObjects((prev) => [
+					...prev,
+					{
+						airshipID: parseInt(airshipParamsArray[i]),
+						revenue: parseFloat(airshipParamsArray[i + 1]),
+						cost: parseFloat(airshipParamsArray[i + 2]),
+					},
+				])
+				airshipTempObject.push({
 					airshipID: parseInt(airshipParamsArray[i]),
 					revenue: parseFloat(airshipParamsArray[i + 1]),
 					cost: parseFloat(airshipParamsArray[i + 2]),
 				})
 			}
 
-			const airshipIDsFromParams = airshipObjects.map((airship) =>
+			const airshipIDsFromParams = airshipTempObject.map((airship) =>
 				airship.airshipID.toString()
 			)
 
@@ -75,35 +92,38 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 	if (airshipParamsArray[0] === "undefined") {
 		return <div>No airships options were sent, talk to your scheduler</div>
 	}
+
 	return (
 		<>
 			<div className="w-full h-[25%] sm:h-[10%] flex items-center justify-center mb-4 p-4 border-2 rounded border-solid bg-[#EFFFE3] border-[#d6e9c6]">
 				<p className="w-full h-fit overflow-hidden text-wrap break-words mb-0">
-					Please review the airship options and launch time for
-					accuracy and contact us with any changes. If the airship and
-					launch time are correct, click the 'Confirm' button to start
+					Please review the trip itinerary and quote for accuracy and
+					contact us with any changes. If the itinerary and quote are
+					correct, please click the 'Request to book' button to start
 					the booking process. Once we have confirmed availability for
-					the airship, we will send you a link to complete the booking
+					the trip, we will send you a link to complete the booking
 					process.
 				</p>
 			</div>
-			<TopQuoteCard
-				launchtime={clientFlight?.launchtime}
-				to={clientFlight?.to}
-				from={clientFlight?.from}
-			/>
 
+			<div className="flex flex-col w-full gap-y-2">
+				{storedAirshipData.map((elem, i) => (
+					<TopQuoteCard
+						launchtime={clientFlight?.launchtime}
+						to={clientFlight?.to}
+						from={clientFlight?.from}
+						revenue={airshipObjects[i].revenue}
+						singleAirship={elem}
+					/>
+				))}
+			</div>
 			<div className="w-full flex flex-col sm:flex-row justify-around h-[60%] py-4 gap-8">
 				{clientFlight !== null ? (
 					<PickAirship
 						images={images as [ImagesType[]]}
 						storedAirshipData={storedAirshipData}
 						FlightData={clientFlight}
-						airshipObjects={airshipParamsArray.map((_, i) => ({
-							airshipID: parseInt(airshipParamsArray[i]),
-							revenue: parseFloat(airshipParamsArray[i + 1]),
-							cost: parseFloat(airshipParamsArray[i + 2]),
-						}))}
+						airshipObjects={airshipObjects}
 					/>
 				) : (
 					<div className="w-full sm:w-[50%] h-full p-4  border-2 flex items-center justify-center bg-black bg-opacity-50">
