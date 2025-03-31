@@ -60,7 +60,7 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 				const storedData = await getAirshipsForInvoice(
 					airshipIDsFromParams
 				)
-				setStoredAirshipData(storedData)
+				
 
 				const imageRequests = airshipIDsFromParams.map((id) =>
 					getAirshipImages(parseInt(id))
@@ -70,8 +70,18 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 
 				const convertedID = parseInt(tripID)
 				const flightData = await getFlightById(convertedID)
-				setClientFlight(flightData)
 
+				setClientFlight(flightData)
+				if (flightData.airship_name === "TBD") {
+					setStoredAirshipData(storedData)
+				} else {
+					const airshipChosen = storedData.filter(
+						(elem: Airship) =>
+							elem.title === flightData.airship_name
+					)
+
+					setStoredAirshipData(airshipChosen)
+				}
 				setCoordinates([
 					{
 						latitude: flightData.first_latitude,
