@@ -19,6 +19,7 @@ const Carousel = ({
 	airshipObjects,
 	setReFetchedFlight,
 	reFetchedFlight,
+	setStoredAirshipData,
 }: {
 	images: [ImagesType[]]
 	storedAirshipData: Airship[]
@@ -30,6 +31,7 @@ const Carousel = ({
 	}[]
 	setReFetchedFlight: React.Dispatch<React.SetStateAction<Flight | null>>
 	reFetchedFlight: Flight | null
+	setStoredAirshipData: React.Dispatch<React.SetStateAction<Airship[]>>
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
@@ -79,6 +81,13 @@ const Carousel = ({
 				)?.cost as number,
 				flight_id: FlightData.id,
 			}
+
+			setStoredAirshipData((prev) =>
+				prev.filter(
+					(airship: Airship) => airship.id === currentAirship.id
+				)
+			)
+
 			await putQuoteConfirmation(confirmedQuoteData)
 			const updatedFlight = await getFlightById(FlightData.id)
 			setReFetchedFlight({ ...updatedFlight })
@@ -93,7 +102,9 @@ const Carousel = ({
 		<>
 			{FlightData.phase > 3 ||
 			(reFetchedFlight?.phase && reFetchedFlight?.phase > 3) ? (
-				<p>Airship selection confirmed</p>
+				<div className="w-full h-full flex flex-col items-center justify-center">
+					<p>Airship selection confirmed</p>
+				</div>
 			) : (
 				<>
 					<CCarousel

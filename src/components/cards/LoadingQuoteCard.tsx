@@ -110,11 +110,13 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 			<div className="flex flex-col w-full gap-y-2">
 				{storedAirshipData.map((elem, i) => (
 					<TopQuoteCard
+						key={i}
 						FlightData={clientFlight}
 						revenue={airshipObjects[i].revenue}
 						airshipObjects={airshipObjects}
 						singleAirship={elem}
 						setReFetchedFlight={setReFetchedFlight}
+						setStoredAirshipData={setStoredAirshipData}
 					/>
 				))}
 			</div>
@@ -127,6 +129,7 @@ export const LoadingQuoteCard = ({ tripID, airshipParamsArray }: props) => {
 						airshipObjects={airshipObjects}
 						setReFetchedFlight={setReFetchedFlight}
 						reFetchedFlight={reFetchedFlight}
+						setStoredAirshipData={setStoredAirshipData}
 					/>
 				) : (
 					<div className="w-full sm:w-[50%] h-full p-4  border-2 flex items-center justify-center bg-black bg-opacity-50">

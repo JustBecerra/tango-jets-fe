@@ -22,6 +22,7 @@ interface props {
 	}[]
 	setReFetchedFlight: React.Dispatch<React.SetStateAction<Flight | null>>
 	reFetchedFlight: Flight | null
+	setStoredAirshipData: React.Dispatch<React.SetStateAction<Airship[]>>
 }
 
 export const PickAirship = ({
@@ -31,6 +32,7 @@ export const PickAirship = ({
 	airshipObjects,
 	setReFetchedFlight,
 	reFetchedFlight,
+	setStoredAirshipData,
 }: props) => {
 	return (
 		<div className="w-full sm:w-[50%] h-full p-4  border-2 rounded border-solid bg-white border-gray-300">
@@ -45,6 +47,7 @@ export const PickAirship = ({
 					airshipObjects={airshipObjects}
 					setReFetchedFlight={setReFetchedFlight}
 					reFetchedFlight={reFetchedFlight}
+					setStoredAirshipData={setStoredAirshipData}
 				/>
 			</div>
 		</div>

@@ -14,6 +14,7 @@ type TripSummaryProps = {
 	airshipObjects: AirshipObjectInterface[]
 	FlightData: Flight | null
 	setReFetchedFlight: React.Dispatch<React.SetStateAction<Flight | null>>
+	setStoredAirshipData: React.Dispatch<React.SetStateAction<Airship[]>>
 }
 
 const TripSummary: React.FC<TripSummaryProps> = ({
@@ -22,6 +23,7 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 	airshipObjects,
 	FlightData,
 	setReFetchedFlight,
+	setStoredAirshipData,
 }) => {
 	const [loading, setLoading] = React.useState(false)
 
@@ -66,14 +68,21 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 
 			const confirmedQuoteData = {
 				airship_id: singleAirship.id,
-				price_revenue: revenue ?? 0, // Fallback value if revenue is undefined
-				price_cost: cost ?? 0, // Fallback value if cost is undefined
+				price_revenue: revenue ?? 0,
+				price_cost: cost ?? 0,
 				flight_id: FlightData.id,
 			}
 
 			await putQuoteConfirmation(confirmedQuoteData)
 
 			const updatedFlight = await getFlightById(FlightData.id)
+
+			setStoredAirshipData((prev) =>
+				prev.filter(
+					(airship: Airship) =>
+						airship.title === updatedFlight.airship_name
+				)
+			)
 			setReFetchedFlight({ ...updatedFlight })
 		} catch (error) {
 			console.error("Error updating flight data:", error)
@@ -88,7 +97,13 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 				<>
 					<div className="flex bg-gray-300 justify-between w-full py-2">
 						<div className="flex w-fit gap-2">
-							<div className="w-[30px] h-[30px] bg-blue-700 ml-2 rounded-full flex items-center justify-center">
+							<div
+								className={`w-[30px] h-[30px] ${
+									FlightData.phase > 3
+										? "bg-green-700"
+										: "bg-blue-700"
+								} ml-2 rounded-full flex items-center justify-center`}
+							>
 								<span className="p-2 text-white mb-0">A</span>
 							</div>
 							<h3 className="text-center mb-0 font-medium">
@@ -120,7 +135,11 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 							</div>
 							<button
 								onClick={handleButtonClick}
-								className="bg-blue-700 h-fit w-fit p-2 text-white rounded"
+								className={`${
+									FlightData.phase > 3
+										? "bg-green-700"
+										: "bg-blue-700 "
+								} h-fit w-fit p-2 text-white rounded`}
 							>
 								Request this option
 							</button>
