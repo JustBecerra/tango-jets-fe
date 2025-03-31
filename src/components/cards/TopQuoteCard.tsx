@@ -47,6 +47,10 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 			return
 		}
 
+		if (FlightData.phase > 3) {
+			return
+		}
+
 		setLoading(true)
 		try {
 			await putCompletePhase({
@@ -141,7 +145,9 @@ const TripSummary: React.FC<TripSummaryProps> = ({
 										: "bg-blue-700 "
 								} h-fit w-fit p-2 text-white rounded`}
 							>
-								Request this option
+								{FlightData.phase > 3
+									? "Requested"
+									: "Request this option"}
 							</button>
 						</div>
 					</div>
