@@ -17,6 +17,8 @@ const Carousel = ({
 	storedAirshipData,
 	FlightData,
 	airshipObjects,
+	setReFetchedFlight,
+	reFetchedFlight,
 }: {
 	images: [ImagesType[]]
 	storedAirshipData: Airship[]
@@ -26,6 +28,8 @@ const Carousel = ({
 		revenue: number
 		cost: number
 	}[]
+	setReFetchedFlight: React.Dispatch<React.SetStateAction<Flight | null>>
+	reFetchedFlight: Flight | null
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentIndex, setCurrentIndex] = useState(0)
@@ -36,7 +40,6 @@ const Carousel = ({
 	const portraitImages = images.map((arrayOfMap) =>
 		arrayOfMap.find((image) => image?.dataValues?.typeof === "Portrait")
 	)
-	const [reFetchedFlight, setReFetchedFlight] = useState<Flight>(FlightData)
 
 	const handleSlideChange = (e: any) => {
 		const newIndex = e
@@ -88,7 +91,8 @@ const Carousel = ({
 
 	return (
 		<>
-			{FlightData.phase > 3 || reFetchedFlight.phase > 3 ? (
+			{FlightData.phase > 3 ||
+			(reFetchedFlight?.phase && reFetchedFlight?.phase > 3) ? (
 				<p>Airship selection confirmed</p>
 			) : (
 				<>

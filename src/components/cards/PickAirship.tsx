@@ -20,6 +20,8 @@ interface props {
 		revenue: number
 		cost: number
 	}[]
+	setReFetchedFlight: React.Dispatch<React.SetStateAction<Flight | null>>
+	reFetchedFlight: Flight | null
 }
 
 export const PickAirship = ({
@@ -27,10 +29,12 @@ export const PickAirship = ({
 	storedAirshipData,
 	FlightData,
 	airshipObjects,
+	setReFetchedFlight,
+	reFetchedFlight,
 }: props) => {
 	return (
 		<div className="w-full sm:w-[50%] h-full p-4  border-2 rounded border-solid bg-white border-gray-300">
-			<div className="flex justify-center items-center w-full border-b-2 border-gray-300 border-solid">
+			<div className="flex justify-center items-center w-full">
 				<p className="text-2xl mb-2">Aircraft options</p>
 			</div>
 			<div className="h-fit w-full flex flex-col items-center justify-center">
@@ -39,6 +43,8 @@ export const PickAirship = ({
 					storedAirshipData={storedAirshipData}
 					FlightData={FlightData}
 					airshipObjects={airshipObjects}
+					setReFetchedFlight={setReFetchedFlight}
+					reFetchedFlight={reFetchedFlight}
 				/>
 			</div>
 		</div>
