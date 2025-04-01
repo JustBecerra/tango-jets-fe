@@ -82,196 +82,255 @@ const calculateDistance = (
 
 // Función para calcular el tiempo de vuelo
 const calculateFlightTime = (distance: number, speed = 900): string => {
-  if (!distance) return "0";
-  return (distance / speed).toFixed(2); // Tiempo en horas
-};
+	if (!distance) return "00:00"
+
+	const timeInHours = distance / speed // Get time in decimal hours
+	const hours = Math.floor(timeInHours) // extraigo tiempo en horas
+	const minutes = Math.round((timeInHours - hours) * 60) // extraigo tiempo en minutos
+
+	// formateo para que este separado por :
+	const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+		minutes
+	).padStart(2, "0")}`
+
+	return formattedTime
+}
 
 const CsvSelect: React.FC<CsvSelectProps> = ({
-  labelFrom = "From",
-  labelTo = "To",
-  onSelectFrom,
-  onSelectTo,
-  onDistanceCalculated,
-  onFlightTimeCalculated,
-  formData,
-  setFormData,
+	labelFrom = "From",
+	labelTo = "To",
+	onSelectFrom,
+	onSelectTo,
+	onDistanceCalculated,
+	onFlightTimeCalculated,
+	formData,
+	setFormData,
 }) => {
-  const [fromAirport, setFromAirport] = useState<any>(null);
-  const [toAirport, setToAirport] = useState<any>(null);
-  const [fromResults, setFromResults] = useState<any[]>([]);
-  const [toResults, setToResults] = useState<any[]>([]);
-  const [distance, setDistance] = useState<number | null>(null);
+	const [fromAirport, setFromAirport] = useState<any>(null)
+	const [toAirport, setToAirport] = useState<any>(null)
+	const [fromResults, setFromResults] = useState<any[]>([])
+	const [toResults, setToResults] = useState<any[]>([])
+	const [distance, setDistance] = useState<number | null>(null)
 
-  const fromRef = useRef<HTMLDivElement>(null);
-  const toRef = useRef<HTMLDivElement>(null);
+	const fromRef = useRef<HTMLDivElement>(null)
+	const toRef = useRef<HTMLDivElement>(null)
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (fromRef.current && !fromRef.current.contains(event.target as Node)) {
-      setFromResults([]);
-    }
-    if (toRef.current && !toRef.current.contains(event.target as Node)) {
-      setToResults([]);
-    }
-  };
+	const handleClickOutside = (event: MouseEvent) => {
+		if (
+			fromRef.current &&
+			!fromRef.current.contains(event.target as Node)
+		) {
+			setFromResults([])
+		}
+		if (toRef.current && !toRef.current.contains(event.target as Node)) {
+			setToResults([])
+		}
+	}
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+	const handleFlightTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let value = e.target.value.replace(/[^0-9:]/g, "") // Allow only numbers and ":"
 
-  return (
-    <div className="flex flex-col justify-end h-fit">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Input "From" */}
-        <div className="flex-1 mb-4" ref={fromRef}>
-          <label className="block text-sm font-medium text-gray-700">
-            {labelFrom}
-          </label>
-          <input
-            type="text"
-            value={formData.from}
-            onChange={(e) => {
-              setFormData((prev: any) => ({
-                ...prev,
-                from: e.target.value,
-              }));
-              fetchAirports(e.target.value, setFromResults);
-            }}
-            className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter Airport"
-          />
-          {fromResults.length > 0 && (
-            <ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
-              {fromResults.map((place) => (
-                <li
-                  key={place.id}
-                  className="p-2 cursor-pointer hover:bg-gray-200"
-                  onClick={() => {
-                    setFromAirport(place);
-                    setFormData((prev: any) => ({
-                      ...prev,
-                      from: place.display,
-                    }));
-                    setFromResults([]);
-                    if (onSelectFrom) onSelectFrom(place.id);
-                    if (toAirport) {
-                      const dist = calculateDistance(
-                        place.lat,
-                        place.lon,
-                        toAirport.lat,
-                        toAirport.lon,
-                        setFormData
-                      );
-                      setDistance(dist);
-                      setFormData((prevFormData: any) => ({
-                        ...prevFormData,
-                        flight_time: calculateFlightTime(dist),
-                      }));
+		// If user deletes everything, allow empty input
+		if (value === "") {
+			setFormData((prevFormData: any) => ({
+				...prevFormData,
+				flight_time: "",
+			}))
+			return
+		}
 
-                      if (onDistanceCalculated) onDistanceCalculated(dist);
-                      if (onFlightTimeCalculated)
-                        onFlightTimeCalculated(
-                          parseFloat(calculateFlightTime(dist))
-                        );
-                    }
-                  }}
-                >
-                  {place.display}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+		// Extract hours and minutes
+		const parts = value.split(":")
+		let hours = parts[0] ? parseInt(parts[0], 10) : 0
+		let minutes = parts[1] ? parseInt(parts[1], 10) : 0
 
-        {/* Input "To" */}
-        <div className="flex-1 mb-4" ref={toRef}>
-          <label className="block text-sm font-medium text-gray-700">
-            {labelTo}
-          </label>
-          <input
-            type="text"
-            value={formData.to}
-            onChange={(e) => {
-              setFormData((prev: any) => ({
-                ...prev,
-                to: e.target.value,
-              }));
-              fetchAirports(e.target.value, setToResults);
-            }}
-            className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter Airport"
-          />
-          {toResults.length > 0 && (
-            <ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
-              {toResults.map((place) => (
-                <li
-                  key={place.id}
-                  className="p-2 cursor-pointer hover:bg-gray-200"
-                  onClick={() => {
-                    setToAirport(place);
-                    setFormData((prev: any) => ({
-                      ...prev,
-                      to: place.display,
-                    }));
-                    setToResults([]);
-                    if (onSelectTo) onSelectTo(place.id);
-                    if (fromAirport) {
-                      const dist = calculateDistance(
-                        fromAirport.lat,
-                        fromAirport.lon,
-                        place.lat,
-                        place.lon,
-                        setFormData
-                      );
-                      setDistance(dist);
-                      setFormData((prevFormData: any) => ({
-                        ...prevFormData,
-                        flight_time: calculateFlightTime(dist),
-                      }));
+		// Ensure minutes are between 0-59
+		if (minutes > 59) minutes = 59
 
-                      if (onDistanceCalculated) onDistanceCalculated(dist);
-                      if (onFlightTimeCalculated)
-                        onFlightTimeCalculated(
-                          parseFloat(calculateFlightTime(dist))
-                        );
-                    }
-                  }}
-                >
-                  {place.display}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+		// Format time properly
+		const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+			minutes
+		).padStart(2, "0")}`
 
-      {distance !== null && (
-        <div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
-          Distance: <strong>{distance} km</strong>
-        </div>
-      )}
-      {formData.flight_time !== null && (
-        <div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
-          <label className="block text-sm font-medium text-gray-700">
-            <strong>Flight time:</strong>
-          </label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setFormData((prevFormData: any) => ({
-                ...prevFormData,
-                flight_time: e.target.value,
-              }))
-            }
-            value={formData.flight_time}
-            className="bg-transparent focus:outline-none"
-          />
-        </div>
-      )}
-    </div>
-  );
-};
+		setFormData((prevFormData: any) => ({
+			...prevFormData,
+			flight_time: formattedTime,
+		}))
+	}
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside)
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside)
+		}
+	}, [])
+
+	return (
+		<div className="flex flex-col justify-end h-fit">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				{/* Input "From" */}
+				<div className="flex-1 mb-4" ref={fromRef}>
+					<label className="block text-sm font-medium text-gray-700">
+						{labelFrom}
+					</label>
+					<input
+						type="text"
+						value={formData.from}
+						onChange={(e) => {
+							setFormData((prev: any) => ({
+								...prev,
+								from: e.target.value,
+							}))
+							fetchAirports(e.target.value, setFromResults)
+						}}
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Enter Airport"
+					/>
+					{fromResults.length > 0 && (
+						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
+							{fromResults.map((place) => (
+								<li
+									key={place.id}
+									className="p-2 cursor-pointer hover:bg-gray-200"
+									onClick={() => {
+										setFromAirport(place)
+										setFormData((prev: any) => ({
+											...prev,
+											from: place.display,
+										}))
+										setFromResults([])
+										if (onSelectFrom) onSelectFrom(place.id)
+										if (toAirport) {
+											const dist = calculateDistance(
+												place.lat,
+												place.lon,
+												toAirport.lat,
+												toAirport.lon,
+												setFormData
+											)
+											setDistance(dist)
+											setFormData(
+												(prevFormData: any) => ({
+													...prevFormData,
+													flight_time:
+														calculateFlightTime(
+															dist
+														),
+												})
+											)
+
+											if (onDistanceCalculated)
+												onDistanceCalculated(dist)
+											if (onFlightTimeCalculated)
+												onFlightTimeCalculated(
+													parseFloat(
+														calculateFlightTime(
+															dist
+														)
+													)
+												)
+										}
+									}}
+								>
+									{place.display}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+
+				{/* Input "To" */}
+				<div className="flex-1 mb-4" ref={toRef}>
+					<label className="block text-sm font-medium text-gray-700">
+						{labelTo}
+					</label>
+					<input
+						type="text"
+						value={formData.to}
+						onChange={(e) => {
+							setFormData((prev: any) => ({
+								...prev,
+								to: e.target.value,
+							}))
+							fetchAirports(e.target.value, setToResults)
+						}}
+						className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Enter Airport"
+					/>
+					{toResults.length > 0 && (
+						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
+							{toResults.map((place) => (
+								<li
+									key={place.id}
+									className="p-2 cursor-pointer hover:bg-gray-200"
+									onClick={() => {
+										setToAirport(place)
+										setFormData((prev: any) => ({
+											...prev,
+											to: place.display,
+										}))
+										setToResults([])
+										if (onSelectTo) onSelectTo(place.id)
+										if (fromAirport) {
+											const dist = calculateDistance(
+												fromAirport.lat,
+												fromAirport.lon,
+												place.lat,
+												place.lon,
+												setFormData
+											)
+											setDistance(dist)
+											setFormData(
+												(prevFormData: any) => ({
+													...prevFormData,
+													flight_time:
+														calculateFlightTime(
+															dist
+														),
+												})
+											)
+
+											if (onDistanceCalculated)
+												onDistanceCalculated(dist)
+											if (onFlightTimeCalculated)
+												onFlightTimeCalculated(
+													parseFloat(
+														calculateFlightTime(
+															dist
+														)
+													)
+												)
+										}
+									}}
+								>
+									{place.display}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			</div>
+
+			{distance !== null && (
+				<div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
+					Distance: <strong>{distance} km</strong>
+				</div>
+			)}
+			{formData.flight_time !== null && (
+				<div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
+					<label className="block text-sm font-medium text-gray-700">
+						<strong>Flight time:</strong>
+					</label>
+					<input
+						type="text"
+						onChange={handleFlightTimeChange}
+						value={formData.flight_time}
+						className="bg-transparent focus:outline-none"
+					/>
+				</div>
+			)}
+		</div>
+	)
+}
 
 export default CsvSelect;
