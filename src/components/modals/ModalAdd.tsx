@@ -333,7 +333,7 @@ const ModalAdd: React.FC = () => {
 												Date of birth
 											</label>
 											<input
-												type="datetime-local"
+												type="date"
 												defaultValue={new Date()
 													.toISOString()
 													.slice(0, 16)}
