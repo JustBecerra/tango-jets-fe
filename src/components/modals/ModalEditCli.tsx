@@ -204,10 +204,8 @@ const ModalEditCli = ({
 										Date of birth
 									</label>
 									<input
-										type="datetime-local"
-										defaultValue={new Date()
-											.toISOString()
-											.slice(0, 16)}
+										type="date"
+										defaultValue={formData.date_of_birth}
 										id="date_of_birth"
 										name="date_of_birth"
 										className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
