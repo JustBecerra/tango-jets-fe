@@ -1,21 +1,24 @@
 ---
 import Layout from "../../layouts/Layout.astro"
 import { RouteGuard } from "../../components/routeguard"
-import { EditStepperFrame } from "../../components/stepper/EditStepperFrame"
 import { getFlightById } from "../../../lib/actions/flights/actions"
 import { getAirships } from "../../../lib/actions/airships/actions"
+import { StepperStructure } from "../../components/stepper/StepperStructure"
+import { getClients } from "../../../lib/actions/clients/actions"
 
 const { trip } = Astro.params
 if (!trip) return Astro.redirect("/404")
 const flight = await getFlightById(parseInt(trip))
+const clients = await getClients()
 const airships = await getAirships()
 ---
 
 <Layout title="trip">
 	<RouteGuard client:load="react">
-		<EditStepperFrame
-			flightRequested={flight}
-			airships={airships}
+		<StepperStructure
+			currentFlight={flight}
+			listAirships={airships}
+			listClients={clients}
 			client:load
 		/>
 	</RouteGuard>
