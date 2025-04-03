@@ -10,7 +10,8 @@ import useStore from "../../store/store";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { sendEmail } from "../../../lib/actions/emails/actions";
 import type { Flight } from "../table/TableModal";
-
+import { MultiCity } from "../stepper/MultiCity";
+import { RoundTrip } from "../stepper/RoundTrip";
 export interface formType {
   launchtime: Date;
   to: string;
@@ -43,6 +44,9 @@ const SchedulerFrame = ({
   const [phase, setPhase] = useState("first");
   const [showToast, setShowToast] = useState(false);
   const airships = useStore((state) => state.airships);
+  const [activeComponent, setActiveComponent] = useState<
+    "FlightInfo" | "Oneway" | "RoundTrip"
+  >("FlightInfo");
   const [formData, setFormData] = useState<formType>({
     launchtime: new Date(),
     to: "",
@@ -104,16 +108,16 @@ const SchedulerFrame = ({
     try {
       const newFlight = await addFlight(transformedFlightData);
 
-			const EmailInfo = {
-				to: transformedFlightData.master_passenger,
-				subject: "Flight pre-scheduled!",
-				url: flightScheduledMessage({
-					airshipData,
-					airships,
-					tripID: newFlight.id,
-				}),
-				type_of_email: "quote",
-			}
+      const EmailInfo = {
+        to: transformedFlightData.master_passenger,
+        subject: "Flight pre-scheduled!",
+        url: flightScheduledMessage({
+          airshipData,
+          airships,
+          tripID: newFlight.id,
+        }),
+        type_of_email: "quote",
+      };
 
       await sendEmail(EmailInfo);
       const flights = await getFlights();
@@ -154,17 +158,70 @@ const SchedulerFrame = ({
       <div className="px-8 pt-6">
         <ModalStepper phase={phase} />
       </div>
-
       <div className="p-8 space-y-8 h-[90%]">
+        <div className="flex space-x-4">
+          <button
+            type="button"
+            onClick={() => setActiveComponent("FlightInfo")}
+            className={`px-4 py-2 rounded-lg ${
+              activeComponent === "FlightInfo"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
+          >
+            One Way
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveComponent("Oneway")}
+            className={`px-4 py-2 rounded-lg ${
+              activeComponent === "Oneway"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
+          >
+            Round Trip
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveComponent("RoundTrip")}
+            className={`px-4 py-2 rounded-lg ${
+              activeComponent === "RoundTrip"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
+          >
+            Multi City
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="rounded-xl">
-            <FlightInfo
-              phase={phase}
-              formData={formData}
-              setFormData={setFormData}
-              airshipData={airshipData}
-              setAirshipData={setAirshipData}
-            />
+            {activeComponent === "FlightInfo" ? (
+              <FlightInfo
+                phase={phase}
+                formData={formData}
+                setFormData={setFormData}
+                airshipData={airshipData}
+                setAirshipData={setAirshipData}
+              />
+            ) : activeComponent === "RoundTrip" ? (
+              <RoundTrip
+                phase={phase}
+                formData={formData}
+                setFormData={setFormData}
+                airshipData={airshipData}
+                setAirshipData={setAirshipData}
+              />
+            ) : (
+              <MultiCity
+                phase={phase}
+                formData={formData}
+                setFormData={setFormData}
+                airshipData={airshipData}
+                setAirshipData={setAirshipData}
+              />
+            )}
           </div>
 
           <div className="pt-4">
