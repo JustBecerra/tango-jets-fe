@@ -131,9 +131,7 @@ const SchedulerFrame = ({
 						setShowToast={setShowToast}
 					/>
 				)}
-			</div>
 
-			<div className="pt-4">
 				<StepperButtons
 					phase={phase}
 					setPhase={setPhase}

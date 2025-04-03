@@ -139,7 +139,7 @@ export const RoundTrip = ({
 					{formData.map((elem, index) => (
 						<div
 							key={index}
-							className="w-[800px] h-[280px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2"
+							className="w-[800px] h-[280px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
 						>
 							<CsvSelect
 								labelFrom="From"

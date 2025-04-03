@@ -52,6 +52,20 @@ export const MultiCity = ({
 			second_latitude: "",
 			flight_time: "00:00",
 		},
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
 	])
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
@@ -140,7 +154,7 @@ export const MultiCity = ({
 					{formData.map((elem, index) => (
 						<div
 							key={index}
-							className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2"
+							className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
 						>
 							<CsvSelect
 								labelFrom="From"
@@ -200,6 +214,47 @@ export const MultiCity = ({
 									formDataIndex={index}
 								/>
 							</div>
+
+							{index === formData.length - 1 && (
+								<div className="flex h-full w-full justify-center items-end">
+									<button
+										type="button"
+										onClick={() =>
+											setFormData(
+												(prevFormData: formType[]) => {
+													const updatedFormData = [
+														...prevFormData,
+													]
+													updatedFormData.push({
+														launchtime: new Date(),
+														to: "",
+														from: "",
+														master_passenger:
+															flightData !== null
+																? flightData.master_passenger
+																: "",
+														type_of: flightID
+															? "connection"
+															: "initial",
+														associated_to: flightID
+															? flightID
+															: "",
+														first_longitude: "",
+														first_latitude: "",
+														second_longitude: "",
+														second_latitude: "",
+														flight_time: "00:00",
+													})
+													return updatedFormData
+												}
+											)
+										}
+										className="w-[200px] h-[40px] text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+									>
+										Add trip
+									</button>
+								</div>
+							)}
 						</div>
 					))}
 				</div>
