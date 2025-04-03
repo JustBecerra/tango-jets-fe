@@ -8,23 +8,59 @@ import type { Flight } from "../table/TableModal";
 
 interface props {
 	phase: string
-	formData: formType[]
-	setFormData: React.Dispatch<React.SetStateAction<formType[]>>
-	airshipData: airshipFormType[]
-	setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>
+	flightData: Flight | null
+	flightID: string | null
+	setShowToast: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const RoundTrip = ({
 	phase,
-	formData,
-	setFormData,
-	airshipData,
-	setAirshipData,
+	flightID,
+	flightData,
+	setShowToast,
 }: props) => {
-	// const { to, from, launchtime, master_passenger, flight_time } = formData;
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
+	const [formData, setFormData] = useState<formType[]>([
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
+	])
+	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
+		{
+			airship_name: "",
+			price_cost: 0,
+			price_revenue: 0,
+			percentage: 20,
+			extra_price: 0,
+		},
+	])
 
 	const getPercentage = ({
 		cost,
@@ -44,11 +80,21 @@ export const RoundTrip = ({
 
 		return { revenue: roundedRevenue, roundingDifference }
 	}
-	const handleSelectFrom = (value: string) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			from: value,
-		}))
+	const handleSelectFrom = ({
+		value,
+		index,
+	}: {
+		value: string
+		index: number
+	}) => {
+		setFormData((prevFormData) => {
+			const updatedFormData = [...prevFormData]
+			updatedFormData[index] = {
+				...updatedFormData[index],
+				from: value,
+			}
+			return updatedFormData
+		})
 	}
 
 	const handleSelectTo = (value: string) => {
@@ -90,12 +136,20 @@ export const RoundTrip = ({
 		if (phase === "first") {
 			return (
 				<>
-					{formData.map((elem) => (
-						<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
+					{formData.map((elem, index) => (
+						<div
+							key={index}
+							className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2"
+						>
 							<CsvSelect
 								labelFrom="From"
 								labelTo="To"
-								onSelectFrom={handleSelectFrom}
+								onSelectFrom={(e) =>
+									handleSelectFrom({
+										value: e,
+										index: index ?? 0,
+									})
+								}
 								onSelectTo={handleSelectTo}
 								onDistanceCalculated={handleDistanceCalculated}
 								onFlightTimeCalculated={
@@ -103,6 +157,7 @@ export const RoundTrip = ({
 								}
 								formData={elem}
 								setFormData={setFormData}
+								formDataIndex={index}
 							/>
 							<div className="flex flex-col justify-end h-fit">
 								<label
@@ -141,6 +196,7 @@ export const RoundTrip = ({
 								<AutoComplete
 									value={elem.master_passenger}
 									setter={setFormData}
+									formDataIndex={index}
 								/>
 							</div>
 						</div>
@@ -417,26 +473,36 @@ export const RoundTrip = ({
 		} else {
 			return (
 				<div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-          {formData.map((elem) => (<div><h2>To: {elem.to === "" ? "TBD" : elem.to}</h2>
-					<h2>From: {elem.from === "" ? "TBD" : elem.from}</h2>
-					<h2>
-						Launch Time: {elem.launchtime.toISOString().slice(0, 16)}
-					</h2>
-					<h2>
-						Distance:{" "}
-						{distance !== null
-							? `${distance.toFixed(2)} km`
-							: "TBD"}
-					</h2>
-					<h2>
-						Flight Time:{" "}
-						{elem.flight_time !== null ? `${elem.flight_time} hours` : "TBD"}
-					</h2>
-					<h2>
-						Lead Passenger:{" "}
-						{elem.master_passenger === "" ? "TBD" : elem.master_passenger}
-					</h2></div>))}
-					
+					{formData.map((elem) => (
+						<div>
+							<h2>To: {elem.to === "" ? "TBD" : elem.to}</h2>
+							<h2>
+								From: {elem.from === "" ? "TBD" : elem.from}
+							</h2>
+							<h2>
+								Launch Time:{" "}
+								{elem.launchtime.toISOString().slice(0, 16)}
+							</h2>
+							<h2>
+								Distance:{" "}
+								{distance !== null
+									? `${distance.toFixed(2)} km`
+									: "TBD"}
+							</h2>
+							<h2>
+								Flight Time:{" "}
+								{elem.flight_time !== null
+									? `${elem.flight_time} hours`
+									: "TBD"}
+							</h2>
+							<h2>
+								Lead Passenger:{" "}
+								{elem.master_passenger === ""
+									? "TBD"
+									: elem.master_passenger}
+							</h2>
+						</div>
+					))}
 				</div>
 			)
 		}

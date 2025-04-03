@@ -12,8 +12,10 @@ interface CsvSelectProps {
 	onFlightTimeCalculated?: (flightTime: number) => void
 	formData: formType | formEditType
 	setFormData:
+		| React.Dispatch<React.SetStateAction<formType>>
+		| React.Dispatch<React.SetStateAction<formEditType>>
 		| React.Dispatch<React.SetStateAction<formType[]>>
-		| React.Dispatch<React.SetStateAction<formEditType[]>>
+	formDataIndex?: number
 }
 const MAX_RESULTS = 5
 
@@ -55,14 +57,32 @@ const calculateDistance = (
 	lat2: number,
 	lon2: number,
 	setFormData:
-		| React.Dispatch<React.SetStateAction<formType[]>>
-		| React.Dispatch<React.SetStateAction<formEditType[]>>
+		| React.Dispatch<React.SetStateAction<formType>>
+		| React.Dispatch<React.SetStateAction<formEditType>>
+		| React.Dispatch<React.SetStateAction<formType[]>>,
+	index?: number
 ): number => {
 	if (!lat1 || !lon1 || !lat2 || !lon2) return 0
 
 	const R = 6371 // Radio de la Tierra en km
 	const dLat = (lat2 - lat1) * (Math.PI / 180)
 	const dLon = (lon2 - lon1) * (Math.PI / 180)
+	if (index) {
+		setFormData((prevFormData: any) => {
+			if (Array.isArray(prevFormData)) {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[index] = {
+					...updatedFormData[index],
+					first_latitude: lat1.toString(),
+					first_longitude: lon1.toString(),
+					second_latitude: lat2.toString(),
+					second_longitude: lon2.toString(),
+				}
+				return updatedFormData
+			}
+			return prevFormData
+		})
+	}
 	setFormData((prevFormData: any) => ({
 		...prevFormData,
 		first_latitude: lat1.toString(),
@@ -105,6 +125,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	onFlightTimeCalculated,
 	formData,
 	setFormData,
+	formDataIndex,
 }) => {
 	const [fromAirport, setFromAirport] = useState<any>(null)
 	const [toAirport, setToAirport] = useState<any>(null)
@@ -206,7 +227,8 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												place.lon,
 												toAirport.lat,
 												toAirport.lon,
-												setFormData
+												setFormData,
+												formDataIndex
 											)
 											setDistance(dist)
 											setFormData(
@@ -277,7 +299,8 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												fromAirport.lon,
 												place.lat,
 												place.lon,
-												setFormData
+												setFormData,
+												formDataIndex
 											)
 											setDistance(dist)
 											setFormData(

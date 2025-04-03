@@ -43,90 +43,10 @@ const SchedulerFrame = ({
 }) => {
   const [phase, setPhase] = useState("first");
   const [showToast, setShowToast] = useState(false);
-  const airships = useStore((state) => state.airships);
+
   const [activeComponent, setActiveComponent] = useState<
-    "FlightInfo" | "Oneway" | "RoundTrip"
-  >("FlightInfo");
-  const [formData, setFormData] = useState<formType[]>([
-		{
-			launchtime: new Date(),
-			to: "",
-			from: "",
-			master_passenger:
-				flightData !== null ? flightData.master_passenger : "",
-			type_of: flightID ? "connection" : "initial",
-			associated_to: flightID ? flightID : "",
-			first_longitude: "",
-			first_latitude: "",
-			second_longitude: "",
-			second_latitude: "",
-			flight_time: "00:00",
-		},
-  ])
-  const [airshipData, setAirshipData] = useState<airshipFormType[]>([
-		{
-			airship_name: "",
-			price_cost: 0,
-			price_revenue: 0,
-			percentage: 20,
-			extra_price: 0,
-		},
-  ])
-  const [loading, setLoading] = useState(false)
-  const { updateFlights } = useStore((state) => state)
-
-  const handleSubmit = async (event: React.FormEvent) => {
-		event.preventDefault()
-		setLoading(true)
-
-		const name = getCookie("username")
-		const transformedFlightDataArray = formData.map((trip) => ({
-			launchtime: trip.launchtime.toISOString().slice(0, 16),
-			to: trip.to,
-			from: trip.from,
-			master_passenger: trip.master_passenger,
-			createdby: name,
-			type_of: trip.type_of,
-			associated_to: trip.associated_to,
-			first_longitude: trip.first_longitude,
-			first_latitude: trip.first_latitude,
-			second_longitude: trip.second_longitude,
-			second_latitude: trip.second_latitude,
-			flight_time: trip.flight_time,
-		}))
-
-		try {
-			const newFlights = await Promise.all(
-				transformedFlightDataArray.map((flightData) =>
-					addFlight(flightData)
-				)
-			)
-
-			// const EmailInfo = {
-			//   to: transformedFlightData.master_passenger,
-			//   subject: "Flight pre-scheduled!",
-			//   url: flightScheduledMessage({
-			//     airshipData,
-			//     airships,
-			//     tripID: newFlight.id,
-			//   }),
-			//   type_of_email: "quote",
-			// };
-
-			// await sendEmail(EmailInfo); mover todo esto a un boton en el stepper
-			const flights = await getFlights()
-			updateFlights(flights)
-			setShowToast(true)
-			setTimeout(() => {
-				setShowToast(false)
-				window.location.href = "/Trips"
-			}, 2000)
-		} catch (err) {
-			console.error("Error adding flight:", err)
-		} finally {
-			setLoading(false)
-		}
-  }
+		"FlightInfo" | "Oneway" | "RoundTrip"
+  >("FlightInfo")
 
   return (
 		<div className="relative overflow-hidden max-h-[90vh] h-[800px] w-full max-w-[1400px] rounded-2xl">
@@ -189,52 +109,37 @@ const SchedulerFrame = ({
 					</button>
 				</div>
 
-				<form onSubmit={handleSubmit} className="space-y-6">
-					<div className="rounded-xl">
-						{activeComponent === "FlightInfo" ? (
-							<FlightInfo
-								phase={phase}
-								formData={formData[0]}
-								setFormData={setFormData}
-								airshipData={airshipData}
-								setAirshipData={setAirshipData}
-							/>
-						) : activeComponent === "RoundTrip" ? (
-							<RoundTrip
-								phase={phase}
-								formData={formData}
-								setFormData={setFormData}
-								airshipData={airshipData}
-								setAirshipData={setAirshipData}
-							/>
-						) : (
-							<MultiCity
-								phase={phase}
-								formData={formData}
-								setFormData={setFormData}
-								airshipData={airshipData}
-								setAirshipData={setAirshipData}
-							/>
-						)}
-					</div>
-
-					<div className="pt-4">
-						<StepperButtons
-							phase={phase}
-							setPhase={setPhase}
-							operation="add"
-						/>
-					</div>
-				</form>
+				{activeComponent === "FlightInfo" ? (
+					<FlightInfo
+						phase={phase}
+						flightData={flightData}
+						flightID={flightID}
+						setShowToast={setShowToast}
+					/>
+				) : activeComponent === "RoundTrip" ? (
+					<RoundTrip
+						phase={phase}
+						flightData={flightData}
+						flightID={flightID}
+						setShowToast={setShowToast}
+					/>
+				) : (
+					<MultiCity
+						phase={phase}
+						flightData={flightData}
+						flightID={flightID}
+						setShowToast={setShowToast}
+					/>
+				)}
 			</div>
 
-			{loading && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="p-6 rounded-2xl">
-						<LoaderSpinner />
-					</div>
-				</div>
-			)}
+			<div className="pt-4">
+				<StepperButtons
+					phase={phase}
+					setPhase={setPhase}
+					operation="add"
+				/>
+			</div>
 		</div>
   )
 };
