@@ -5,8 +5,8 @@ import type { formType } from "../scheduler/SchedulerFrame";
 import type { formEditType } from "../edit-trip/MainEditFlight";
 import StarRanking from "../stepper/StarsRank";
 interface props {
-  value: string;
-  setter: React.Dispatch<React.SetStateAction<formType>>;
+	value: string
+	setter: React.Dispatch<React.SetStateAction<formType[]>>
 }
 
 export const AutoComplete = ({ value, setter }: props) => {

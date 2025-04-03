@@ -7,11 +7,11 @@ import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
 import type { Flight } from "../table/TableModal";
 
 interface props {
-  phase: string;
-  formData: formType;
-  setFormData: React.Dispatch<React.SetStateAction<formType>>;
-  airshipData: airshipFormType[];
-  setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>;
+	phase: string
+	formData: formType
+	setFormData: React.Dispatch<React.SetStateAction<formType[]>>
+	airshipData: airshipFormType[]
+	setAirshipData: React.Dispatch<React.SetStateAction<airshipFormType[]>>
 }
 
 export const FlightInfo = ({
