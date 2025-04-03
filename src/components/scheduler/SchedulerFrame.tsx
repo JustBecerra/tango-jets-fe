@@ -45,7 +45,7 @@ const SchedulerFrame = ({
   const [showToast, setShowToast] = useState(false);
 
   const [activeComponent, setActiveComponent] = useState<
-		"FlightInfo" | "Oneway" | "RoundTrip"
+		"FlightInfo" | "RoundTrip" | "MultiCity"
   >("FlightInfo")
 
   return (
@@ -87,9 +87,9 @@ const SchedulerFrame = ({
 					</button>
 					<button
 						type="button"
-						onClick={() => setActiveComponent("Oneway")}
+						onClick={() => setActiveComponent("RoundTrip")}
 						className={`px-4 py-2 rounded-lg ${
-							activeComponent === "Oneway"
+							activeComponent === "RoundTrip"
 								? "bg-blue-500 text-white"
 								: "bg-gray-200"
 						}`}
@@ -98,9 +98,9 @@ const SchedulerFrame = ({
 					</button>
 					<button
 						type="button"
-						onClick={() => setActiveComponent("RoundTrip")}
+						onClick={() => setActiveComponent("MultiCity")}
 						className={`px-4 py-2 rounded-lg ${
-							activeComponent === "RoundTrip"
+							activeComponent === "MultiCity"
 								? "bg-blue-500 text-white"
 								: "bg-gray-200"
 						}`}

@@ -135,11 +135,11 @@ export const RoundTrip = ({
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<>
+				<div className="w-[800px] h-[350px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
 					{formData.map((elem, index) => (
 						<div
 							key={index}
-							className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2"
+							className="w-[800px] h-[280px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2"
 						>
 							<CsvSelect
 								labelFrom="From"
@@ -201,7 +201,7 @@ export const RoundTrip = ({
 							</div>
 						</div>
 					))}
-				</>
+				</div>
 			)
 		} else if (phase === "second") {
 			return (
