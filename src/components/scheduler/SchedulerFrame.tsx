@@ -48,18 +48,19 @@ const SchedulerFrame = ({
     "FlightInfo" | "Oneway" | "RoundTrip"
   >("FlightInfo");
   const [formData, setFormData] = useState<formType>({
-    launchtime: new Date(),
-    to: "",
-    from: "",
-    master_passenger: flightData !== null ? flightData.master_passenger : "",
-    type_of: flightID ? "connection" : "initial",
-    associated_to: flightID ? flightID : "",
-    first_longitude: "",
-    first_latitude: "",
-    second_longitude: "",
-    second_latitude: "",
-    flight_time: "",
-  });
+		launchtime: new Date(),
+		to: "",
+		from: "",
+		master_passenger:
+			flightData !== null ? flightData.master_passenger : "",
+		type_of: flightID ? "connection" : "initial",
+		associated_to: flightID ? flightID : "",
+		first_longitude: "",
+		first_latitude: "",
+		second_longitude: "",
+		second_latitude: "",
+		flight_time: "00:00",
+  })
   const [airshipData, setAirshipData] = useState<airshipFormType[]>([
     {
       airship_name: "",
