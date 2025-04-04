@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
 import useStore from "../../store/store";
-import CsvSelect from "../stepper/prueba";
+import CsvSelect from "./prueba";
 import { AutoComplete } from "../input/AutoComplete";
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
 import type { Flight } from "../table/TableModal";
-import { getCookie } from "../../utils/getCookie"
-import { addFlight, getFlights } from "../../../lib/actions/flights/actions"
-import LoaderSpinner from "../Loaders/LoaderSpinner"
+import StarRanking from "./StarsRank";
 
 interface props {
 	phase: string
@@ -16,7 +14,7 @@ interface props {
 	setShowToast: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const FlightInfo = ({
+export const MultiCity = ({
 	phase,
 	flightID,
 	flightData,
@@ -25,20 +23,50 @@ export const FlightInfo = ({
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [flightTime, setFlightTime] = useState<number | null>(null)
-	const [formData, setFormData] = useState<formType>({
-		launchtime: new Date(),
-		to: "",
-		from: "",
-		master_passenger:
-			flightData !== null ? flightData.master_passenger : "",
-		type_of: flightID ? "connection" : "initial",
-		associated_to: flightID ? flightID : "",
-		first_longitude: "",
-		first_latitude: "",
-		second_longitude: "",
-		second_latitude: "",
-		flight_time: "00:00",
-	})
+	const [formData, setFormData] = useState<formType[]>([
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
+		{
+			launchtime: new Date(),
+			to: "",
+			from: "",
+			master_passenger:
+				flightData !== null ? flightData.master_passenger : "",
+			type_of: flightID ? "connection" : "initial",
+			associated_to: flightID ? flightID : "",
+			first_longitude: "",
+			first_latitude: "",
+			second_longitude: "",
+			second_latitude: "",
+			flight_time: "00:00",
+		},
+	])
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
 			airship_name: "",
@@ -48,58 +76,6 @@ export const FlightInfo = ({
 			extra_price: 0,
 		},
 	])
-
-	const [loading, setLoading] = useState(false)
-	const { updateFlights } = useStore((state) => state)
-
-	const handleSubmit = async (event: React.FormEvent) => {
-		event.preventDefault()
-		setLoading(true)
-
-		const name = getCookie("username")
-		const transformedFlightData = {
-			launchtime: formData.launchtime.toISOString().slice(0, 16),
-			to: formData.to,
-			from: formData.from,
-			master_passenger: formData.master_passenger,
-			createdby: name,
-			type_of: formData.type_of,
-			associated_to: formData.associated_to,
-			first_longitude: formData.first_longitude,
-			first_latitude: formData.first_latitude,
-			second_longitude: formData.second_longitude,
-			second_latitude: formData.second_latitude,
-			flight_time: formData.flight_time,
-		}
-
-		try {
-			const newFlights = await addFlight(transformedFlightData)
-
-			// const EmailInfo = {
-			//   to: transformedFlightData.master_passenger,
-			//   subject: "Flight pre-scheduled!",
-			//   url: flightScheduledMessage({
-			//     airshipData,
-			//     airships,
-			//     tripID: newFlight.id,
-			//   }),
-			//   type_of_email: "quote",
-			// };
-
-			// await sendEmail(EmailInfo); mover todo esto a un boton en el stepper
-			const flights = await getFlights()
-			updateFlights(flights)
-			setShowToast(true)
-			setTimeout(() => {
-				setShowToast(false)
-				window.location.href = "/Trips"
-			}, 2000)
-		} catch (err) {
-			console.error("Error adding flight:", err)
-		} finally {
-			setLoading(false)
-		}
-	}
 
 	const getPercentage = ({
 		cost,
@@ -119,11 +95,21 @@ export const FlightInfo = ({
 
 		return { revenue: roundedRevenue, roundingDifference }
 	}
-	const handleSelectFrom = (value: string) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			from: value,
-		}))
+	const handleSelectFrom = ({
+		value,
+		index,
+	}: {
+		value: string
+		index: number
+	}) => {
+		setFormData((prevFormData) => {
+			const updatedFormData = [...prevFormData]
+			updatedFormData[index] = {
+				...updatedFormData[index],
+				from: value,
+			}
+			return updatedFormData
+		})
 	}
 
 	const handleSelectTo = (value: string) => {
@@ -164,52 +150,113 @@ export const FlightInfo = ({
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2">
-					<CsvSelect
-						labelFrom="From"
-						labelTo="To"
-						onSelectFrom={handleSelectFrom}
-						onSelectTo={handleSelectTo}
-						onDistanceCalculated={handleDistanceCalculated}
-						onFlightTimeCalculated={handleFlightTimeCalculated}
-						formData={formData}
-						setFormData={setFormData}
-					/>
-					<div className="flex flex-col justify-end h-fit">
-						<label
-							htmlFor="launchtime"
-							className="block text-sm font-medium"
+				<div className="w-[800px] h-[350px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
+					{formData.map((elem, index) => (
+						<div
+							key={index}
+							className="h-[300px] w-[800px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
 						>
-							Launch Time
-						</label>
-						<input
-							type="datetime-local"
-							id="launchtime"
-							name="launchtime"
-							value={formData.launchtime.toISOString().slice(0, 16)}
-							onChange={(e) =>
-								setFormData((prevFormData) => ({
-									...prevFormData,
-									launchtime: new Date(e.target.value),
-								}))
-							}
-							min={new Date().toISOString().slice(0, 16)}
-							className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-							required
-						/>
-					</div>
-					<div className="flex flex-col justify-end h-fit">
-						<label
-							htmlFor="master_passenger"
-							className="block text-sm font-medium"
-						>
-							Lead Passenger
-						</label>
-						<AutoComplete
-							value={formData.master_passenger}
-							setter={setFormData}
-						/>
-					</div>
+							<CsvSelect
+								labelFrom="From"
+								labelTo="To"
+								onSelectFrom={(e) =>
+									handleSelectFrom({
+										value: e,
+										index: index ?? 0,
+									})
+								}
+								onSelectTo={handleSelectTo}
+								onDistanceCalculated={handleDistanceCalculated}
+								onFlightTimeCalculated={
+									handleFlightTimeCalculated
+								}
+								formData={elem}
+								setFormData={setFormData}
+								formDataIndex={index}
+							/>
+							<div className="flex flex-col justify-end h-fit">
+								<label
+									htmlFor="launchtime"
+									className="block text-sm font-medium"
+								>
+									Launch Time
+								</label>
+								<input
+									type="datetime-local"
+									id="launchtime"
+									name="launchtime"
+									value={elem.launchtime
+										.toISOString()
+										.slice(0, 16)}
+									onChange={(e) =>
+										setFormData((prevFormData) => ({
+											...prevFormData,
+											launchtime: new Date(
+												e.target.value
+											),
+										}))
+									}
+									min={new Date().toISOString().slice(0, 16)}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+							</div>
+							<div className="flex flex-col justify-end h-fit">
+								<label
+									htmlFor="master_passenger"
+									className="block text-sm font-medium"
+								>
+									Lead Passenger
+								</label>
+								<AutoComplete
+									value={elem.master_passenger}
+									setter={setFormData}
+									formDataIndex={index}
+								/>
+							</div>
+
+							{index === formData.length - 1 && (
+								<div className="flex h-full w-full justify-center items-end">
+									<button
+										type="button"
+										onClick={() =>
+											setFormData(
+												(prevFormData: formType[]) => {
+													const updatedFormData = [
+														...prevFormData,
+													]
+													updatedFormData.push({
+														launchtime: new Date(),
+														to: "",
+														from: "",
+														master_passenger:
+															flightData !== null
+																? flightData.master_passenger
+																: "",
+														type_of: flightID
+															? "connection"
+															: "initial",
+														associated_to: flightID
+															? flightID
+															: "",
+														first_longitude: "",
+														first_latitude: "",
+														second_longitude: "",
+														second_latitude: "",
+														flight_time: "00:00",
+													})
+													return updatedFormData
+												}
+											)
+										}
+										className="w-[200px] h-[40px] text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+									>
+										Add trip
+									</button>
+								</div>
+							)}
+						</div>
+					))}
 				</div>
 			)
 		} else if (phase === "second") {
@@ -482,46 +529,39 @@ export const FlightInfo = ({
 		} else {
 			return (
 				<div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-					<h2>To: {formData.to === "" ? "TBD" : formData.to}</h2>
-					<h2>
-						From: {formData.from === "" ? "TBD" : formData.from}
-					</h2>
-					<h2>
-						Launch Time:{" "}
-						{formData.launchtime.toISOString().slice(0, 16)}
-					</h2>
-					<h2>
-						Distance:{" "}
-						{distance !== null
-							? `${distance.toFixed(2)} km`
-							: "TBD"}
-					</h2>
-					<h2>
-						Flight Time:{" "}
-						{formData.flight_time !== null
-							? `${formData.flight_time} hours`
-							: "TBD"}
-					</h2>
-					<h2>
-						Lead Passenger:{" "}
-						{formData.master_passenger === ""
-							? "TBD"
-							: formData.master_passenger}
-					</h2>
+					{formData.map((elem) => (
+						<div>
+							<h2>To: {elem.to === "" ? "TBD" : elem.to}</h2>
+							<h2>
+								From: {elem.from === "" ? "TBD" : elem.from}
+							</h2>
+							<h2>
+								Launch Time:{" "}
+								{elem.launchtime.toISOString().slice(0, 16)}
+							</h2>
+							<h2>
+								Distance:{" "}
+								{distance !== null
+									? `${distance.toFixed(2)} km`
+									: "TBD"}
+							</h2>
+							<h2>
+								Flight Time:{" "}
+								{elem.flight_time !== null
+									? `${elem.flight_time} hours`
+									: "TBD"}
+							</h2>
+							<h2>
+								Lead Passenger:{" "}
+								{elem.master_passenger === ""
+									? "TBD"
+									: elem.master_passenger}
+							</h2>
+						</div>
+					))}
 				</div>
 			)
 		}
 	}
-	return (
-		<form onSubmit={handleSubmit} className="space-y-6">
-			<div className="rounded-xl">{PhaseFields()}</div>
-			{loading && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-					<div className="p-6 rounded-2xl">
-						<LoaderSpinner />
-					</div>
-				</div>
-			)}
-		</form>
-	)
+	return <div className="py-2">{PhaseFields()}</div>
 }

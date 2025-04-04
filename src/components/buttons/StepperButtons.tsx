@@ -106,12 +106,12 @@ export const StepperButtons = ({ phase, setPhase, operation }: props) => {
   };
 
   return (
-    <div
-      className={`flex  ${
-        phase === "third" ? "justify-between w-full" : "justify-start"
-      } items-center py-6 space-x-2   rounded-b`}
-    >
-      {PhaseDecider()}
-    </div>
-  );
+		<div
+			className={`flex  ${
+				phase === "third" ? "justify-between w-full" : "justify-start"
+			} items-center py-6 space-x-2 rounded-b`}
+		>
+			{PhaseDecider()}
+		</div>
+  )
 };
