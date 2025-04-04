@@ -3,13 +3,13 @@ import axios from "axios";
 import type { formType } from "../scheduler/SchedulerFrame";
 import type { formEditType } from "../edit-trip/MainEditFlight";
 
+type SelectHandler = (params: { value: string; index: number }) => void
 interface CsvSelectProps {
 	labelFrom?: string
 	labelTo?: string
-	onSelectFrom?: (value: string) => void
-	onSelectTo?: (value: string) => void
+	onSelectFrom?: SelectHandler
+	onSelectTo?: SelectHandler
 	onDistanceCalculated?: (distance: number) => void
-	onFlightTimeCalculated?: (flightTime: number) => void
 	formData: formType | formEditType
 	setFormData:
 		| React.Dispatch<React.SetStateAction<formType>>
@@ -82,14 +82,16 @@ const calculateDistance = (
 			}
 			return prevFormData
 		})
+	} else {
+		setFormData((prevFormData: any) => ({
+			...prevFormData,
+			first_latitude: lat1.toString(),
+			first_longitude: lon1.toString(),
+			second_latitude: lat2.toString(),
+			second_longitude: lon2.toString(),
+		}))
 	}
-	setFormData((prevFormData: any) => ({
-		...prevFormData,
-		first_latitude: lat1.toString(),
-		first_longitude: lon1.toString(),
-		second_latitude: lat2.toString(),
-		second_longitude: lon2.toString(),
-	}))
+
 	const a =
 		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
 		Math.cos(lat1 * (Math.PI / 180)) *
@@ -122,7 +124,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	onSelectFrom,
 	onSelectTo,
 	onDistanceCalculated,
-	onFlightTimeCalculated,
 	formData,
 	setFormData,
 	formDataIndex,
@@ -153,11 +154,21 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 		// If user deletes everything, allow empty input
 		if (value === "") {
-			setFormData((prevFormData: any) => ({
-				...prevFormData,
-				flight_time: "",
-			}))
-			return
+			setFormData((prevFormData: any) => {
+				if (
+					Array.isArray(prevFormData) &&
+					formDataIndex !== undefined
+				) {
+					const updatedFormData = [...prevFormData]
+					updatedFormData[formDataIndex] = {
+						...updatedFormData[formDataIndex],
+						flight_time: "",
+					}
+					return updatedFormData
+				} else {
+					return { ...prevFormData, flight_time: "" }
+				}
+			})
 		}
 
 		// Extract hours and minutes
@@ -173,10 +184,18 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 			minutes
 		).padStart(2, "0")}`
 
-		setFormData((prevFormData: any) => ({
-			...prevFormData,
-			flight_time: formattedTime,
-		}))
+		setFormData((prevFormData: any) => {
+			if (Array.isArray(prevFormData) && formDataIndex !== undefined) {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[formDataIndex] = {
+					...updatedFormData[formDataIndex],
+					flight_time: formattedTime,
+				}
+				return updatedFormData
+			} else {
+				return { ...prevFormData, flight_time: formattedTime }
+			}
+		})
 	}
 
 	useEffect(() => {
@@ -198,10 +217,24 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 						type="text"
 						value={formData.from}
 						onChange={(e) => {
-							setFormData((prev: any) => ({
-								...prev,
-								from: e.target.value,
-							}))
+							setFormData((prev: any) => {
+								if (
+									Array.isArray(prev) &&
+									formDataIndex !== undefined
+								) {
+									const updatedFormData = [...prev]
+									updatedFormData[formDataIndex] = {
+										...updatedFormData[formDataIndex],
+										from: e.target.value,
+									}
+									return updatedFormData
+								} else {
+									return {
+										...prev,
+										from: e.target.value,
+									}
+								}
+							})
 							fetchAirports(e.target.value, setFromResults)
 						}}
 						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -215,12 +248,32 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 									className="p-2 cursor-pointer hover:bg-gray-200"
 									onClick={() => {
 										setFromAirport(place)
-										setFormData((prev: any) => ({
-											...prev,
-											from: place.display,
-										}))
+										setFormData((prev: any) => {
+											if (formDataIndex !== undefined) {
+												const updatedFormData = [
+													...prev,
+												]
+												updatedFormData[formDataIndex] =
+													{
+														...updatedFormData[
+															formDataIndex
+														],
+														from: place.display,
+													}
+												return updatedFormData
+											} else {
+												return {
+													...prev,
+													from: place.display,
+												}
+											}
+										})
 										setFromResults([])
-										if (onSelectFrom) onSelectFrom(place.id)
+										if (onSelectFrom)
+											onSelectFrom({
+												value: place.id,
+												index: formDataIndex ?? 999,
+											})
 										if (toAirport) {
 											const dist = calculateDistance(
 												place.lat,
@@ -231,26 +284,44 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												formDataIndex
 											)
 											setDistance(dist)
-											setFormData(
-												(prevFormData: any) => ({
-													...prevFormData,
-													flight_time:
-														calculateFlightTime(
+											setFormData((prevFormData: any) => {
+												if (
+													Array.isArray(prevFormData)
+												) {
+													if (
+														formDataIndex !==
+														undefined
+													) {
+														const updatedFormData =
+															[...prevFormData]
+														updatedFormData[
+															formDataIndex
+														] = {
+															...updatedFormData[
+																formDataIndex
+															],
+															flight_time: calculateFlightTime(
+																dist
+															),
+														}
+														return updatedFormData
+													}
+												} else if (
+													typeof prevFormData ===
+														"object" &&
+													prevFormData !== null
+												) {
+													return {
+														...prevFormData,
+														flight_time: calculateFlightTime(
 															dist
 														),
-												})
-											)
+													}
+												}
+											})
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>
@@ -270,10 +341,21 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 						type="text"
 						value={formData.to}
 						onChange={(e) => {
-							setFormData((prev: any) => ({
-								...prev,
-								to: e.target.value,
-							}))
+							setFormData((prev: any) => {
+								if (formDataIndex !== undefined) {
+									const updatedFormData = [...prev]
+									updatedFormData[formDataIndex] = {
+										...updatedFormData[formDataIndex],
+										to: e.target.value,
+									}
+									return updatedFormData
+								} else {
+									return {
+										...prev,
+										to: e.target.value,
+									}
+								}
+							})
 							fetchAirports(e.target.value, setToResults)
 						}}
 						className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -287,12 +369,32 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 									className="p-2 cursor-pointer hover:bg-gray-200"
 									onClick={() => {
 										setToAirport(place)
-										setFormData((prev: any) => ({
-											...prev,
-											to: place.display,
-										}))
+										setFormData((prev: any) => {
+											if (formDataIndex !== undefined) {
+												const updatedFormData = [
+													...prev,
+												]
+												updatedFormData[formDataIndex] =
+													{
+														...updatedFormData[
+															formDataIndex
+														],
+														to: place.display,
+													}
+												return updatedFormData
+											} else {
+												return {
+													...prev,
+													to: place.display,
+												}
+											}
+										})
 										setToResults([])
-										if (onSelectTo) onSelectTo(place.id)
+										if (onSelectTo)
+											onSelectTo({
+												value: place.id,
+												index: formDataIndex ?? 999,
+											})
 										if (fromAirport) {
 											const dist = calculateDistance(
 												fromAirport.lat,
@@ -303,26 +405,44 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												formDataIndex
 											)
 											setDistance(dist)
-											setFormData(
-												(prevFormData: any) => ({
-													...prevFormData,
-													flight_time:
-														calculateFlightTime(
+											setFormData((prevFormData: any) => {
+												if (
+													Array.isArray(prevFormData)
+												) {
+													if (
+														formDataIndex !==
+														undefined
+													) {
+														const updatedFormData =
+															[...prevFormData]
+														updatedFormData[
+															formDataIndex
+														] = {
+															...updatedFormData[
+																formDataIndex
+															],
+															flight_time: calculateFlightTime(
+																dist
+															),
+														}
+														return updatedFormData
+													}
+												} else if (
+													typeof prevFormData ===
+														"object" &&
+													prevFormData !== null
+												) {
+													return {
+														...prevFormData,
+														flight_time: calculateFlightTime(
 															dist
 														),
-												})
-											)
+													}
+												}
+											})
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>

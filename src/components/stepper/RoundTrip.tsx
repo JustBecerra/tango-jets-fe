@@ -5,6 +5,7 @@ import CsvSelect from "../stepper/prueba";
 import { AutoComplete } from "../input/AutoComplete";
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
 import type { Flight } from "../table/TableModal";
+import LocationSelector from "./LocationSelector"
 
 interface props {
 	phase: string
@@ -21,7 +22,6 @@ export const RoundTrip = ({
 }: props) => {
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
-	const [flightTime, setFlightTime] = useState<number | null>(null)
 	const [formData, setFormData] = useState<formType[]>([
 		{
 			launchtime: new Date(),
@@ -61,7 +61,7 @@ export const RoundTrip = ({
 			extra_price: 0,
 		},
 	])
-
+	console.log({ formData })
 	const getPercentage = ({
 		cost,
 		newPercentage = "20",
@@ -87,29 +87,39 @@ export const RoundTrip = ({
 		value: string
 		index: number
 	}) => {
-		setFormData((prevFormData) => {
-			const updatedFormData = [...prevFormData]
-			updatedFormData[index] = {
-				...updatedFormData[index],
-				from: value,
-			}
-			return updatedFormData
-		})
+		if (index !== 999) {
+			setFormData((prevFormData) => {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[index] = {
+					...updatedFormData[index],
+					from: value,
+				}
+				return updatedFormData
+			})
+		}
 	}
 
-	const handleSelectTo = (value: string) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			to: value,
-		}))
+	const handleSelectTo = ({
+		value,
+		index,
+	}: {
+		value: string
+		index: number
+	}) => {
+		if (index !== 999) {
+			setFormData((prevFormData) => {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[index] = {
+					...updatedFormData[index],
+					to: value,
+				}
+				return updatedFormData
+			})
+		}
 	}
 
 	const handleDistanceCalculated = (calculatedDistance: number) => {
 		setDistance(calculatedDistance)
-	}
-
-	const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
-		setFlightTime(calculatedFlightTime)
 	}
 
 	const addAirshipOption = () => {
@@ -141,20 +151,12 @@ export const RoundTrip = ({
 							key={index}
 							className="w-[800px] h-[280px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
 						>
-							<CsvSelect
+							<LocationSelector
 								labelFrom="From"
 								labelTo="To"
-								onSelectFrom={(e) =>
-									handleSelectFrom({
-										value: e,
-										index: index ?? 0,
-									})
-								}
+								onSelectFrom={handleSelectFrom}
 								onSelectTo={handleSelectTo}
 								onDistanceCalculated={handleDistanceCalculated}
-								onFlightTimeCalculated={
-									handleFlightTimeCalculated
-								}
 								formData={elem}
 								setFormData={setFormData}
 								formDataIndex={index}
@@ -174,12 +176,18 @@ export const RoundTrip = ({
 										.toISOString()
 										.slice(0, 16)}
 									onChange={(e) =>
-										setFormData((prevFormData) => ({
-											...prevFormData,
-											launchtime: new Date(
-												e.target.value
-											),
-										}))
+										setFormData((prevFormData) => {
+											const updatedFormData = [
+												...prevFormData,
+											]
+											updatedFormData[index] = {
+												...updatedFormData[index],
+												launchtime: new Date(
+													e.target.value
+												),
+											}
+											return updatedFormData
+										})
 									}
 									min={new Date().toISOString().slice(0, 16)}
 									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
