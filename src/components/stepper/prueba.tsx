@@ -9,13 +9,10 @@ interface CsvSelectProps {
 	onSelectFrom?: (value: string) => void
 	onSelectTo?: (value: string) => void
 	onDistanceCalculated?: (distance: number) => void
-	onFlightTimeCalculated?: (flightTime: number) => void
 	formData: formType | formEditType
 	setFormData:
 		| React.Dispatch<React.SetStateAction<formType>>
 		| React.Dispatch<React.SetStateAction<formEditType>>
-		| React.Dispatch<React.SetStateAction<formType[]>>
-	formDataIndex?: number
 }
 const MAX_RESULTS = 5
 
@@ -59,30 +56,13 @@ const calculateDistance = (
 	setFormData:
 		| React.Dispatch<React.SetStateAction<formType>>
 		| React.Dispatch<React.SetStateAction<formEditType>>
-		| React.Dispatch<React.SetStateAction<formType[]>>,
-	index?: number
 ): number => {
 	if (!lat1 || !lon1 || !lat2 || !lon2) return 0
 
 	const R = 6371 // Radio de la Tierra en km
 	const dLat = (lat2 - lat1) * (Math.PI / 180)
 	const dLon = (lon2 - lon1) * (Math.PI / 180)
-	if (index) {
-		setFormData((prevFormData: any) => {
-			if (Array.isArray(prevFormData)) {
-				const updatedFormData = [...prevFormData]
-				updatedFormData[index] = {
-					...updatedFormData[index],
-					first_latitude: lat1.toString(),
-					first_longitude: lon1.toString(),
-					second_latitude: lat2.toString(),
-					second_longitude: lon2.toString(),
-				}
-				return updatedFormData
-			}
-			return prevFormData
-		})
-	}
+
 	setFormData((prevFormData: any) => ({
 		...prevFormData,
 		first_latitude: lat1.toString(),
@@ -90,6 +70,7 @@ const calculateDistance = (
 		second_latitude: lat2.toString(),
 		second_longitude: lon2.toString(),
 	}))
+
 	const a =
 		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
 		Math.cos(lat1 * (Math.PI / 180)) *
@@ -122,10 +103,8 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	onSelectFrom,
 	onSelectTo,
 	onDistanceCalculated,
-	onFlightTimeCalculated,
 	formData,
 	setFormData,
-	formDataIndex,
 }) => {
 	const [fromAirport, setFromAirport] = useState<any>(null)
 	const [toAirport, setToAirport] = useState<any>(null)
@@ -153,11 +132,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 		// If user deletes everything, allow empty input
 		if (value === "") {
-			setFormData((prevFormData: any) => ({
-				...prevFormData,
-				flight_time: "",
-			}))
-			return
+			setFormData((prevFormData: any) => {
+				return { ...prevFormData, flight_time: "" }
+			})
 		}
 
 		// Extract hours and minutes
@@ -173,10 +150,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 			minutes
 		).padStart(2, "0")}`
 
-		setFormData((prevFormData: any) => ({
-			...prevFormData,
-			flight_time: formattedTime,
-		}))
+		setFormData((prevFormData: any) => {
+			return { ...prevFormData, flight_time: formattedTime }
+		})
 	}
 
 	useEffect(() => {
@@ -227,8 +203,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												place.lon,
 												toAirport.lat,
 												toAirport.lon,
-												setFormData,
-												formDataIndex
+												setFormData
 											)
 											setDistance(dist)
 											setFormData(
@@ -243,14 +218,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>
@@ -299,8 +266,7 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												fromAirport.lon,
 												place.lat,
 												place.lon,
-												setFormData,
-												formDataIndex
+												setFormData
 											)
 											setDistance(dist)
 											setFormData(
@@ -315,14 +281,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>

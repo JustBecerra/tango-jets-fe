@@ -137,10 +137,6 @@ export const FlightInfo = ({
 		setDistance(calculatedDistance)
 	}
 
-	const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
-		setFlightTime(calculatedFlightTime)
-	}
-
 	const addAirshipOption = () => {
 		setAirshipData((prev) => [
 			...prev,
@@ -171,7 +167,6 @@ export const FlightInfo = ({
 						onSelectFrom={handleSelectFrom}
 						onSelectTo={handleSelectTo}
 						onDistanceCalculated={handleDistanceCalculated}
-						onFlightTimeCalculated={handleFlightTimeCalculated}
 						formData={formData}
 						setFormData={setFormData}
 					/>
@@ -186,7 +181,9 @@ export const FlightInfo = ({
 							type="datetime-local"
 							id="launchtime"
 							name="launchtime"
-							value={formData.launchtime.toISOString().slice(0, 16)}
+							value={formData.launchtime
+								.toISOString()
+								.slice(0, 16)}
 							onChange={(e) =>
 								setFormData((prevFormData) => ({
 									...prevFormData,

@@ -6,6 +6,7 @@ import { AutoComplete } from "../input/AutoComplete";
 import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
 import type { Flight } from "../table/TableModal";
 import StarRanking from "./StarsRank";
+import LocationSelector from "./LocationSelector";
 
 interface props {
   phase: string;
@@ -22,7 +23,6 @@ export const RoundTrip = ({
 }: props) => {
   const { airships } = useStore((state) => state);
   const [distance, setDistance] = useState<number | null>(null);
-  const [flightTime, setFlightTime] = useState<number | null>(null);
   const [formData, setFormData] = useState<formType[]>([
     {
       launchtime: new Date(),
@@ -62,7 +62,7 @@ export const RoundTrip = ({
       extra_price: 0,
     },
   ]);
-
+  console.log({ formData });
   const getPercentage = ({
     cost,
     newPercentage = "20",
@@ -88,29 +88,39 @@ export const RoundTrip = ({
     value: string;
     index: number;
   }) => {
-    setFormData((prevFormData) => {
-      const updatedFormData = [...prevFormData];
-      updatedFormData[index] = {
-        ...updatedFormData[index],
-        from: value,
-      };
-      return updatedFormData;
-    });
+    if (index !== 999) {
+      setFormData((prevFormData) => {
+        const updatedFormData = [...prevFormData];
+        updatedFormData[index] = {
+          ...updatedFormData[index],
+          from: value,
+        };
+        return updatedFormData;
+      });
+    }
   };
 
-  const handleSelectTo = (value: string) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      to: value,
-    }));
+  const handleSelectTo = ({
+    value,
+    index,
+  }: {
+    value: string;
+    index: number;
+  }) => {
+    if (index !== 999) {
+      setFormData((prevFormData) => {
+        const updatedFormData = [...prevFormData];
+        updatedFormData[index] = {
+          ...updatedFormData[index],
+          to: value,
+        };
+        return updatedFormData;
+      });
+    }
   };
 
   const handleDistanceCalculated = (calculatedDistance: number) => {
     setDistance(calculatedDistance);
-  };
-
-  const handleFlightTimeCalculated = (calculatedFlightTime: number) => {
-    setFlightTime(calculatedFlightTime);
   };
 
   const addAirshipOption = () => {
@@ -137,84 +147,17 @@ export const RoundTrip = ({
     if (phase === "first") {
       return (
         <div className="w-[1000px] h-[450px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
-          {/* <div className="flex items-center justify-start h-fit gap-x-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="master_passenger"
-                className="block text-sm font-medium"
-              >
-                Lead Passenger
-              </label>
-              <AutoComplete value="" setter={setFormData} />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="ranking" className="block text-sm font-medium">
-                Ranking
-              </label>
-              <StarRanking ranking={4} />
-            </div>
-          </div> */}
           {formData.map((elem, index) => (
             <div
               key={index}
               className="w-[900px] h-[400px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
             >
-              <div className="flex flex-col justify-end h-fit">
-                <label
-                  htmlFor="master_passenger"
-                  className="block text-sm font-medium"
-                >
-                  Lead Passenger
-                </label>
-                <AutoComplete
-                  value={elem.master_passenger}
-                  setter={setFormData}
-                  formDataIndex={index}
-                />
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="ranking"
-                    className="block text-sm font-medium"
-                  ></label>
-                  <StarRanking ranking={4} />
-                </div>
-              </div>
-              <div className="flex flex-col justify-end h-fit">
-                <label
-                  htmlFor={`cant_pax_${index}`}
-                  className="block text-sm font-medium"
-                >
-                  Number of passengers
-                </label>
-                <input
-                  type="number"
-                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              {/* <div className="flex flex-col justify-end h-fit">
-                <label
-                  htmlFor="master_passenger"
-                  className="block text-sm font-medium"
-                >
-                  Ranking
-                </label>
-
-                <StarRanking ranking={4} />
-              </div> */}
-              <CsvSelect
+              <LocationSelector
                 labelFrom="From"
                 labelTo="To"
-                onSelectFrom={(e) =>
-                  handleSelectFrom({
-                    value: e,
-                    index: index ?? 0,
-                  })
-                }
+                onSelectFrom={handleSelectFrom}
                 onSelectTo={handleSelectTo}
                 onDistanceCalculated={handleDistanceCalculated}
-                onFlightTimeCalculated={handleFlightTimeCalculated}
                 formData={elem}
                 setFormData={setFormData}
                 formDataIndex={index}
@@ -232,15 +175,45 @@ export const RoundTrip = ({
                   name="launchtime"
                   value={elem.launchtime.toISOString().slice(0, 16)}
                   onChange={(e) =>
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      launchtime: new Date(e.target.value),
-                    }))
+                    setFormData((prevFormData) => {
+                      const updatedFormData = [...prevFormData];
+                      updatedFormData[index] = {
+                        ...updatedFormData[index],
+                        launchtime: new Date(e.target.value),
+                      };
+                      return updatedFormData;
+                    })
                   }
                   min={new Date().toISOString().slice(0, 16)}
                   className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
+              </div>
+              <div className="flex flex-col justify-end h-fit">
+                <label
+                  htmlFor="master_passenger"
+                  className="block text-sm font-medium"
+                >
+                  Lead Passenger
+                </label>
+                <AutoComplete
+                  value={elem.master_passenger}
+                  setter={setFormData}
+                  formDataIndex={index}
+                />
+                <div className="flex flex-col justify-end h-fit">
+                  <label
+                    htmlFor={`cant_pax_${index}`}
+                    className="block text-sm font-medium"
+                  >
+                    Number of passengers
+                  </label>
+                  <input
+                    type="number"
+                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
               </div>
             </div>
           ))}
