@@ -4,81 +4,82 @@ import type { formType } from "../scheduler/SchedulerFrame";
 import type { formEditType } from "../edit-trip/MainEditFlight";
 
 interface CsvSelectProps {
-  labelFrom?: string;
-  labelTo?: string;
-  onSelectFrom?: (value: string) => void;
-  onSelectTo?: (value: string) => void;
-  onDistanceCalculated?: (distance: number) => void;
-  onFlightTimeCalculated?: (flightTime: number) => void;
-  formData: formType | formEditType;
-  setFormData:
-    | React.Dispatch<React.SetStateAction<formType>>
-    | React.Dispatch<React.SetStateAction<formEditType>>;
+	labelFrom?: string
+	labelTo?: string
+	onSelectFrom?: (value: string) => void
+	onSelectTo?: (value: string) => void
+	onDistanceCalculated?: (distance: number) => void
+	formData: formType | formEditType
+	setFormData:
+		| React.Dispatch<React.SetStateAction<formType>>
+		| React.Dispatch<React.SetStateAction<formEditType>>
 }
-const MAX_RESULTS = 5;
+const MAX_RESULTS = 5
 
 // Función para obtener aeropuertos
 const fetchAirports = async (
-  query: string,
-  setResults: React.Dispatch<React.SetStateAction<any[]>>
+	query: string,
+	setResults: React.Dispatch<React.SetStateAction<any[]>>
 ) => {
-  if (!query || query.length < 2) return;
+	if (!query || query.length < 2) return
 
-  try {
-    const response = await axios.get(
-      `https://autocomplete.travelpayouts.com/places2?term=${query}&locale=en&types[]=city&types[]=airport`
-    );
+	try {
+		const response = await axios.get(
+			`https://autocomplete.travelpayouts.com/places2?term=${query}&locale=en&types[]=city&types[]=airport`
+		)
 
-    if (response.data && response.data.length > 0) {
-      const airports = response.data
-        .slice(0, MAX_RESULTS)
-        .map((place: any) => ({
-          id: place.code,
-          name: place.name,
-          country: place.country_name,
-          lat: place.coordinates?.lat,
-          lon: place.coordinates?.lon,
-          display: `${place.name} (${place.code}) - ${place.country_name}`,
-        }));
+		if (response.data && response.data.length > 0) {
+			const airports = response.data
+				.slice(0, MAX_RESULTS)
+				.map((place: any) => ({
+					id: place.code,
+					name: place.name,
+					country: place.country_name,
+					lat: place.coordinates?.lat,
+					lon: place.coordinates?.lon,
+					display: `${place.name} (${place.code}) - ${place.country_name}`,
+				}))
 
-      setResults(airports);
-    }
-  } catch (error) {
-    console.error("Error getting airports:", error);
-  }
-};
+			setResults(airports)
+		}
+	} catch (error) {
+		console.error("Error getting airports:", error)
+	}
+}
 
 // Función para calcular distancia con la fórmula de Haversine
 const calculateDistance = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number,
-  setFormData:
-    | React.Dispatch<React.SetStateAction<formType>>
-    | React.Dispatch<React.SetStateAction<formEditType>>
+	lat1: number,
+	lon1: number,
+	lat2: number,
+	lon2: number,
+	setFormData:
+		| React.Dispatch<React.SetStateAction<formType>>
+		| React.Dispatch<React.SetStateAction<formEditType>>
 ): number => {
-  if (!lat1 || !lon1 || !lat2 || !lon2) return 0;
+	if (!lat1 || !lon1 || !lat2 || !lon2) return 0
 
-  const R = 6371; // Radio de la Tierra en km
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
-  setFormData((prevFormData: any) => ({
-    ...prevFormData,
-    first_latitude: lat1.toString(),
-    first_longitude: lon1.toString(),
-    second_latitude: lat2.toString(),
-    second_longitude: lon2.toString(),
-  }));
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return Math.round(R * c); // Distancia en km
-};
+	const R = 6371 // Radio de la Tierra en km
+	const dLat = (lat2 - lat1) * (Math.PI / 180)
+	const dLon = (lon2 - lon1) * (Math.PI / 180)
+
+	setFormData((prevFormData: any) => ({
+		...prevFormData,
+		first_latitude: lat1.toString(),
+		first_longitude: lon1.toString(),
+		second_latitude: lat2.toString(),
+		second_longitude: lon2.toString(),
+	}))
+
+	const a =
+		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos(lat1 * (Math.PI / 180)) *
+			Math.cos(lat2 * (Math.PI / 180)) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2)
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+	return Math.round(R * c) // Distancia en km
+}
 
 // Función para calcular el tiempo de vuelo
 const calculateFlightTime = (distance: number, speed = 900): string => {
@@ -102,7 +103,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	onSelectFrom,
 	onSelectTo,
 	onDistanceCalculated,
-	onFlightTimeCalculated,
 	formData,
 	setFormData,
 }) => {
@@ -132,11 +132,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 		// If user deletes everything, allow empty input
 		if (value === "") {
-			setFormData((prevFormData: any) => ({
-				...prevFormData,
-				flight_time: "",
-			}))
-			return
+			setFormData((prevFormData: any) => {
+				return { ...prevFormData, flight_time: "" }
+			})
 		}
 
 		// Extract hours and minutes
@@ -152,10 +150,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 			minutes
 		).padStart(2, "0")}`
 
-		setFormData((prevFormData: any) => ({
-			...prevFormData,
-			flight_time: formattedTime,
-		}))
+		setFormData((prevFormData: any) => {
+			return { ...prevFormData, flight_time: formattedTime }
+		})
 	}
 
 	useEffect(() => {
@@ -221,14 +218,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>
@@ -292,14 +281,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 											if (onDistanceCalculated)
 												onDistanceCalculated(dist)
-											if (onFlightTimeCalculated)
-												onFlightTimeCalculated(
-													parseFloat(
-														calculateFlightTime(
-															dist
-														)
-													)
-												)
 										}
 									}}
 								>

@@ -10,7 +10,8 @@ import useStore from "../../store/store";
 import LoaderSpinner from "../Loaders/LoaderSpinner";
 import { sendEmail } from "../../../lib/actions/emails/actions";
 import type { Flight } from "../table/TableModal";
-
+import { MultiCity } from "../stepper/MultiCity";
+import { RoundTrip } from "../stepper/RoundTrip";
 export interface formType {
   launchtime: Date;
   to: string;
@@ -23,6 +24,7 @@ export interface formType {
   second_longitude: string;
   second_latitude: string;
   flight_time: string;
+  pax: number;
 }
 
 export interface airshipFormType {
@@ -42,109 +44,25 @@ const SchedulerFrame = ({
 }) => {
   const [phase, setPhase] = useState("first");
   const [showToast, setShowToast] = useState(false);
-  const airships = useStore((state) => state.airships);
-  const [formData, setFormData] = useState<formType>({
-		launchtime: new Date(),
-		to: "",
-		from: "",
-		master_passenger:
-			flightData !== null ? flightData.master_passenger : "",
-		type_of: flightID ? "connection" : "initial",
-		associated_to: flightID ? flightID : "",
-		first_longitude: "",
-		first_latitude: "",
-		second_longitude: "",
-		second_latitude: "",
-		flight_time: "00:00",
-  })
-  const [airshipData, setAirshipData] = useState<airshipFormType[]>([
-    {
-      airship_name: "",
-      price_cost: 0,
-      price_revenue: 0,
-      percentage: 20,
-      extra_price: 0,
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
-  const { updateFlights } = useStore((state) => state);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    const {
-      launchtime,
-      to,
-      from,
-      master_passenger,
-      type_of,
-      associated_to,
-      first_longitude,
-      first_latitude,
-      second_longitude,
-      second_latitude,
-      flight_time,
-    } = formData;
-
-    const name = getCookie("username");
-    const transformedFlightData = {
-      launchtime: launchtime.toISOString().slice(0, 16),
-      to,
-      from,
-      master_passenger,
-      createdby: name,
-      type_of,
-      associated_to,
-      first_longitude,
-      first_latitude,
-      second_longitude,
-      second_latitude,
-      flight_time,
-    };
-
-    try {
-      const newFlight = await addFlight(transformedFlightData);
-
-			const EmailInfo = {
-				to: transformedFlightData.master_passenger,
-				subject: "Flight pre-scheduled!",
-				url: flightScheduledMessage({
-					airshipData,
-					airships,
-					tripID: newFlight.id,
-				}),
-				type_of_email: "quote",
-			}
-
-      await sendEmail(EmailInfo);
-      const flights = await getFlights();
-      updateFlights(flights);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        window.location.href = "/Trips";
-      }, 2000);
-    } catch (err) {
-      console.error("Error adding flight:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [activeComponent, setActiveComponent] = useState<
+    "FlightInfo" | "RoundTrip" | "MultiCity"
+  >("FlightInfo");
 
   return (
-    <div className="relative overflow-hidden max-h-[90vh] h-[800px] w-full max-w-[1400px] rounded-2xl">
+    <div className="relative overflow-hidden max-h-[90vh] h-[800px] w-full max-w-[1400px] rounded-3xl bg-white shadow-xl">
       {showToast && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/90 backdrop-blur-sm shadow-lg">
+          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-lg border border-gray-100">
             <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-green-50">
               <HiCheck className="h-5 w-5 text-green-500" />
             </div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-gray-800">
               Flight added successfully
             </p>
             <button
               onClick={() => setShowToast(false)}
-              className="ml-2 text-gray-400 hover:text-gray-500"
+              className="ml-2 text-gray-400 hover:text-gray-500 transition-colors"
             >
               ×
             </button>
@@ -152,37 +70,80 @@ const SchedulerFrame = ({
         </div>
       )}
 
-      <div className="px-8 pt-6">
-        <ModalStepper phase={phase} />
-      </div>
-
-      <div className="p-8 space-y-8 h-[90%]">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="rounded-xl">
-            <FlightInfo
-              phase={phase}
-              formData={formData}
-              setFormData={setFormData}
-              airshipData={airshipData}
-              setAirshipData={setAirshipData}
-            />
-          </div>
-
-          <div className="pt-4">
-            <StepperButtons phase={phase} setPhase={setPhase} operation="add" />
-          </div>
-        </form>
-      </div>
-
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-          <div className="p-6 rounded-2xl">
-            <LoaderSpinner />
+      <div className="p-10 space-y-8 h-[90%]">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-2xl font-medium text-gray-800">
+            Schedule Flight
+          </h2>
+          <div className="flex space-x-3">
+            <button
+              type="button"
+              onClick={() => setActiveComponent("FlightInfo")}
+              className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                activeComponent === "FlightInfo"
+                  ? "bg-blue-500 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              One Way
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveComponent("RoundTrip")}
+              className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                activeComponent === "RoundTrip"
+                  ? "bg-blue-500 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              Round Trip
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveComponent("MultiCity")}
+              className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                activeComponent === "MultiCity"
+                  ? "bg-blue-500 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              Multi City
+            </button>
           </div>
         </div>
-      )}
+
+        <div className="bg-gray-50 p-9 rounded-2xl">
+          {/* bg-gray-50 */}
+          {activeComponent === "FlightInfo" ? (
+            <FlightInfo
+              phase={phase}
+			  setPhase={setPhase}
+              flightData={flightData}
+              flightID={flightID}
+              setShowToast={setShowToast}
+            />
+          ) : activeComponent === "RoundTrip" ? (
+            <RoundTrip
+              phase={phase}
+			  setPhase={setPhase}
+              flightData={flightData}
+              flightID={flightID}
+              setShowToast={setShowToast}
+            />
+          ) : (
+            <MultiCity
+              phase={phase}
+			  setPhase={setPhase}
+              flightData={flightData}
+              flightID={flightID}
+              setShowToast={setShowToast}
+            />
+          )}
+        </div>
+
+      </div>
     </div>
   );
 };
 
-export default SchedulerFrame;
+export default SchedulerFrame
