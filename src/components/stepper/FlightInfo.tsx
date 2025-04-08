@@ -8,9 +8,11 @@ import type { Flight } from "../table/TableModal";
 import { getCookie } from "../../utils/getCookie"
 import { addFlight, getFlights } from "../../../lib/actions/flights/actions"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
+import { StepperButtons } from "../buttons/StepperButtons"
 
 interface props {
 	phase: string
+	setPhase: React.Dispatch<React.SetStateAction<string>>
 	flightData: Flight | null
 	flightID: string | null
 	setShowToast: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,10 +23,10 @@ export const FlightInfo = ({
 	flightID,
 	flightData,
 	setShowToast,
+	setPhase,
 }: props) => {
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
-	const [flightTime, setFlightTime] = useState<number | null>(null)
 	const [formData, setFormData] = useState<formType>({
 		launchtime: new Date(),
 		to: "",
@@ -519,6 +521,7 @@ export const FlightInfo = ({
 					</div>
 				</div>
 			)}
+			<StepperButtons phase={phase} setPhase={setPhase} operation="add" />
 		</form>
 	)
 }

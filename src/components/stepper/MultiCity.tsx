@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FaRegPlusSquare, FaRegMinusSquare } from "react-icons/fa";
-import useStore from "../../store/store";
-import CsvSelect from "./prueba";
-import { AutoComplete } from "../input/AutoComplete";
-import type { airshipFormType, formType } from "../scheduler/SchedulerFrame";
-import type { Flight } from "../table/TableModal";
-import StarRanking from "./StarsRank";
+import useStore from "../../store/store"
+import { AutoComplete } from "../input/AutoComplete"
+import type { airshipFormType, formType } from "../scheduler/SchedulerFrame"
+import type { Flight } from "../table/TableModal"
 import LocationSelector from "./LocationSelector"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
+import { getCookie } from "../../utils/getCookie"
+import { addFlight, getFlights } from "../../../lib/actions/flights/actions"
 
 interface props {
 	phase: string
@@ -23,6 +24,7 @@ export const MultiCity = ({
 }: props) => {
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
+	const [loading, setLoading] = useState(false)
 	const [formData, setFormData] = useState<formType[]>([
 		{
 			launchtime: new Date(),
@@ -30,7 +32,7 @@ export const MultiCity = ({
 			from: "",
 			master_passenger:
 				flightData !== null ? flightData.master_passenger : "",
-			type_of: flightID ? "connection" : "initial",
+			type_of: "initial",
 			associated_to: flightID ? flightID : "",
 			first_longitude: "",
 			first_latitude: "",
@@ -44,7 +46,7 @@ export const MultiCity = ({
 			from: "",
 			master_passenger:
 				flightData !== null ? flightData.master_passenger : "",
-			type_of: flightID ? "connection" : "initial",
+			type_of: "connection",
 			associated_to: flightID ? flightID : "",
 			first_longitude: "",
 			first_latitude: "",
@@ -58,7 +60,7 @@ export const MultiCity = ({
 			from: "",
 			master_passenger:
 				flightData !== null ? flightData.master_passenger : "",
-			type_of: flightID ? "connection" : "initial",
+			type_of: "connection",
 			associated_to: flightID ? flightID : "",
 			first_longitude: "",
 			first_latitude: "",
@@ -76,6 +78,45 @@ export const MultiCity = ({
 			extra_price: 0,
 		},
 	])
+
+	const { updateFlights } = useStore((state) => state)
+
+	const handleSubmit = async (event: React.FormEvent) => {
+		event.preventDefault()
+		setLoading(true)
+
+		const name = getCookie("username")
+		const transformedFlightData = formData.map((elem) => ({
+			launchtime: elem.launchtime.toISOString().slice(0, 16),
+			to: elem.to,
+			from: elem.from,
+			master_passenger: elem.master_passenger,
+			createdby: name,
+			type_of: elem.type_of,
+			associated_to: elem.associated_to,
+			first_longitude: elem.first_longitude,
+			first_latitude: elem.first_latitude,
+			second_longitude: elem.second_longitude,
+			second_latitude: elem.second_latitude,
+			flight_time: elem.flight_time,
+		}))
+
+		try {
+			const newFlights = await addFlight(transformedFlightData)
+
+			const flights = await getFlights()
+			updateFlights(flights)
+			setShowToast(true)
+			setTimeout(() => {
+				setShowToast(false)
+				window.location.href = "/Trips"
+			}, 2000)
+		} catch (err) {
+			console.error("Error adding flight:", err)
+		} finally {
+			setLoading(false)
+		}
+	}
 
 	const getPercentage = ({
 		cost,
@@ -571,5 +612,16 @@ export const MultiCity = ({
 			)
 		}
 	}
-	return <div className="py-2">{PhaseFields()}</div>
+	return (
+		<form onSubmit={handleSubmit} className="space-y-6">
+			<div className="rounded-xl">{PhaseFields()}</div>
+			{loading && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+					<div className="p-6 rounded-2xl">
+						<LoaderSpinner />
+					</div>
+				</div>
+			)}
+		</form>
+	)
 }

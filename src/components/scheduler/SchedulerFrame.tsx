@@ -112,6 +112,7 @@ const SchedulerFrame = ({
 				{activeComponent === "FlightInfo" ? (
 					<FlightInfo
 						phase={phase}
+						setPhase={setPhase}
 						flightData={flightData}
 						flightID={flightID}
 						setShowToast={setShowToast}
@@ -119,6 +120,7 @@ const SchedulerFrame = ({
 				) : activeComponent === "RoundTrip" ? (
 					<RoundTrip
 						phase={phase}
+						setPhase={setPhase}
 						flightData={flightData}
 						flightID={flightID}
 						setShowToast={setShowToast}
@@ -131,12 +133,6 @@ const SchedulerFrame = ({
 						setShowToast={setShowToast}
 					/>
 				)}
-
-				<StepperButtons
-					phase={phase}
-					setPhase={setPhase}
-					operation="add"
-				/>
 			</div>
 		</div>
   )

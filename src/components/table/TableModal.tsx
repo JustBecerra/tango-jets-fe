@@ -251,7 +251,6 @@ const TableModal = ({ caseType }: TableProps) => {
 			}
 		}
 	}
-	0
 
 	const toggleColumn = (column: string) => {
 		setCollapsedColumns((prev) =>

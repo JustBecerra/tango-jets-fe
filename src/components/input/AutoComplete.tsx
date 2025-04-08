@@ -17,7 +17,7 @@ export const AutoComplete = ({ value, setter, formDataIndex }: props) => {
 	const [listClients, setListClients] = useState<Client[]>([])
 	const [openDropdown, setOpenDropdown] = useState(false)
 	return (
-		<div>
+		<div className="relative w-full">
 			<input
 				type="text"
 				id="master_passenger"
