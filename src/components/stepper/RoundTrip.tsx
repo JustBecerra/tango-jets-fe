@@ -190,79 +190,85 @@ export const RoundTrip = ({
   const PhaseFields = () => {
     if (phase === "first") {
       return (
-        <div className="w-[1000px] h-[450px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
-          {formData.map((elem, index) => (
-            <div
-              key={index}
-              className="w-[900px] h-[400px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
-            >
-              <LocationSelector
-                labelFrom="From"
-                labelTo="To"
-                onSelectFrom={handleSelectFrom}
-                onSelectTo={handleSelectTo}
-                onDistanceCalculated={handleDistanceCalculated}
-                formData={elem}
-                setFormData={setFormData}
-                formDataIndex={index}
-              />
-              <div className="flex flex-col justify-end h-fit">
-                <label
-                  htmlFor="launchtime"
-                  className="block text-sm font-medium"
-                >
-                  Launch Time
-                </label>
-                <input
-                  type="datetime-local"
-                  id="launchtime"
-                  name="launchtime"
-                  value={elem.launchtime.toISOString().slice(0, 16)}
-                  onChange={(e) =>
-                    setFormData((prevFormData) => {
-                      const updatedFormData = [...prevFormData];
-                      updatedFormData[index] = {
-                        ...updatedFormData[index],
-                        launchtime: new Date(e.target.value),
-                      };
-                      return updatedFormData;
-                    })
-                  }
-                  min={new Date().toISOString().slice(0, 16)}
-                  className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div className="flex flex-col justify-end h-fit">
-                <label
-                  htmlFor="master_passenger"
-                  className="block text-sm font-medium"
-                >
-                  Lead Passenger
-                </label>
-                <AutoComplete
-                  value={elem.master_passenger}
-                  setter={setFormData}
-                  formDataIndex={index}
-                />
-                <div className="flex flex-col justify-end h-fit">
-                  <label
-                    htmlFor={`cant_pax_${index}`}
-                    className="block text-sm font-medium"
-                  >
-                    Number of passengers
-                  </label>
-                  <input
-                    type="number"
-                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
+			<div className="h-[300px] w-[800px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
+				{formData.map((elem, index) => (
+					<div
+						key={index}
+						className="w-[900px] h-[400px] grid grid-auto-rows grid-cols-1 gap-6 sm:grid-cols-2 border-solid border-b-4 border-gray-400 pb-8"
+					>
+						<LocationSelector
+							labelFrom="From"
+							labelTo="To"
+							onSelectFrom={handleSelectFrom}
+							onSelectTo={handleSelectTo}
+							onDistanceCalculated={handleDistanceCalculated}
+							formData={elem}
+							setFormData={setFormData}
+							formDataIndex={index}
+						/>
+						<div className="flex flex-col justify-end h-fit">
+							<label
+								htmlFor="launchtime"
+								className="block text-sm font-medium"
+							>
+								Launch Time
+							</label>
+							<input
+								type="datetime-local"
+								id="launchtime"
+								name="launchtime"
+								value={elem.launchtime
+									.toISOString()
+									.slice(0, 16)}
+								onChange={(e) =>
+									setFormData((prevFormData) => {
+										const updatedFormData = [
+											...prevFormData,
+										]
+										updatedFormData[index] = {
+											...updatedFormData[index],
+											launchtime: new Date(
+												e.target.value
+											),
+										}
+										return updatedFormData
+									})
+								}
+								min={new Date().toISOString().slice(0, 16)}
+								className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+								required
+							/>
+						</div>
+						<div className="flex flex-col justify-end h-fit">
+							<label
+								htmlFor="master_passenger"
+								className="block text-sm font-medium"
+							>
+								Lead Passenger
+							</label>
+							<AutoComplete
+								value={elem.master_passenger}
+								setter={setFormData}
+								formDataIndex={index}
+							/>
+							<div className="flex flex-col justify-end h-fit">
+								<label
+									htmlFor={`cant_pax_${index}`}
+									className="block text-sm font-medium"
+								>
+									Number of passengers
+								</label>
+								<input
+									type="number"
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+		)
     } else if (phase === "second") {
       return (
         <div className="w-[1000px] h-[450px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
