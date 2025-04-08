@@ -40,6 +40,7 @@ export const FlightInfo = ({
 		second_longitude: "",
 		second_latitude: "",
 		flight_time: "00:00",
+		pax: 0,
 	})
 	const [airshipData, setAirshipData] = useState<airshipFormType[]>([
 		{
