@@ -271,223 +271,257 @@ export const RoundTrip = ({
 		)
     } else if (phase === "second") {
       return (
-        <div className="w-[1000px] h-[450px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
-          {airshipData.map((airship, airshipindex) => {
-            const { revenue, roundingDifference } = getPercentage({
-              cost: airship.price_cost.toString(),
-              newPercentage: airship.percentage.toString(),
-            });
-            const totalRevenue = revenue + airship.extra_price;
-            return (
-              <>
-                <div
-                  className="flex flex-col justify-center items-start "
-                  key={airshipindex}
-                >
-                  <label
-                    htmlFor="airship_title"
-                    className="block text-sm font-medium"
-                  >
-                    Airship Name
-                  </label>
-                  <select
-                    onChange={(e) =>
-                      setAirshipData((prevFormData) =>
-                        prevFormData.map((item, index) =>
-                          airshipindex === index
-                            ? {
-                                ...item,
-                                airship_name: e.target.value,
-                              }
-                            : item
-                        )
-                      )
-                    }
-                    value={airship.airship_name}
-                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                  >
-                    <option value="" disabled>
-                      Select an airship
-                    </option>
-                    {airships.map((airship, index) => (
-                      <option value={airship.title} key={index}>
-                        {airship.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+			<div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+				{airshipData.map((airship, airshipindex) => {
+					const { revenue, roundingDifference } = getPercentage({
+						cost: airship.price_cost.toString(),
+						newPercentage: airship.percentage.toString(),
+					})
+					const totalRevenue = revenue + airship.extra_price
+					return (
+						<>
+							<div
+								className="flex flex-col justify-center items-start "
+								key={airshipindex}
+							>
+								<label
+									htmlFor="airship_title"
+									className="block text-sm font-medium"
+								>
+									Airship Name
+								</label>
+								<select
+									onChange={(e) =>
+										setAirshipData((prevFormData) =>
+											prevFormData.map((item, index) =>
+												airshipindex === index
+													? {
+															...item,
+															airship_name:
+																e.target.value,
+													  }
+													: item
+											)
+										)
+									}
+									value={airship.airship_name}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								>
+									<option value="" disabled>
+										Select an airship
+									</option>
+									{airships.map((airship, index) => (
+										<option
+											value={airship.title}
+											key={index}
+										>
+											{airship.title}
+										</option>
+									))}
+								</select>
+							</div>
 
-                <div className="flex flex-col justify-center items-start ">
-                  <label
-                    htmlFor="price_cost"
-                    className="block text-sm font-medium"
-                  >
-                    Price cost
-                  </label>
-                  <input
-                    value={airship.price_cost}
-                    onChange={(e) => {
-                      const newCost = parseInt(e.target.value) || 0;
-                      const { revenue, roundingDifference } = getPercentage({
-                        cost: e.target.value,
-                        newPercentage: airship.percentage.toString(),
-                      });
+							<div className="flex flex-col justify-center items-start ">
+								<label
+									htmlFor="price_cost"
+									className="block text-sm font-medium"
+								>
+									Price cost
+								</label>
+								<input
+									value={airship.price_cost}
+									onChange={(e) => {
+										const newCost =
+											parseInt(e.target.value) || 0
+										const { revenue, roundingDifference } =
+											getPercentage({
+												cost: e.target.value,
+												newPercentage:
+													airship.percentage.toString(),
+											})
 
-                      // Calcular totalRevenue incluyendo el extra_price
-                      const totalRevenue = revenue + (airship.extra_price || 0);
+										// Calcular totalRevenue incluyendo el extra_price
+										const totalRevenue =
+											revenue + (airship.extra_price || 0)
 
-                      setAirshipData((prevFormData) =>
-                        prevFormData.map((item, index) =>
-                          index === airshipindex
-                            ? {
-                                ...item,
-                                price_cost: newCost,
-                                price_revenue: totalRevenue,
-                              }
-                            : item
-                        )
-                      );
-                    }}
-                    type="number"
-                    id="price_cost"
-                    name="price_cost"
-                    style={{
-                      appearance: "textfield",
-                      WebkitAppearance: "none",
-                      MozAppearance: "textfield",
-                    }}
-                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div className="flex flex-col justify-center items-start ">
-                  <label
-                    htmlFor="price_revenue"
-                    className="block text-sm font-medium"
-                  >
-                    Price with{" "}
-                    <input
-                      value={airship.percentage}
-                      type="number"
-                      style={{
-                        appearance: "textfield",
-                        WebkitAppearance: "none",
-                        MozAppearance: "textfield",
-                        width: "20px",
-                      }}
-                      onChange={(e) => {
-                        const newPercentage = parseFloat(e.target.value) || 0;
-                        const { revenue, roundingDifference } = getPercentage({
-                          cost: airship.price_cost.toString(),
-                          newPercentage: e.target.value,
-                        });
+										setAirshipData((prevFormData) =>
+											prevFormData.map((item, index) =>
+												index === airshipindex
+													? {
+															...item,
+															price_cost: newCost,
+															price_revenue:
+																totalRevenue,
+													  }
+													: item
+											)
+										)
+									}}
+									type="number"
+									id="price_cost"
+									name="price_cost"
+									style={{
+										appearance: "textfield",
+										WebkitAppearance: "none",
+										MozAppearance: "textfield",
+									}}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+							</div>
+							<div className="flex flex-col justify-center items-start ">
+								<label
+									htmlFor="price_revenue"
+									className="block text-sm font-medium"
+								>
+									Price with{" "}
+									<input
+										value={airship.percentage}
+										type="number"
+										style={{
+											appearance: "textfield",
+											WebkitAppearance: "none",
+											MozAppearance: "textfield",
+											width: "20px",
+										}}
+										onChange={(e) => {
+											const newPercentage =
+												parseFloat(e.target.value) || 0
+											const {
+												revenue,
+												roundingDifference,
+											} = getPercentage({
+												cost: airship.price_cost.toString(),
+												newPercentage: e.target.value,
+											})
 
-                        // Calcular totalRevenue incluyendo el extra_price
-                        const totalRevenue =
-                          revenue + (airship.extra_price || 0);
+											// Calcular totalRevenue incluyendo el extra_price
+											const totalRevenue =
+												revenue +
+												(airship.extra_price || 0)
 
-                        setAirshipData((prevFormData) =>
-                          prevFormData.map((item, index) =>
-                            index === airshipindex
-                              ? {
-                                  ...item,
-                                  percentage: newPercentage,
-                                  price_revenue: totalRevenue,
-                                }
-                              : item
-                          )
-                        );
-                      }}
-                      placeholder="20%"
-                      className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    />
-                    % commission +{" "}
-                    <input
-                      value={
-                        airship.extra_price === 0 ? "" : airship.extra_price
-                      }
-                      type="number"
-                      style={{
-                        appearance: "textfield",
-                        WebkitAppearance: "none",
-                        MozAppearance: "textfield",
-                        width: "35px",
-                      }}
-                      onChange={(e) => {
-                        const newExtraPrice = parseFloat(e.target.value) || 0;
-                        const { revenue, roundingDifference } = getPercentage({
-                          cost: airship.price_cost.toString(),
-                          newPercentage: airship.percentage.toString(),
-                        });
+											setAirshipData((prevFormData) =>
+												prevFormData.map(
+													(item, index) =>
+														index === airshipindex
+															? {
+																	...item,
+																	percentage:
+																		newPercentage,
+																	price_revenue:
+																		totalRevenue,
+															  }
+															: item
+												)
+											)
+										}}
+										placeholder="20%"
+										className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+									/>
+									% commission +{" "}
+									<input
+										value={
+											airship.extra_price === 0
+												? ""
+												: airship.extra_price
+										}
+										type="number"
+										style={{
+											appearance: "textfield",
+											WebkitAppearance: "none",
+											MozAppearance: "textfield",
+											width: "35px",
+										}}
+										onChange={(e) => {
+											const newExtraPrice =
+												parseFloat(e.target.value) || 0
+											const {
+												revenue,
+												roundingDifference,
+											} = getPercentage({
+												cost: airship.price_cost.toString(),
+												newPercentage:
+													airship.percentage.toString(),
+											})
 
-                        // Calcular totalRevenue con el nuevo extra_price
-                        const totalRevenue = revenue + newExtraPrice;
+											// Calcular totalRevenue con el nuevo extra_price
+											const totalRevenue =
+												revenue + newExtraPrice
 
-                        setAirshipData((prevFormData) =>
-                          prevFormData.map((item, index) =>
-                            index === airshipindex
-                              ? {
-                                  ...item,
-                                  extra_price: newExtraPrice,
-                                  price_revenue: totalRevenue,
-                                }
-                              : item
-                          )
-                        );
-                      }}
-                      placeholder="Extra"
-                      className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    />
-                  </label>
+											setAirshipData((prevFormData) =>
+												prevFormData.map(
+													(item, index) =>
+														index === airshipindex
+															? {
+																	...item,
+																	extra_price:
+																		newExtraPrice,
+																	price_revenue:
+																		totalRevenue,
+															  }
+															: item
+												)
+											)
+										}}
+										placeholder="Extra"
+										className="w-[4%][appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+									/>
+								</label>
 
-                  <input
-                    id="price_revenue"
-                    name="price_revenue"
-                    value={totalRevenue}
-                    onChange={(e) =>
-                      setAirshipData((prevFormData) =>
-                        prevFormData.map((item, index) =>
-                          index === airshipindex
-                            ? {
-                                ...item,
-                                price_revenue: parseInt(e.target.value) || 0,
-                              }
-                            : item
-                        )
-                      )
-                    }
-                    className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                  <p className="text-sm text-gray-500">
-                    Rounding: {roundingDifference.toFixed(2)}
-                  </p>
-                </div>
+								<input
+									id="price_revenue"
+									name="price_revenue"
+									value={totalRevenue}
+									onChange={(e) =>
+										setAirshipData((prevFormData) =>
+											prevFormData.map((item, index) =>
+												index === airshipindex
+													? {
+															...item,
+															price_revenue:
+																parseInt(
+																	e.target
+																		.value
+																) || 0,
+													  }
+													: item
+											)
+										)
+									}
+									className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+									required
+								/>
+								<p className="text-sm text-gray-500">
+									Rounding: {roundingDifference.toFixed(2)}
+								</p>
+							</div>
 
-                {airshipData.length > 0 &&
-                airshipData.length !== airshipindex + 1 ? (
-                  <div className="flex items-center">
-                    <FaRegMinusSquare
-                      onClick={() => subtractAirshipOption(airshipindex)}
-                      className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <FaRegPlusSquare
-                      onClick={addAirshipOption}
-                      className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
-                    />
-                  </div>
-                )}
-              </>
-            );
-          })}
-        </div>
-      );
+							{airshipData.length > 0 &&
+							airshipData.length !== airshipindex + 1 ? (
+								<div className="flex items-center">
+									<FaRegMinusSquare
+										onClick={() =>
+											subtractAirshipOption(airshipindex)
+										}
+										className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
+									/>
+								</div>
+							) : (
+								<div className="flex items-center">
+									<FaRegPlusSquare
+										onClick={addAirshipOption}
+										className="mx-auto cursor-pointer h-10 w-10 text-gray-300"
+									/>
+								</div>
+							)}
+						</>
+					)
+				})}
+			</div>
+		)
     } else {
       return (
-        <div className="h-[450px] w-[1000px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
+        <div className="h-[280px] w-[800px] mb-6 grid grid-cols-1 gap-12 sm:grid-cols-2 overflow-y-auto">
           {formData.map((elem) => (
             <div>
               <h2>To: {elem.to === "" ? "TBD" : elem.to}</h2>
