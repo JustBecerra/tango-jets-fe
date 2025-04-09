@@ -9,14 +9,10 @@ if (!id) return Astro.redirect("/404")
 const flightData = await getFlightById(parseInt(id as string))
 ---
 
-<Layout title="Scheduler">
+<Layout title="edit-flight">
 	<RouteGuard client:only="react">
 		<div class="flex">
-			 <AddLegFrame
-				flightID={id}
-				flightData={flightData}
-				client:load
-			/> 
+			<AddLegFrame flightID={id} flightData={flightData} client:load />
 		</div>
 	</RouteGuard>
 </Layout>

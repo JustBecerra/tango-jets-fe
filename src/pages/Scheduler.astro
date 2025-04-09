@@ -8,7 +8,7 @@ const flightID = url.searchParams.get("flightID")
 const flightData = await getFlightById(parseInt(flightID as string))
 ---
 
-<Layout title="Scheduler">
+<Layout title="edit-flight">
 	<RouteGuard client:only="react">
 		<div class="flex">
 			<SchedulerFrame
