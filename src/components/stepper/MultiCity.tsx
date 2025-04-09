@@ -207,7 +207,7 @@ export const MultiCity = ({
 	const PhaseFields = () => {
 		if (phase === "first") {
 			return (
-				<div className="w-[800px] h-[350px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
+				<div className="h-[300px] w-[800px] flex flex-col gap-y-16 mb-6 overflow-y-auto">
 					{formData.map((elem, index) => (
 						<div
 							key={index}

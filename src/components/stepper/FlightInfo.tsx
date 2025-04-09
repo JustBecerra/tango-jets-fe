@@ -60,20 +60,22 @@ export const FlightInfo = ({
 		setLoading(true)
 
 		const name = getCookie("username")
-		const transformedFlightData = {
-			launchtime: formData.launchtime.toISOString().slice(0, 16),
-			to: formData.to,
-			from: formData.from,
-			master_passenger: formData.master_passenger,
-			createdby: name,
-			type_of: formData.type_of,
-			associated_to: formData.associated_to,
-			first_longitude: formData.first_longitude,
-			first_latitude: formData.first_latitude,
-			second_longitude: formData.second_longitude,
-			second_latitude: formData.second_latitude,
-			flight_time: formData.flight_time,
-		}
+		const transformedFlightData = [
+			{
+				launchtime: formData.launchtime.toISOString().slice(0, 16),
+				to: formData.to,
+				from: formData.from,
+				master_passenger: formData.master_passenger,
+				createdby: name,
+				type_of: formData.type_of,
+				associated_to: formData.associated_to,
+				first_longitude: formData.first_longitude,
+				first_latitude: formData.first_latitude,
+				second_longitude: formData.second_longitude,
+				second_latitude: formData.second_latitude,
+				flight_time: formData.flight_time,
+			},
+		]
 
 		try {
 			const newFlights = await addFlight(transformedFlightData)
