@@ -13,18 +13,10 @@ import { StepperButtons } from "../buttons/StepperButtons"
 interface props {
 	phase: string
 	setPhase: React.Dispatch<React.SetStateAction<string>>
-	flightData: Flight | null
-	flightID: string | null
 	setShowToast: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const MultiCity = ({
-	phase,
-	setPhase,
-	flightID,
-	flightData,
-	setShowToast,
-}: props) => {
+export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 	const { airships } = useStore((state) => state)
 	const [distance, setDistance] = useState<number | null>(null)
 	const [loading, setLoading] = useState(false)
@@ -33,10 +25,9 @@ export const MultiCity = ({
 			launchtime: new Date(),
 			to: "",
 			from: "",
-			master_passenger:
-				flightData !== null ? flightData.master_passenger : "",
+			master_passenger: "",
 			type_of: "initial",
-			associated_to: flightID ? flightID : "",
+			associated_to: "",
 			first_longitude: "",
 			first_latitude: "",
 			second_longitude: "",
@@ -48,10 +39,9 @@ export const MultiCity = ({
 			launchtime: new Date(),
 			to: "",
 			from: "",
-			master_passenger:
-				flightData !== null ? flightData.master_passenger : "",
+			master_passenger: "",
 			type_of: "connection",
-			associated_to: flightID ? flightID : "",
+			associated_to: "",
 			first_longitude: "",
 			first_latitude: "",
 			second_longitude: "",
@@ -63,10 +53,9 @@ export const MultiCity = ({
 			launchtime: new Date(),
 			to: "",
 			from: "",
-			master_passenger:
-				flightData !== null ? flightData.master_passenger : "",
+			master_passenger: "",
 			type_of: "connection",
-			associated_to: flightID ? flightID : "",
+			associated_to: "",
 			first_longitude: "",
 			first_latitude: "",
 			second_longitude: "",
@@ -314,16 +303,9 @@ export const MultiCity = ({
 														launchtime: new Date(),
 														to: "",
 														from: "",
-														master_passenger:
-															flightData !== null
-																? flightData.master_passenger
-																: "",
-														type_of: flightID
-															? "connection"
-															: "initial",
-														associated_to: flightID
-															? flightID
-															: "",
+														master_passenger: "",
+														type_of: "connection",
+														associated_to: "",
 														first_longitude: "",
 														first_latitude: "",
 														second_longitude: "",
