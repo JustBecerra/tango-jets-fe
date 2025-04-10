@@ -1,55 +1,42 @@
-import { useState } from "react";
-import { ModalStepper } from "../stepper/ModalStepper";
-import { addFlight, getFlights } from "../../../lib/actions/flights/actions";
-import { getCookie } from "../../utils/getCookie";
-import { flightScheduledMessage } from "../../utils/emailMessage";
-import { HiCheck } from "react-icons/hi";
-import { FlightInfo } from "../stepper/FlightInfo";
-import { StepperButtons } from "../buttons/StepperButtons";
-import useStore from "../../store/store";
-import LoaderSpinner from "../Loaders/LoaderSpinner";
-import { sendEmail } from "../../../lib/actions/emails/actions";
-import type { Flight } from "../table/TableModal";
-import { MultiCity } from "../stepper/MultiCity";
-import { RoundTrip } from "../stepper/RoundTrip";
+import { useState } from "react"
+import { HiCheck } from "react-icons/hi"
+import { FlightInfo } from "../stepper/FlightInfo"
+import { MultiCity } from "../stepper/MultiCity"
+import { RoundTrip } from "../stepper/RoundTrip"
 export interface formType {
-  launchtime: Date;
-  to: string;
-  from: string;
-  master_passenger: string;
-  type_of: string;
-  associated_to: string;
-  first_longitude: string;
-  first_latitude: string;
-  second_longitude: string;
-  second_latitude: string;
-  flight_time: string;
-  pax: number;
+	launchtime: Date
+	to: string
+	from: string
+	master_passenger: string
+	type_of: string
+	associated_to: string
+	first_longitude: string
+	first_latitude: string
+	second_longitude: string
+	second_latitude: string
+	flight_time: string
+	pax: number
 }
 
 export interface airshipFormType {
-  price_cost: number;
-  price_revenue: number;
-  airship_name: string;
-  percentage: number;
-  extra_price: number;
+	price_cost: number
+	price_revenue: number
+	airship_name: string
+	percentage: number
+	extra_price: number
 }
 
-const SchedulerFrame = ({
-  flightData,
-  flightID,
-}: {
-  flightData: Flight | null;
-  flightID: string | null;
-}) => {
-  const [phase, setPhase] = useState("first");
-  const [showToast, setShowToast] = useState(false);
+const SchedulerFrame = () => {
+	const [phase, setPhase] = useState("first")
+	const [showToast, setShowToast] = useState(false)
+	const [activeComponent, setActiveComponent] = useState<string>("FlightInfo")
 
-  const [activeComponent, setActiveComponent] = useState<
-    "FlightInfo" | "RoundTrip" | "MultiCity"
-  >("FlightInfo");
+	const handleSelectComponent = (activeComponent: string) => {
+		setActiveComponent(activeComponent)
+		setPhase("first")
+	}
 
-  return (
+	return (
 		<div className="flex max-h-[90vh] md:h-[600px] h-[800px] w-full max-w-[1400px] rounded-3xl bg-white shadow-xl">
 			{showToast && (
 				<div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
@@ -78,7 +65,7 @@ const SchedulerFrame = ({
 					<div className="flex space-x-3">
 						<button
 							type="button"
-							onClick={() => setActiveComponent("FlightInfo")}
+							onClick={() => handleSelectComponent("FlightInfo")}
 							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
 								activeComponent === "FlightInfo"
 									? "bg-blue-500 text-white shadow-sm"
@@ -89,7 +76,7 @@ const SchedulerFrame = ({
 						</button>
 						<button
 							type="button"
-							onClick={() => setActiveComponent("RoundTrip")}
+							onClick={() => handleSelectComponent("RoundTrip")}
 							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
 								activeComponent === "RoundTrip"
 									? "bg-blue-500 text-white shadow-sm"
@@ -100,7 +87,7 @@ const SchedulerFrame = ({
 						</button>
 						<button
 							type="button"
-							onClick={() => setActiveComponent("MultiCity")}
+							onClick={() => handleSelectComponent("MultiCity")}
 							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
 								activeComponent === "MultiCity"
 									? "bg-blue-500 text-white shadow-sm"
@@ -118,31 +105,25 @@ const SchedulerFrame = ({
 						<FlightInfo
 							phase={phase}
 							setPhase={setPhase}
-							flightData={flightData}
-							flightID={flightID}
 							setShowToast={setShowToast}
 						/>
 					) : activeComponent === "RoundTrip" ? (
 						<RoundTrip
 							phase={phase}
 							setPhase={setPhase}
-							flightData={flightData}
-							flightID={flightID}
 							setShowToast={setShowToast}
 						/>
 					) : (
 						<MultiCity
 							phase={phase}
 							setPhase={setPhase}
-							flightData={flightData}
-							flightID={flightID}
 							setShowToast={setShowToast}
 						/>
 					)}
 				</div>
 			</div>
 		</div>
-  )
-};
+	)
+}
 
 export default SchedulerFrame
