@@ -48,141 +48,140 @@ const fetchAirports = async (
 
 // Función para calcular distancia con la fórmula de Haversine
 const calculateDistance = (
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number,
-    setFormData: React.Dispatch<React.SetStateAction<formType[]>>,
-    index?: number
+	lat1: number,
+	lon1: number,
+	lat2: number,
+	lon2: number,
+	setFormData: React.Dispatch<React.SetStateAction<formType[]>>,
+	index?: number
 ): number => {
-    if (!lat1 || !lon1 || !lat2 || !lon2) return 0
+	if (!lat1 || !lon1 || !lat2 || !lon2) return 0
 
-    const R = 6371 // Radio de la Tierra en km
-    const dLat = (lat2 - lat1) * (Math.PI / 180)
-    const dLon = (lon2 - lon1) * (Math.PI / 180)
-    if (index) {
-        setFormData((prevFormData: any) => {
-            if (Array.isArray(prevFormData)) {
-                const updatedFormData = [...prevFormData]
-                updatedFormData[index] = {
-                    ...updatedFormData[index],
-                    first_latitude: lat1.toString(),
-                    first_longitude: lon1.toString(),
-                    second_latitude: lat2.toString(),
-                    second_longitude: lon2.toString(),
-                }
-                return updatedFormData
-            }
-            return prevFormData
-        })
-    } 
+	const R = 6371 // Radio de la Tierra en km
+	const dLat = (lat2 - lat1) * (Math.PI / 180)
+	const dLon = (lon2 - lon1) * (Math.PI / 180)
 
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    return Math.round(R * c) // Distancia en km
+	if (index !== undefined) {
+		setFormData((prevFormData: any) => {
+			if (Array.isArray(prevFormData)) {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[index] = {
+					...updatedFormData[index],
+					first_latitude: lat1.toString(),
+					first_longitude: lon1.toString(),
+					second_latitude: lat2.toString(),
+					second_longitude: lon2.toString(),
+				}
+				return updatedFormData
+			}
+			return prevFormData
+		})
+	}
+
+	const a =
+		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos(lat1 * (Math.PI / 180)) *
+			Math.cos(lat2 * (Math.PI / 180)) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2)
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+	return Math.round(R * c) // Distancia en km
 }
 
 // Función para calcular el tiempo de vuelo
 const calculateFlightTime = (distance: number, speed = 900): string => {
-    if (!distance) return "00:00"
+	if (!distance) return "00:00"
 
-    const timeInHours = distance / speed // Get time in decimal hours
-    const hours = Math.floor(timeInHours) // extraigo tiempo en horas
-    const minutes = Math.round((timeInHours - hours) * 60) // extraigo tiempo en minutos
+	const timeInHours = distance / speed // Get time in decimal hours
+	const hours = Math.floor(timeInHours) // extraigo tiempo en horas
+	const minutes = Math.round((timeInHours - hours) * 60) // extraigo tiempo en minutos
 
-    // formateo para que este separado por :
-    const formattedTime = `${String(hours).padStart(2, "0")}:${String(
-        minutes
-    ).padStart(2, "0")}`
+	// formateo para que este separado por :
+	const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+		minutes
+	).padStart(2, "0")}`
 
-    return formattedTime
+	return formattedTime
 }
 
 const LocationSelector: React.FC<CsvSelectProps> = ({
-    labelFrom = "From",
-    labelTo = "To",
-    onSelectFrom,
-    onSelectTo,
-    onDistanceCalculated,
-    formData,
-    setFormData,
-    formDataIndex,
+	labelFrom = "From",
+	labelTo = "To",
+	onSelectFrom,
+	onSelectTo,
+	onDistanceCalculated,
+	formData,
+	setFormData,
+	formDataIndex,
 }) => {
-    const [fromAirport, setFromAirport] = useState<any>(null)
-    const [toAirport, setToAirport] = useState<any>(null)
-    const [fromResults, setFromResults] = useState<any[]>([])
-    const [toResults, setToResults] = useState<any[]>([])
-    const [distance, setDistance] = useState<number | null>(null)
+	const [fromAirport, setFromAirport] = useState<any>(null)
+	const [toAirport, setToAirport] = useState<any>(null)
+	const [fromResults, setFromResults] = useState<any[]>([])
+	const [toResults, setToResults] = useState<any[]>([])
+	const [distance, setDistance] = useState<number | null>(null)
 
-    const fromRef = useRef<HTMLDivElement>(null)
-    const toRef = useRef<HTMLDivElement>(null)
+	const fromRef = useRef<HTMLDivElement>(null)
+	const toRef = useRef<HTMLDivElement>(null)
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (
-            fromRef.current &&
-            !fromRef.current.contains(event.target as Node)
-        ) {
-            setFromResults([])
-        }
-        if (toRef.current && !toRef.current.contains(event.target as Node)) {
-            setToResults([])
-        }
-    }
+	const handleClickOutside = (event: MouseEvent) => {
+		if (
+			fromRef.current &&
+			!fromRef.current.contains(event.target as Node)
+		) {
+			setFromResults([])
+		}
+		if (toRef.current && !toRef.current.contains(event.target as Node)) {
+			setToResults([])
+		}
+	}
 
-    const handleFlightTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/[^0-9:]/g, "") // Allow only numbers and ":"
+	const handleFlightTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let value = e.target.value.replace(/[^0-9:]/g, "") // Allow only numbers and ":"
 
-        // If user deletes everything, allow empty input
-        if (value === "") {
-            setFormData((prevFormData: formType[]) => {
-                const updatedFormData = [...prevFormData]
-                updatedFormData[formDataIndex] = {
-                    ...updatedFormData[formDataIndex],
-                    flight_time: "",
-                }
-                    
-                return updatedFormData
-            })
-        }
+		// If user deletes everything, allow empty input
+		if (value === "") {
+			setFormData((prevFormData: formType[]) => {
+				const updatedFormData = [...prevFormData]
+				updatedFormData[formDataIndex] = {
+					...updatedFormData[formDataIndex],
+					flight_time: "",
+				}
 
-        // Extract hours and minutes
-        const parts = value.split(":")
-        let hours = parts[0] ? parseInt(parts[0], 10) : 0
-        let minutes = parts[1] ? parseInt(parts[1], 10) : 0
+				return updatedFormData
+			})
+		}
 
-        // Ensure minutes are between 0-59
-        if (minutes > 59) minutes = 59
+		// Extract hours and minutes
+		const parts = value.split(":")
+		let hours = parts[0] ? parseInt(parts[0], 10) : 0
+		let minutes = parts[1] ? parseInt(parts[1], 10) : 0
 
-        // Format time properly
-        const formattedTime = `${String(hours).padStart(2, "0")}:${String(
-            minutes
-        ).padStart(2, "0")}`
+		// Ensure minutes are between 0-59
+		if (minutes > 59) minutes = 59
 
-        setFormData((prevFormData: any) => {
-            
-                const updatedFormData = [...prevFormData]
-                updatedFormData[formDataIndex] = {
-                    ...updatedFormData[formDataIndex],
-                    flight_time: formattedTime,
-                }
-                return updatedFormData
-            
-        })
-    }
+		// Format time properly
+		const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+			minutes
+		).padStart(2, "0")}`
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, [])
+		setFormData((prevFormData: any) => {
+			const updatedFormData = [...prevFormData]
+			updatedFormData[formDataIndex] = {
+				...updatedFormData[formDataIndex],
+				flight_time: formattedTime,
+			}
+			return updatedFormData
+		})
+	}
 
-    return (
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside)
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside)
+		}
+	}, [])
+
+	return (
 		<div className="flex flex-col justify-end h-fit">
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				{/* Input "From" */}
@@ -318,10 +317,10 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 											})
 										if (fromAirport) {
 											const dist = calculateDistance(
-												fromAirport.lat,
-												fromAirport.lon,
 												place.lat,
 												place.lon,
+												fromAirport.lat,
+												fromAirport.lon,
 												setFormData,
 												formDataIndex
 											)
