@@ -3,19 +3,12 @@ import { getFlightById } from "../../lib/actions/flights/actions"
 import { RouteGuard } from "../components/routeguard"
 import SchedulerFrame from "../components/scheduler/SchedulerFrame"
 import Layout from "../layouts/Layout.astro"
-const url = new URL(Astro.request.url)
-const flightID = url.searchParams.get("flightID")
-const flightData = await getFlightById(parseInt(flightID as string))
 ---
 
-<Layout title="Scheduler">
+<Layout title="edit-flight">
 	<RouteGuard client:only="react">
 		<div class="flex">
-			<SchedulerFrame
-				flightID={flightID}
-				flightData={flightData}
-				client:load
-			/>
+			<SchedulerFrame client:load />
 		</div>
 	</RouteGuard>
 </Layout>

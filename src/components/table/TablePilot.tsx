@@ -73,7 +73,7 @@ const TablePilot = ({ caseType }: TableProps) => {
 	const hiddenColumns = ["id"]
 
 	return (
-		<>
+		<div className="flex flex-col items-center justify-center min-h-screen flex-1 gap-8">
 			<ColumnToggles
 				toggleColumn={(column) =>
 					setCollapsedColumns((prev) =>
@@ -188,7 +188,7 @@ const TablePilot = ({ caseType }: TableProps) => {
 				totalPages={totalPages}
 				handlePageChange={handlePageChange}
 			/>
-		</>
+		</div>
 	)
 }
 

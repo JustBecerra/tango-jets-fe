@@ -1,0 +1,18 @@
+---
+import { getFlightById } from "../../../lib/actions/flights/actions"
+import AddLegFrame from "../../components/legFrame/AddLegFrame"
+import { RouteGuard } from "../../components/routeguard"
+import Layout from "../../layouts/Layout.astro"
+
+const { id } = Astro.params
+if (!id) return Astro.redirect("/404")
+const flightData = await getFlightById(parseInt(id as string))
+---
+
+<Layout title="edit-flight">
+	<RouteGuard client:only="react">
+		<div class="flex">
+			<AddLegFrame flightID={id} flightData={flightData} client:load />
+		</div>
+	</RouteGuard>
+</Layout>

@@ -30,27 +30,25 @@ const RecentlyLanded = ({ flights }: props) => {
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
 			<table
-				className={`min-w-full divide-y divide-gray-200 ${
-					flights.length === 0 && "h-[300px]"
-				} `}
+				className={`min-w-full table-fixed divide-y divide-gray-200 `}
 			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
 						<th
-							colSpan={4}
+							colSpan={3}
 							className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-sm"
 						>
 							🛬 Recently Landed
 						</th>
 					</tr>
 					<tr>
-						<th className="px-6 py-3  text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							Airship
 						</th>
-						<th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							From-To
 						</th>
-						<th className="px-6 py-3 hidden lg:table-cell text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							Time
 						</th>
 					</tr>
@@ -58,7 +56,7 @@ const RecentlyLanded = ({ flights }: props) => {
 				<tbody className="bg-white divide-y divide-gray-200 rounded-b-lg">
 					{flights.length === 0 ? (
 						<tr className="h-full">
-							<td className="h-full" colSpan={3}>
+							<td colSpan={3}>
 								<div className="flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50">
 									<LoaderSpinner />
 								</div>
@@ -73,14 +71,14 @@ const RecentlyLanded = ({ flights }: props) => {
 									(window.location.href = `/trip/${flight.id}`)
 								}
 							>
-								<td className="px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
+								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{flight.airship_name}
 								</td>
-								<td className="px-6 py-4 text-center whitespace-nowrap text-xs text-gray-700">
+								<td className="w-1/3 px-6 py-4 text-center text-xs text-gray-700">
 									{flight.from}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
-										className="inline-block w-4 h-4 mx-0.5 text-gray-500"
+										className="inline-block w-4 h-4 mx-1 text-gray-500"
 										viewBox="0 0 24 24"
 										fill="currentColor"
 									>
@@ -88,7 +86,7 @@ const RecentlyLanded = ({ flights }: props) => {
 									</svg>
 									{flight.to}
 								</td>
-								<td className="px-6 py-4 hidden lg:table-cell text-center whitespace-nowrap text-xs text-gray-700">
+								<td className="w-1/3 px-6 py-4 text-center text-xs text-gray-700">
 									{formatLandingTime(flight.launchtime)}
 								</td>
 							</tr>
