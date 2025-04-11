@@ -2,6 +2,8 @@ import React from 'react'
 import { StepperHeader } from './StepperHeader'
 import type { Airship, Client, Flight } from '../table/TableModal'
 import { ProgressStepper } from "./ProgressStepper"
+import { StepperFlightInfo } from "./StepperFlightInfo"
+import FlightSegmentsPage from "./FlightSegment"
 
 interface props {
 	currentFlight: Flight
@@ -18,13 +20,26 @@ export const StepperStructure = ({
 		listClients.find(
 			(client) => client.fullname === currentFlight.master_passenger
 		) || "John Doe"
+	console.log({ currentFlight })
+	const coordinates = [
+		{
+			latitude: currentFlight.first_latitude,
+			longitude: currentFlight.first_longitude,
+		},
+		{
+			latitude: currentFlight.second_latitude,
+			longitude: currentFlight.second_longitude,
+		},
+	]
 	return (
-		<div className="flex flex-col h-full w-full justify-center items-center gap-8">
+		<div className="flex flex-col h-full w-full justify-start items-center gap-8">
 			<StepperHeader
 				currentFlight={currentFlight}
 				lead_passenger={lead_passenger}
 			/>{" "}
 			<ProgressStepper />
+			<StepperFlightInfo coordinates={coordinates} />
+			<FlightSegmentsPage />
 		</div>
 	)
 }
