@@ -37,7 +37,7 @@ export const StepperStructure = ({
 				currentFlight={currentFlight}
 				lead_passenger={lead_passenger}
 			/>{" "}
-			<ProgressStepper />
+			<ProgressStepper currentStep={currentFlight.phase} />
 			<StepperFlightInfo coordinates={coordinates} />
 			<FlightSegmentsPage />
 		</div>
