@@ -1,0 +1,205 @@
+import TravelMap from "../cards/TravelMap"
+
+interface props {
+	coordinates: {
+		latitude: string
+		longitude: string
+	}[]
+}
+
+export const StepperFlightInfo = ({ coordinates }: props) => {
+	return (
+		<div className=" w-[80%] space-y-4">
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div className="bg-white rounded-lg shadow-sm overflow-hidden col-span-1 md:col-span-1">
+					<div className="p-4 flex justify-between items-center border-b">
+						<div className="flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-5 w-5 text-gray-500 mr-2"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							<h2 className="text-gray-700 font-medium">Route</h2>
+						</div>
+					</div>
+					<div className="w-[500px] h-[300px] p-0">
+						<TravelMap Coordinates={coordinates} />
+					</div>
+				</div>
+
+				<div className="bg-white rounded-lg shadow-sm overflow-hidden col-span-1 md:col-span-2">
+					<div className="p-4 flex justify-between items-center border-b">
+						<div className="flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-5 w-5 text-gray-500 mr-2"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11.43a1 1 0 00-.725-.962l-5-1.429a1 1 0 01.725-1.962l5 1.429a1 1 0 00.725-.038l5-1.429a1 1 0 011.169 1.409l-7 14z" />
+							</svg>
+							<h2 className="text-gray-700 font-medium">
+								Aircraft
+							</h2>
+						</div>
+						<button className="text-gray-500 px-3 py-1 rounded-md border border-gray-200 flex items-center text-sm">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-4 w-4 mr-1"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+							</svg>
+							Edit
+						</button>
+					</div>
+
+					<div className="bg-amber-50 border-l-4 border-amber-400 p-4 m-4">
+						<div className="flex">
+							<div className="ml-3">
+								<p className="text-sm text-amber-700">
+									<span className="font-medium">
+										Conflicting calendar events:
+									</span>
+								</p>
+								<ul className="list-disc ml-5 mt-1 text-xs text-amber-700">
+									<li>
+										Needs repositioning to KVNY (03/19/25
+										12:24 PDT - 06/25/25 08:18 PDT)
+										(03/19/2025 19:24 Z - 06/25/2025 15:18
+										Z)
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div className="col-span-1">
+							<h1 className="text-4xl font-bold text-gray-700">
+								N585JC
+							</h1>
+							<p className="text-gray-500">Gulfstream G-V</p>
+						</div>
+
+						<div className="col-span-1">
+							<h3 className="text-sm text-gray-400 uppercase">
+								POSITIONING FROM
+							</h3>
+							<p className="text-xl font-bold text-gray-400">
+								FXE
+							</p>
+							<p className="text-sm text-gray-400">
+								Fort Lauderdale Executive Intl
+							</p>
+						</div>
+
+						<div className="col-span-1">
+							<h3 className="text-sm text-gray-400 uppercase">
+								POSITIONING TO
+							</h3>
+							<p className="text-xl font-bold text-gray-400">
+								VNY
+							</p>
+							<p className="text-sm text-gray-400">Van Nuys</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div className="bg-white rounded-lg shadow-sm overflow-hidden">
+					<div className="p-4 flex justify-between items-center border-b">
+						<div className="flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-5 w-5 text-gray-500 mr-2"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							<h2 className="text-gray-700 font-medium">Pax</h2>
+						</div>
+						<button className="text-gray-500 px-3 py-1 rounded-md border border-gray-200 flex items-center text-sm">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-4 w-4 mr-1"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+							</svg>
+							Edit
+						</button>
+					</div>
+					<div className="p-8 flex justify-center items-center">
+						<h1 className="text-7xl font-bold text-gray-700">11</h1>
+					</div>
+				</div>
+
+				<div className="bg-white rounded-lg shadow-sm overflow-hidden">
+					<div className="p-4 flex justify-between items-center border-b">
+						<div className="flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-5 w-5 text-gray-500 mr-2"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							<h2 className="text-gray-700 font-medium">
+								Internal notes
+							</h2>
+						</div>
+					</div>
+					<div className="p-4">
+						<ul className="space-y-4">
+							<li className="flex justify-between">
+								<span className="text-gray-700">
+									Crew itinerary notes
+								</span>
+								<span className="text-gray-400 text-sm">
+									There are currently no notes
+								</span>
+							</li>
+							<li className="border-t pt-4 flex justify-between">
+								<span className="text-gray-700">
+									Internal customer profile
+								</span>
+								<span className="text-gray-400 text-sm">
+									There is currently no profile
+								</span>
+							</li>
+							<li className="border-t pt-4 flex justify-between">
+								<span className="text-gray-700">
+									N585JC internal notes
+								</span>
+								<span className="text-gray-400 text-sm">
+									There are currently no notes
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}

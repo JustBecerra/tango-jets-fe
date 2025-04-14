@@ -19,6 +19,7 @@ interface props {
 }
 
 const Travelmap = ({ Coordinates }: props) => {
+	console.log({ Coordinates })
 	useEffect(() => {
 		const points = Coordinates.map((elem) =>
 			fromLonLat([parseInt(elem.longitude), parseInt(elem.latitude)])
