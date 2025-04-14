@@ -45,6 +45,7 @@ export const StepperStructure = ({
 				chosenAirship={chosenAirship}
 				to={currentFlight.to}
 				from={currentFlight.from}
+				totalPassengers={currentFlight.companion_passengers.length + 1}
 			/>
 			<FlightSegmentsPage />
 		</div>

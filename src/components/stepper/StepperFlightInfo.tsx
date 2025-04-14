@@ -9,6 +9,7 @@ interface props {
 	chosenAirship: Airship
 	to: string
 	from: string
+	totalPassengers: number
 }
 
 export const StepperFlightInfo = ({
@@ -16,6 +17,7 @@ export const StepperFlightInfo = ({
 	chosenAirship,
 	to,
 	from,
+	totalPassengers,
 }: props) => {
 	const { title, size } = chosenAirship
 	return (
@@ -140,7 +142,9 @@ export const StepperFlightInfo = ({
 						</button>
 					</div>
 					<div className="p-8 flex justify-center items-center">
-						<h1 className="text-7xl font-bold text-gray-700">11</h1>
+						<h1 className="text-7xl font-bold text-gray-700">
+							{totalPassengers}
+						</h1>
 					</div>
 				</div>
 
@@ -160,35 +164,35 @@ export const StepperFlightInfo = ({
 								/>
 							</svg>
 							<h2 className="text-gray-700 font-medium">
-								Internal notes
+								Email actions
 							</h2>
 						</div>
 					</div>
 					<div className="p-4">
 						<ul className="space-y-4">
 							<li className="flex justify-between">
-								<span className="text-gray-700">
-									Crew itinerary notes
-								</span>
-								<span className="text-gray-400 text-sm">
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Quote
+								</button>
+								{/* <span className="text-gray-400 text-sm">
 									There are currently no notes
-								</span>
+								</span> */}
 							</li>
 							<li className="border-t pt-4 flex justify-between">
-								<span className="text-gray-700">
-									Internal customer profile
-								</span>
-								<span className="text-gray-400 text-sm">
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Contract
+								</button>
+								{/* <span className="text-gray-400 text-sm">
 									There is currently no profile
-								</span>
+								</span> */}
 							</li>
 							<li className="border-t pt-4 flex justify-between">
-								<span className="text-gray-700">
-									N585JC internal notes
-								</span>
-								<span className="text-gray-400 text-sm">
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Invoice
+								</button>
+								{/* <span className="text-gray-400 text-sm">
 									There are currently no notes
-								</span>
+								</span> */}
 							</li>
 						</ul>
 					</div>
