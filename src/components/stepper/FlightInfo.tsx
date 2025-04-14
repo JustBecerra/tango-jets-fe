@@ -13,8 +13,8 @@ import { StepperButtons } from "../buttons/StepperButtons";
 interface props {
   phase: string;
   setPhase: React.Dispatch<React.SetStateAction<string>>;
-  flightData: Flight | null;
-  flightID: string | null;
+  flightData?: Flight | null;
+  flightID?: string | null;
   setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -31,7 +31,7 @@ export const FlightInfo = ({
     launchtime: new Date(),
     to: "",
     from: "",
-    master_passenger: flightData !== null ? flightData.master_passenger : "",
+    master_passenger: flightData ? flightData.master_passenger : "",
     type_of: flightID ? "connection" : "initial",
     associated_to: flightID ? flightID : "",
     first_longitude: "",
