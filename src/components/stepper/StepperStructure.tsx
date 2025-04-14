@@ -20,7 +20,7 @@ export const StepperStructure = ({
 		listClients.find(
 			(client) => client.fullname === currentFlight.master_passenger
 		) || "John Doe"
-	console.log({ currentFlight })
+
 	const coordinates = [
 		{
 			latitude: currentFlight.first_latitude,

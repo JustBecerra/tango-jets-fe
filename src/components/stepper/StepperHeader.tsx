@@ -24,7 +24,7 @@ export const StepperHeader = ({ lead_passenger }: props) => {
 	const passport =
 		typeof lead_passenger === "string" ? "unknown" : lead_passenger.passport
 	return (
-		<div className="w-full">
+		<div className="w-[80%]">
 			<div className="bg-gray-200 w-full h-[80px] rounded-t flex justify-start items-center">
 				<div className="flex ml-6 justify-start items-center gap-4">
 					<div className="bg-blue-400 h-fit w-fit rounded">

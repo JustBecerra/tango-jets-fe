@@ -1,7 +1,7 @@
 
 export const ProgressStepper = () => {
   return (
-		<div className="w-full h-[60px] rounded flex justify-center items-center">
+		<div className="w-[80%] h-[60px] rounded flex justify-center items-center">
 			<ol className="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg shadow-xs sm:text-base sm:p-4 sm:space-x-4 rtl:space-x-reverse">
 				<li className="flex items-center text-blue-600 dark:text-blue-500">
 					<span className="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
