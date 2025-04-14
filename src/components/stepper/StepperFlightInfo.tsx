@@ -1,13 +1,23 @@
 import TravelMap from "../cards/TravelMap"
+import type { Airship } from "../table/TableModal"
 
 interface props {
 	coordinates: {
 		latitude: string
 		longitude: string
 	}[]
+	chosenAirship: Airship
+	to: string
+	from: string
 }
 
-export const StepperFlightInfo = ({ coordinates }: props) => {
+export const StepperFlightInfo = ({
+	coordinates,
+	chosenAirship,
+	to,
+	from,
+}: props) => {
+	const { title, size } = chosenAirship
 	return (
 		<div className="w-[80%] space-y-4">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -62,54 +72,38 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 						</button>
 					</div>
 
-					<div className="bg-amber-50 border-l-4 border-amber-400 p-4 m-4">
-						<div className="flex">
-							<div className="ml-3">
-								<p className="text-sm text-amber-700">
-									<span className="font-medium">
-										Conflicting calendar events:
-									</span>
-								</p>
-								<ul className="list-disc ml-5 mt-1 text-xs text-amber-700">
-									<li>
-										Needs repositioning to KVNY (03/19/25
-										12:24 PDT - 06/25/25 08:18 PDT)
-										(03/19/2025 19:24 Z - 06/25/2025 15:18
-										Z)
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-						<div className="col-span-1">
+					<div className="p-4 flex flex-col gap-4 w-full h-[80%] justify-center items-center">
+						<div className="flex flex-col justify-center items-center">
 							<h1 className="text-4xl font-bold text-gray-700">
-								N585JC
+								{title}
 							</h1>
-							<p className="text-gray-500">Gulfstream G-V</p>
+							<p className="text-gray-500">{size}</p>
 						</div>
 
-						<div className="col-span-1">
-							<h3 className="text-sm text-gray-400 uppercase">
-								POSITIONING FROM
-							</h3>
-							<p className="text-xl font-bold text-gray-400">
-								FXE
-							</p>
-							<p className="text-sm text-gray-400">
-								Fort Lauderdale Executive Intl
-							</p>
-						</div>
+						<div className="flex gap-8">
+							<div>
+								<h3 className="text-sm text-gray-400 uppercase">
+									POSITIONING FROM
+								</h3>
+								<p className="text-xl font-bold text-gray-400">
+									{from}
+								</p>
+								{/* <p className="text-sm text-gray-400">
+									Fort Lauderdale Executive Intl
+								</p> */}
+							</div>
 
-						<div className="col-span-1">
-							<h3 className="text-sm text-gray-400 uppercase">
-								POSITIONING TO
-							</h3>
-							<p className="text-xl font-bold text-gray-400">
-								VNY
-							</p>
-							<p className="text-sm text-gray-400">Van Nuys</p>
+							<div>
+								<h3 className="text-sm text-gray-400 uppercase">
+									POSITIONING TO
+								</h3>
+								<p className="text-xl font-bold text-gray-400">
+									{to}
+								</p>
+								{/* <p className="text-sm text-gray-400">
+									Van Nuys
+								</p> */}
+							</div>
 						</div>
 					</div>
 				</div>

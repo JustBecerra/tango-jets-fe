@@ -9,12 +9,14 @@ interface props {
 	currentFlight: Flight
 	listAirships: Airship[]
 	listClients: Client[]
+	chosenAirship: Airship
 }
 
 export const StepperStructure = ({
 	currentFlight,
 	listAirships,
 	listClients,
+	chosenAirship,
 }: props) => {
 	const lead_passenger =
 		listClients.find(
@@ -38,7 +40,12 @@ export const StepperStructure = ({
 				lead_passenger={lead_passenger}
 			/>{" "}
 			<ProgressStepper currentStep={currentFlight.phase} />
-			<StepperFlightInfo coordinates={coordinates} />
+			<StepperFlightInfo
+				coordinates={coordinates}
+				chosenAirship={chosenAirship}
+				to={currentFlight.to}
+				from={currentFlight.from}
+			/>
 			<FlightSegmentsPage />
 		</div>
 	)
