@@ -32,7 +32,9 @@ const DepartingSoon = ({ flights }: props) => {
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
 			<table
-				className={`min-w-full table-fixed divide-y divide-gray-200 `}
+				className={`min-w-full table-fixed divide-y divide-gray-200 ${
+					flights.length === 0 && "h-[300px]"
+				} `}
 			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
@@ -73,10 +75,10 @@ const DepartingSoon = ({ flights }: props) => {
 									(window.location.href = `/trip/${flight.id}`)
 								}
 							>
-								<td className="w-1/3 px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
+								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{flight.airship_name}
 								</td>
-								<td className="w-1/3 px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
+								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{flight.from}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +90,7 @@ const DepartingSoon = ({ flights }: props) => {
 									</svg>
 									{flight.to}
 								</td>
-								<td className="w-1/3 px-6 py-4 text-center whitespace-nowrap text-xs font-medium text-gray-900">
+								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{formatLaunchTime(flight.launchtime)}
 								</td>
 							</tr>

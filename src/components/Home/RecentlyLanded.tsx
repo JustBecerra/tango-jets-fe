@@ -30,7 +30,9 @@ const RecentlyLanded = ({ flights }: props) => {
 	return (
 		<div className="h-full overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
 			<table
-				className={`min-w-full table-fixed divide-y divide-gray-200 `}
+				className={`min-w-full table-fixed divide-y divide-gray-200 ${
+					flights.length === 0 && "h-[300px]"
+				} `}
 			>
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
@@ -76,7 +78,14 @@ const RecentlyLanded = ({ flights }: props) => {
 								</td>
 								<td className="w-1/3 px-6 py-4 text-center text-xs text-gray-700">
 									{flight.from}
-									<svg className="inline-block w-4 h-4 mx-0.5 text-gray-500" />
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="inline-block w-4 h-4 mx-1 text-gray-500"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+									>
+										<path d="M13.5 4.5a1 1 0 011.41 0l6 6a1 1 0 010 1.41l-6 6a1 1 0 01-1.41-1.41L17.59 12H4a1 1 0 010-2h13.59l-4.09-4.09a1 1 0 010-1.41z" />
+									</svg>
 									{flight.to}
 								</td>
 								<td className="w-1/3 px-6 py-4 text-center text-xs text-gray-700">
