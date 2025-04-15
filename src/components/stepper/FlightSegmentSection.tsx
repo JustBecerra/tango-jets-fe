@@ -53,7 +53,6 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 								{allFlights.map((flight, index) => (
 									<FlightSegment
 										key={index}
-										status="pos"
 										departureTime={
 											flight.launchtime.split("T")[1]
 										}
@@ -70,7 +69,6 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 										}
 										arrivalAirport={flight.to}
 										arrivalCity="Kansas City, MO"
-										distance="1061"
 										etr={flight.flight_time}
 									/>
 								))}
