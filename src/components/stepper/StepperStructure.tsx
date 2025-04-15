@@ -3,13 +3,15 @@ import { StepperHeader } from './StepperHeader'
 import type { Airship, Client, Flight } from '../table/TableModal'
 import { ProgressStepper } from "./ProgressStepper"
 import { StepperFlightInfo } from "./StepperFlightInfo"
-import FlightSegmentsPage from "./FlightSegment"
+import FlightSegmentsPage from "./FlightSegmentSection"
+import FlightSegmentsSection from "./FlightSegmentSection"
 
 interface props {
 	currentFlight: Flight
 	listAirships: Airship[]
 	listClients: Client[]
 	chosenAirship: Airship
+	allFlights: Flight[]
 }
 
 export const StepperStructure = ({
@@ -17,6 +19,7 @@ export const StepperStructure = ({
 	listAirships,
 	listClients,
 	chosenAirship,
+	allFlights,
 }: props) => {
 	const lead_passenger =
 		listClients.find(
@@ -47,7 +50,7 @@ export const StepperStructure = ({
 				from={currentFlight.from}
 				totalPassengers={currentFlight.companion_passengers.length + 1}
 			/>
-			<FlightSegmentsPage />
+			<FlightSegmentsSection allFlights={allFlights} />
 		</div>
 	)
 }
