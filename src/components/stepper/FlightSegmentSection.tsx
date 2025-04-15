@@ -33,7 +33,7 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 				<div className="p-6">
 					<div className="overflow-x-auto">
 						<table className="w-full">
-							<thead className="border-b">
+							{/* <thead className="border-b">
 								<tr className="text-left text-xs text-gray-500">
 									<th className="pb-3 font-normal"></th>
 									<th className="pb-3 font-normal"></th>
@@ -41,34 +41,39 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 									<th className="pb-3 font-normal"></th>
 									<th className="pb-3 font-normal"></th>
 									<th className="pb-3 font-normal text-right">
-										DIST (NM)
+										DISTANCE
 									</th>
 									<th className="pb-3 font-normal text-right">
 										ETA
 									</th>
 									<th className="pb-3 font-normal"></th>
 								</tr>
-							</thead>
+							</thead> */}
 							<tbody>
-								{
-									allFlights.map((flight, index) => (
-										<FlightSegment
-											key={index}
-											status="pos"
-											departureTime={flight.launchtime.split("T")[1]}
-											departureDate={flight.launchtime.split("T")[0]}
-											departureAirport={flight.from}
-											departureCity="Fort Lauderdale, FL"
-											arrivalTime={flight.arrivaltime}
-											arrivalAirport={flight.to}
-											arrivalCity="Kansas City, MO"
-											distance="1061"
-											etr={flight.flight_time}
-										/>
-									))
-								}
-
-
+								{allFlights.map((flight, index) => (
+									<FlightSegment
+										key={index}
+										status="pos"
+										departureTime={
+											flight.launchtime.split("T")[1]
+										}
+										departureDate={
+											flight.launchtime.split("T")[0]
+										}
+										departureAirport={flight.from}
+										departureCity="Fort Lauderdale, FL"
+										arrivalTime={
+											flight.arrivaltime.split("T")[1]
+										}
+										arrivalDate={
+											flight.arrivaltime.split("T")[0]
+										}
+										arrivalAirport={flight.to}
+										arrivalCity="Kansas City, MO"
+										distance="1061"
+										etr={flight.flight_time}
+									/>
+								))}
 							</tbody>
 						</table>
 					</div>

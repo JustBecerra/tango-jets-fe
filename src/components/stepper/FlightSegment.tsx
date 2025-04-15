@@ -5,6 +5,7 @@ interface FlightSegmentProps {
 	departureAirport: string
 	departureCity: string
 	arrivalTime: string
+	arrivalDate: string
 	arrivalAirport: string
 	arrivalCity: string
 	distance: string
@@ -18,6 +19,7 @@ export function FlightSegment({
 	departureAirport,
 	departureCity,
 	arrivalTime,
+	arrivalDate,
 	arrivalAirport,
 	arrivalCity,
 	distance,
@@ -63,6 +65,10 @@ export function FlightSegment({
 				</div>
 			</td>
 			<td className="py-4 pr-6">
+				<div className="text-sm font-medium">{arrivalTime}</div>
+				<div className="text-xs text-gray-500">{arrivalDate}</div>
+			</td>
+			<td className="py-4 pr-6">
 				<div className="text-sm font-medium text-cyan-500">
 					{arrivalAirport}
 				</div>
@@ -76,11 +82,31 @@ export function FlightSegment({
 			</td>
 			<td className="py-4">
 				<div className="flex gap-2 justify-end">
-					<button className="text-cyan-500 hover:text-cyan-600">
-						{/* <Pencil className="h-4 w-4" /> */}Pencil
+					<button className="p-1 text-cyan-500 hover:text-cyan-600 border-cyan-500 border-2 rounded">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+						>
+							<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+						</svg>
 					</button>
-					<button className="text-red-500 hover:text-red-600">
-						{/* <Trash2 className="h-4 w-4" /> */}Trash
+					<button className="p-1 text-red-500 hover:text-red-600 border-red-500 border-2">
+						<svg
+							className="w-6 h-6 text-red-500"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth="2"
+								d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+							/>
+						</svg>
 					</button>
 				</div>
 			</td>
