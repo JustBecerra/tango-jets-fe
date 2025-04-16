@@ -179,9 +179,9 @@ export const EditAircraftModal = ({
 											</label>
 											<input
 												type="text"
-												id="fullname"
+												id="launchtime"
 												name="fullname"
-												value={data.to}
+												value={data.launchtime}
 												onChange={(e) =>
 													setData((prev) => ({
 														...prev,
@@ -201,9 +201,9 @@ export const EditAircraftModal = ({
 											</label>
 											<input
 												type="text"
-												id="fullname"
-												name="fullname"
-												value={data.to}
+												id="arrivaltime"
+												name="arrivaltime"
+												value={data.arrivaltime}
 												onChange={(e) =>
 													setData((prev) => ({
 														...prev,
