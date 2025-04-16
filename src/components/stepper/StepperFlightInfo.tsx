@@ -97,7 +97,7 @@ export const StepperFlightInfo = ({
 						/>
 					</div>
 
-					<div className="p-4 flex flex-col gap-4 w-full h-[80%] justify-center items-center">
+					<div className="p-4 flex flex-col gap-y-4 w-full h-[80%] justify-center items-center">
 						<div className="flex flex-col justify-center items-center">
 							<h1 className="text-4xl font-bold text-gray-700">
 								{title}
@@ -105,29 +105,41 @@ export const StepperFlightInfo = ({
 							<p className="text-gray-500">{size}</p>
 						</div>
 
-						<div className="flex gap-8">
-							<div>
-								<h3 className="text-sm text-gray-400 uppercase">
+						<div className="flex justify-between w-1/2 gap-x-16">
+							<div className="w-1/2">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									POSITIONING FROM
 								</h3>
-								<p className="text-xl font-bold text-gray-400">
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
 									{from}
 								</p>
-								{/* <p className="text-sm text-gray-400">
-									Fort Lauderdale Executive Intl
-								</p> */}
 							</div>
-
-							<div>
-								<h3 className="text-sm text-gray-400 uppercase">
+							<div className="w-1/2">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									POSITIONING TO
 								</h3>
-								<p className="text-xl font-bold text-gray-400">
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
 									{to}
 								</p>
-								{/* <p className="text-sm text-gray-400">
-									Van Nuys
-								</p> */}
+							</div>
+						</div>
+
+						<div className="flex justify-between w-1/2 gap-x-16">
+							<div className="w-1/2">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									Launch Time
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{currentFlight.launchtime}
+								</p>
+							</div>
+							<div className="w-1/2">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									Arrival Time
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{currentFlight.arrivaltime}
+								</p>
 							</div>
 						</div>
 					</div>

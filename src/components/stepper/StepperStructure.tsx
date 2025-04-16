@@ -1,9 +1,7 @@
-import React from 'react'
-import { StepperHeader } from './StepperHeader'
-import type { Airship, Client, Flight } from '../table/TableModal'
+import { StepperHeader } from "./StepperHeader"
+import type { Airship, Client, Flight } from "../table/TableModal"
 import { ProgressStepper } from "./ProgressStepper"
 import { StepperFlightInfo } from "./StepperFlightInfo"
-import FlightSegmentsPage from "./FlightSegmentSection"
 import FlightSegmentsSection from "./FlightSegmentSection"
 
 interface props {
