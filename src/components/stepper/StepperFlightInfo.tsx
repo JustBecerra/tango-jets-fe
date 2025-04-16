@@ -86,7 +86,7 @@ export const StepperFlightInfo = ({
 								<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11.43a1 1 0 00-.725-.962l-5-1.429a1 1 0 01.725-1.962l5 1.429a1 1 0 00.725-.038l5-1.429a1 1 0 011.169 1.409l-7 14z" />
 							</svg>
 							<h2 className="text-gray-700 font-medium">
-								Aircraft
+								Segment Details
 							</h2>
 						</div>
 						<EditAircraftModal
@@ -94,19 +94,21 @@ export const StepperFlightInfo = ({
 							listAirships={listAirships}
 							to={currentFlight.to}
 							from={currentFlight.from}
+							launchtime={currentFlight.launchtime}
+							arrivaltime={currentFlight.arrivaltime}
 						/>
 					</div>
 
-					<div className="p-4 flex flex-col gap-y-4 w-full h-[80%] justify-center items-center">
-						<div className="flex flex-col justify-center items-center">
+					<div className="py-4 flex flex-col gap-y-4 w-full h-[80%] justify-center items-center">
+						<div className="flex flex-col justify-center items-center mr-8">
 							<h1 className="text-4xl font-bold text-gray-700">
 								{title}
 							</h1>
 							<p className="text-gray-500">{size}</p>
 						</div>
 
-						<div className="flex justify-between w-1/2 gap-x-16">
-							<div className="w-1/2">
+						<div className="flex justify-center items-center w-full gap-x-16">
+							<div className="w-[200px]">
 								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									POSITIONING FROM
 								</h3>
@@ -114,7 +116,7 @@ export const StepperFlightInfo = ({
 									{from}
 								</p>
 							</div>
-							<div className="w-1/2">
+							<div className="w-[200px]">
 								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									POSITIONING TO
 								</h3>
@@ -124,8 +126,8 @@ export const StepperFlightInfo = ({
 							</div>
 						</div>
 
-						<div className="flex justify-between w-1/2 gap-x-16">
-							<div className="w-1/2">
+						<div className="flex justify-center items-center w-full gap-x-16">
+							<div className="w-[200px]">
 								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									Launch Time
 								</h3>
@@ -133,7 +135,7 @@ export const StepperFlightInfo = ({
 									{currentFlight.launchtime}
 								</p>
 							</div>
-							<div className="w-1/2">
+							<div className="w-[200px]">
 								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
 									Arrival Time
 								</h3>
