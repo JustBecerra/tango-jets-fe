@@ -185,8 +185,8 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 		<div className="flex flex-col justify-end h-fit">
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				{/* Input "From" */}
-				<div className="relative flex-1 mb-4" ref={fromRef}>
-					<label className="block text-sm font-medium text-gray-700">
+				<div className="relative flex-1 mb-3" ref={fromRef}>
+					<label className="block text-sm font-medium text-gray-700 mb-1">
 						{labelFrom}
 					</label>
 					<input
@@ -203,15 +203,15 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 							})
 							fetchAirports(e.target.value, setFromResults)
 						}}
-						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-						placeholder="Enter Airport"
+						className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Search airport or city"
 					/>
 					{fromResults.length > 0 && (
-						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
+						<ul className="absolute z-20 bg-white border rounded-lg shadow-md mt-1 max-h-40 overflow-auto w-full" style={{ minWidth: "200px" }}>
 							{fromResults.map((place) => (
 								<li
 									key={place.id}
-									className="p-2 cursor-pointer hover:bg-gray-200"
+									className="px-3 py-2 cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
 									onClick={() => {
 										setFromAirport(place)
 										setFormData((prev: any) => {
@@ -262,7 +262,17 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 										}
 									}}
 								>
-									{place.display}
+									<div className="flex items-center">
+										<div className="w-4 h-4 mr-2 text-blue-500">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+												<path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+											</svg>
+										</div>
+										<div>
+											<div className="font-medium text-sm">{place.name} ({place.id})</div>
+											<div className="text-xs text-gray-500">{place.country}</div>
+										</div>
+									</div>
 								</li>
 							))}
 						</ul>
@@ -270,8 +280,8 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 				</div>
 
 				{/* Input "To" */}
-				<div className="relative flex-1 mb-4" ref={toRef}>
-					<label className="block text-sm font-medium text-gray-700">
+				<div className="relative flex-1 mb-3" ref={toRef}>
+					<label className="block text-sm font-medium text-gray-700 mb-1">
 						{labelTo}
 					</label>
 					<input
@@ -288,15 +298,15 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 							})
 							fetchAirports(e.target.value, setToResults)
 						}}
-						className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-						placeholder="Enter Airport"
+						className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Search airport or city"
 					/>
 					{toResults.length > 0 && (
-						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
+						<ul className="absolute z-20 bg-white border rounded-lg shadow-md mt-1 max-h-40 overflow-auto w-full" style={{ minWidth: "200px" }}>
 							{toResults.map((place) => (
 								<li
 									key={place.id}
-									className="p-2 cursor-pointer hover:bg-gray-200"
+									className="px-3 py-2 cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
 									onClick={() => {
 										setToAirport(place)
 										setFormData((prev: any) => {
@@ -317,10 +327,10 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 											})
 										if (fromAirport) {
 											const dist = calculateDistance(
-												place.lat,
-												place.lon,
 												fromAirport.lat,
 												fromAirport.lon,
+												place.lat,
+												place.lon,
 												setFormData,
 												formDataIndex
 											)
@@ -347,7 +357,17 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 										}
 									}}
 								>
-									{place.display}
+									<div className="flex items-center">
+										<div className="w-4 h-4 mr-2 text-blue-500">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+												<path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+											</svg>
+										</div>
+										<div>
+											<div className="font-medium text-sm">{place.name} ({place.id})</div>
+											<div className="text-xs text-gray-500">{place.country}</div>
+										</div>
+									</div>
 								</li>
 							))}
 						</ul>
@@ -355,24 +375,37 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 				</div>
 			</div>
 
-			{distance !== null && (
-				<div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
-					Distance: <strong>{distance} km</strong>
-				</div>
-			)}
-			{formData.flight_time !== null && (
-				<div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
-					<label className="block text-sm font-medium text-gray-700">
-						<strong>Flight time:</strong>
-					</label>
-					<input
-						type="text"
-						onChange={handleFlightTimeChange}
-						value={formData.flight_time}
-						className="bg-transparent focus:outline-none"
-					/>
-				</div>
-			)}
+			<div className="flex flex-col sm:flex-row gap-3 mt-2">
+				{distance !== null && (
+					<div className="flex-1 p-2 bg-blue-50 text-blue-800 rounded-lg border border-blue-100">
+						<div className="flex items-center">
+							<svg className="w-4 h-4 mr-1.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+							</svg>
+							<span className="text-sm">Distance: <strong>{distance} km</strong></span>
+						</div>
+					</div>
+				)}
+				
+				{formData.flight_time && (
+					<div className="flex-1 p-2 bg-green-50 text-green-800 rounded-lg border border-green-100">
+						<div className="flex items-center">
+							<svg className="w-4 h-4 mr-1.5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+							<div className="flex items-center text-sm">
+								<span>Flight time: </span>
+								<input
+									type="text"
+									onChange={handleFlightTimeChange}
+									value={formData.flight_time}
+									className="bg-transparent ml-1 w-16 focus:outline-none focus:border-b focus:border-green-500 font-medium"
+								/>
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }
