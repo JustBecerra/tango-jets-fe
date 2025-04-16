@@ -1,5 +1,8 @@
+import { sendEmail } from "../../../lib/actions/emails/actions"
+import { flightScheduledMessage } from "../../utils/emailMessage"
 import TravelMap from "../cards/TravelMap"
-import type { Airship } from "../table/TableModal"
+import { EditAircraftModal } from "../modals/steppermodals/EditAircraftModal"
+import type { Airship, Flight } from "../table/TableModal"
 
 interface props {
 	coordinates: {
@@ -10,6 +13,8 @@ interface props {
 	to: string
 	from: string
 	totalPassengers: number
+	listAirships: Airship[]
+	currentFlight: Flight
 }
 
 export const StepperFlightInfo = ({
@@ -18,8 +23,31 @@ export const StepperFlightInfo = ({
 	to,
 	from,
 	totalPassengers,
+	listAirships,
+	currentFlight,
 }: props) => {
 	const { title, size } = chosenAirship
+	// const handleQuote = async () => {
+	// 	price_cost: number
+	// price_revenue: number
+	// airship_name: string
+	// percentage: number
+	// extra_price: number
+	// 	const airshipData = listAirships.map
+	// 	const EmailInfo = {
+	// 		to: currentFlight.master_passenger,
+	// 		subject: "Flight pre-scheduled!",
+	// 		url: flightScheduledMessage({
+	// 			airshipData,
+	// 			airships: listAirships,
+	// 			tripID: currentFlight.id,
+	// 		}),
+	// 		type_of_email: "quote",
+	// 	}
+
+	// 	await sendEmail(EmailInfo)
+	// }
+
 	return (
 		<div className="w-[80%] space-y-4">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -61,17 +89,12 @@ export const StepperFlightInfo = ({
 								Aircraft
 							</h2>
 						</div>
-						<button className="text-gray-500 px-3 py-1 rounded-md border border-gray-200 flex items-center text-sm">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="h-4 w-4 mr-1"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-							>
-								<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-							</svg>
-							Edit
-						</button>
+						<EditAircraftModal
+							chosenAirship={chosenAirship.title}
+							listAirships={listAirships}
+							to={currentFlight.to}
+							from={currentFlight.from}
+						/>
 					</div>
 
 					<div className="p-4 flex flex-col gap-4 w-full h-[80%] justify-center items-center">

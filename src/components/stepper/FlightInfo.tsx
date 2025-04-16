@@ -79,18 +79,6 @@ export const FlightInfo = ({
 		try {
 			const newFlights = await addFlight(transformedFlightData)
 
-			// const EmailInfo = {
-			//   to: transformedFlightData.master_passenger,
-			//   subject: "Flight pre-scheduled!",
-			//   url: flightScheduledMessage({
-			//     airshipData,
-			//     airships,
-			//     tripID: newFlight.id,
-			//   }),
-			//   type_of_email: "quote",
-			// };
-
-			// await sendEmail(EmailInfo); mover todo esto a un boton en el stepper
 			const flights = await getFlights()
 			updateFlights(flights)
 			setShowToast(true)

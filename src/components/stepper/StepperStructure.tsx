@@ -45,6 +45,8 @@ export const StepperStructure = ({
 			<ProgressStepper currentStep={currentFlight.phase} />
 			<StepperFlightInfo
 				coordinates={coordinates}
+				currentFlight={currentFlight}
+				listAirships={listAirships}
 				chosenAirship={chosenAirship}
 				to={currentFlight.to}
 				from={currentFlight.from}
