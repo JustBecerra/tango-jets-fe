@@ -49,6 +49,25 @@ export async function putCompletePhase({ id, phase }: phaseProps) {
 	}
 }
 
+export async function getFlightAndConnectionById(id: number) {
+	try {
+		const response = await fetch(
+			`${import.meta.env.PUBLIC_BACKEND_URL}/flight/connection/${id}`
+		)
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`)
+		}
+
+		const data = await response.json()
+
+		return data
+	} catch (err) {
+		console.error(`Error fetching flight #${id}`, err)
+		throw err
+	}
+}
+
 export async function getFlightById(id: number) {
 	try {
 		const response = await fetch(
