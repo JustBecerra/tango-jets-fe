@@ -164,86 +164,61 @@ export const FlightInfo = ({
   const PhaseFields = () => {
     if (phase === "first") {
       return (
-        <div className="w-full grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="w-full">
-            <CsvSelect
-              labelFrom="From"
-              labelTo="To"
-              onSelectFrom={handleSelectFrom}
-              onSelectTo={handleSelectTo}
-              onDistanceCalculated={handleDistanceCalculated}
-              formData={formData}
-              setFormData={setFormData}
-            />
-          </div>
-          <div className="flex flex-col justify-start space-y-4">
-            <div>
-              <label
-                htmlFor="launchtime"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Launch Time
-              </label>
-              <input
-                type="datetime-local"
-                id="launchtime"
-                name="launchtime"
-                value={formData.launchtime.toISOString().slice(0, 16)}
-                onChange={(e) =>
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    launchtime: new Date(e.target.value),
-                  }))
-                }
-                min={new Date().toISOString().slice(0, 16)}
-                className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
+        <div className="w-full overflow-y-auto max-h-[80vh] pr-1">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 border-b border-gray-200 pb-6 mb-6 relative">
+            <div className="absolute top-0 left-0 inline-flex items-center px-2.5 py-0.5 bg-blue-600 text-white text-xs font-medium rounded-full">
+              Flight Details
+            </div>
+            <div className="mt-6">
+              <CsvSelect
+                labelFrom="From"
+                labelTo="To"
+                onSelectFrom={handleSelectFrom}
+                onSelectTo={handleSelectTo}
+                onDistanceCalculated={handleDistanceCalculated}
+                formData={formData}
+                setFormData={setFormData}
               />
             </div>
-
-            <div>
-              <label
-                htmlFor="master_passenger"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Lead Passenger
-              </label>
-              <div className="relative">
-                <AutoComplete
-                  value={formData.master_passenger}
-                  setter={setFormData}
+            <div className="flex flex-col justify-start space-y-4 mt-6">
+              <div>
+                <label
+                  htmlFor="launchtime"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Launch Time
+                </label>
+                <input
+                  type="datetime-local"
+                  id="launchtime"
+                  name="launchtime"
+                  value={formData.launchtime.toISOString().slice(0, 16)}
+                  onChange={(e) =>
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      launchtime: new Date(e.target.value),
+                    }))
+                  }
+                  min={new Date().toISOString().slice(0, 16)}
+                  className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  required
                 />
               </div>
-            </div>
-            <div>
-              <label
-                htmlFor="pax"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Passengers (PAX)
-              </label>
-              <input
-                type="number"
-                id="pax"
-                name="pax"
-                value={formData.pax}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  const newValue = inputValue === "" ? 0 : parseInt(inputValue);
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    pax: newValue,
-                  }));
-                }}
-                onClick={(e) => {
-                  if (formData.pax === 0) {
-                    e.currentTarget.select();
-                  }
-                }}
-                min={0}
-                className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
+
+              <div>
+                <label
+                  htmlFor="master_passenger"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Lead Passenger
+                </label>
+                <div className="relative">
+                  <AutoComplete
+                    value={formData.master_passenger}
+                    setter={setFormData}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
