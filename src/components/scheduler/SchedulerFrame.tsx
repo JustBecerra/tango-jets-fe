@@ -37,12 +37,12 @@ const SchedulerFrame = () => {
 	}
 
 	return (
-		<div className="flex max-h-[90vh] md:h-[600px] h-[800px] w-full max-w-[1400px] rounded-3xl bg-white shadow-xl">
+		<div className="flex max-h-[calc(100vh-100px)] md:h-auto w-full max-w-[1400px] rounded-xl bg-white shadow-md border border-gray-200 overflow-hidden">
 			{showToast && (
 				<div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-					<div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-lg border border-gray-100">
-						<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-green-50">
-							<HiCheck className="h-5 w-5 text-green-500" />
+					<div className="flex items-center gap-3 px-6 py-4 rounded-lg bg-white shadow-lg border border-gray-200">
+						<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-green-100">
+							<HiCheck className="h-5 w-5 text-green-600" />
 						</div>
 						<p className="text-sm font-medium text-gray-800">
 							Flight added successfully
@@ -57,18 +57,18 @@ const SchedulerFrame = () => {
 				</div>
 			)}
 
-			<div className="px-10 pt-10 space-y-8 h-[90%]">
-				<div className="mb-8 flex items-center justify-between">
-					<h2 className="text-2xl font-medium text-gray-800">
+			<div className="px-4 md:px-8 pt-6 pb-4 space-y-6 w-full overflow-y-auto">
+				<div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+					<h2 className="text-xl md:text-2xl font-semibold text-gray-800">
 						Schedule Flight
 					</h2>
-					<div className="flex space-x-3">
+					<div className="flex flex-wrap gap-2">
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("FlightInfo")}
-							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
 								activeComponent === "FlightInfo"
-									? "bg-blue-500 text-white shadow-sm"
+									? "bg-blue-600 text-white shadow-sm"
 									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
 							}`}
 						>
@@ -77,9 +77,9 @@ const SchedulerFrame = () => {
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("RoundTrip")}
-							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
 								activeComponent === "RoundTrip"
-									? "bg-blue-500 text-white shadow-sm"
+									? "bg-blue-600 text-white shadow-sm"
 									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
 							}`}
 						>
@@ -88,9 +88,9 @@ const SchedulerFrame = () => {
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("MultiCity")}
-							className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
 								activeComponent === "MultiCity"
-									? "bg-blue-500 text-white shadow-sm"
+									? "bg-blue-600 text-white shadow-sm"
 									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
 							}`}
 						>
@@ -99,8 +99,7 @@ const SchedulerFrame = () => {
 					</div>
 				</div>
 
-				<div className="bg-gray-50 px-8 rounded-2xl">
-					{/* bg-gray-50 */}
+				<div className="bg-gray-50 px-4 md:px-6 py-6 rounded-lg border border-gray-200">
 					{activeComponent === "FlightInfo" ? (
 						<FlightInfo
 							phase={phase}

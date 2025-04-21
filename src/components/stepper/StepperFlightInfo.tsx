@@ -1,15 +1,53 @@
 import TravelMap from "../cards/TravelMap"
+import { EditAircraftModal } from "../modals/steppermodals/EditAircraftModal"
+import type { Airship, Flight } from "../table/TableModal"
 
 interface props {
 	coordinates: {
 		latitude: string
 		longitude: string
 	}[]
+	chosenAirship: Airship
+	to: string
+	from: string
+	totalPassengers: number
+	listAirships: Airship[]
+	currentFlight: Flight
 }
 
-export const StepperFlightInfo = ({ coordinates }: props) => {
+export const StepperFlightInfo = ({
+	coordinates,
+	chosenAirship,
+	to,
+	from,
+	totalPassengers,
+	listAirships,
+	currentFlight,
+}: props) => {
+	const { title, size } = chosenAirship
+	// const handleQuote = async () => {
+	// 	price_cost: number
+	// price_revenue: number
+	// airship_name: string
+	// percentage: number
+	// extra_price: number
+	// 	const airshipData = listAirships.map
+	// 	const EmailInfo = {
+	// 		to: currentFlight.master_passenger,
+	// 		subject: "Flight pre-scheduled!",
+	// 		url: flightScheduledMessage({
+	// 			airshipData,
+	// 			airships: listAirships,
+	// 			tripID: currentFlight.id,
+	// 		}),
+	// 		type_of_email: "quote",
+	// 	}
+
+	// 	await sendEmail(EmailInfo)
+	// }
+
 	return (
-		<div className=" w-[80%] space-y-4">
+		<div className="w-[80%] space-y-4">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<div className="bg-white rounded-lg shadow-sm overflow-hidden col-span-1 md:col-span-1">
 					<div className="p-4 flex justify-between items-center border-b">
@@ -21,9 +59,9 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 								fill="currentColor"
 							>
 								<path
-									fill-rule="evenodd"
+									fillRule="evenodd"
 									d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-									clip-rule="evenodd"
+									clipRule="evenodd"
 								/>
 							</svg>
 							<h2 className="text-gray-700 font-medium">Route</h2>
@@ -46,70 +84,66 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 								<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11.43a1 1 0 00-.725-.962l-5-1.429a1 1 0 01.725-1.962l5 1.429a1 1 0 00.725-.038l5-1.429a1 1 0 011.169 1.409l-7 14z" />
 							</svg>
 							<h2 className="text-gray-700 font-medium">
-								Aircraft
+								Segment Details
 							</h2>
 						</div>
-						<button className="text-gray-500 px-3 py-1 rounded-md border border-gray-200 flex items-center text-sm">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="h-4 w-4 mr-1"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-							>
-								<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-							</svg>
-							Edit
-						</button>
+						<EditAircraftModal
+							chosenAirship={chosenAirship.title}
+							listAirships={listAirships}
+							to={currentFlight.to}
+							from={currentFlight.from}
+							launchtime={currentFlight.launchtime}
+							arrivaltime={currentFlight.arrivaltime}
+							flight_time={currentFlight.flight_time}
+							currentFlightID={currentFlight.id}
+							coordinates={coordinates}
+						/>
 					</div>
 
-					<div className="bg-amber-50 border-l-4 border-amber-400 p-4 m-4">
-						<div className="flex">
-							<div className="ml-3">
-								<p className="text-sm text-amber-700">
-									<span className="font-medium">
-										Conflicting calendar events:
-									</span>
+					<div className="py-4 flex flex-col gap-y-4 w-full h-[80%] justify-center items-center">
+						<div className="flex flex-col justify-center items-center mr-8">
+							<h1 className="text-4xl font-bold text-gray-700">
+								{title}
+							</h1>
+							<p className="text-gray-500">{size}</p>
+						</div>
+
+						<div className="flex justify-center items-center w-full gap-x-16">
+							<div className="w-[200px]">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									POSITIONING FROM
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{from}
 								</p>
-								<ul className="list-disc ml-5 mt-1 text-xs text-amber-700">
-									<li>
-										Needs repositioning to KVNY (03/19/25
-										12:24 PDT - 06/25/25 08:18 PDT)
-										(03/19/2025 19:24 Z - 06/25/2025 15:18
-										Z)
-									</li>
-								</ul>
+							</div>
+							<div className="w-[200px]">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									POSITIONING TO
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{to}
+								</p>
 							</div>
 						</div>
-					</div>
 
-					<div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-						<div className="col-span-1">
-							<h1 className="text-4xl font-bold text-gray-700">
-								N585JC
-							</h1>
-							<p className="text-gray-500">Gulfstream G-V</p>
-						</div>
-
-						<div className="col-span-1">
-							<h3 className="text-sm text-gray-400 uppercase">
-								POSITIONING FROM
-							</h3>
-							<p className="text-xl font-bold text-gray-400">
-								FXE
-							</p>
-							<p className="text-sm text-gray-400">
-								Fort Lauderdale Executive Intl
-							</p>
-						</div>
-
-						<div className="col-span-1">
-							<h3 className="text-sm text-gray-400 uppercase">
-								POSITIONING TO
-							</h3>
-							<p className="text-xl font-bold text-gray-400">
-								VNY
-							</p>
-							<p className="text-sm text-gray-400">Van Nuys</p>
+						<div className="flex justify-center items-center w-full gap-x-16">
+							<div className="w-[200px]">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									Launch Time
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{currentFlight.launchtime}
+								</p>
+							</div>
+							<div className="w-[200px]">
+								<h3 className="text-sm text-gray-400 uppercase text-nowrap">
+									Arrival Time
+								</h3>
+								<p className="text-xl font-bold text-gray-400 text-nowrap">
+									{currentFlight.arrivaltime}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -126,9 +160,9 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 								fill="currentColor"
 							>
 								<path
-									fill-rule="evenodd"
+									fillRule="evenodd"
 									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-									clip-rule="evenodd"
+									clipRule="evenodd"
 								/>
 							</svg>
 							<h2 className="text-gray-700 font-medium">Pax</h2>
@@ -146,7 +180,9 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 						</button>
 					</div>
 					<div className="p-8 flex justify-center items-center">
-						<h1 className="text-7xl font-bold text-gray-700">11</h1>
+						<h1 className="text-7xl font-bold text-gray-700">
+							{totalPassengers}
+						</h1>
 					</div>
 				</div>
 
@@ -160,40 +196,40 @@ export const StepperFlightInfo = ({ coordinates }: props) => {
 								fill="currentColor"
 							>
 								<path
-									fill-rule="evenodd"
+									fillRule="evenodd"
 									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-									clip-rule="evenodd"
+									clipRule="evenodd"
 								/>
 							</svg>
 							<h2 className="text-gray-700 font-medium">
-								Internal notes
+								Email actions
 							</h2>
 						</div>
 					</div>
 					<div className="p-4">
 						<ul className="space-y-4">
 							<li className="flex justify-between">
-								<span className="text-gray-700">
-									Crew itinerary notes
-								</span>
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Quote
+								</button>
 								<span className="text-gray-400 text-sm">
-									There are currently no notes
+									No Quote available yet
 								</span>
 							</li>
 							<li className="border-t pt-4 flex justify-between">
-								<span className="text-gray-700">
-									Internal customer profile
-								</span>
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Contract
+								</button>
 								<span className="text-gray-400 text-sm">
-									There is currently no profile
+									No contract was provided yet
 								</span>
 							</li>
 							<li className="border-t pt-4 flex justify-between">
-								<span className="text-gray-700">
-									N585JC internal notes
-								</span>
+								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
+									Send Invoice
+								</button>
 								<span className="text-gray-400 text-sm">
-									There are currently no notes
+									No Invoice available yet
 								</span>
 							</li>
 						</ul>
