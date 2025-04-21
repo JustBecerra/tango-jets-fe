@@ -96,6 +96,8 @@ export const StepperFlightInfo = ({
 							from={currentFlight.from}
 							launchtime={currentFlight.launchtime}
 							arrivaltime={currentFlight.arrivaltime}
+							flight_time={currentFlight.flight_time}
+							currentFlightID={currentFlight.id}
 						/>
 					</div>
 

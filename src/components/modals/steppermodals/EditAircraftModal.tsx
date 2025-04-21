@@ -1,6 +1,12 @@
 import React, { useState } from "react"
 import type { Airship } from "../../table/TableModal"
 import LoaderSpinner from "../../Loaders/LoaderSpinner"
+import { editAction } from "../../../../lib/actions/edit/actions"
+import LocationSelector from "../../stepper/LocationSelector"
+import CsvSelect from "../../stepper/prueba"
+import CalculateDistanceEdit from "../../stepper/CalculateDIstanceEdit"
+import { getFlights } from "../../../../lib/actions/flights/actions"
+import useStore from "../../../store/store"
 
 interface props {
 	listAirships: Airship[]
@@ -9,6 +15,17 @@ interface props {
 	from: string
 	launchtime: string
 	arrivaltime: string
+	flight_time: string
+	currentFlightID: number
+}
+
+export interface EditAircraftProps {
+	airship_name: string
+	to: string
+	from: string
+	launchtime: string
+	arrivaltime: string
+	flight_time: string
 }
 
 export const EditAircraftModal = ({
@@ -18,25 +35,69 @@ export const EditAircraftModal = ({
 	from,
 	launchtime,
 	arrivaltime,
+	flight_time,
+	currentFlightID,
 }: props) => {
-	const [data, setData] = useState({
+	const [data, setData] = useState<EditAircraftProps>({
 		airship_name: chosenAirship,
 		to,
 		from,
 		launchtime,
 		arrivaltime,
+		flight_time,
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showToast, setShowToast] = useState(false)
 	const [loading, setLoading] = useState(false)
-
+	const updateFlights = useStore((state) => state.updateFlights)
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
 	}
-
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		setLoading(true)
+		try {
+			const convertedData = new FormData()
+			convertedData.append("airship_name", data.airship_name)
+			convertedData.append("from", data.from)
+			convertedData.append("to", data.to)
+			convertedData.append("launchtime", data.launchtime)
+			convertedData.append("arrivaltime", data.arrivaltime)
+			convertedData.append("flight_time", data.flight_time)
+
+			await editAction({
+				caseType: "flight",
+				data: convertedData,
+				id: currentFlightID,
+			})
+
+			const newFlights = await getFlights()
+			updateFlights(newFlights)
+			handleToggleModal()
+			setShowToast(true)
+			setTimeout(() => {
+				window.location.reload()
+				setShowToast(false)
+			}, 2000)
+		} catch (err) {
+			console.log(err)
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	const handleSelectTo = (value: string) => {
+		setData((prevFormData) => ({
+			...prevFormData,
+			to: value,
+		}))
+	}
+
+	const handleSelectFrom = (value: string) => {
+		setData((prevFormData) => ({
+			...prevFormData,
+			from: value,
+		}))
 	}
 	return (
 		<>
@@ -107,6 +168,7 @@ export const EditAircraftModal = ({
 													}))
 												}
 												value={data.airship_name}
+												id="airship_name"
 												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 											>
 												<option value="" disabled>
@@ -126,50 +188,12 @@ export const EditAircraftModal = ({
 												)}
 											</select>
 										</div>
-										<div>
-											<label
-												htmlFor="from"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												From
-											</label>
-											<input
-												type="text"
-												id="from"
-												name="from"
-												value={data.from}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														from: e.target.value,
-													}))
-												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
-										<div>
-											<label
-												htmlFor="to"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												To
-											</label>
-											<input
-												type="text"
-												id="to"
-												name="to"
-												value={data.to}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														to: e.target.value,
-													}))
-												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
+										<CalculateDistanceEdit
+											onSelectFrom={handleSelectFrom}
+											onSelectTo={handleSelectTo}
+											formData={data}
+											setFormData={setData}
+										/>
 										<div>
 											<label
 												htmlFor="airship"
@@ -215,6 +239,22 @@ export const EditAircraftModal = ({
 											/>
 										</div>
 									</div>
+									<div className="flex ml-6 items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+										<button
+											type="button"
+											className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+											onClick={handleToggleModal}
+										>
+											Cancel
+										</button>
+										<button
+											id="submitClient"
+											type="submit"
+											className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+										>
+											Modify
+										</button>
+									</div>
 								</form>
 							</div>
 							{loading && (
@@ -224,22 +264,6 @@ export const EditAircraftModal = ({
 									</div>
 								</div>
 							)}
-							<div className="flex ml-6 items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-								<button
-									type="button"
-									className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-									onClick={handleToggleModal}
-								>
-									Cancel
-								</button>
-								<button
-									id="submitClient"
-									type="submit"
-									className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-								>
-									Modify
-								</button>
-							</div>
 						</div>
 					</div>
 				</div>
