@@ -155,150 +155,150 @@ const CalculateDistanceEdit: React.FC<CalculateDistanceEditProps> = ({
     }, [])
 
     return (
-        <div className="flex flex-col justify-end h-fit">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Input "From" */}
-                <div className="flex-1 mb-4" ref={fromRef}>
-                    <label className="block text-sm font-medium text-gray-700">
-                        From
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.from}
-                        onChange={(e) => {
-                            setFormData((prev: any) => ({
-                                ...prev,
-                                from: e.target.value,
-                            }))
-                            fetchAirports(e.target.value, setFromResults)
-                        }}
-                        className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter Airport"
-                    />
-                    {fromResults.length > 0 && (
-                        <ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
-                            {fromResults.map((place) => (
-                                <li
-                                    key={place.id}
-                                    className="p-2 cursor-pointer hover:bg-gray-200"
-                                    onClick={() => {
-                                        setFromAirport(place)
-                                        setFormData((prev: any) => ({
-                                            ...prev,
-                                            from: place.display,
-                                        }))
-                                        setFromResults([])
-                                        if (onSelectFrom) onSelectFrom(place.id)
-                                        if (toAirport) {
-                                            const dist = calculateDistance(
-                                                toAirport.lat,
-                                                toAirport.lon,
-                                                place.lat,
-                                                place.lon,
+		<div className="flex flex-col justify-end h-fit">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				{/* Input "From" */}
+				<div className="flex-1 mb-4" ref={fromRef}>
+					<label className="block text-sm font-medium text-gray-200">
+						From
+					</label>
+					<input
+						type="text"
+						value={formData.from}
+						onChange={(e) => {
+							setFormData((prev: any) => ({
+								...prev,
+								from: e.target.value,
+							}))
+							fetchAirports(e.target.value, setFromResults)
+						}}
+						className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Enter Airport"
+					/>
+					{fromResults.length > 0 && (
+						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
+							{fromResults.map((place) => (
+								<li
+									key={place.id}
+									className="p-2 cursor-pointer hover:bg-gray-200"
+									onClick={() => {
+										setFromAirport(place)
+										setFormData((prev: any) => ({
+											...prev,
+											from: place.display,
+										}))
+										setFromResults([])
+										if (onSelectFrom) onSelectFrom(place.id)
+										if (toAirport) {
+											const dist = calculateDistance(
+												toAirport.lat,
+												toAirport.lon,
+												place.lat,
+												place.lon,
 
-                                                setFormData
-                                            )
-                                            setDistance(dist)
-                                            setFormData(
-                                                (prevFormData: any) => ({
-                                                    ...prevFormData,
-                                                    flight_time:
-                                                        calculateFlightTime(
-                                                            dist
-                                                        ),
-                                                })
-                                            )
-                                        }
-                                    }}
-                                >
-                                    {place.display}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
+												setFormData
+											)
+											setDistance(dist)
+											setFormData(
+												(prevFormData: any) => ({
+													...prevFormData,
+													flight_time:
+														calculateFlightTime(
+															dist
+														),
+												})
+											)
+										}
+									}}
+								>
+									{place.display}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
 
-                {/* Input "To" */}
-                <div className="flex-1 mb-4" ref={toRef}>
-                    <label className="block text-sm font-medium text-gray-700">
-                        To
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.to}
-                        onChange={(e) => {
-                            setFormData((prev: any) => ({
-                                ...prev,
-                                to: e.target.value,
-                            }))
-                            fetchAirports(e.target.value, setToResults)
-                        }}
-                        className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter Airport"
-                    />
-                    {toResults.length > 0 && (
-                        <ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
-                            {toResults.map((place) => (
-                                <li
-                                    key={place.id}
-                                    className="p-2 cursor-pointer hover:bg-gray-200"
-                                    onClick={() => {
-                                        setToAirport(place)
-                                        setFormData((prev: any) => ({
-                                            ...prev,
-                                            to: place.display,
-                                        }))
-                                        setToResults([])
-                                        if (onSelectTo) onSelectTo(place.id)
-                                        if (fromAirport) {
-                                            const dist = calculateDistance(
-                                                fromAirport.lat,
-                                                fromAirport.lon,
-                                                place.lat,
-                                                place.lon,
-                                                setFormData
-                                            )
-                                            setDistance(dist)
-                                            setFormData(
-                                                (prevFormData: any) => ({
-                                                    ...prevFormData,
-                                                    flight_time:
-                                                        calculateFlightTime(
-                                                            dist
-                                                        ),
-                                                })
-                                            )
-                                        }
-                                    }}
-                                >
-                                    {place.display}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            </div>
+				{/* Input "To" */}
+				<div className="flex-1 mb-4" ref={toRef}>
+					<label className="block text-sm font-medium text-gray-200">
+						To
+					</label>
+					<input
+						type="text"
+						value={formData.to}
+						onChange={(e) => {
+							setFormData((prev: any) => ({
+								...prev,
+								to: e.target.value,
+							}))
+							fetchAirports(e.target.value, setToResults)
+						}}
+						className="block w-full px-5 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+						placeholder="Enter Airport"
+					/>
+					{toResults.length > 0 && (
+						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
+							{toResults.map((place) => (
+								<li
+									key={place.id}
+									className="p-2 cursor-pointer hover:bg-gray-200"
+									onClick={() => {
+										setToAirport(place)
+										setFormData((prev: any) => ({
+											...prev,
+											to: place.display,
+										}))
+										setToResults([])
+										if (onSelectTo) onSelectTo(place.id)
+										if (fromAirport) {
+											const dist = calculateDistance(
+												fromAirport.lat,
+												fromAirport.lon,
+												place.lat,
+												place.lon,
+												setFormData
+											)
+											setDistance(dist)
+											setFormData(
+												(prevFormData: any) => ({
+													...prevFormData,
+													flight_time:
+														calculateFlightTime(
+															dist
+														),
+												})
+											)
+										}
+									}}
+								>
+									{place.display}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			</div>
 
-            {distance !== null && (
-                <div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
-                    Distance: <strong>{distance} km</strong>
-                </div>
-            )}
-            {formData.flight_time !== null && (
-                <div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-700">
-                        <strong>Flight time:</strong>
-                    </label>
-                    <input
-                        type="text"
-                        onChange={handleFlightTimeChange}
-                        value={formData.flight_time}
-                        className="bg-transparent focus:outline-none"
-                    />
-                </div>
-            )}
-        </div>
-    )
+			{distance !== null && (
+				<div className="mt-4 p-2 bg-blue-100 text-blue-800 rounded-lg">
+					Distance: <strong>{distance} km</strong>
+				</div>
+			)}
+			{formData.flight_time !== null && (
+				<div className="flex gap-2 mt-2 p-2 bg-green-100 text-green-800 rounded-lg">
+					<label className="block text-sm font-medium text-gray-700">
+						<strong>Flight time:</strong>
+					</label>
+					<input
+						type="text"
+						onChange={handleFlightTimeChange}
+						value={formData.flight_time}
+						className="bg-transparent focus:outline-none"
+					/>
+				</div>
+			)}
+		</div>
+	)
 }
 
 export default CalculateDistanceEdit;
