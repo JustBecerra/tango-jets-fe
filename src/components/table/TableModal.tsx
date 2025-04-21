@@ -81,6 +81,46 @@ const TableModal = ({ caseType }: TableProps) => {
 	const clients = useStore((state) => state.clients)
 	const airships = useStore((state) => state.airships)
 	const setPilots = useStore((state) => state.updatePilots)
+	//Cambio Jero nombres de columnas para Usuario
+	const columnDisplayNamesClient: { [key: string]: string } = {
+		fullname: "Full Name",
+		email: "Email",
+		nationality: "Nationality",
+		identification: "Identification",
+		passport: "Passport",
+		weight: "Weight",
+		title: "Title",
+		date_of_birth: "Date of Birth",
+	};
+	
+const columnDisplayNamesTrips: { [key: string]: string } = {
+   
+    launchtime: "Launch Time",
+	arrivaltime: "Arrival Time",
+    airship_name: "Airship Name",
+	master_passenger: "Master Passenger",
+	to: "Destination",
+    from: "Origin",
+    createdby: "Created By",
+    companion_passengers: "Companions",
+    price_cost: "Cost",
+    phase: "Phase",
+    type_of: "Type",
+   
+   
+   
+    
+};
+const columnDisplayNamesAirship: { [key: string]: string } = {
+  
+    title: "Title",
+    status: "Status",
+	description: "Description",
+	seats: "Seats",
+    size: "Size",
+    
+
+};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -371,30 +411,28 @@ const TableModal = ({ caseType }: TableProps) => {
 					<>
 						<div className="overflow-hidden rounded-2xl shadow-md">
 							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
-								<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
-									<tr>
-										{/* CAMBIO 10: Filtrar columnas ocultas en el encabezado */}
-										{Object.keys(currentItems[0] || {})
-											.filter(
-												(key) =>
-													!hiddenColumns.includes(
-														key
-													) &&
-													!collapsedColumns.includes(
-														key
-													)
-											)
-											.map((key, index) => (
-												<th
-													key={index}
-													className="px-6 py-3"
-												>
-													{key}
-												</th>
-											))}
-										<th className="px-6 py-3">Action</th>
-									</tr>
-								</thead>
+							<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
+								<tr>
+									{Object.keys(currentItems[0] || {})
+										.filter(
+											(key) =>
+												!hiddenColumns.includes(key) &&
+												!collapsedColumns.includes(key)
+										)
+										.map((key, index) => (
+											<th key={index} className="px-6 py-3">
+												{caseType === "flight" || caseType === "history"
+													? columnDisplayNamesTrips[key] || key
+													: caseType === "client"
+													? columnDisplayNamesClient[key] || key
+													: caseType === "airship"
+													? columnDisplayNamesAirship[key] || key
+													: key}
+											</th>
+										))}
+									<th className="px-6 py-3">Action</th>
+								</tr>
+							</thead>
 								<tbody className="overflow-y-auto rounded-b-3xl">
 									{/* CAMBIO 11: Renderizado jerárquico de filas */}
 									{currentItems
