@@ -1,5 +1,4 @@
 interface FlightSegmentProps {
-	status: "pos" | "live"
 	departureTime: string
 	departureDate: string
 	departureAirport: string
@@ -8,12 +7,10 @@ interface FlightSegmentProps {
 	arrivalDate: string
 	arrivalAirport: string
 	arrivalCity: string
-	distance: string
 	etr: string
 }
 
 export function FlightSegment({
-	status,
 	departureTime,
 	departureDate,
 	departureAirport,
@@ -22,20 +19,10 @@ export function FlightSegment({
 	arrivalDate,
 	arrivalAirport,
 	arrivalCity,
-	distance,
 	etr,
 }: FlightSegmentProps) {
 	return (
 		<tr className="border-b">
-			<td className="py-4 pl-6">
-				<div
-					className={`text-sm font-medium ${
-						status === "live" ? "text-red-500" : "text-cyan-500"
-					}`}
-				>
-					{status}
-				</div>
-			</td>
 			<td className="py-4 pr-6">
 				<div className="text-sm font-medium">{departureTime}</div>
 				<div className="text-xs text-gray-500">{departureDate}</div>
@@ -73,9 +60,6 @@ export function FlightSegment({
 					{arrivalAirport}
 				</div>
 				<div className="text-xs text-gray-500">{arrivalCity}</div>
-			</td>
-			<td className="py-4 pr-6 text-right">
-				<div className="text-sm font-medium">{distance}</div>
 			</td>
 			<td className="py-4 pr-6 text-right">
 				<div className="text-sm font-medium">{etr}</div>

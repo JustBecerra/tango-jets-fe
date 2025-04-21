@@ -199,10 +199,10 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 										if (onSelectFrom) onSelectFrom(place.id)
 										if (toAirport) {
 											const dist = calculateDistance(
-												place.lat,
-												place.lon,
 												toAirport.lat,
 												toAirport.lon,
+												place.lat,
+												place.lon,
 												setFormData
 											)
 											setDistance(dist)
