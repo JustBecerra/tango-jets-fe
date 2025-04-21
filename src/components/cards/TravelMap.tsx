@@ -90,8 +90,10 @@ const Travelmap = ({ Coordinates }: props) => {
 				lineLayer,
 			],
 			view: new View({
-				center: fromLonLat([0, 20]), // Center of the map
-				zoom: 2,
+				center: points.length
+					? points[Math.floor(points.length / 2)]
+					: fromLonLat([0, 20]), // Center of the map
+				zoom: 4,
 			}),
 		})
 
