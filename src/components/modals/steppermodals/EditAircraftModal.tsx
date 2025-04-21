@@ -70,14 +70,12 @@ export const EditAircraftModal = ({
 
 			const newFlights = await getFlights()
 			updateFlights(newFlights)
-			handleToggleModal()
+
 			setTimeout(() => {
 				window.location.reload()
 			}, 2000)
 		} catch (err) {
 			console.log(err)
-		} finally {
-			setLoading(false)
 		}
 	}
 
