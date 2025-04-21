@@ -77,8 +77,8 @@ export const EditPaxModal = ({
 					className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto backdrop-filter backdrop-blur-sm bg-opacity-50"
 				>
 					<div className="relative w-full rounded max-w-2xl max-h-full bg-gray-800">
-						<div className="relative bg-gray-800 bg-opacity-30 backdrop-blur-md rounded-lg shadow-lg">
-							<div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
+						<div className="relative bg-gray-800 bg-opacity-30 backdrop-blur-md max-h-[600px] rounded-lg shadow-lg">
+							<div className="flex items-center justify-between p-4 border-b rounded-t border-gray-600">
 								<p className="text-white">Pax</p>
 								<button
 									type="button"
@@ -127,28 +127,40 @@ export const EditPaxModal = ({
 												required
 											/>
 										</div>
-										<div>
-											<label
-												htmlFor="airship"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-											>
-												Companion Passenger
-											</label>
-											<input
-												type="text"
-												id="arrivaltime"
-												name="arrivaltime"
-												// value={data.arri valtime}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														to: e.target.value,
-													}))
-												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
-											/>
-										</div>
+										{data.companion_passengers.map(
+											(item, index) => (
+												<div key={index}>
+													<label
+														htmlFor="companion_passengers"
+														className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+													>
+														Companion Passenger{" "}
+														{index + 1}
+													</label>
+													<input
+														type="text"
+														id="companion_passengers"
+														name="companion_passengers"
+														value={
+															data
+																.companion_passengers[
+																index
+															]
+														}
+														onChange={(e) =>
+															setData((prev) => ({
+																...prev,
+																companion_passenger:
+																	e.target
+																		.value,
+															}))
+														}
+														className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+														required
+													/>
+												</div>
+											)
+										)}
 									</div>
 									<div className="flex items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 										<button
