@@ -15,6 +15,10 @@ interface props {
 	arrivaltime: string
 	flight_time: string
 	currentFlightID: number
+	coordinates: {
+		latitude: string
+		longitude: string
+	}[]
 }
 
 export interface EditAircraftProps {
@@ -24,6 +28,10 @@ export interface EditAircraftProps {
 	launchtime: string
 	arrivaltime: string
 	flight_time: string
+	first_longitude: string
+	first_latitude: string
+	second_longitude: string
+	second_latitude: string
 }
 
 export const EditAircraftModal = ({
@@ -35,6 +43,7 @@ export const EditAircraftModal = ({
 	arrivaltime,
 	flight_time,
 	currentFlightID,
+	coordinates,
 }: props) => {
 	const [data, setData] = useState<EditAircraftProps>({
 		airship_name: chosenAirship,
@@ -43,6 +52,10 @@ export const EditAircraftModal = ({
 		launchtime,
 		arrivaltime,
 		flight_time,
+		first_longitude: coordinates[0].longitude,
+		first_latitude: coordinates[0].latitude,
+		second_longitude: coordinates[1].longitude,
+		second_latitude: coordinates[1].latitude,
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
@@ -50,6 +63,7 @@ export const EditAircraftModal = ({
 	const handleToggleModal = () => {
 		setIsModalOpen((prev) => !prev)
 	}
+
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault()
 		setLoading(true)
@@ -61,6 +75,10 @@ export const EditAircraftModal = ({
 			convertedData.append("launchtime", data.launchtime)
 			convertedData.append("arrivaltime", data.arrivaltime)
 			convertedData.append("flight_time", data.flight_time)
+			convertedData.append("first_latitude", data.first_latitude)
+			convertedData.append("first_longitude", data.first_longitude)
+			convertedData.append("second_latitude", data.second_latitude)
+			convertedData.append("second_longitude", data.second_longitude)
 
 			await editAction({
 				caseType: "flight",

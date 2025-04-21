@@ -1,5 +1,3 @@
-import { sendEmail } from "../../../lib/actions/emails/actions"
-import { flightScheduledMessage } from "../../utils/emailMessage"
 import TravelMap from "../cards/TravelMap"
 import { EditAircraftModal } from "../modals/steppermodals/EditAircraftModal"
 import type { Airship, Flight } from "../table/TableModal"
@@ -98,6 +96,7 @@ export const StepperFlightInfo = ({
 							arrivaltime={currentFlight.arrivaltime}
 							flight_time={currentFlight.flight_time}
 							currentFlightID={currentFlight.id}
+							coordinates={coordinates}
 						/>
 					</div>
 
@@ -213,25 +212,25 @@ export const StepperFlightInfo = ({
 								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
 									Send Quote
 								</button>
-								{/* <span className="text-gray-400 text-sm">
-									There are currently no notes
-								</span> */}
+								<span className="text-gray-400 text-sm">
+									No Quote available yet
+								</span>
 							</li>
 							<li className="border-t pt-4 flex justify-between">
 								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
 									Send Contract
 								</button>
-								{/* <span className="text-gray-400 text-sm">
-									There is currently no profile
-								</span> */}
+								<span className="text-gray-400 text-sm">
+									No contract was provided yet
+								</span>
 							</li>
 							<li className="border-t pt-4 flex justify-between">
 								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
 									Send Invoice
 								</button>
-								{/* <span className="text-gray-400 text-sm">
-									There are currently no notes
-								</span> */}
+								<span className="text-gray-400 text-sm">
+									No Invoice available yet
+								</span>
 							</li>
 						</ul>
 					</div>
