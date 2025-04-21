@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import type { Airship } from "../../table/TableModal"
 import LoaderSpinner from "../../Loaders/LoaderSpinner"
 import { editAction } from "../../../../lib/actions/edit/actions"
-import LocationSelector from "../../stepper/LocationSelector"
-import CsvSelect from "../../stepper/prueba"
 import CalculateDistanceEdit from "../../stepper/CalculateDIstanceEdit"
 import { getFlights } from "../../../../lib/actions/flights/actions"
 import useStore from "../../../store/store"
@@ -47,7 +45,6 @@ export const EditAircraftModal = ({
 		flight_time,
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [showToast, setShowToast] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const updateFlights = useStore((state) => state.updateFlights)
 	const handleToggleModal = () => {
@@ -74,10 +71,8 @@ export const EditAircraftModal = ({
 			const newFlights = await getFlights()
 			updateFlights(newFlights)
 			handleToggleModal()
-			setShowToast(true)
 			setTimeout(() => {
 				window.location.reload()
-				setShowToast(false)
 			}, 2000)
 		} catch (err) {
 			console.log(err)
