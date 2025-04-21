@@ -11,7 +11,7 @@ export async function editAction({ caseType, data, id }: editProps) {
     const url = `${import.meta.env.PUBLIC_BACKEND_URL}/${caseType}`;
 
     let body: FormData | string;
-    console.log({ data })
+
     if (caseType === "airship") {
       body = data;
     } else {

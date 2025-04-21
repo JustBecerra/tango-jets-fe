@@ -203,7 +203,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 												toAirport.lon,
 												place.lat,
 												place.lon,
-
 												setFormData
 											)
 											setDistance(dist)
