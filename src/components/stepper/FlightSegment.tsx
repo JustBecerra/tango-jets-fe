@@ -8,6 +8,8 @@ interface FlightSegmentProps {
 	arrivalAirport: string
 	arrivalCity: string
 	etr: string
+	currentFlightID: number
+	segmentID: number
 }
 
 export function FlightSegment({
@@ -20,10 +22,16 @@ export function FlightSegment({
 	arrivalAirport,
 	arrivalCity,
 	etr,
+	currentFlightID,
+	segmentID,
 }: FlightSegmentProps) {
 	return (
-		<tr className="border-b">
-			<td className="py-4 pr-6">
+		<tr
+			className={`border-b rounded-full ${
+				currentFlightID === segmentID ? "bg-blue-100 " : ""
+			} `}
+		>
+			<td className={`py-4 pr-6 pl-2`}>
 				<div className="text-sm font-medium">{departureTime}</div>
 				<div className="text-xs text-gray-500">{departureDate}</div>
 			</td>
@@ -64,8 +72,12 @@ export function FlightSegment({
 			<td className="py-4 pr-6 text-right">
 				<div className="text-sm font-medium">{etr}</div>
 			</td>
-			<td className="py-4">
-				<div className="flex gap-2 justify-end">
+			<td className={`py-4 `}>
+				<div
+					className={`${
+						currentFlightID === segmentID ? "hidden" : ""
+					} flex gap-2 justify-end`}
+				>
 					<button className="p-1 text-cyan-500 hover:text-cyan-600 border-cyan-500 border-2 rounded">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

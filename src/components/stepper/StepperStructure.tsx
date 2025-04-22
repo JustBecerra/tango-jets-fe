@@ -50,7 +50,10 @@ export const StepperStructure = ({
 				from={currentFlight.from}
 				totalPassengers={currentFlight.companion_passengers.length + 1}
 			/>
-			<FlightSegmentsSection allFlights={allFlights} />
+			<FlightSegmentsSection
+				allFlights={allFlights}
+				currentFlightID={currentFlight.id}
+			/>
 		</div>
 	)
 }
