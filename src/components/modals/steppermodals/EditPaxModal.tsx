@@ -4,6 +4,7 @@ import { editAction } from "../../../../lib/actions/edit/actions"
 import { getFlights } from "../../../../lib/actions/flights/actions"
 import useStore from "../../../store/store"
 import { FaRegPlusSquare } from "react-icons/fa"
+import { AutoComplete } from "../../input/AutoComplete"
 
 interface props {
 	masterPassenger: string
@@ -12,13 +13,18 @@ interface props {
 	chosenAirship: string
 }
 
+export interface editPaxProps {
+	master_passenger: string
+	companion_passengers: string[]
+}
+
 export const EditPaxModal = ({
 	masterPassenger,
 	companionPassengers,
 	currentFlightID,
 	chosenAirship,
 }: props) => {
-	const [data, setData] = useState({
+	const [data, setData] = useState<editPaxProps>({
 		master_passenger: masterPassenger,
 		companion_passengers: companionPassengers,
 	})
@@ -126,20 +132,13 @@ export const EditPaxModal = ({
 											>
 												Lead Passenger
 											</label>
-											<input
-												type="text"
-												id="master_passenger"
-												name="master_passenger"
+											<AutoComplete
 												value={data.master_passenger}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														master_passenger:
-															e.target.value,
-													}))
+												setter={
+													setData as unknown as React.Dispatch<
+														React.SetStateAction<editPaxProps>
+													>
 												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-												required
 											/>
 										</div>
 										{data.companion_passengers.map(

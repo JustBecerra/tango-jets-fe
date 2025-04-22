@@ -5,10 +5,12 @@ import type { formType } from "../scheduler/SchedulerFrame";
 import type { formEditType } from "../edit-trip/MainEditFlight";
 import StarRanking from "../stepper/StarsRank";
 import { FaUser, FaPassport } from "react-icons/fa";
+import type { editPaxProps } from "../modals/steppermodals/EditPaxModal"
 
 interface props {
 	value: string
 	setter:
+		| React.Dispatch<React.SetStateAction<editPaxProps>>
 		| React.Dispatch<React.SetStateAction<formType>>
 		| React.Dispatch<React.SetStateAction<formType[]>>
 	formDataIndex?: number
