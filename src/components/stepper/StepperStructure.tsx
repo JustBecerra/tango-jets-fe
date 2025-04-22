@@ -1,9 +1,7 @@
-import React from 'react'
-import { StepperHeader } from './StepperHeader'
-import type { Airship, Client, Flight } from '../table/TableModal'
+import { StepperHeader } from "./StepperHeader"
+import type { Airship, Client, Flight } from "../table/TableModal"
 import { ProgressStepper } from "./ProgressStepper"
 import { StepperFlightInfo } from "./StepperFlightInfo"
-import FlightSegmentsPage from "./FlightSegmentSection"
 import FlightSegmentsSection from "./FlightSegmentSection"
 
 interface props {
@@ -45,6 +43,8 @@ export const StepperStructure = ({
 			<ProgressStepper currentStep={currentFlight.phase} />
 			<StepperFlightInfo
 				coordinates={coordinates}
+				currentFlight={currentFlight}
+				listAirships={listAirships}
 				chosenAirship={chosenAirship}
 				to={currentFlight.to}
 				from={currentFlight.from}
