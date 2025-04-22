@@ -174,6 +174,7 @@ export const StepperFlightInfo = ({
 								currentFlight.companion_passengers
 							}
 							currentFlightID={currentFlight.id}
+							chosenAirship={chosenAirship.title}
 						/>
 					</div>
 					<div className="p-8 flex justify-center items-center">

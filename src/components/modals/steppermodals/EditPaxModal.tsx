@@ -3,17 +3,20 @@ import LoaderSpinner from "../../Loaders/LoaderSpinner"
 import { editAction } from "../../../../lib/actions/edit/actions"
 import { getFlights } from "../../../../lib/actions/flights/actions"
 import useStore from "../../../store/store"
+import { FaRegPlusSquare } from "react-icons/fa"
 
 interface props {
 	masterPassenger: string
 	companionPassengers: string[]
 	currentFlightID: number
+	chosenAirship: string
 }
 
 export const EditPaxModal = ({
 	masterPassenger,
 	companionPassengers,
 	currentFlightID,
+	chosenAirship,
 }: props) => {
 	const [data, setData] = useState({
 		master_passenger: masterPassenger,
@@ -31,9 +34,10 @@ export const EditPaxModal = ({
 		setLoading(true)
 		try {
 			const convertedData = new FormData()
+			convertedData.append("airship_name", chosenAirship)
 			convertedData.append("master_passenger", data.master_passenger)
 			convertedData.append(
-				"companion_passenger",
+				"companion_passengers",
 				JSON.stringify(data.companion_passengers)
 			)
 
@@ -52,6 +56,17 @@ export const EditPaxModal = ({
 		} catch (err) {
 			console.log(err)
 		}
+	}
+
+	const addCompanionOption = (e: any) => {
+		e.preventDefault()
+		setData((prev) => ({
+			...prev,
+			companion_passengers: [
+				...prev.companion_passengers,
+				"New Passenger",
+			],
+		}))
 	}
 	return (
 		<>
@@ -132,7 +147,7 @@ export const EditPaxModal = ({
 												<div key={index}>
 													<label
 														htmlFor="companion_passengers"
-														className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+														className="block text-sm font-medium text-gray-200"
 													>
 														Companion Passenger{" "}
 														{index + 1}
@@ -148,12 +163,22 @@ export const EditPaxModal = ({
 															]
 														}
 														onChange={(e) =>
-															setData((prev) => ({
-																...prev,
-																companion_passenger:
-																	e.target
-																		.value,
-															}))
+															setData((prev) => {
+																const updatedCompanions =
+																	[
+																		...prev.companion_passengers,
+																	]
+																updatedCompanions[
+																	index
+																] =
+																	e.target.value
+
+																return {
+																	...prev,
+																	companion_passengers:
+																		updatedCompanions,
+																}
+															})
 														}
 														className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 														required
@@ -161,6 +186,20 @@ export const EditPaxModal = ({
 												</div>
 											)
 										)}
+										<div className="flex items-end">
+											<div
+												onClick={addCompanionOption}
+												className="w-full h-[38px] cursor-pointer flex items-center bg-green-600 hover:bg-green-800 justify-center block w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+											>
+												<button
+													type="button"
+													className="block w-fit py-2 text-sm text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+												>
+													Add Passenger
+												</button>
+												<FaRegPlusSquare className="ml-2 h-8 w-8 text-white" />
+											</div>
+										</div>
 									</div>
 									<div className="flex items-center py-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 										<button
