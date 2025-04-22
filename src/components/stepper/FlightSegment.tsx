@@ -1,3 +1,7 @@
+import { useState } from "react"
+import { deleteAction } from "../../../lib/actions/delete/actions"
+import LoaderSpinner from "../Loaders/LoaderSpinner"
+
 interface FlightSegmentProps {
 	departureTime: string
 	departureDate: string
@@ -25,6 +29,21 @@ export function FlightSegment({
 	currentFlightID,
 	segmentID,
 }: FlightSegmentProps) {
+	const [loading, setLoading] = useState(false)
+	const handleDelete = async (e: any) => {
+		e.stopPropagation()
+		setLoading(true)
+		try {
+			await deleteAction({
+				caseType: "flight",
+				id: segmentID,
+			})
+		} catch (error) {
+			console.error("Error:", error)
+		} finally {
+			window.location.reload()
+		}
+	}
 	return (
 		<tr
 			className={`border-b rounded-full ${
@@ -78,7 +97,12 @@ export function FlightSegment({
 						currentFlightID === segmentID ? "hidden" : ""
 					} flex gap-2 justify-end`}
 				>
-					<button className="p-1 text-cyan-500 hover:text-cyan-600 border-cyan-500 border-2 rounded">
+					<button
+						onClick={() =>
+							(window.location.href = `/trip/${segmentID}`)
+						}
+						className="p-1 text-cyan-500 hover:text-cyan-600 border-cyan-500 border-2 rounded"
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="h-6 w-6"
@@ -88,7 +112,10 @@ export function FlightSegment({
 							<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
 						</svg>
 					</button>
-					<button className="p-1 text-red-500 hover:text-red-600 border-red-500 border-2">
+					<button
+						onClick={handleDelete}
+						className="p-1 text-red-500 hover:text-red-600 border-red-500 border-2"
+					>
 						<svg
 							className="w-6 h-6 text-red-500"
 							xmlns="http://www.w3.org/2000/svg"
@@ -104,6 +131,11 @@ export function FlightSegment({
 							/>
 						</svg>
 					</button>
+					{loading && (
+						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+							<LoaderSpinner />
+						</div>
+					)}
 				</div>
 			</td>
 		</tr>
