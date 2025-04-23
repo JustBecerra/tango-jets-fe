@@ -74,6 +74,12 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 		},
 	])
 
+	const formatLocalDateTime = (date: Date) => {
+		const offset = date.getTimezoneOffset()
+		const localDate = new Date(date.getTime() - offset * 60000)
+		return localDate.toISOString().slice(0, 16)
+	}
+
 	const { updateFlights } = useStore((state) => state)
 
 	const handleSubmit = async (event: React.FormEvent) => {
@@ -82,7 +88,7 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 
 		const name = getCookie("username")
 		const transformedFlightData = formData.map((elem) => ({
-			launchtime: elem.launchtime.toISOString().slice(0, 16),
+			launchtime: formatLocalDateTime(elem.launchtime),
 			to: elem.to,
 			from: elem.from,
 			master_passenger: elem.master_passenger,
@@ -212,7 +218,9 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 									labelTo="To"
 									onSelectFrom={handleSelectFrom}
 									onSelectTo={handleSelectTo}
-									onDistanceCalculated={handleDistanceCalculated}
+									onDistanceCalculated={
+										handleDistanceCalculated
+									}
 									formData={elem}
 									setFormData={setFormData}
 									formDataIndex={index}
@@ -231,9 +239,9 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 										type="datetime-local"
 										id={`launchtime-${index}`}
 										name={`launchtime-${index}`}
-										value={elem.launchtime
-											.toISOString()
-											.slice(0, 16)}
+										value={formatLocalDateTime(
+											elem.launchtime
+										)}
 										onChange={(e) =>
 											setFormData((prevFormData) => {
 												const updatedFormData = [
@@ -248,14 +256,12 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 												return updatedFormData
 											})
 										}
-										min={new Date()
-											.toISOString()
-											.slice(0, 16)}
+										min={formatLocalDateTime(new Date())}
 										className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 										required
 									/>
 								</div>
-								
+
 								<div>
 									<label
 										htmlFor={`master_passenger-${index}`}
@@ -283,7 +289,7 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 										type="number"
 										id={`cant_pax_${index}`}
 										name="cant_pax"
-										value={elem.pax || 0} 
+										value={elem.pax || 0}
 										onChange={(e) =>
 											setFormData((prevFormData) => {
 												const updatedFormData = [
@@ -292,8 +298,9 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 												updatedFormData[index] = {
 													...updatedFormData[index],
 													pax:
-														parseInt(e.target.value) ||
-														0,
+														parseInt(
+															e.target.value
+														) || 0,
 												}
 												return updatedFormData
 											})
@@ -310,28 +317,24 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 						<button
 							type="button"
 							onClick={() =>
-								setFormData(
-									(prevFormData: formType[]) => {
-										const updatedFormData = [
-											...prevFormData,
-										]
-										updatedFormData.push({
-											launchtime: new Date(),
-											to: "",
-											from: "",
-											master_passenger: "",
-											type_of: "connection",
-											associated_to: "",
-											first_longitude: "",
-											first_latitude: "",
-											second_longitude: "",
-											second_latitude: "",
-											flight_time: "00:00",
-											pax: 0,
-										})
-										return updatedFormData
-									}
-								)
+								setFormData((prevFormData: formType[]) => {
+									const updatedFormData = [...prevFormData]
+									updatedFormData.push({
+										launchtime: new Date(),
+										to: "",
+										from: "",
+										master_passenger: "",
+										type_of: "connection",
+										associated_to: "",
+										first_longitude: "",
+										first_latitude: "",
+										second_longitude: "",
+										second_latitude: "",
+										flight_time: "00:00",
+										pax: 0,
+									})
+									return updatedFormData
+								})
 							}
 							className="px-4 py-2 flex items-center text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
 						>
@@ -346,34 +349,59 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 				<div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto pr-1">
 					<div className="space-y-4">
 						<div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-							<h3 className="text-sm font-medium text-blue-800 mb-3">Multi-City Trip Details</h3>
+							<h3 className="text-sm font-medium text-blue-800 mb-3">
+								Multi-City Trip Details
+							</h3>
 							{formData.map((elem, index) => (
-								<div key={index} className="mb-4 pb-3 border-b border-blue-100 last:border-b-0 last:mb-0 last:pb-0">
+								<div
+									key={index}
+									className="mb-4 pb-3 border-b border-blue-100 last:border-b-0 last:mb-0 last:pb-0"
+								>
 									<h4 className="font-medium text-sm text-blue-700 mb-2">
 										Flight {index + 1}
 									</h4>
 									<div className="space-y-1 text-sm">
 										<div className="flex justify-between">
-											<span className="text-gray-600">From:</span>
-											<span className="font-medium text-gray-800">{elem.from || "Not selected"}</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-gray-600">To:</span>
-											<span className="font-medium text-gray-800">{elem.to || "Not selected"}</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-gray-600">Launch time:</span>
+											<span className="text-gray-600">
+												From:
+											</span>
 											<span className="font-medium text-gray-800">
-												{new Date(elem.launchtime).toLocaleString()}
+												{elem.from || "Not selected"}
 											</span>
 										</div>
 										<div className="flex justify-between">
-											<span className="text-gray-600">Flight time:</span>
-											<span className="font-medium text-gray-800">{elem.flight_time}</span>
+											<span className="text-gray-600">
+												To:
+											</span>
+											<span className="font-medium text-gray-800">
+												{elem.to || "Not selected"}
+											</span>
 										</div>
 										<div className="flex justify-between">
-											<span className="text-gray-600">Passengers:</span>
-											<span className="font-medium text-gray-800">{elem.pax}</span>
+											<span className="text-gray-600">
+												Launch time:
+											</span>
+											<span className="font-medium text-gray-800">
+												{new Date(
+													elem.launchtime
+												).toLocaleString()}
+											</span>
+										</div>
+										<div className="flex justify-between">
+											<span className="text-gray-600">
+												Flight time:
+											</span>
+											<span className="font-medium text-gray-800">
+												{elem.flight_time}
+											</span>
+										</div>
+										<div className="flex justify-between">
+											<span className="text-gray-600">
+												Passengers:
+											</span>
+											<span className="font-medium text-gray-800">
+												{elem.pax}
+											</span>
 										</div>
 									</div>
 								</div>
@@ -383,41 +411,58 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 
 					<div>
 						<div className="bg-white rounded-lg border border-gray-200 p-4">
-							<h3 className="text-sm font-medium text-gray-700 mb-3">Aircraft Options</h3>
-							
+							<h3 className="text-sm font-medium text-gray-700 mb-3">
+								Aircraft Options
+							</h3>
+
 							{airshipData.map((airship, airshipindex) => {
-								const { revenue, roundingDifference } = getPercentage({
-									cost: airship.price_cost.toString(),
-									newPercentage: airship.percentage.toString(),
-								})
-								const totalRevenue = revenue + airship.extra_price
+								const { revenue, roundingDifference } =
+									getPercentage({
+										cost: airship.price_cost.toString(),
+										newPercentage:
+											airship.percentage.toString(),
+									})
+								const totalRevenue =
+									revenue + airship.extra_price
 								return (
-									<div key={airshipindex} className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+									<div
+										key={airshipindex}
+										className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200"
+									>
 										<div className="flex items-center justify-between mb-2">
-											<label htmlFor="airship_title" className="text-sm font-medium text-gray-700">
+											<label
+												htmlFor="airship_title"
+												className="text-sm font-medium text-gray-700"
+											>
 												Airship Name
 											</label>
 											{airshipindex > 0 && (
 												<button
 													type="button"
 													className="text-red-500 hover:text-red-700"
-													onClick={() => subtractAirshipOption(airshipindex)}
+													onClick={() =>
+														subtractAirshipOption(
+															airshipindex
+														)
+													}
 												>
 													<FaRegMinusSquare className="w-4 h-4" />
 												</button>
 											)}
 										</div>
-										
+
 										<select
 											onChange={(e) =>
 												setAirshipData((prevFormData) =>
 													prevFormData.map(
 														(item, index) =>
-															airshipindex === index
+															airshipindex ===
+															index
 																? {
 																		...item,
 																		airship_name:
-																			e.target
+																			e
+																				.target
 																				.value,
 																  }
 																: item
@@ -439,22 +484,28 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 												</option>
 											))}
 										</select>
-										
+
 										<div className="space-y-3">
 											<div>
-												<label htmlFor="price_cost" className="block text-sm font-medium text-gray-700 mb-1">
+												<label
+													htmlFor="price_cost"
+													className="block text-sm font-medium text-gray-700 mb-1"
+												>
 													Price cost
 												</label>
 												<input
 													value={airship.price_cost}
 													onChange={(e) => {
 														const newCost =
-															parseInt(e.target.value) || 0
+															parseInt(
+																e.target.value
+															) || 0
 														const {
 															revenue,
 															roundingDifference,
 														} = getPercentage({
-															cost: e.target.value,
+															cost: e.target
+																.value,
 															newPercentage:
 																airship.percentage.toString(),
 														})
@@ -462,21 +513,27 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 														// Calcular totalRevenue incluyendo el extra_price
 														const totalRevenue =
 															revenue +
-															(airship.extra_price || 0)
+															(airship.extra_price ||
+																0)
 
-														setAirshipData((prevFormData) =>
-															prevFormData.map(
-																(item, index) =>
-																	index === airshipindex
-																		? {
-																				...item,
-																				price_cost:
-																					newCost,
-																				price_revenue:
-																					totalRevenue,
-																		  }
-																		: item
-															)
+														setAirshipData(
+															(prevFormData) =>
+																prevFormData.map(
+																	(
+																		item,
+																		index
+																	) =>
+																		index ===
+																		airshipindex
+																			? {
+																					...item,
+																					price_cost:
+																						newCost,
+																					price_revenue:
+																						totalRevenue,
+																			  }
+																			: item
+																)
 														)
 													}}
 													type="number"
@@ -484,30 +541,41 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 													name="price_cost"
 													style={{
 														appearance: "textfield",
-														WebkitAppearance: "none",
-														MozAppearance: "textfield",
+														WebkitAppearance:
+															"none",
+														MozAppearance:
+															"textfield",
 													}}
 													className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 													required
 												/>
 											</div>
-											
+
 											<div>
-												<label htmlFor="price_revenue" className="block text-sm font-medium text-gray-700 mb-1">
+												<label
+													htmlFor="price_revenue"
+													className="block text-sm font-medium text-gray-700 mb-1"
+												>
 													Price with{" "}
 													<input
-														value={airship.percentage}
+														value={
+															airship.percentage
+														}
 														type="number"
 														style={{
-															appearance: "textfield",
-															WebkitAppearance: "none",
-															MozAppearance: "textfield",
+															appearance:
+																"textfield",
+															WebkitAppearance:
+																"none",
+															MozAppearance:
+																"textfield",
 															width: "20px",
 														}}
 														onChange={(e) => {
 															const newPercentage =
 																parseFloat(
-																	e.target.value
+																	e.target
+																		.value
 																) || 0
 															const {
 																revenue,
@@ -515,28 +583,36 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 															} = getPercentage({
 																cost: airship.price_cost.toString(),
 																newPercentage:
-																	e.target.value,
+																	e.target
+																		.value,
 															})
 
 															// Calcular totalRevenue incluyendo el extra_price
 															const totalRevenue =
 																revenue +
-																(airship.extra_price || 0)
+																(airship.extra_price ||
+																	0)
 
-															setAirshipData((prevFormData) =>
-																prevFormData.map(
-																	(item, index) =>
-																		index ===
-																		airshipindex
-																			? {
-																					...item,
-																					percentage:
-																						newPercentage,
-																					price_revenue:
-																						totalRevenue,
-																			  }
-																			: item
-																)
+															setAirshipData(
+																(
+																	prevFormData
+																) =>
+																	prevFormData.map(
+																		(
+																			item,
+																			index
+																		) =>
+																			index ===
+																			airshipindex
+																				? {
+																						...item,
+																						percentage:
+																							newPercentage,
+																						price_revenue:
+																							totalRevenue,
+																				  }
+																				: item
+																	)
 															)
 														}}
 														placeholder="20%"
@@ -545,21 +621,26 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 													% commission +{" "}
 													<input
 														value={
-															airship.extra_price === 0
+															airship.extra_price ===
+															0
 																? ""
 																: airship.extra_price
 														}
 														type="number"
 														style={{
-															appearance: "textfield",
-															WebkitAppearance: "none",
-															MozAppearance: "textfield",
+															appearance:
+																"textfield",
+															WebkitAppearance:
+																"none",
+															MozAppearance:
+																"textfield",
 															width: "35px",
 														}}
 														onChange={(e) => {
 															const newExtraPrice =
 																parseFloat(
-																	e.target.value
+																	e.target
+																		.value
 																) || 0
 															const {
 																revenue,
@@ -572,22 +653,29 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 
 															// Calcular totalRevenue con el nuevo extra_price
 															const totalRevenue =
-																revenue + newExtraPrice
+																revenue +
+																newExtraPrice
 
-															setAirshipData((prevFormData) =>
-																prevFormData.map(
-																	(item, index) =>
-																		index ===
-																		airshipindex
-																			? {
-																					...item,
-																					extra_price:
-																						newExtraPrice,
-																					price_revenue:
-																						totalRevenue,
-																			  }
-																			: item
-																)
+															setAirshipData(
+																(
+																	prevFormData
+																) =>
+																	prevFormData.map(
+																		(
+																			item,
+																			index
+																		) =>
+																			index ===
+																			airshipindex
+																				? {
+																						...item,
+																						extra_price:
+																							newExtraPrice,
+																						price_revenue:
+																							totalRevenue,
+																				  }
+																				: item
+																	)
 															)
 														}}
 														placeholder="Extra"
@@ -600,35 +688,44 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 													name="price_revenue"
 													value={totalRevenue}
 													onChange={(e) =>
-														setAirshipData((prevFormData) =>
-															prevFormData.map(
-																(item, index) =>
-																	index === airshipindex
-																		? {
-																				...item,
-																				price_revenue:
-																					parseInt(
-																						e
-																							.target
-																							.value
-																					) || 0,
-																		  }
-																		: item
-															)
+														setAirshipData(
+															(prevFormData) =>
+																prevFormData.map(
+																	(
+																		item,
+																		index
+																	) =>
+																		index ===
+																		airshipindex
+																			? {
+																					...item,
+																					price_revenue:
+																						parseInt(
+																							e
+																								.target
+																								.value
+																						) ||
+																						0,
+																			  }
+																			: item
+																)
 														)
 													}
 													className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 													required
 												/>
 												<p className="text-sm text-gray-500 mt-1">
-													Rounding: {roundingDifference.toFixed(2)}
+													Rounding:{" "}
+													{roundingDifference.toFixed(
+														2
+													)}
 												</p>
 											</div>
 										</div>
 									</div>
 								)
 							})}
-							
+
 							<button
 								type="button"
 								className="flex items-center text-sm text-blue-600 hover:text-blue-800"
@@ -645,34 +742,59 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 			return (
 				<div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto pr-1">
 					{formData.map((elem, index) => (
-						<div key={index} className="bg-white rounded-lg border border-gray-200 p-4">
+						<div
+							key={index}
+							className="bg-white rounded-lg border border-gray-200 p-4"
+						>
 							<h3 className="text-lg font-medium text-gray-700 mb-3">
 								Flight {index + 1}
 							</h3>
 							<div className="space-y-3">
 								<div className="flex justify-between border-b border-gray-100 pb-2">
 									<span className="text-gray-600">From:</span>
-									<span className="font-medium">{elem.from || "TBD"}</span>
+									<span className="font-medium">
+										{elem.from || "TBD"}
+									</span>
 								</div>
 								<div className="flex justify-between border-b border-gray-100 pb-2">
 									<span className="text-gray-600">To:</span>
-									<span className="font-medium">{elem.to || "TBD"}</span>
+									<span className="font-medium">
+										{elem.to || "TBD"}
+									</span>
 								</div>
 								<div className="flex justify-between border-b border-gray-100 pb-2">
-									<span className="text-gray-600">Launch Time:</span>
-									<span className="font-medium">{new Date(elem.launchtime).toLocaleString()}</span>
+									<span className="text-gray-600">
+										Launch Time:
+									</span>
+									<span className="font-medium">
+										{new Date(
+											elem.launchtime
+										).toLocaleString()}
+									</span>
 								</div>
 								<div className="flex justify-between border-b border-gray-100 pb-2">
-									<span className="text-gray-600">Flight Time:</span>
-									<span className="font-medium">{elem.flight_time || "TBD"}</span>
+									<span className="text-gray-600">
+										Flight Time:
+									</span>
+									<span className="font-medium">
+										{elem.flight_time || "TBD"}
+									</span>
 								</div>
 								<div className="flex justify-between border-b border-gray-100 pb-2">
-									<span className="text-gray-600">Lead Passenger:</span>
-									<span className="font-medium">{elem.master_passenger || "TBD"}</span>
+									<span className="text-gray-600">
+										Lead Passenger:
+									</span>
+									<span className="font-medium">
+										{elem.master_passenger || "TBD"}
+									</span>
 								</div>
 								<div className="flex justify-between border-b border-gray-100 pb-2">
-									<span className="text-gray-600">Passengers:</span>
-									<span className="font-medium">{elem.pax || "0"}</span>
+									<span className="text-gray-600">
+										Passengers:
+									</span>
+									<span className="font-medium">
+										{elem.pax || "0"}
+									</span>
 								</div>
 							</div>
 						</div>
