@@ -110,6 +110,12 @@ export const EditAircraftModal = ({
 			from: value,
 		}))
 	}
+
+	const formatLocalDateTime = (date: Date) => {
+		const offset = date.getTimezoneOffset()
+		const localDate = new Date(date.getTime() - offset * 60000)
+		return localDate.toISOString().slice(0, 16)
+	}
 	return (
 		<>
 			<button
@@ -207,45 +213,65 @@ export const EditAircraftModal = ({
 										/>
 										<div>
 											<label
-												htmlFor="airship"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+												htmlFor="launchtime"
+												className="block text-sm font-medium text-gray-200"
 											>
 												Launch Time
 											</label>
 											<input
-												type="text"
+												type="datetime-local"
 												id="launchtime"
-												name="fullname"
+												name="launchtime"
 												value={data.launchtime}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														launch: e.target.value,
+												onChange={(e) => {
+													const value = new Date(
+														e.target.value
+													)
+													const formattedValue =
+														formatLocalDateTime(
+															value
+														)
+													setData((prevFormData) => ({
+														...prevFormData,
+														launchtime:
+															formattedValue,
 													}))
-												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+												}}
+												min={formatLocalDateTime(
+													new Date()
+												)}
+												className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 												required
 											/>
 										</div>
 										<div>
 											<label
-												htmlFor="airship"
-												className="block text-sm font-medium text-gray-900 dark:text-gray-200"
+												htmlFor="arrivaltime"
+												className="block text-sm font-medium text-gray-200"
 											>
 												Arrival Time
 											</label>
 											<input
-												type="text"
+												type="datetime-local"
 												id="arrivaltime"
 												name="arrivaltime"
 												value={data.arrivaltime}
-												onChange={(e) =>
-													setData((prev) => ({
-														...prev,
-														to: e.target.value,
+												onChange={(e) => {
+													const value = new Date(
+														e.target.value
+													)
+													const formattedValue =
+														formatLocalDateTime(
+															value
+														)
+													setData((prevFormData) => ({
+														...prevFormData,
+														arrivaltime:
+															formattedValue,
 													}))
-												}
-												className="block w-full px-4 py-2 mt-1 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+												}}
+												min={data.launchtime}
+												className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 												required
 											/>
 										</div>
