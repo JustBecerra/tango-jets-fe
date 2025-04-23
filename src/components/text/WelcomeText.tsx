@@ -89,7 +89,7 @@ export const WelcomeText = () => {
   return (
 		<div>
 			<div className="text-center flex flex-col items-center">
-				<h1 className="text-4xl font-bold" onClick={openModal}>
+				<h1 className="text-4xl font-bold cursor-pointer hover:text-blue-700 transition-colors" onClick={openModal}>
 					Welcome,
 					<span className="text-blue-500 font-cursive">
 						{employeeName}
