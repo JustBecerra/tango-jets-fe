@@ -1,4 +1,7 @@
+import { sendEmail } from "../../../lib/actions/emails/actions"
+import { flightScheduledMessage } from "../../utils/emailMessage"
 import TravelMap from "../cards/TravelMap"
+import { ChooseAirshipModal } from "../modals/steppermodals/ChooseAirshipModal"
 import { EditAircraftModal } from "../modals/steppermodals/EditAircraftModal"
 import { EditPaxModal } from "../modals/steppermodals/EditPaxModal"
 import type { Airship, Flight } from "../table/TableModal"
@@ -26,26 +29,6 @@ export const StepperFlightInfo = ({
 	currentFlight,
 }: props) => {
 	const { title, size } = chosenAirship
-	// const handleQuote = async () => {
-	// 	price_cost: number
-	// price_revenue: number
-	// airship_name: string
-	// percentage: number
-	// extra_price: number
-	// 	const airshipData = listAirships.map
-	// 	const EmailInfo = {
-	// 		to: currentFlight.master_passenger,
-	// 		subject: "Flight pre-scheduled!",
-	// 		url: flightScheduledMessage({
-	// 			airshipData,
-	// 			airships: listAirships,
-	// 			tripID: currentFlight.id,
-	// 		}),
-	// 		type_of_email: "quote",
-	// 	}
-
-	// 	await sendEmail(EmailInfo)
-	// }
 
 	return (
 		<div className="w-[80%] space-y-4">
@@ -207,11 +190,16 @@ export const StepperFlightInfo = ({
 					<div className="p-4">
 						<ul className="space-y-4">
 							<li className="flex justify-between">
-								<button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800">
-									Send Quote
-								</button>
+								<ChooseAirshipModal
+									currentFlightID={currentFlight.id}
+									master_passenger={
+										currentFlight.master_passenger
+									}
+									listAirships={listAirships}
+								/>
 								<span className="text-gray-400 text-sm">
-									No Quote available yet
+									This will send an email with the aircraft
+									options
 								</span>
 							</li>
 							<li className="border-t pt-4 flex justify-between">
