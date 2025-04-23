@@ -1,8 +1,14 @@
 import type { airshipFormType } from "../components/scheduler/SchedulerFrame"
 import type { Airship } from "../components/table/TableModal"
 
+interface AirshipType {
+	price_cost: number
+	price_revenue: number
+	airship_name: string
+}
+
 interface props {
-	airshipData: airshipFormType[]
+	airshipData: AirshipType[]
 	airships: Airship[]
 	tripID: number
 }
