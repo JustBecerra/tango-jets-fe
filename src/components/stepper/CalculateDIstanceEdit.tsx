@@ -55,7 +55,7 @@ const calculateDistance = (
 	const R = 6371 // Radio de la Tierra en km
 	const dLat = (lat2 - lat1) * (Math.PI / 180)
 	const dLon = (lon2 - lon1) * (Math.PI / 180)
-	console.log({ lat1, lon1, lat2, lon2 })
+
 	setFormData((prevFormData: any) => ({
 		...prevFormData,
 		first_latitude: lat1.toString(),
