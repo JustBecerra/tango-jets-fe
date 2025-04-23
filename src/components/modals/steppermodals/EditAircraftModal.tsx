@@ -68,7 +68,6 @@ export const EditAircraftModal = ({
 		event.preventDefault()
 		setLoading(true)
 		try {
-			console.log({ data })
 			const convertedData = new FormData()
 			convertedData.append("airship_name", data.airship_name)
 			convertedData.append("from", data.from)
