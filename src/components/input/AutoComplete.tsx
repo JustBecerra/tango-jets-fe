@@ -96,61 +96,71 @@ export const AutoComplete = ({ value, setter, formDataIndex }: props) => {
 			/>
 
 			{openDropdown && (
-				<ul className="h-auto max-h-[300px] w-[370px] overflow-y-auto border border-gray-200 shadow-lg rounded-lg mt-1 bg-white absolute z-50 scrollbar-hide">
-					{listClients.length > 0 ? (
-						listClients.map((client, index) => (
-							<li
-								className="cursor-pointer text-black hover:bg-blue-50 transition-colors px-4 py-3"
-								onClick={() => {
-									if (formDataIndex !== undefined) {
-										setter((prevFormData: any) => {
-											if (Array.isArray(prevFormData)) {
-												const updatedFormData = [
-													...prevFormData,
-												]
-												updatedFormData[
-													formDataIndex
-												].master_passenger = client.fullname
-												return updatedFormData
-											}
-											return prevFormData
-										})
-									} else {
-										setter((prevFormData: any) => ({
-											...prevFormData,
-											master_passenger: client.fullname,
-										}))
-									}
-									setOpenDropdown(false)
-								}}
-								key={index}
-							>
-								<div className="flex flex-col">
-									<div className="flex items-center gap-2">
-										<FaUser className="text-gray-500" />
-										<span className="font-medium">{client.fullname}</span>
-									</div>
-									<div className="flex items-center justify-between mt-1 text-sm text-gray-500">
+				<div className="fixed inset-0 z-[1000] overflow-y-auto pointer-events-none" style={{ backgroundColor: 'transparent' }}>
+					<ul 
+						className="h-auto max-h-[300px] w-[370px] overflow-y-auto border border-gray-200 shadow-lg rounded-lg bg-white pointer-events-auto"
+						style={{
+							position: 'fixed',
+							top: wrapperRef.current ? wrapperRef.current.getBoundingClientRect().bottom + 5 + 'px' : '0px',
+							left: wrapperRef.current ? wrapperRef.current.getBoundingClientRect().left + 'px' : '0px',
+							zIndex: 1050
+						}}
+					>
+						{listClients.length > 0 ? (
+							listClients.map((client, index) => (
+								<li
+									className="cursor-pointer text-black hover:bg-blue-50 transition-colors px-4 py-3"
+									onClick={() => {
+										if (formDataIndex !== undefined) {
+											setter((prevFormData: any) => {
+												if (Array.isArray(prevFormData)) {
+													const updatedFormData = [
+														...prevFormData,
+													]
+													updatedFormData[
+														formDataIndex
+													].master_passenger = client.fullname
+													return updatedFormData
+												}
+												return prevFormData
+											})
+										} else {
+											setter((prevFormData: any) => ({
+												...prevFormData,
+												master_passenger: client.fullname,
+											}))
+										}
+										setOpenDropdown(false)
+									}}
+									key={index}
+								>
+									<div className="flex flex-col">
 										<div className="flex items-center gap-2">
-											<FaPassport className="text-gray-400" />
-											<span>{client.passport || "Sin pasaporte"}</span>
+											<FaUser className="text-gray-500" />
+											<span className="font-medium">{client.fullname}</span>
 										</div>
-										{client.nationality && (
-											<span className="text-gray-400">{client.nationality}</span>
+										<div className="flex items-center justify-between mt-1 text-sm text-gray-500">
+											<div className="flex items-center gap-2">
+												<FaPassport className="text-gray-400" />
+												<span>{client.passport || "Sin pasaporte"}</span>
+											</div>
+											{client.nationality && (
+												<span className="text-gray-400">{client.nationality}</span>
+											)}
+										</div>
+										{(client as any).ranking !== undefined && (
+											<StarRanking ranking={(client as any).ranking} />
 										)}
 									</div>
-									{(client as any).ranking !== undefined && (
-										<StarRanking ranking={(client as any).ranking} />
-									)}
-								</div>
+								</li>
+							))
+						) : (
+							<li className="py-4 px-4 text-gray-500 text-center">
+								Client not found
 							</li>
-						))
-					) : (
-						<li className="py-4 px-4 text-gray-500 text-center">
-							Client not found
-						</li>
-					)}
-				</ul>
+						)}
+					</ul>
+				</div>
 			)}
 		</div>
 	)
