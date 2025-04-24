@@ -74,6 +74,12 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
     },
   ]);
 
+  const formatLocalDateTime = (date: Date) => {
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - offset * 60000);
+    return localDate.toISOString().slice(0, 16);
+  };
+
   const { updateFlights } = useStore((state) => state);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -82,7 +88,7 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 
     const name = getCookie("username");
     const transformedFlightData = formData.map((elem) => ({
-      launchtime: elem.launchtime.toISOString().slice(0, 16),
+      launchtime: formatLocalDateTime(elem.launchtime),
       to: elem.to,
       from: elem.from,
       master_passenger: elem.master_passenger,
@@ -231,7 +237,7 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
                     type="datetime-local"
                     id={`launchtime-${index}`}
                     name={`launchtime-${index}`}
-                    value={elem.launchtime.toISOString().slice(0, 16)}
+                    value={formatLocalDateTime(elem.launchtime)}
                     onChange={(e) =>
                       setFormData((prevFormData) => {
                         const updatedFormData = [...prevFormData];
@@ -242,7 +248,7 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
                         return updatedFormData;
                       })
                     }
-                    min={new Date().toISOString().slice(0, 16)}
+                    min={formatLocalDateTime(new Date())}
                     className="block w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
@@ -337,12 +343,6 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
                       <span className="text-gray-600">Flight time:</span>
                       <span className="font-medium text-gray-800">
                         {elem.flight_time}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Passengers:</span>
-                      <span className="font-medium text-gray-800">
-                        {elem.pax}
                       </span>
                     </div>
                   </div>
@@ -623,10 +623,6 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
                   <span className="font-medium">
                     {elem.master_passenger || "TBD"}
                   </span>
-                </div>
-                <div className="flex justify-between border-b border-gray-100 pb-2">
-                  <span className="text-gray-600">Passengers:</span>
-                  <span className="font-medium">{elem.pax || "0"}</span>
                 </div>
               </div>
             </div>

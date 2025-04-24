@@ -3,9 +3,13 @@ import { FlightSegment } from "./FlightSegment"
 
 interface props {
 	allFlights: Flight[]
+	currentFlightID: number
 }
 
-export default function FlightSegmentsSection({ allFlights }: props) {
+export default function FlightSegmentsSection({
+	allFlights,
+	currentFlightID,
+}: props) {
 	return (
 		<div className="w-[80%] mx-auto py-6">
 			<div className="bg-white rounded-lg border shadow-sm">
@@ -53,7 +57,6 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 								{allFlights.map((flight, index) => (
 									<FlightSegment
 										key={index}
-										status="pos"
 										departureTime={
 											flight.launchtime.split("T")[1]
 										}
@@ -70,7 +73,8 @@ export default function FlightSegmentsSection({ allFlights }: props) {
 										}
 										arrivalAirport={flight.to}
 										arrivalCity="Kansas City, MO"
-										distance="1061"
+										segmentID={flight.id}
+										currentFlightID={currentFlightID}
 										etr={flight.flight_time}
 									/>
 								))}

@@ -1,50 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import type { formType } from "../scheduler/SchedulerFrame";
-import type { formEditType } from "../edit-trip/MainEditFlight";
+import type { EditAircraftProps } from "../modals/steppermodals/EditAircraftModal";
 
-interface CsvSelectProps {
-	labelFrom?: string
-	labelTo?: string
-	onSelectFrom?: (value: string) => void
-	onSelectTo?: (value: string) => void
-	onDistanceCalculated?: (distance: number) => void
-	formData: formType | formEditType
-	setFormData:
-		| React.Dispatch<React.SetStateAction<formType>>
-		| React.Dispatch<React.SetStateAction<formEditType>>
+interface CalculateDistanceEditProps {
+    onSelectFrom?: (value: string) => void
+    onSelectTo?: (value: string) => void
+    formData: EditAircraftProps
+    setFormData: React.Dispatch<React.SetStateAction<EditAircraftProps>>
+
 }
 const MAX_RESULTS = 5
 
 // Función para obtener aeropuertos
 const fetchAirports = async (
-	query: string,
-	setResults: React.Dispatch<React.SetStateAction<any[]>>
+    query: string,
+    setResults: React.Dispatch<React.SetStateAction<any[]>>
 ) => {
-	if (!query || query.length < 2) return
+    if (!query || query.length < 2) return
 
-	try {
-		const response = await axios.get(
-			`https://autocomplete.travelpayouts.com/places2?term=${query}&locale=en&types[]=city&types[]=airport`
-		)
+    try {
+        const response = await axios.get(
+            `https://autocomplete.travelpayouts.com/places2?term=${query}&locale=en&types[]=city&types[]=airport`
+        )
 
-		if (response.data && response.data.length > 0) {
-			const airports = response.data
-				.slice(0, MAX_RESULTS)
-				.map((place: any) => ({
-					id: place.code,
-					name: place.name,
-					country: place.country_name,
-					lat: place.coordinates?.lat,
-					lon: place.coordinates?.lon,
-					display: `${place.name} (${place.code}) - ${place.country_name}`,
-				}))
+        if (response.data && response.data.length > 0) {
+            const airports = response.data
+                .slice(0, MAX_RESULTS)
+                .map((place: any) => ({
+                    id: place.code,
+                    name: place.name,
+                    country: place.country_name,
+                    lat: place.coordinates?.lat,
+                    lon: place.coordinates?.lon,
+                    display: `${place.name} (${place.code}) - ${place.country_name}`,
+                }))
 
-			setResults(airports)
-		}
-	} catch (error) {
-		console.error("Error getting airports:", error)
-	}
+            setResults(airports)
+        }
+    } catch (error) {
+        console.error("Error getting airports:", error)
+    }
 }
 
 // Función para calcular distancia con la fórmula de Haversine
@@ -53,9 +48,7 @@ const calculateDistance = (
 	lon1: number,
 	lat2: number,
 	lon2: number,
-	setFormData:
-		| React.Dispatch<React.SetStateAction<formType>>
-		| React.Dispatch<React.SetStateAction<formEditType>>
+	setFormData: React.Dispatch<React.SetStateAction<EditAircraftProps>>
 ): number => {
 	if (!lat1 || !lon1 || !lat2 || !lon2) return 0
 
@@ -97,12 +90,9 @@ const calculateFlightTime = (distance: number, speed = 900): string => {
 	return formattedTime
 }
 
-const CsvSelect: React.FC<CsvSelectProps> = ({
-	labelFrom = "From",
-	labelTo = "To",
+const CalculateDistanceEdit: React.FC<CalculateDistanceEditProps> = ({
 	onSelectFrom,
 	onSelectTo,
-	onDistanceCalculated,
 	formData,
 	setFormData,
 }) => {
@@ -167,8 +157,8 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				{/* Input "From" */}
 				<div className="flex-1 mb-4" ref={fromRef}>
-					<label className="block text-sm font-medium text-gray-700">
-						{labelFrom}
+					<label className="block text-sm font-medium text-gray-200">
+						From
 					</label>
 					<input
 						type="text"
@@ -185,9 +175,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 					/>
 					{fromResults.length > 0 && (
 						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-3/4">
-							{fromResults.map((place) => (
+							{fromResults.map((place, index) => (
 								<li
-									key={place.id}
+									key={index}
 									className="p-2 cursor-pointer hover:bg-gray-200"
 									onClick={() => {
 										setFromAirport(place)
@@ -215,9 +205,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 														),
 												})
 											)
-
-											if (onDistanceCalculated)
-												onDistanceCalculated(dist)
 										}
 									}}
 								>
@@ -230,8 +217,8 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 
 				{/* Input "To" */}
 				<div className="flex-1 mb-4" ref={toRef}>
-					<label className="block text-sm font-medium text-gray-700">
-						{labelTo}
+					<label className="block text-sm font-medium text-gray-200">
+						To
 					</label>
 					<input
 						type="text"
@@ -248,9 +235,9 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 					/>
 					{toResults.length > 0 && (
 						<ul className="absolute z-10 bg-white border rounded-lg shadow-lg mt-1 max-h-40 overflow-auto w-full">
-							{toResults.map((place) => (
+							{toResults.map((place, index) => (
 								<li
-									key={place.id}
+									key={index}
 									className="p-2 cursor-pointer hover:bg-gray-200"
 									onClick={() => {
 										setToAirport(place)
@@ -278,9 +265,6 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 														),
 												})
 											)
-
-											if (onDistanceCalculated)
-												onDistanceCalculated(dist)
 										}
 									}}
 								>
@@ -314,4 +298,4 @@ const CsvSelect: React.FC<CsvSelectProps> = ({
 	)
 }
 
-export default CsvSelect;
+export default CalculateDistanceEdit;

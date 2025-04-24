@@ -232,10 +232,10 @@ const LocationSelector: React.FC<CsvSelectProps> = ({
 											})
 										if (toAirport) {
 											const dist = calculateDistance(
-												place.lat,
-												place.lon,
 												toAirport.lat,
 												toAirport.lon,
+												place.lat,
+												place.lon,
 												setFormData,
 												formDataIndex
 											)
