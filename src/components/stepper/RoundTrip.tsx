@@ -89,6 +89,7 @@ export const RoundTrip = ({ phase, setPhase, setShowToast }: props) => {
     const name = getCookie("username");
     const transformedFlightData = formData.map((elem) => ({
 		launchtime: formatLocalDateTime(elem.launchtime),
+		arrivaltime: formatLocalDateTime(elem.launchtime),
 		to: elem.to,
 		from: elem.from,
 		master_passenger: elem.master_passenger,
