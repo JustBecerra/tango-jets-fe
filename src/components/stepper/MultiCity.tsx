@@ -88,19 +88,20 @@ export const MultiCity = ({ phase, setPhase, setShowToast }: props) => {
 
     const name = getCookie("username");
     const transformedFlightData = formData.map((elem) => ({
-      launchtime: formatLocalDateTime(elem.launchtime),
-      to: elem.to,
-      from: elem.from,
-      master_passenger: elem.master_passenger,
-      createdby: name,
-      type_of: elem.type_of,
-      associated_to: elem.associated_to,
-      first_longitude: elem.first_longitude,
-      first_latitude: elem.first_latitude,
-      second_longitude: elem.second_longitude,
-      second_latitude: elem.second_latitude,
-      flight_time: elem.flight_time,
-    }));
+		launchtime: formatLocalDateTime(elem.launchtime),
+		arrivaltime: formatLocalDateTime(elem.launchtime),
+		to: elem.to,
+		from: elem.from,
+		master_passenger: elem.master_passenger,
+		createdby: name,
+		type_of: elem.type_of,
+		associated_to: elem.associated_to,
+		first_longitude: elem.first_longitude,
+		first_latitude: elem.first_latitude,
+		second_longitude: elem.second_longitude,
+		second_latitude: elem.second_latitude,
+		flight_time: elem.flight_time,
+	}))
 
     try {
       const newFlights = await addFlight(transformedFlightData);
