@@ -7,6 +7,7 @@ import { generateElegantItinerary } from "../PDFPrinter/generateItineraryPDF";
 import { DUMMY_IMAGES } from "../PDFPrinter/dummyImages";
 import { useState, useCallback, useEffect } from "react";
 import { fetchAirportData, iataToIcao } from "../../utils/airportData";
+import { getWeatherForTime } from "../../utils/weatherService";
 
 interface props {
   currentFlight: Flight;
@@ -80,7 +81,7 @@ export const StepperStructure = ({
           passport: typeof lead_passenger === "string" ? "unknown" : lead_passenger.passport || "unknown"
         };
 
-        // Fetch airport data for each flight
+        // Fetch airport data and weather for each flight
         const legs = await Promise.all(allFlights.map(async flight => {
           // Convert IATA codes to ICAO if needed
           const departureIcao = await iataToIcao(flight.from || '');
@@ -93,6 +94,48 @@ export const StepperStructure = ({
           // Fetch airport data
           const departureAirport = departureIcao ? await fetchAirportData(departureIcao) : null;
           const arrivalAirport = arrivalIcao ? await fetchAirportData(arrivalIcao) : null;
+
+          // Get weather data for departure and arrival
+          let departureWeather = { icon: "🌤️", hi: "N/A", lo: "N/A", description: "Clima no disponible" };
+          let arrivalWeather = { icon: "🌤️", hi: "N/A", lo: "N/A", description: "Clima no disponible" };
+
+          try {
+            // Get departure weather (current weather at departure location)
+            if (flight.first_latitude && flight.first_longitude) {
+              const depWeather = await getWeatherForTime(
+                parseFloat(flight.first_latitude),
+                parseFloat(flight.first_longitude),
+                flight.launchtime || new Date().toISOString()
+              );
+              if (depWeather) {
+                departureWeather = {
+                  icon: depWeather.iconUrl || depWeather.icon,
+                  hi: depWeather.hi?.replace(/[°C]/g, '') || "N/A",
+                  lo: depWeather.lo?.replace(/[°C]/g, '') || "N/A",
+                  description: depWeather.description
+                };
+              }
+            }
+
+            // Get arrival weather (weather at arrival time and location)
+            if (flight.second_latitude && flight.second_longitude) {
+              const arrWeather = await getWeatherForTime(
+                parseFloat(flight.second_latitude),
+                parseFloat(flight.second_longitude),
+                flight.arrivaltime || new Date().toISOString()
+              );
+              if (arrWeather) {
+                arrivalWeather = {
+                  icon: arrWeather.iconUrl || arrWeather.icon,
+                  hi: arrWeather.hi?.replace(/[°C]/g, '') || "N/A",
+                  lo: arrWeather.lo?.replace(/[°C]/g, '') || "N/A",
+                  description: arrWeather.description
+                };
+              }
+            }
+          } catch (weatherError) {
+            console.error('Error fetching weather data:', weatherError);
+          }
 
           return {
             flightNumber: flight.id.toString(),
@@ -108,12 +151,12 @@ export const StepperStructure = ({
             departureAirportAddress: departureAirport?.address || "Address Not Available",
             departureFBOName: departureAirport?.fbo.name || "FBO Information Not Available",
             departureFBOPhone: departureAirport?.fbo.phone || "Contact Airport for FBO Details",
-            departureWeather: { icon: "☁️", hi: "84°", lo: "68°", description: "Weather Data Not Available" },
+            departureWeather: departureWeather,
             arrivalAirportName: arrivalAirport?.name || "Unknown Airport",
             arrivalAirportAddress: arrivalAirport?.address || "Address Not Available",
             arrivalFBOName: arrivalAirport?.fbo.name || "FBO Information Not Available",
             arrivalFBOPhone: arrivalAirport?.fbo.phone || "Contact Airport for FBO Details",
-            arrivalWeather: { icon: "☀️", hi: "80°", lo: "57°", description: "Weather Data Not Available" },
+            arrivalWeather: arrivalWeather,
             crew: [
               { role: "PIC", name: "Alexandre Juca Abreu Motta" },
               { role: "SIC", name: "Fortun Aspurz Arandigoyen" }
@@ -146,7 +189,7 @@ export const StepperStructure = ({
         console.log('Dummy Header Info:', dummyHeaderInfo);
 
         // Just call the function - it will handle saving internally
-        generateElegantItinerary(
+        await generateElegantItinerary(
           headerData,
           legs,
           footerData,

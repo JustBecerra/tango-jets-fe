@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react"
-import type { Flight } from "../table/TableModal"
+import { useMemo } from "react"
 import LoaderSpinner from "../Loaders/LoaderSpinner"
+import type { Flight } from "../table/TableModal"
+import WeatherBadge from "../cards/WeatherBadge"
 
 interface props {
 	flights: Flight[]
@@ -39,28 +40,40 @@ const DepartingSoon = ({ flights }: props) => {
 				<thead className="bg-gray-50 sticky top-0 z-10">
 					<tr>
 						<th
-							colSpan={4}
+							colSpan={5}
 							className="px-3 py-2 text-center font-semibold text-gray-700 uppercase tracking-wider text-sm"
 						>
 							🛫Departing soon
 						</th>
 					</tr>
 					<tr>
-						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/4 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							Airship
 						</th>
-						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/4 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							From - To
 						</th>
-						<th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+						<th className="w-1/4 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
 							Time
+						</th>
+						<th className="w-1/4 px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+							Clima Destino
 						</th>
 					</tr>
 				</thead>
-				<tbody className="bg-white w-full h-full divide-y divide-gray-200 rounded-b-lg">
+				<tbody
+					className={`bg-white ${
+						flights.length === 0 && "w-full h-full"
+					} divide-y divide-gray-200 rounded-b-lg`}
+				>
 					{flights.length === 0 ? (
-						<tr className="h-full">
-							<td className="h-full" colSpan={3}>
+						<tr className={`${flights.length === 0 && "h-full"}`}>
+							<td
+								className={`${
+									flights.length === 0 && "h-full"
+								}`}
+								colSpan={4}
+							>
 								<div className="flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50">
 									<LoaderSpinner />
 								</div>
@@ -75,10 +88,10 @@ const DepartingSoon = ({ flights }: props) => {
 									(window.location.href = `/trip/${flight.id}`)
 								}
 							>
-								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
+								<td className="w-1/4 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{flight.airship_name}
 								</td>
-								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
+								<td className="w-1/4 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{flight.from}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +103,20 @@ const DepartingSoon = ({ flights }: props) => {
 									</svg>
 									{flight.to}
 								</td>
-								<td className="w-1/3 px-6 py-4 text-center text-xs font-medium text-gray-900">
+								<td className="w-1/4 px-6 py-4 text-center text-xs font-medium text-gray-900">
 									{formatLaunchTime(flight.launchtime)}
+								</td>
+								<td className="w-1/4 px-6 py-4 text-center text-xs font-medium text-gray-900">
+									{flight.second_latitude && flight.second_longitude ? (
+										<WeatherBadge
+											latitude={parseFloat(flight.second_latitude)}
+											longitude={parseFloat(flight.second_longitude)}
+											arrivalTime={flight.arrivaltime}
+											location={flight.to}
+										/>
+									) : (
+										<span className="text-gray-400">🌤️</span>
+									)}
 								</td>
 							</tr>
 						))

@@ -84,6 +84,7 @@ const CalendarComponent = () => {
             events={events}
             dateClick={handleDateClick}
             eventContent={renderEventContent}
+            eventDisplay="block"
             />
           </>
         )}
@@ -93,13 +94,30 @@ const CalendarComponent = () => {
 };
 
 const renderEventContent = (eventInfo) => {
+  const bgColor = eventInfo.event.backgroundColor || "blue";
   return (
-    <>
-      
-      <a href={eventInfo.event.url} target="_blank" rel="noopener noreferrer">
-        <i>{eventInfo.event.title}</i>
-      </a>
-    </>
+    <a
+      href={eventInfo.event.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "block",
+        backgroundColor: bgColor,
+        color: "#fff",
+        textDecoration: "none",
+        height: "60%",
+        width: "100%",
+        padding: 0,
+        margin: 0,
+        borderRadius: 0,
+        textAlign: "center",
+        lineHeight: "2.5em",
+        position: "relative",
+        top: "20%",
+      }}
+    >
+      <i>{eventInfo.event.title}</i>
+    </a>
   );
 };
 

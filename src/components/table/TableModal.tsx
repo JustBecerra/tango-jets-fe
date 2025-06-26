@@ -409,32 +409,34 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 
 				{currentItems.length > 0 && !loading ? (
 					<>
-						<div className="overflow-hidden rounded-2xl shadow-md">
-							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
-							<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
-								<tr>
-									{Object.keys(currentItems[0] || {})
-										.filter(
-											(key) =>
-												!hiddenColumns.includes(key) &&
-												!collapsedColumns.includes(key)
-										)
-										.map((key, index) => (
-											<th key={index} className="px-6 py-3">
-												{caseType === "flight" || caseType === "history"
-													? columnDisplayNamesTrips[key] || key
-													: caseType === "client"
-													? columnDisplayNamesClient[key] || key
-													: caseType === "airship"
-													? columnDisplayNamesAirship[key] || key
-													: key}
-											</th>
-										))}
-									<th className="px-6 py-3">Action</th>
-								</tr>
-							</thead>
-								<tbody className="overflow-y-auto rounded-b-3xl">
-									{/* CAMBIO 11: Renderizado jerárquico de filas */}
+						<div className="overflow-x-auto rounded-2xl shadow-lg bg-white">
+							<table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
+								<thead className="sticky top-0 z-10 bg-gradient-to-b from-gray-100 to-gray-200 shadow">
+									<tr>
+										{Object.keys(currentItems[0] || {})
+											.filter(
+												(key) =>
+													!hiddenColumns.includes(key) &&
+													!collapsedColumns.includes(key)
+											)
+											.map((key, index) => (
+												<th
+													key={index}
+													className="px-6 py-3 text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap"
+												>
+													{caseType === "flight" || caseType === "history"
+														? columnDisplayNamesTrips[key] || key
+														: caseType === "client"
+														? columnDisplayNamesClient[key] || key
+														: caseType === "airship"
+														? columnDisplayNamesAirship[key] || key
+														: key}
+												</th>
+											))}
+										<th className="px-6 py-3 text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Action</th>
+									</tr>
+								</thead>
+								<tbody>
 									{currentItems
 										.filter((item) => {
 											if (
@@ -445,15 +447,12 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 											}
 											return true
 										})
-										.map((singledata: DataType) => {
-											// Verificar si es un vuelo hijo
+										.map((singledata: DataType, idx) => {
 											const isChild =
 												(caseType === "flight" ||
 													caseType === "history") &&
 												"isChildFlight" in singledata &&
 												singledata.isChildFlight
-
-											// Verificar si es un padre expandible
 											const isExpandable =
 												(caseType === "flight" ||
 													caseType === "history") &&
@@ -466,13 +465,11 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 														item.parentFlightId ===
 															singledata.id
 												)
-
 											const isExpanded =
 												isExpandable &&
 												expandedParents.includes(
 													singledata.id
 												)
-
 											return (
 												<tr
 													key={singledata.id}
@@ -482,11 +479,11 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 															e
 														)
 													}
-													className={`${
+													className={`transition-colors duration-150 ${
 														isChild
-															? "bg-gray-100"
-															: "bg-white"
-													} border-b cursor-pointer hover:bg-gray-200`}
+															? "even:bg-gray-50 odd:bg-white bg-blue-50 hover:bg-blue-100"
+															: "even:bg-gray-50 odd:bg-white hover:bg-blue-50"
+													} border-b cursor-pointer`}
 												>
 													{Object.entries(singledata)
 														.filter(
@@ -503,7 +500,6 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																[key, value],
 																index
 															) => {
-																// Renderizado especial para la primera columna de vuelos hijo
 																if (
 																	index === 0
 																) {
@@ -539,7 +535,7 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																			>
 																				<div className="flex items-center">
 																					<button
-																						className="mr-2 text-gray-600 focus:outline-none"
+																						className="mr-2 text-gray-600 focus:outline-none hover:text-blue-600 transition-colors"
 																						onClick={(
 																							e
 																						) =>
@@ -547,6 +543,11 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																								singledata.id,
 																								e
 																							)
+																						}
+																						title={
+																							isExpanded
+																								? "Colapsar"
+																								: "Expandir"
 																						}
 																					>
 																						{isExpanded ? (
@@ -571,9 +572,7 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																							</svg>
 																						)}
 																					</button>
-																					{
-																						value
-																					}
+																					{value}
 																				</div>
 																			</td>
 																		)
@@ -591,24 +590,22 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																)
 															}
 														)}
-													<td className="px-6 py-3 flex whitespace-nowrap">
+													<td className="px-6 py-3 whitespace-nowrap flex gap-2 items-center">
 														{caseType !==
 															"history" &&
 															caseType !==
 																"flight" && (
-																<>
-																	<Edit
-																		id={
-																			singledata.id
-																		}
-																		caseType={
-																			caseType
-																		}
-																		data={
-																			singledata
-																		}
-																	/>
-																</>
+																<Edit
+																	id={
+																		singledata.id
+																	}
+																	caseType={
+																		caseType
+																	}
+																	data={
+																		singledata
+																	}
+																/>
 															)}
 														<Delete
 															id={singledata.id}

@@ -1,132 +1,154 @@
-interface AirportData {
+import axios from 'axios';
+
+export interface AirportData {
   name: string;
   address: string;
-  fbo: {
+  fbo?: {
     name: string;
     phone: string;
   };
+  coordinates?: {
+    lat: number;
+    lon: number;
+  };
+  city_name?: string;
+  country_name?: string;
+  code?: string;
 }
+
+export interface TravelPayoutsAirport {
+  code: string;
+  name: string;
+  country_name: string;
+  city_name?: string;
+  coordinates?: {
+    lat: number;
+    lon: number;
+  };
+}
+
+export const getFBOInfo = (country: string) => {
+  // Default FBO info if not found
+  return {
+    name: "Local FBO Services",
+    phone: "+1 (555) 0123"
+  };
+};
 
 export const fetchAirportData = async (icaoCode: string): Promise<AirportData | null> => {
   try {
-    // First try OurAirports API (free, no key needed)
-    const ourAirportsResponse = await fetch(
-      `https://airport-info.p.rapidapi.com/airport?icao=${icaoCode}`,
-      {
-        headers: {
-          'X-RapidAPI-Key': import.meta.env.NEXT_PUBLIC_RAPID_API_KEY || '',
-          'X-RapidAPI-Host': 'airport-info.p.rapidapi.com'
-        }
-      }
-    );
+    console.log(`Fetching data for airport ${icaoCode}`);
     
-    if (ourAirportsResponse.ok) {
-      const data = await ourAirportsResponse.json();
-      if (data) {
-        return {
-          name: data.name || 'Unknown Airport',
-          address: `${data.city || ''}, ${data.country || ''}`,
-          fbo: {
-            name: 'Contact Airport for FBO Details',
-            phone: data.phone || 'Phone Not Available'
-          }
-        };
-      }
-    }
-
-    // If OurAirports fails, try OpenSky Network API (completely free)
-    const openSkyResponse = await fetch(
-      `https://opensky-network.org/api/airports?icao=${icaoCode}`
+    const response = await axios.get(
+      `https://autocomplete.travelpayouts.com/places2?term=${icaoCode}&locale=en&types[]=airport`
     );
 
-    if (openSkyResponse.ok) {
-      const openSkyData = await openSkyResponse.json();
+    if (response.data && response.data.length > 0) {
+      // Find exact match for ICAO code
+      const airport = response.data.find((a: any) => a.code === icaoCode);
       
-      if (openSkyData && openSkyData.length > 0) {
-        const airport = openSkyData[0];
+      if (airport) {
+        console.log(`Found airport data for ${icaoCode} in TravelPayouts`);
+        const fboInfo = getFBOInfo(airport.country_name);
+        
         return {
           name: airport.name,
-          address: `${airport.city}, ${airport.country}`,
-          fbo: {
-            name: 'Contact Airport for FBO Details',
-            phone: 'Phone Not Available'
-          }
+          address: `${airport.city_name || ''}, ${airport.country_name}`,
+          fbo: fboInfo,
+          coordinates: airport.coordinates,
+          city_name: airport.city_name,
+          country_name: airport.country_name,
+          code: airport.code
         };
       }
     }
 
-    // If both APIs fail, try a local database of major airports
-    const majorAirports: Record<string, AirportData> = {
-      'KJFK': {
-        name: 'John F. Kennedy International Airport',
-        address: 'Queens, NY 11430, USA',
-        fbo: { name: 'Signature Flight Support', phone: '+1 718-244-4000' }
-      },
-      'KLAX': {
-        name: 'Los Angeles International Airport',
-        address: 'Los Angeles, CA 90045, USA',
-        fbo: { name: 'Signature Flight Support', phone: '+1 310-215-5151' }
-      },
-      'EGLL': {
-        name: 'London Heathrow Airport',
-        address: 'Longford, Hounslow TW6 1AP, UK',
-        fbo: { name: 'Signature Flight Support', phone: '+44 20 8759 2525' }
-      },
-      // Add more major airports as needed
-    };
-
-    if (majorAirports[icaoCode]) {
-      return majorAirports[icaoCode];
-    }
-
+    console.warn(`No data found for ${icaoCode}`);
     return null;
+    
   } catch (error) {
-    console.error('Error fetching airport data:', error);
+    console.error("Error fetching airport data:", error);
     return null;
+  }
+};
+
+// Función para búsqueda de aeropuertos (autocompletado)
+export const fetchAirports = async (
+  query: string,
+  setResults: React.Dispatch<React.SetStateAction<any[]>>
+) => {
+  if (!query || query.length < 2) return;
+
+  try {
+    const response = await axios.get(
+      `https://autocomplete.travelpayouts.com/places2?term=${query}&locale=en&types[]=city&types[]=airport`
+    );
+
+    if (response.data && response.data.length > 0) {
+      const airports = response.data
+        .slice(0, 5)
+        .map((place: any) => ({
+          id: place.code,
+          name: place.name,
+          country: place.country_name,
+          lat: place.coordinates?.lat,
+          lon: place.coordinates?.lon,
+          display: `${place.name} (${place.code}) - ${place.country_name}`,
+        }));
+
+      setResults(airports);
+    }
+  } catch (error) {
+    console.error("Error getting airports:", error);
   }
 };
 
 // Helper function to convert IATA to ICAO
 export const iataToIcao = async (iataCode: string): Promise<string | null> => {
-  // Common IATA to ICAO mappings
-  const commonMappings: { [key: string]: string } = {
-    'JFK': 'KJFK',
-    'LAX': 'KLAX',
-    'LHR': 'EGLL',
-    'CDG': 'LFPG',
-    'FRA': 'EDDF',
-    'MAD': 'LEMD',
-    'MIA': 'KMIA',
-    'ORD': 'KORD',
-    'SFO': 'KSFO',
-    'DXB': 'OMDB',
-    'HKG': 'VHHH',
-    'SIN': 'WSSS',
-    'NRT': 'RJAA',
-    'SYD': 'YSSY',
-    'MEL': 'YMML',
-    'AUH': 'OMAA',
-    'DOH': 'OTHH',
-    'IST': 'LTFM',
-    'AMS': 'EHAM',
-    'FCO': 'LIRF',
-    'EZE': 'SAEZ',
-    // Add more mappings as needed
-  };
-
-  // First check our common mappings
-  if (commonMappings[iataCode]) {
-    return commonMappings[iataCode];
-  }
-
   try {
-    // If not in our mappings, try OpenSky Network API
-    const response = await fetch(
+    // Try TravelPayouts API first
+    const response = await axios.get<TravelPayoutsAirport[]>(
+      `https://autocomplete.travelpayouts.com/places2?term=${iataCode}&locale=en&types[]=airport`
+    );
+
+    if (response.data && response.data.length > 0) {
+      // Find exact match for IATA code
+      const airport = response.data.find(a => a.code === iataCode);
+      if (airport) {
+        // TravelPayouts uses IATA codes, we need to convert to ICAO
+        // Common conversion patterns:
+        // US airports: Add 'K' prefix to IATA
+        // European airports: Add 'E' prefix and specific country code
+        // South American airports: Add 'S' prefix and specific country code
+        if (airport.country_name === 'United States') {
+          return `K${iataCode}`;
+        } else if (airport.country_name === 'United Kingdom') {
+          return `EG${iataCode}`;
+        } else if (airport.country_name === 'Spain') {
+          return `LE${iataCode}`;
+        } else if (airport.country_name === 'France') {
+          return `LF${iataCode}`;
+        } else if (airport.country_name === 'Germany') {
+          return `ED${iataCode}`;
+        } else if (airport.country_name === 'Italy') {
+          return `LI${iataCode}`;
+        } else if (airport.country_name === 'Argentina') {
+          return `SA${iataCode}`;
+        } else if (airport.country_name === 'Brazil') {
+          return `SB${iataCode}`;
+        } else if (airport.country_name === 'Chile') {
+          return `SC${iataCode}`;
+        }
+      }
+    }
+
+    // If TravelPayouts fails or we can't determine the ICAO code, try OpenSky
+    const openSkyResponse = await fetch(
       `https://opensky-network.org/api/airports?iata=${iataCode}`
     );
     
-    if (response.ok) {
-      const data = await response.json();
+    if (openSkyResponse.ok) {
+      const data = await openSkyResponse.json();
       if (data && data.length > 0) {
         return data[0].icao;
       }

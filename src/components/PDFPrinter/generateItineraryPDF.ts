@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable"; // Adds support for elegant tables
 import { crewBase64, passengerBase64 } from './IconsForItenerary';
+import { fetchAirportData } from '../../utils/airportData';
 
 /**
  * Interfaces that define the data structure
@@ -84,12 +85,37 @@ const crewIconDataUrl = crewBase64;
  * @param tripInfo - General trip information
  * @param headerInfo - (Optional) Classic header information for classic layout
  */
-export const generateElegantItinerary = (
+export const generateElegantItinerary = async (
   travelerInfo: TravelerInfo, 
   flightSegments: FlightSegment[], 
   tripInfo: TripInfo,
   headerInfo?: ItineraryHeaderInfo
-): jsPDF => {
+): Promise<jsPDF> => {
+  // Fetch airport data for all segments first
+  for (const segment of flightSegments) {
+    // Get departure airport info
+    const depAirportData = await fetchAirportData(segment.departureLocation);
+    if (depAirportData) {
+      segment.departureAirportName = depAirportData.name;
+      segment.departureAirportAddress = depAirportData.address;
+      if (depAirportData.fbo) {
+        segment.departureFBOName = depAirportData.fbo.name;
+        segment.departureFBOPhone = depAirportData.fbo.phone;
+      }
+    }
+
+    // Get arrival airport info
+    const arrAirportData = await fetchAirportData(segment.arrivalLocation);
+    if (arrAirportData) {
+      segment.arrivalAirportName = arrAirportData.name;
+      segment.arrivalAirportAddress = arrAirportData.address;
+      if (arrAirportData.fbo) {
+        segment.arrivalFBOName = arrAirportData.fbo.name;
+        segment.arrivalFBOPhone = arrAirportData.fbo.phone;
+      }
+    }
+  }
+
   // Initial configuration
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.width;
@@ -269,169 +295,76 @@ export const generateElegantItinerary = (
     index: number
   ): number => {
     const width = pageWidth - (margin * 2);
-    // Calculate optimal height for 2 segments per page
-    // Page height - (top margin + header + bottom margin + spacing between segments)
-    const height = (pageHeight - (20 + 30 + 25 + 20)) / 2; // Approximately 130px per segment
-    drawCard(x, y, width, height, 6, true);
-
-    // Colored left accent bar
-    const accentBarWidth = 7;
-    doc.setFillColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.roundedRect(x, y, accentBarWidth, height, 4, 4, 'F');
-
-    // Section backgrounds for columns (adjusted to fit only the content area)
-    const sectionBgHeight = 60; // Adjusted for new segment height
-    doc.setFillColor(colors.light[0], colors.light[1], colors.light[2]);
-    doc.rect(x + accentBarWidth + 10, y + 22, (width - accentBarWidth - 20) / 2, sectionBgHeight, 'F'); // Departure
-    doc.rect(x + accentBarWidth + 10 + (width - accentBarWidth - 20) / 2, y + 22, (width - accentBarWidth - 20) / 2, sectionBgHeight, 'F'); // Arrival
-
-    // Leg label (top)
+    const height = 180;
+    drawCard(x, y, width, height);
+    
+    // Flight number and phase
+    doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.setFont("times", "bold");
     doc.setTextColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    const arrowX = x + accentBarWidth + 12 + doc.getTextWidth(`Leg ${index + 1}: ${segment.departureLocation} `);
-    doc.text(`Leg ${index + 1}: ${segment.departureLocation} `, x + accentBarWidth + 12, y + 16);
-    doc.text('→', arrowX, y + 16);
-    doc.text(` ${segment.arrivalLocation}`, arrowX + doc.getTextWidth('→'), y + 16);
-    // Primary color line below Leg label
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(1.2);
-    doc.line(x + accentBarWidth + 10, y + 19, x + width - 10, y + 19);
-
-    // Departure column
-    let depX = x + accentBarWidth + 14;
-    let depY = y + 27;
-    // Section header: Departure
-    doc.setFontSize(11);
+    doc.text(`Leg ${index + 1}: ${segment.departureLocation} → ${segment.arrivalLocation}`, x + 10, y + 15);
+    
+    // Departure section
+    let currentY = y + 35;
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(colors.success[0], colors.success[1], colors.success[2]);
-    doc.text("DEPARTURE", depX, depY);
-    // Primary color line below header
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(0.7);
-    doc.line(depX, depY + 2, depX + 40, depY + 2);
-    // Details
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(11);
     doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
-    doc.text(`${segment.departureLocation} - ${segment.departureTime}`, depX, depY + 9);
-    if (segment.departureAirportName) doc.text(segment.departureAirportName, depX, depY + 17);
-    if (segment.departureAirportAddress) doc.text(segment.departureAirportAddress, depX, depY + 25);
-    if (segment.departureFBOName || segment.departureFBOPhone) doc.text(`FBO: ${segment.departureFBOName || ''} ${segment.departureFBOPhone || ''}`, depX, depY + 33);
+    doc.text("DEPARTURE", x + 10, currentY);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    currentY += 15;
+    doc.text(segment.departureAirportName || "Unknown Airport", x + 10, currentY);
+    currentY += 10;
+    doc.text(segment.departureAirportAddress || "Address Not Available", x + 10, currentY);
+    currentY += 10;
+    doc.text(`FBO: ${segment.departureFBOName || "FBO Information Not Available"}`, x + 10, currentY);
+    doc.text(`Tel: ${segment.departureFBOPhone || "Contact Airport for FBO Details"}`, x + 10, currentY);
+    
     if (segment.departureWeather) {
-      doc.setFontSize(10);
-      doc.text(`${segment.departureWeather.icon || ''} ${segment.departureWeather.description || ''}  Hi ${segment.departureWeather.hi || ''} / Lo ${segment.departureWeather.lo || ''}`, depX, depY + 41);
+      currentY += 15;
+      const weatherText = `${segment.departureWeather.description} (${segment.departureWeather.hi}°C / ${segment.departureWeather.lo}°C)`;
+      doc.text(weatherText, x + 10, currentY);
     }
-    // Primary color line below Departure section
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(0.7);
-    doc.line(depX, depY + sectionBgHeight, depX + 70, depY + sectionBgHeight);
-
-    // Arrival column
-    let arrX = x + accentBarWidth + 14 + (width - accentBarWidth - 20) / 2;
-    let arrY = y + 27;
-    // Section header: Arrival
-    doc.setFontSize(11);
+    
+    // Arrival section (right side)
+    currentY = y + 35;
+    const rightX = x + (width / 2) + 10;
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(colors.success[0], colors.success[1], colors.success[2]);
-    doc.text("ARRIVAL", arrX, arrY);
-    // Primary color line below header
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(0.7);
-    doc.line(arrX, arrY + 2, arrX + 40, arrY + 2);
-    // Details
+    doc.setFontSize(11);
+    doc.text("ARRIVAL", rightX, currentY);
+    
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
-    doc.setTextColor(colors.dark[0], colors.dark[1], colors.dark[2]);
-    doc.text(`${segment.arrivalLocation} - ${segment.arrivalTime}`, arrX, arrY + 9);
-    if (segment.arrivalAirportName) doc.text(segment.arrivalAirportName, arrX, arrY + 17);
-    if (segment.arrivalAirportAddress) doc.text(segment.arrivalAirportAddress, arrX, arrY + 25, { maxWidth: (width - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
-    if (segment.arrivalFBOName || segment.arrivalFBOPhone) doc.text(`FBO: ${segment.arrivalFBOName || ''} ${segment.arrivalFBOPhone || ''}`, arrX, arrY + 33, { maxWidth: (width - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
+    doc.setFontSize(10);
+    currentY += 15;
+    doc.text(segment.arrivalAirportName || "Unknown Airport", rightX, currentY);
+    currentY += 10;
+    doc.text(segment.arrivalAirportAddress || "Address Not Available", rightX, currentY);
+    currentY += 10;
+    doc.text(`FBO: ${segment.arrivalFBOName || "FBO Information Not Available"}`, rightX, currentY);
+    currentY += 10;
+    doc.text(`Tel: ${segment.arrivalFBOPhone || "Contact Airport for FBO Details"}`, rightX, currentY);
+    
     if (segment.arrivalWeather) {
-      doc.setFontSize(10);
-      doc.text(`${segment.arrivalWeather.icon || ''} ${segment.arrivalWeather.description || ''}  Hi ${segment.arrivalWeather.hi || ''} / Lo ${segment.arrivalWeather.lo || ''}`, arrX, arrY + 41, { maxWidth: (width - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
-    }
-    // Primary color line below Arrival section
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(0.7);
-    doc.line(arrX, arrY + sectionBgHeight, arrX + 70, arrY + sectionBgHeight);
-
-    // Bottom row: Crew, Passengers, Distance, Time Zone
-    let bottomY = y + height - 16;
-    let infoX = x + accentBarWidth + 14;
-    let infoText = [];
-    let infoXCursor = infoX;
-    
-    // Draw crew icon and text first (in foreground)
-    if (segment.crew && segment.crew.length > 0) {
-      let iconY = bottomY - 2;
-      let iconSize = 6.12; // Reduced by another 15% from 7.2
-      let textOffset = iconSize + 6; // Increased text offset for better spacing
-      
-      // Add the crew icon with proper dimensions
-      try {
-        doc.addImage(crewBase64, 'PNG', infoX, iconY, iconSize, iconSize, undefined, 'FAST');
-      } catch (error) {
-        console.error('Error rendering crew icon:', error);
-        // Fallback to text if icon fails
-        doc.text('👨‍✈️', infoX, iconY + iconSize);
-      }
-      
-      // Render each crew member on a new line for clarity
-      segment.crew.forEach((c, i) => {
-        doc.setFontSize(8.5); // Slightly larger font for better readability
-        // Adjust vertical position to align with icon and remove spacing between PIC and SIC
-        const textY = i === 0 ? bottomY : bottomY + (i * 6);
-        doc.text(`${c.role}: ${c.name}`, infoX + textOffset, textY);
-      });
-      infoXCursor = infoX + 80; // Reduced spacing after crew section
+      currentY += 15;
+      const weatherText = `${segment.arrivalWeather.description} (${segment.arrivalWeather.hi}°C / ${segment.arrivalWeather.lo}°C)`;
+      doc.text(weatherText, rightX, currentY);
     }
     
-    // Draw other text elements with adjusted spacing
-    if (segment.passengers && segment.passengers.length > 0) {
-      let iconY = bottomY - 2;
-      let iconSize = 6.12; // Reduced by another 15% from 7.2
-      let textOffset = iconSize + 6;
-      
-      // Align passenger icon with arrival section
-      const passengerX = arrX; // Use the same X position as arrival section
-      
-      // Add the passenger icon
-      try {
-        doc.addImage(passengerBase64, 'PNG', passengerX, iconY, iconSize, iconSize, undefined, 'FAST');
-      } catch (error) {
-        console.error('Error rendering passenger icon:', error);
-        doc.text('👥', passengerX, iconY + iconSize);
-      }
-      
-      // Align passenger text with PIC
-      doc.text(`Passengers: ${segment.passengers.join(', ')}`, passengerX + textOffset, bottomY);
-      infoXCursor = passengerX + 60; // Reduced spacing after passenger section
-    }
-
-    // Move distance and timezone to a new line below with reduced spacing
-    let bottomInfoY = bottomY + 15; // Reduced spacing from 25 to 15
-    if (segment.distance || segment.timeZoneChange) {
-      const iconSize = 6.12; // Reduced by another 15% from 7.2
-      const textOffset = iconSize + 6;
-      const passengerX = arrX;
-      
-      if (segment.distance) {
-        // Align with crew text
-        doc.text(`Distance: ${segment.distance}`, infoX + textOffset, bottomInfoY);
-      }
-      if (segment.timeZoneChange) {
-        // Align with passenger text
-        doc.text(`Time zone: ${segment.timeZoneChange}`, passengerX + textOffset, bottomInfoY);
-      }
-    }
+    // Flight details section
+    currentY = y + 140;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("Flight Details:", x + 10, currentY);
     
-    // Primary color line above bottom row
-    doc.setDrawColor(colors.primary[0], colors.primary[1], colors.primary[2]);
-    doc.setLineWidth(0.7);
-    doc.line(x + accentBarWidth + 10, bottomY - 6, x + width - 10, bottomY - 6);
-
-    return y + height + 10; // Reduced spacing between segments to 10px
+    doc.setFont("helvetica", "normal");
+    currentY += 10;
+    doc.text(`Duration: ${segment.flightDuration}`, x + 10, currentY);
+    doc.text(`Distance: ${segment.distance}`, x + (width/2) + 10, currentY);
+    currentY += 10;
+    doc.text(`Time Zone Change: ${segment.timeZoneChange}`, x + 10, currentY);
+    
+    return y + height + 10;
   };
   
   // ===== PDF CONSTRUCTION =====
@@ -625,7 +558,8 @@ export const generateElegantItinerary = (
     if (segment.departureFBOName || segment.departureFBOPhone) doc.text(`FBO: ${segment.departureFBOName || ''} ${segment.departureFBOPhone || ''}`, depX, depY + 33);
     if (segment.departureWeather) {
       doc.setFontSize(10);
-      doc.text(`${segment.departureWeather.icon || ''} ${segment.departureWeather.description || ''}  Hi ${segment.departureWeather.hi || ''} / Lo ${segment.departureWeather.lo || ''}`, depX, depY + 41);
+      const weatherText = `${segment.departureWeather.description} (${segment.departureWeather.hi}°C / ${segment.departureWeather.lo}°C)`;
+      doc.text(weatherText, depX, depY + 41);
     }
 
     // Arrival column
@@ -650,7 +584,8 @@ export const generateElegantItinerary = (
     if (segment.arrivalFBOName || segment.arrivalFBOPhone) doc.text(`FBO: ${segment.arrivalFBOName || ''} ${segment.arrivalFBOPhone || ''}`, arrX, arrY + 33, { maxWidth: (pageWidth - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
     if (segment.arrivalWeather) {
       doc.setFontSize(10);
-      doc.text(`${segment.arrivalWeather.icon || ''} ${segment.arrivalWeather.description || ''}  Hi ${segment.arrivalWeather.hi || ''} / Lo ${segment.arrivalWeather.lo || ''}`, arrX, arrY + 41, { maxWidth: (pageWidth - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
+      const weatherText = `${segment.arrivalWeather.description} (${segment.arrivalWeather.hi}°C / ${segment.arrivalWeather.lo}°C)`;
+      doc.text(weatherText, arrX, arrY + 41, { maxWidth: (pageWidth - (margin * 2) - accentBarWidth - 20) / 2 - 8 });
     }
 
     // Bottom row: Crew, Passengers, Distance, Time Zone
