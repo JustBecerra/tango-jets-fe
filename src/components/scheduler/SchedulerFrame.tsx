@@ -37,7 +37,7 @@ const SchedulerFrame = () => {
 	}
 
 	return (
-		<div className="flex max-h-[calc(100vh-100px)] md:h-auto w-full max-w-[1400px] rounded-xl bg-white shadow-md border border-gray-200 overflow-hidden">
+		<div className="flex flex-col md:flex-row w-full max-w-[1400px] min-h-[60vh] rounded-xl bg-white shadow-md border border-gray-200 overflow-hidden">
 			{showToast && (
 				<div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
 					<div className="flex items-center gap-3 px-6 py-4 rounded-lg bg-white shadow-lg border border-gray-200">
@@ -57,49 +57,46 @@ const SchedulerFrame = () => {
 				</div>
 			)}
 
-			<div className="px-4 md:px-8 pt-6 pb-4 space-y-6 w-full overflow-y-auto">
-				<div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+			<div className="w-full p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 overflow-y-auto">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
 					<h2 className="text-xl md:text-2xl font-semibold text-gray-800">
 						Schedule Flight
 					</h2>
-					<div className="flex flex-wrap gap-2">
+					<div className="flex flex-wrap gap-2 sm:gap-3">
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("FlightInfo")}
-							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-								activeComponent === "FlightInfo"
-									? "bg-blue-600 text-white shadow-sm"
-									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-							}`}
+							className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeComponent === "FlightInfo"
+								? "bg-blue-600 text-white shadow-sm"
+								: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+								}`}
 						>
 							One Way
 						</button>
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("RoundTrip")}
-							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-								activeComponent === "RoundTrip"
-									? "bg-blue-600 text-white shadow-sm"
-									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-							}`}
+							className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeComponent === "RoundTrip"
+								? "bg-blue-600 text-white shadow-sm"
+								: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+								}`}
 						>
 							Round Trip
 						</button>
 						<button
 							type="button"
 							onClick={() => handleSelectComponent("MultiCity")}
-							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-								activeComponent === "MultiCity"
-									? "bg-blue-600 text-white shadow-sm"
-									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-							}`}
+							className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeComponent === "MultiCity"
+								? "bg-blue-600 text-white shadow-sm"
+								: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+								}`}
 						>
 							Multi City
 						</button>
 					</div>
 				</div>
 
-				<div className="bg-gray-50 px-4 md:px-6 py-6 rounded-lg border border-gray-200">
+				<div className="bg-gray-50 px-3 sm:px-5 md:px-6 py-4 sm:py-6 rounded-lg border border-gray-200">
 					{activeComponent === "FlightInfo" ? (
 						<FlightInfo
 							phase={phase}
