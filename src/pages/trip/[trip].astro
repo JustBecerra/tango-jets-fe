@@ -1,37 +1,34 @@
 ---
-import Layout from "../../layouts/Layout.astro"
-import { RouteGuard } from "../../components/routeguard"
-import {
-	getFlightAndConnectionById,
-	getFlightById,
-} from "../../../lib/actions/flights/actions"
-import { getAirships } from "../../../lib/actions/airships/actions"
-import { StepperStructure } from "../../components/stepper/StepperStructure"
-import { getClients } from "../../../lib/actions/clients/actions"
-import type { Airship, Flight } from "../../components/table/TableModal"
+import Layout from '../../layouts/Layout.astro';
+import {RouteGuard} from '../../components/routeguard';
+import {getFlightAndConnectionById} from '../../../lib/actions/flights/actions';
+import {getAirships} from '../../../lib/actions/airships/actions';
+import {StepperStructure} from '../../components/stepper/StepperStructure';
+import {getClients} from '../../../lib/actions/clients/actions';
+import type {Airship} from '../../components/table/TableModal';
 
-const { trip } = Astro.params
-if (!trip) return Astro.redirect("/404")
-const flights = await getFlightAndConnectionById(parseInt(trip))
+const {trip} = Astro.params;
+if (!trip) return Astro.redirect('/404');
+const flights = await getFlightAndConnectionById(parseInt(trip));
 const currentFlight = flights.find(
-	(flight: any) => flight.id === parseInt(trip)
-)
-const clients = await getClients()
-const airships = await getAirships()
+  (flight: any) => flight.id === parseInt(trip)
+);
+const clients = await getClients();
+const airships = await getAirships();
 const chosenAirship = airships.find(
-	(airship: Airship) => airship.title === currentFlight.airship_name
-)
+  (airship: Airship) => airship.title === currentFlight.airship_name
+);
 ---
 
 <Layout title="trip">
-	<RouteGuard client:load="react">
-		<StepperStructure
-			currentFlight={currentFlight}
-			listAirships={airships}
-			listClients={clients}
-			chosenAirship={chosenAirship}
-			allFlights={flights}
-			client:load
-		/>
-	</RouteGuard>
+  <RouteGuard client:load="react">
+    <StepperStructure
+      currentFlight={currentFlight}
+      listAirships={airships}
+      listClients={clients}
+      chosenAirship={chosenAirship}
+      allFlights={flights}
+      client:load
+    />
+  </RouteGuard>
 </Layout>
