@@ -1,8 +1,8 @@
 import type { Client, Flight } from "../table/TableModal"
 
 interface props {
-    currentFlight: Flight
-    lead_passenger: Client | string
+	currentFlight: Flight
+	lead_passenger: Client | string
 }
 
 export const StepperHeader = ({ lead_passenger }: props) => {
@@ -25,9 +25,9 @@ export const StepperHeader = ({ lead_passenger }: props) => {
 		typeof lead_passenger === "string" ? "unknown" : lead_passenger.passport
 	return (
 		<div className="w-[80%]">
-			<div className="bg-gray-200 w-full h-[80px] rounded-t flex justify-start items-center">
-				<div className="flex ml-6 justify-start items-center gap-4">
-					<div className="bg-blue-400 h-fit w-fit rounded">
+			<div className="bg-gray-200 w-full rounded-t flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 sm:gap-6 py-4 px-4">
+				<div className="flex justify-start items-center gap-4">
+					<div className="bg-blue-400 h-fit w-fit rounded p-2">
 						<svg
 							className="w-8 h-10 text-gray-800 dark:text-white"
 							aria-hidden="true"
@@ -52,8 +52,8 @@ export const StepperHeader = ({ lead_passenger }: props) => {
 					</div>
 				</div>
 			</div>
-			<div className="flex bg-white w-full h-[80px] rounded-b gap-16 justify-start items-center">
-				<div className="flex flex-col justify-start ml-6">
+			<div className="flex flex-col md:flex-row bg-white w-full rounded-b gap-6 md:gap-16 justify-start items-start md:items-center py-4 px-4">
+				<div className="flex flex-col justify-start">
 					<h2>Date of birth</h2>
 					<h3 className="font-bold">{date_of_birth}</h3>
 				</div>

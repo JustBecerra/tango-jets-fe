@@ -1,35 +1,35 @@
 ---
-import Sidebar from "../components/sidebar/Sidebar.astro"
+import Sidebar from '../components/sidebar/Sidebar.astro';
 
-const { title } = Astro.props
+const {title} = Astro.props;
 ---
 
 <!doctype html>
-<html class="h-screen" lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/tangojet.png" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-			rel="stylesheet"
-		/>
-	</head>
-	<body
-		class="flex flex-col md:flex-row h-[900px] m-0 font-sans text-gray-800"
-	>
-		<Sidebar class="w-full md:w-64 shadow-lg p-5" />
-		<div
-			class={`flex-1 flex flex-col ${title === "edit-flight" && "justify-center"} items-center h-full p-8 bg-gradient-to-b from-[#BFE4FC] to-[#FFFFFF] text-gray-800`}
-		>
-			<slot />
-		</div>
-		<script
-			is:inline
-			src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
-		></script>
-	</body>
+<html class="min-h-screen" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/tangojet.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="flex flex-col md:flex-row min-h-screen m-0 font-sans text-gray-800 bg-gradient-to-b from-[#BFE4FC] to-[#FFFFFF]"
+  >
+    <Sidebar class="w-full shadow-lg p-4 md:w-64 md:min-h-screen md:p-5" />
+    <div
+      class={`flex-1 flex flex-col ${title === 'edit-flight' ? 'md:justify-center' : ''} items-center w-full min-h-screen md:min-h-0 px-4 py-6 sm:p-8 text-gray-800`}
+    >
+      <slot />
+    </div>
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+    ></script>
+  </body>
 </html>

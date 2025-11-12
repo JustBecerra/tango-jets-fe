@@ -1,5 +1,3 @@
-import { sendEmail } from "../../../lib/actions/emails/actions"
-import { flightScheduledMessage } from "../../utils/emailMessage"
 import TravelMap from "../cards/TravelMap"
 import { ChooseAirshipModal } from "../modals/steppermodals/ChooseAirshipModal"
 import { EditAircraftModal } from "../modals/steppermodals/EditAircraftModal"

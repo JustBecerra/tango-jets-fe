@@ -92,35 +92,35 @@ const TableModal = ({ caseType }: TableProps) => {
 		title: "Title",
 		date_of_birth: "Date of Birth",
 	};
-	
-const columnDisplayNamesTrips: { [key: string]: string } = {
-   
-    launchtime: "Launch Time",
-	arrivaltime: "Arrival Time",
-    airship_name: "Airship Name",
-	master_passenger: "Master Passenger",
-	to: "Destination",
-    from: "Origin",
-    createdby: "Created By",
-    companion_passengers: "Companions",
-    price_cost: "Cost",
-    phase: "Phase",
-    type_of: "Type",
-   
-   
-   
-    
-};
-const columnDisplayNamesAirship: { [key: string]: string } = {
-  
-    title: "Title",
-    status: "Status",
-	description: "Description",
-	seats: "Seats",
-    size: "Size",
-    
 
-};
+	const columnDisplayNamesTrips: { [key: string]: string } = {
+
+		launchtime: "Launch Time",
+		arrivaltime: "Arrival Time",
+		airship_name: "Airship Name",
+		master_passenger: "Master Passenger",
+		to: "Destination",
+		from: "Origin",
+		createdby: "Created By",
+		companion_passengers: "Companions",
+		price_cost: "Cost",
+		phase: "Phase",
+		type_of: "Type",
+
+
+
+
+	};
+	const columnDisplayNamesAirship: { [key: string]: string } = {
+
+		title: "Title",
+		status: "Status",
+		description: "Description",
+		seats: "Seats",
+		size: "Size",
+
+
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -368,7 +368,7 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen flex-1 gap-8">
+		<div className="flex flex-col items-center sm:justify-center min-h-[80vh] sm:min-h-screen flex-1 gap-6 sm:gap-8 w-full px-2 sm:px-0">
 			<ColumnToggles
 				toggleColumn={toggleColumn}
 				collapsedColumns={collapsedColumns}
@@ -381,9 +381,8 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 						<div className="relative">
 							<input
 								type="text"
-								placeholder={`Search ${
-									caseType === "client" ? "Client" : "Client"
-								}`}
+								placeholder={`Search ${caseType === "client" ? "Client" : "Client"
+									}`}
 								className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
@@ -409,30 +408,33 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 
 				{currentItems.length > 0 && !loading ? (
 					<>
-						<div className="overflow-hidden rounded-2xl shadow-md">
-							<table className="border-gray-400 w-full text-sm text-left text-gray-500 overflow-y-auto">
-							<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
-								<tr>
-									{Object.keys(currentItems[0] || {})
-										.filter(
-											(key) =>
-												!hiddenColumns.includes(key) &&
-												!collapsedColumns.includes(key)
-										)
-										.map((key, index) => (
-											<th key={index} className="px-6 py-3">
-												{caseType === "flight" || caseType === "history"
-													? columnDisplayNamesTrips[key] || key
-													: caseType === "client"
-													? columnDisplayNamesClient[key] || key
-													: caseType === "airship"
-													? columnDisplayNamesAirship[key] || key
-													: key}
-											</th>
-										))}
-									<th className="px-6 py-3">Action</th>
-								</tr>
-							</thead>
+						<div className="overflow-x-auto rounded-2xl shadow-md max-h-[60vh] sm:max-h-none overflow-y-auto">
+							<table className="border-gray-400 min-w-full text-sm text-left text-gray-500 overflow-y-auto">
+								<thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-400 rounded-t-3xl">
+									<tr>
+										{Object.keys(currentItems[0] || {})
+											.filter(
+												(key) =>
+													!hiddenColumns.includes(key) &&
+													!collapsedColumns.includes(key)
+											)
+											.map((key, index) => (
+												<th
+													key={index}
+													className="px-4 py-2 sm:px-6 sm:py-3"
+												>
+													{caseType === "flight" || caseType === "history"
+														? columnDisplayNamesTrips[key] || key
+														: caseType === "client"
+															? columnDisplayNamesClient[key] || key
+															: caseType === "airship"
+																? columnDisplayNamesAirship[key] || key
+																: key}
+												</th>
+											))}
+										<th className="px-6 py-3">Action</th>
+									</tr>
+								</thead>
 								<tbody className="overflow-y-auto rounded-b-3xl">
 									{/* CAMBIO 11: Renderizado jerárquico de filas */}
 									{currentItems
@@ -462,9 +464,9 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 												filteredData.some(
 													(item) =>
 														"parentFlightId" in
-															item &&
+														item &&
 														item.parentFlightId ===
-															singledata.id
+														singledata.id
 												)
 
 											const isExpanded =
@@ -482,11 +484,10 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 															e
 														)
 													}
-													className={`${
-														isChild
-															? "bg-gray-100"
-															: "bg-white"
-													} border-b cursor-pointer hover:bg-gray-200`}
+													className={`${isChild
+														? "bg-gray-100"
+														: "bg-white"
+														} border-b cursor-pointer hover:bg-gray-200`}
 												>
 													{Object.entries(singledata)
 														.filter(
@@ -515,7 +516,7 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																				key={
 																					key
 																				}
-																				className="px-6 py-3 whitespace-nowrap"
+																				className="px-4 py-2 sm:px-6 sm:py-3 whitespace-nowrap"
 																			>
 																				<div className="flex items-center">
 																					<span className="ml-4 text-gray-600">
@@ -535,7 +536,7 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																				key={
 																					key
 																				}
-																				className="px-6 py-3 whitespace-nowrap"
+																				className="px-4 py-2 sm:px-6 sm:py-3 whitespace-nowrap"
 																			>
 																				<div className="flex items-center">
 																					<button
@@ -584,18 +585,18 @@ const columnDisplayNamesAirship: { [key: string]: string } = {
 																		key={
 																			key
 																		}
-																		className="px-6 py-3 whitespace-nowrap"
+																		className="px-4 py-2 sm:px-6 sm:py-3 whitespace-nowrap"
 																	>
 																		{value}
 																	</td>
 																)
 															}
 														)}
-													<td className="px-6 py-3 flex whitespace-nowrap">
+													<td className="px-4 py-2 sm:px-6 sm:py-3 flex whitespace-nowrap">
 														{caseType !==
 															"history" &&
 															caseType !==
-																"flight" && (
+															"flight" && (
 																<>
 																	<Edit
 																		id={
